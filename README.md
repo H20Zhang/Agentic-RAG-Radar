@@ -82,18 +82,18 @@ These are not “top papers of all time”; they are useful design points for un
 
 [Read the design-anchor index →](papers/anchors.md)
 
-## 🗂 Browse by Research Problem
+## 🗂 [Browse by Research Problem](categories/README.md)
 
-The primary taxonomy asks **what part of the Agentic RAG control stack changes**, rather than classifying papers only by application domain:
+The primary taxonomy asks **what part of the Agentic RAG control stack changes**, rather than classifying papers only by application domain. Each category page is a living research view: current design points, the key tension, and what would count as meaningful progress.
 
 | Category | Core question |
 |---|---|
-| **Planning & Query Formulation** | What should be retrieved next, and how is the information need decomposed/reformulated? |
-| **Retrieval & Tool Use** | Which retriever, corpus, operation, database, or tool should the agent invoke? |
-| **Iterative Reasoning & Verification** | How does new evidence change the next retrieval/reasoning/stopping decision? |
-| **Multi-Agent & Orchestration** | How are specialized search/retrieval/reasoning agents coordinated? |
-| **Learning & Optimization** | How should retrieval/routing/search policies be trained rather than hand-prompted? |
-| **Evaluation & Analysis** | How do we isolate agentic control from better tools, larger budgets, or benchmark artifacts? |
+| **[Planning & Query Formulation](categories/planning-query-formulation.md)** | What should be retrieved next, and how is the information need decomposed/reformulated? |
+| **[Retrieval & Tool Use](categories/retrieval-tool-use.md)** | Which retriever, corpus, operation, database, or tool should the agent invoke? |
+| **[Iterative Reasoning & Verification](categories/iterative-reasoning-verification.md)** | How does new evidence change the next retrieval/reasoning/stopping decision? |
+| **[Multi-Agent & Orchestration](categories/multi-agent-orchestration.md)** | When does specialization/coordination justify multiple retrieval agents? |
+| **[Learning & Optimization](categories/learning-optimization.md)** | How should retrieval/routing/search policies be trained rather than hand-prompted? |
+| **[Evaluation & Analysis](categories/evaluation-analysis.md)** | How do we isolate agentic control from better tools, larger budgets, or benchmark artifacts? |
 
 Orthogonal tags capture substrate (`dense`, `sparse`, `graph`, `web`, `SQL`, `code`, ...), modality, training paradigm, task/domain, and control pattern. See [`taxonomy.yaml`](taxonomy.yaml).
 
