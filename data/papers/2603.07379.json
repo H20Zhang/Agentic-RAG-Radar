@@ -18,6 +18,18 @@
   "benchmarks": [],
   "relevance": 0.99,
   "importance": 3,
+  "visual_explainer": {
+    "type": "taxonomy_map",
+    "question": "What changes when Agentic RAG is viewed as a sequential decision process rather than a collection of RAG variants?",
+    "takeaway": "The useful organizing lens is state → action/control policy → retrieval/tool observation → state update → stop/generate, with architecture/evaluation choices mapped onto that loop.",
+    "compared_with": "RAG taxonomies organized mainly by component, retriever type, or application domain.",
+    "full_text_grounded": false,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "image_path": "assets/visuals/2603.07379.png",
+    "prompt_path": "assets/visuals/prompts/2603.07379.md",
+    "artifact_path": "papers/2603.07379.md"
+  },
   "analysis": {
     "tldr": "This SoK frames Agentic RAG as a sequential decision-making problem and organizes the field around control policies, state transitions, retrieval orchestration, memory, and tool use rather than treating it as a bag of RAG variants.",
     "problem": "Agentic RAG architectures and evaluations are fragmented, making it difficult to compare systems or reason about reliability of autonomous retrieval loops.",
