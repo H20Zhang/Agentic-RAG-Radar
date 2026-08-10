@@ -4,7 +4,7 @@ A daily-updated, GitHub-native research radar for **Agentic Retrieval-Augmented 
 
 > **Maintenance model:** one scheduled ChatGPT curation task maintains the repo. Daily runs discover and curate papers; the same run backfills visuals and conditionally produces weekly/monthly research compactions. GitHub Actions only validates repository consistency.
 
-**Last curated:** 2026-08-10
+**Last curated:** 2026-08-11
 
 ## 🧭 Research Compactions
 
@@ -40,11 +40,11 @@ The most important open problem is evaluation. A credible comparison increasingl
 
 This repo uses a small research-memory hierarchy:
 
-- **Daily ingestion** keeps canonical paper records, provenance, classification, links, research notes, and visual explainers current. It does **not** create one Markdown file per day.
+- **Daily ingestion** updates canonical records, paper notes, links, classifications, visual state, and a compact nested provenance log under `runs/daily/YYYY/MM/DD.md`. Those logs record curation decisions; they are **not** the primary reading interface and do not repeat full paper notes.
 - **Weekly compaction** compresses the completed week into 1–3 research shifts, the few papers that matter, an evidence audit, disagreements/negative results, and a minimal reading order.
 - **Monthly compaction** rebuilds the higher-level field map: which abstractions are gaining traction, what evidence strengthened or weakened, and which open questions should influence what to research next.
 
-Compaction is deliberately **lossy for repetition, not for disagreement**. Weekly/monthly claims are re-grounded in canonical paper records instead of recursively summarizing prior summaries. See [`COMPACTION.md`](COMPACTION.md) and the [`digest archive`](digests/README.md).
+Compaction is deliberately **lossy for repetition, not for disagreement**. Weekly/monthly claims are re-grounded in canonical paper records instead of recursively summarizing prior summaries. See [`COMPACTION.md`](COMPACTION.md), the [`digest archive`](digests/README.md), and [`run archive`](runs/README.md).
 
 ## 🔥 Latest Papers
 
@@ -122,7 +122,7 @@ Image assets are presentation; their research grounding is stored separately so 
 
 The scheduled curator uses independent roles for **Discovery → Inclusion/Taxonomy → Research Reading → Visual Explanation → Evidence Audit/Skeptical Review → Research Editing**. The skeptical role explicitly challenges novelty, matched-budget fairness, baseline choice, unsupported causal attribution, and misleading visual simplifications before synthesis.
 
-Canonical structured records live under [`data/papers/`](data/papers/). README, paper notes, generated figures, and compactions are derived views. Full-text-grounded claims are distinguished from abstract-grounded first-pass interpretations.
+Canonical structured records live under [`data/papers/`](data/papers/). README, paper notes, generated figures, weekly/monthly compactions, and nested run logs are derived views. Full-text-grounded claims are distinguished from abstract-grounded first-pass interpretations.
 
 ## 🤝 Contributing
 
