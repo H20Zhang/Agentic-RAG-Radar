@@ -10,8 +10,8 @@ Each daily run should use independent parallel research roles whenever the execu
 |---|---|---|
 | **Discovery** | Search a broad overlapping recent window across arXiv and other high-signal scholarly sources; expand beyond the literal phrase `agentic RAG`. | Missing papers because authors use different terminology. |
 | **Relevance & Taxonomy** | Independently decide whether retrieval is genuinely agent-controlled and assign the primary category + orthogonal tags. | Scope creep into ordinary RAG or generic agents. |
-| **Research Reader** | Read the paper deeply enough to extract the actual control loop, closest comparison, evidence, and limitations. | Abstract paraphrases masquerading as research analysis. |
-| **Skeptical QC** | Challenge inclusion, importance, classification, unsupported claims, duplicate versions, and broken/unverified links. | LLM agreement bias and inflated novelty claims. |
+| **Research Reader** | Read the paper deeply enough to extract the actual control loop, closest comparison, evidence, limitations, and the one mechanism that deserves a visual explainer. | Abstract paraphrases masquerading as research analysis. |
+| **Skeptical QC** | Challenge inclusion, importance, classification, unsupported claims, duplicate versions, broken/unverified links, and misleading visual simplifications. | LLM agreement bias and inflated novelty claims. |
 
 These roles should work independently before synthesis where practical. The QC role should not simply summarize the other roles.
 
@@ -59,6 +59,12 @@ For accepted papers, record:
 
 Do not claim experimental superiority from an abstract alone. Set `provenance.full_text_checked` accurately.
 
+## Visual explainer standard
+
+Every accepted paper should have **one conceptual visual explainer** in its researcher-facing Markdown, following [`VISUALS.md`](VISUALS.md). The diagram should answer the single question that makes the paper easiest to understand: agent control loop for method papers, operation/state diagram for retrieval-interface work, trajectory-to-policy diagram for learning papers, evidence/failure map for analysis papers, or taxonomy map for surveys.
+
+Prefer GitHub-native Mermaid so diagrams stay text-diffable and easy to correct. Keep the main diagram compact and explicitly mark the research delta rather than reproducing implementation detail. Follow it with **What to notice** and **Compared with**. If only the abstract has been checked, the visual must be labeled as abstract-grounded rather than presented as a verified reconstruction of the full method.
+
 ## Scoring
 
 `relevance ∈ [0,1]` measures topical fit. `importance ∈ {1,...,5}` measures estimated research significance. A paper can be highly relevant and low importance.
@@ -73,6 +79,6 @@ Suggested importance interpretation:
 
 ## Update policy
 
-Prefer small auditable diffs. Add or correct canonical records under `data/papers/`, generate researcher-facing notes under `papers/` only when they add useful analysis, and refresh README latest/notable views. **Do not create one Markdown digest per day.** Daily output is an ingestion layer; durable human-facing history is compacted weekly and monthly under `digests/`.
+Prefer small auditable diffs. Add or correct canonical records under `data/papers/`, generate researcher-facing notes under `papers/` when they add useful analysis, include the visual explainer, and refresh README latest/notable views. **Do not create one Markdown digest per day.** Daily output is an ingestion layer; durable human-facing history is compacted weekly and monthly under `digests/`.
 
-Never silently fabricate code/project links, benchmark results, or full-text analysis. See [`COMPACTION.md`](COMPACTION.md) for weekly/monthly synthesis rules, including the requirement that monthly reports re-check canonical records rather than recursively trusting summaries.
+Never silently fabricate code/project links, benchmark results, full-text analysis, or diagram edges/components. See [`COMPACTION.md`](COMPACTION.md) for weekly/monthly synthesis rules, including the requirement that monthly reports re-check canonical records rather than recursively trusting summaries.
