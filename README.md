@@ -7,7 +7,7 @@
 ## 🔥 Latest Papers
 
 <!-- DAILY_PAPERS_START -->
-**2026-08-10 · [Full daily digest](daily/2026-08-10.md)**
+**Updated 2026-08-10**
 
 - **[Beyond Top-K / READ](https://arxiv.org/abs/2608.06305)** — replaces embedding top-k with replayable lexical search, structural navigation, and bounded reads. The key result is about the **retrieval interface**, not merely adding an agent loop. `Retrieval & Tool Use` · ★★★★☆
 - **[DocNavRAG](https://arxiv.org/abs/2608.01565)** — makes document hierarchy and cross-region relations a navigable retrieval environment and maintains explicit evidence state across actions. `Retrieval & Tool Use` · ★★★★☆
@@ -22,6 +22,15 @@
 - **[Graph-R1](https://arxiv.org/abs/2507.21892)** — models GraphRAG retrieval as a multi-turn agent–graph interaction and optimizes the trajectory end to end with RL. `Learning & Optimization` · ★★★★☆
 - **[Search-o1](https://arxiv.org/abs/2501.05366)** — triggers search inside long reasoning traces and separately reasons over retrieved documents before reinjection. `Iterative Reasoning & Verification` · ★★★★☆
 <!-- NOTABLE_PAPERS_END -->
+
+## 🗜️ Weekly & Monthly Research Digests
+
+Daily runs are **ingestion**, not the long-term reading interface. The repository compacts accepted papers into:
+
+- **Weekly synthesis** — what changed, which papers matter, where evidence conflicts, and what to read next.
+- **Monthly synthesis** — how the field map changed, emerging design patterns, evidence quality, and the most important open problems.
+
+See the [`digest archive`](digests/README.md) and the [`compaction protocol`](COMPACTION.md). Monthly reports re-check canonical paper records for important claims instead of recursively summarizing weekly summaries.
 
 ## 🧱 Bootstrap Anchors
 
@@ -68,21 +77,29 @@ Agentic-RAG-Radar/
 ├── README.md                     # researcher-facing landing page
 ├── CURATION.md                   # multi-agent curation protocol
 ├── taxonomy.yaml                 # controlled taxonomy
-├── daily/                        # auditable daily digests
+├── COMPACTION.md                 # weekly/monthly synthesis protocol
+├── digests/
+│   ├── weekly/                   # one synthesis per ISO week
+│   └── monthly/                  # one synthesis per calendar month
 ├── data/
 │   ├── paper.schema.json         # canonical record schema
 │   └── papers/                   # one JSON record per paper
 ├── papers/                       # researcher-facing AI research notes
-├── templates/paper.md            # analysis template
+├── templates/
+│   ├── paper.md                  # per-paper analysis template
+│   ├── weekly.md                 # weekly synthesis template
+│   └── monthly.md                # monthly synthesis template
 ├── scripts/validate.py           # repository integrity checks
 └── .github/workflows/validate.yml
 ```
 
-The canonical source of truth is `data/papers/*.json`; README and daily/category views are derived representations.
+The canonical source of truth is `data/papers/*.json`; README, per-paper notes, and weekly/monthly digests are derived research views.
 
 ## 🔄 Daily Curation
 
 A daily research task performs broad discovery with an overlapping recent window, semantic inclusion filtering, taxonomy assignment, full-paper interpretation, deduplication, and independent quality control. **Relevance and importance are scored separately.** See [`CURATION.md`](CURATION.md) for the four-role discovery / relevance / reader / skeptical-QC protocol.
+
+Daily ingestion updates canonical records, useful per-paper notes, and the rolling README view; **it does not create one Markdown file per day**. Weekly and monthly jobs perform the durable human-facing compaction described in [`COMPACTION.md`](COMPACTION.md).
 
 Discovery intentionally searches beyond the phrase “agentic RAG”, including adaptive/active retrieval, retrieval planning, search agents, iterative retrieval, verifier-guided retrieval, GraphRAG agents, tool-using RAG, retrieval RL, and agentic information seeking.
 
