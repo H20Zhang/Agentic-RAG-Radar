@@ -1,112 +1,129 @@
 # 🤖 Agentic RAG Radar
 
-> Daily tracking, taxonomy, and AI research notes for **Agentic Retrieval-Augmented Generation**.
+A daily-updated, GitHub-native research radar for **Agentic Retrieval-Augmented Generation**, with a stable taxonomy, skeptical AI research notes, and visual explainers designed for researchers rather than generic summaries.
 
-**Agentic RAG Radar** is a GitHub-native living bibliography for research where an agent **dynamically controls retrieval, search, context acquisition, verification, or retrieval policy**. It is designed for researchers who want to know not only *what was published*, but *what changed compared with prior work and why it matters*.
+> **Maintenance model:** one scheduled ChatGPT curation task maintains the repo. Daily runs discover and curate papers; the same run backfills visuals and conditionally produces weekly/monthly research compactions. GitHub Actions only validates repository consistency.
+
+**Last curated:** 2026-08-10
+
+## 🧭 Research Compactions
+
+Compactions are the **primary reading interface**. Daily ingestion preserves freshness and provenance; weekly/monthly reports answer the harder question: **what actually changed in the research landscape?**
+
+### [Weekly · 2026-W32](digests/weekly/2026-W32.md)
+
+**Early-August Agentic RAG is shifting from “better retrieval” toward designing the retrieval interaction itself.** Three ideas are beginning to converge:
+
+- **Retrieval interface > another agent loop.** READ and DocNavRAG expose lexical search, structural navigation, bounded reads, or document-native graph operations instead of repeatedly calling the same black-box top-k primitive.
+- **Evidence state > implicit history.** DocNavRAG makes collected/missing evidence explicit, turning retrieval progress into state that can drive the next action and stopping decision.
+- **Context assembly becomes a policy.** ACE-GraphRAG separates rich hierarchical representation from the inference-time policy that decides which evidence actually reaches the model.
+
+The main tension is causal attribution: **are gains coming from agentic control, or simply from stronger retrieval primitives and larger budgets?** READ is especially useful because BM25 is reported as statistically indistinguishable from READ, weakening a simplistic “agent beats RAG” story and raising the bar for primitive-matched and budget-matched evaluation.
+
+**Read next:** A-RAG → READ → DocNavRAG → ACE-GraphRAG → Agentic-R / Graph-R1.
+
+### [Monthly · 2026-08 (rolling)](digests/monthly/2026-08.md)
+
+**Month-to-date thesis:** Agentic RAG is beginning to look less like a retriever problem and more like a **control-stack problem**:
+
+`retrieval substrate → operation/interface → evidence state/controller → learning/evaluation`
+
+The current August map has three provisional clusters:
+
+1. **Retrieval-interface redesign** — replace one-shot top-k with a compact action space the agent can control.
+2. **Stateful evidence construction** — explicitly track what is known, missing, sufficient, or uncertain between retrieval actions.
+3. **Adaptive context engineering** — treat routing/context assembly over rich document/graph structures as an inference-time policy.
+
+The most important open problem is evaluation. A credible comparison increasingly needs to separate **substrate, operation set, state, policy, and budget** rather than changing all five and attributing the gain to “agentic RAG.” The rolling month map will be revised—not merely appended—if later papers falsify this thesis.
+
+### How compaction works
+
+This repo uses a small research-memory hierarchy:
+
+- **Daily ingestion** keeps canonical paper records, provenance, classification, links, research notes, and visual explainers current. It does **not** create one Markdown file per day.
+- **Weekly compaction** compresses the completed week into 1–3 research shifts, the few papers that matter, an evidence audit, disagreements/negative results, and a minimal reading order.
+- **Monthly compaction** rebuilds the higher-level field map: which abstractions are gaining traction, what evidence strengthened or weakened, and which open questions should influence what to research next.
+
+Compaction is deliberately **lossy for repetition, not for disagreement**. Weekly/monthly claims are re-grounded in canonical paper records instead of recursively summarizing prior summaries. See [`COMPACTION.md`](COMPACTION.md) and the [`digest archive`](digests/README.md).
 
 ## 🔥 Latest Papers
 
-<!-- DAILY_PAPERS_START -->
-**Updated 2026-08-10**
+### [Beyond Top-K: Replacing Black-Box Retrieval with Interpretable Agentic Operations](papers/2608.06305.md)
+`Retrieval & Tool Use` · `sparse` `documents` `iterative search` · **★★★★☆** · 2026-08-06
 
-- **[Beyond Top-K / READ](https://arxiv.org/abs/2608.06305)** — replaces embedding top-k with replayable lexical search, structural navigation, and bounded reads. The key result is about the **retrieval interface**, not merely adding an agent loop. [Visual explainer](papers/2608.06305.md) · `Retrieval & Tool Use` · ★★★★☆
-- **[DocNavRAG](https://arxiv.org/abs/2608.01565)** — makes document hierarchy and cross-region relations a navigable retrieval environment and maintains explicit evidence state across actions. `Retrieval & Tool Use` · ★★★★☆
-- **[ACE-GraphRAG](https://arxiv.org/abs/2608.01269)** — turns hierarchical GraphRAG context assembly into an adaptive inference-time policy over complementary retrieval branches. `Iterative Reasoning & Verification` · ★★★★☆
-<!-- DAILY_PAPERS_END -->
+**AI take:** The strongest result is not “agents beat RAG.” It is that an iterative agent cannot rescue a bad retrieval primitive: lexical search + structural navigation + bounded reads strongly outperform dense top-k, while **BM25 is statistically indistinguishable from READ**. That negative result makes the paper more informative, not less.
 
-## ⭐ Notable Recent Work
+[Paper](https://arxiv.org/abs/2608.06305) · [AI Analysis](papers/2608.06305.md)
 
-<!-- NOTABLE_PAPERS_START -->
-- **[A-RAG](https://arxiv.org/abs/2602.03442)** — exposes keyword search, semantic search, and chunk read as hierarchical retrieval tools directly controlled by the model. `Retrieval & Tool Use` · ★★★★☆
-- **[Agentic-R](https://arxiv.org/abs/2601.11888)** — trains a retriever for trajectory-level usefulness in multi-turn agentic search rather than static similarity alone. `Learning & Optimization` · ★★★★☆
-- **[Graph-R1](https://arxiv.org/abs/2507.21892)** — models GraphRAG retrieval as a multi-turn agent–graph interaction and optimizes the trajectory end to end with RL. `Learning & Optimization` · ★★★★☆
-- **[Search-o1](https://arxiv.org/abs/2501.05366)** — triggers search inside long reasoning traces and separately reasons over retrieved documents before reinjection. `Iterative Reasoning & Verification` · ★★★★☆
-<!-- NOTABLE_PAPERS_END -->
+### [DocNavRAG: Document-Structured Graph RAG with Stateful Evidence Construction](https://arxiv.org/abs/2608.01565)
+`Retrieval & Tool Use` · `graph` `documents` `planning` `multi-hop QA` · **★★★★☆** · 2026-08-03
 
-## 🗜️ Weekly & Monthly Research Digests
+**AI take:** The useful abstraction is **environment–policy co-design**: preserve document-native hierarchy/relations as retrieval operations, then maintain explicit collected/missing evidence state so the next action is conditioned on information progress rather than another global search.
 
-Daily runs are **ingestion**, not the long-term reading interface. The **same daily maintenance task** conditionally compacts completed periods into:
+[Paper](https://arxiv.org/abs/2608.01565)
 
-- **Weekly synthesis** — what changed, which papers matter, where evidence conflicts, and what to read next.
-- **Monthly synthesis** — how the field map changed, emerging design patterns, evidence quality, and the most important open problems.
+### [ACE-GraphRAG: Agentic Context Engineering for Hierarchical GraphRAG](https://arxiv.org/abs/2608.01269)
+`Iterative Reasoning & Verification` · `graph` `routing` `multi-hop QA` · **★★★★☆** · 2026-08-02
 
-On every run it checks whether the most recent completed week/month is missing or stale; if so it compacts it, otherwise it skips. See the [`digest archive`](digests/README.md) and [`compaction protocol`](COMPACTION.md). Monthly reports re-check canonical paper records for important claims instead of recursively summarizing weekly summaries.
+**AI take:** Building a richer hierarchy does not guarantee better context. ACE-GraphRAG makes the missing layer explicit: **context assembly itself is a query-dependent policy** over complementary retrieval branches. The remaining question is whether gains survive matched retrieval/token budgets.
 
-## 🧱 Bootstrap Anchors
+[Paper](https://arxiv.org/abs/2608.01269)
 
-The repository starts with six papers that help define the design space: **PlanRAG, Search-o1, Graph-R1, Agentic-R, A-RAG**, and an **Agentic RAG SoK**. Read the researcher-facing cards in [`papers/anchors.md`](papers/anchors.md). Canonical machine-readable records live under [`data/papers/`](data/papers/).
+## ⭐ Notable Design Anchors
 
-These initial cards are deliberately conservative: where the bootstrap pass used verified metadata and abstracts rather than the full paper, the record explicitly sets `full_text_checked: false` so a later research-reader pass can upgrade it instead of silently overstating confidence.
+These are not “top papers of all time”; they are useful design points for understanding the current radar:
 
-## 🗂 Research Taxonomy
+- **[A-RAG](https://arxiv.org/abs/2602.03442)** — hierarchical keyword / semantic / chunk-read retrieval interface controlled by the model.
+- **[Agentic-R](https://arxiv.org/abs/2601.11888)** — train retrieval for trajectory-level downstream utility rather than static relevance.
+- **[Graph-R1](https://arxiv.org/abs/2507.21892)** — learn multi-turn graph retrieval/reasoning trajectories end to end with RL.
+- **[Search-o1](https://arxiv.org/abs/2501.05366)** — trigger search inside the reasoning trace and separately reason over retrieved documents before reinjection.
+- **[PlanRAG](https://arxiv.org/abs/2406.12430)** — make the information-acquisition plan explicit before iterative data retrieval.
 
-| Category | What the agent controls |
+[Read the bootstrap anchor cards →](papers/anchors.md)
+
+## 🗂 Browse by Research Problem
+
+The primary taxonomy asks **what part of the Agentic RAG control stack changes**, rather than classifying papers only by application domain:
+
+| Category | Core question |
 |---|---|
-| **Planning & Query Formulation** | decomposing questions, planning retrieval steps, rewriting or generating queries |
-| **Retrieval & Tool Use** | choosing retrievers, search engines, databases, tools, corpora, or retrieval operators |
-| **Iterative Reasoning & Verification** | interleaving retrieval with reasoning, critique, evidence checking, and stopping decisions |
-| **Multi-Agent & Orchestration** | coordinating specialized search/retrieval/reasoning agents |
-| **Learning & Optimization** | learning retrieval policies, routing, search strategies, or agentic RAG workflows |
-| **Evaluation & Analysis** | benchmarks, diagnostic studies, surveys, failure analysis, and evaluation methodology |
+| **Planning & Query Formulation** | What should be retrieved next, and how is the information need decomposed/reformulated? |
+| **Retrieval & Tool Use** | Which retriever, corpus, operation, database, or tool should the agent invoke? |
+| **Iterative Reasoning & Verification** | How does new evidence change the next retrieval/reasoning/stopping decision? |
+| **Multi-Agent & Orchestration** | How are specialized search/retrieval/reasoning agents coordinated? |
+| **Learning & Optimization** | How should retrieval/routing/search policies be trained rather than hand-prompted? |
+| **Evaluation & Analysis** | How do we isolate agentic control from better tools, larger budgets, or benchmark artifacts? |
 
-Each paper also receives orthogonal tags for retrieval substrate (`dense`, `sparse`, `graph`, `web`, `SQL`, `code`, ...), modality, training paradigm, domain, and benchmark. See [`taxonomy.yaml`](taxonomy.yaml).
+Orthogonal tags capture substrate (`dense`, `sparse`, `graph`, `web`, `SQL`, `code`, ...), modality, training paradigm, task/domain, and control pattern. See [`taxonomy.yaml`](taxonomy.yaml).
 
-## 🧭 What Counts as Agentic RAG?
+## 🧭 Inclusion Rule
 
-A paper is included when an agent or learned controller **materially changes the retrieval process at inference or decision time** — for example deciding **whether, what, where, how, or how many times to retrieve**, or using retrieved evidence to decide the next search/retrieval action.
+A work is included when **external retrieval/search/context acquisition is a substantive research component and an agent/controller/policy materially changes whether, what, where, how, or how many times information is retrieved**.
 
-Ordinary fixed `retrieve top-k → generate` pipelines are not included merely because they use an LLM. Generic agents are not included unless retrieval or external knowledge acquisition is a substantive research contribution.
+Ordinary fixed `retrieve top-k → generate` RAG is excluded merely for using an LLM. Generic agents are excluded when retrieval is incidental. Pure retriever/reranker/index work is excluded unless agentic control is part of the research contribution.
 
-## 🧠 AI Research Notes
+## 🖼️ Research Note for Each Paper
 
-For every accepted paper, the curator aims to provide both a **compact visual explainer** and a research read:
+Each accepted paper should eventually have one concise researcher-facing page with:
 
-- **Visual Explainer** — one GitHub-native conceptual diagram showing the key control point / state / feedback loop; see [`VISUALS.md`](VISUALS.md).
-- **TL;DR / Problem / Core Idea** — the actual research delta and bottleneck.
-- **Agent Loop / Retrieval Design** — the control flow and retrieval interface.
-- **Compared to What** — nearest method families and the real difference.
-- **Evidence / Why It Matters** — what experiments support the claim and whether the contribution is important rather than merely relevant.
-- **Limitations / Questions / AI Confidence** — assumptions, missing evidence, and confidence in the interpretation.
+- **GPT-image-gen visual explainer** — one original conceptual figure showing the paper's key control point / state / feedback loop, not a reproduction of the paper figure.
+- **TL;DR / Problem / Core Idea** — the actual research delta.
+- **Agent Loop / Retrieval Design** — what the model observes, chooses, retrieves, updates, and repeats.
+- **Compared to What** — the nearest design point and the real difference.
+- **Evidence / Why It Matters** — strongest support, important negative results, and whether the contribution is interesting or actually important.
+- **Limitations / Questions / AI Confidence** — assumptions and missing tests that could change the conclusion.
 
-The AI notes are research aids, not authoritative summaries. Paper claims are distinguished from curator inference whenever possible.
+Image assets are presentation; their research grounding is stored separately so a figure can be regenerated or challenged without losing provenance. See [`VISUALS.md`](VISUALS.md).
 
-## 📦 Repository Structure
+## 🔄 Curation & Provenance
 
-```text
-Agentic-RAG-Radar/
-├── README.md                     # researcher-facing landing page
-├── CURATION.md                   # multi-agent curation protocol
-├── VISUALS.md                    # per-paper visual explainer protocol
-├── taxonomy.yaml                 # controlled taxonomy
-├── COMPACTION.md                 # weekly/monthly synthesis protocol
-├── digests/
-│   ├── weekly/                   # one synthesis per ISO week
-│   └── monthly/                  # one synthesis per calendar month
-├── data/
-│   ├── paper.schema.json         # canonical record schema
-│   └── papers/                   # one JSON record per paper
-├── papers/                       # researcher-facing AI research notes + diagrams
-├── templates/
-│   ├── paper.md                  # per-paper analysis template
-│   ├── weekly.md                 # weekly synthesis template
-│   └── monthly.md                # monthly synthesis template
-├── scripts/validate.py           # repository integrity checks
-└── .github/workflows/validate.yml
-```
+The scheduled curator uses independent roles for broad discovery, inclusion/taxonomy, deep reading, visual explanation, evidence auditing, and skeptical QC. The QC role explicitly challenges novelty, matched-budget fairness, baseline choice, unsupported claims, and misleading visual simplifications before synthesis.
 
-The canonical source of truth is `data/papers/*.json`; README, per-paper notes, diagrams, and weekly/monthly digests are derived research views.
-
-## 🔄 Daily Curation
-
-A single daily research task performs broad discovery with an overlapping recent window, semantic inclusion filtering, taxonomy assignment, full-paper interpretation, visual explanation, deduplication, and independent quality control. **Relevance and importance are scored separately.** See [`CURATION.md`](CURATION.md) for the discovery / relevance / reader / skeptical-QC protocol.
-
-Daily ingestion updates canonical records, useful per-paper notes, diagrams, and the rolling README view; **it does not create one Markdown file per day**. At the end of the same run, it conditionally performs any missing or stale weekly/monthly compaction described in [`COMPACTION.md`](COMPACTION.md).
-
-Discovery intentionally searches beyond the phrase “agentic RAG”, including adaptive/active retrieval, retrieval planning, search agents, iterative retrieval, verifier-guided retrieval, GraphRAG agents, tool-using RAG, retrieval RL, and agentic information seeking.
+Canonical structured records live under [`data/papers/`](data/papers/). README, paper notes, generated figures, and compactions are derived views. Full-text-grounded claims are distinguished from abstract-grounded first-pass interpretations.
 
 ## 🤝 Contributing
 
-PRs that add missing papers, correct taxonomy, improve evidence, or challenge an AI interpretation are welcome. Please preserve provenance and distinguish paper-stated claims from your own interpretation.
+Corrections are especially welcome when they change the research conclusion: missing baselines, unfair budgets, wrong taxonomy, overclaimed novelty, broken provenance, or a visual that makes the mechanism look cleaner than it really is.
 
 ---
 
