@@ -18,6 +18,18 @@
   "benchmarks": [],
   "relevance": 1.0,
   "importance": 4,
+  "visual_explainer": {
+    "type": "state_progression",
+    "question": "How does DocNavRAG turn document structure and explicit evidence state into a retrieval control loop?",
+    "takeaway": "The key delta is environment–policy co-design: document-native navigation updates an explicit collected/missing evidence state that drives the next retrieval action.",
+    "compared_with": "Flat passage-level iterative RAG, repeated global semantic search, and fixed-traversal GraphRAG.",
+    "full_text_grounded": false,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "image_path": "assets/visuals/2608.01565.png",
+    "prompt_path": "assets/visuals/prompts/2608.01565.md",
+    "artifact_path": "papers/2608.01565.md"
+  },
   "analysis": {
     "tldr": "DocNavRAG makes document structure the agent's retrieval environment: the agent navigates hierarchy and cross-region relations with explicit graph operations while maintaining a stateful record of collected and missing evidence.",
     "problem": "Complex document QA often requires complementary evidence across sections and documents; flat agentic search repeatedly starts from weakly structured passage retrieval, while conventional GraphRAG typically fixes the traversal strategy.",
