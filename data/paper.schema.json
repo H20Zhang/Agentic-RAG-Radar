@@ -51,6 +51,27 @@
     "benchmarks": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
     "relevance": {"type": "number", "minimum": 0, "maximum": 1},
     "importance": {"type": "integer", "minimum": 1, "maximum": 5},
+    "visual_explainer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "question", "takeaway", "compared_with"],
+      "properties": {
+        "type": {
+          "enum": [
+            "agent_loop",
+            "retrieval_interface",
+            "trajectory_learning",
+            "evidence_failure_map",
+            "taxonomy_map"
+          ]
+        },
+        "question": {"type": "string"},
+        "takeaway": {"type": "string"},
+        "compared_with": {"type": "string"},
+        "full_text_grounded": {"type": "boolean"},
+        "artifact_path": {"type": ["string", "null"]}
+      }
+    },
     "analysis": {
       "type": "object",
       "additionalProperties": false,
