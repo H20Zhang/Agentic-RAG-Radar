@@ -9,7 +9,7 @@
 <!-- DAILY_PAPERS_START -->
 **Updated 2026-08-10**
 
-- **[Beyond Top-K / READ](https://arxiv.org/abs/2608.06305)** — replaces embedding top-k with replayable lexical search, structural navigation, and bounded reads. The key result is about the **retrieval interface**, not merely adding an agent loop. `Retrieval & Tool Use` · ★★★★☆
+- **[Beyond Top-K / READ](https://arxiv.org/abs/2608.06305)** — replaces embedding top-k with replayable lexical search, structural navigation, and bounded reads. The key result is about the **retrieval interface**, not merely adding an agent loop. [Visual explainer](papers/2608.06305.md) · `Retrieval & Tool Use` · ★★★★☆
 - **[DocNavRAG](https://arxiv.org/abs/2608.01565)** — makes document hierarchy and cross-region relations a navigable retrieval environment and maintains explicit evidence state across actions. `Retrieval & Tool Use` · ★★★★☆
 - **[ACE-GraphRAG](https://arxiv.org/abs/2608.01269)** — turns hierarchical GraphRAG context assembly into an adaptive inference-time policy over complementary retrieval branches. `Iterative Reasoning & Verification` · ★★★★☆
 <!-- DAILY_PAPERS_END -->
@@ -25,12 +25,12 @@
 
 ## 🗜️ Weekly & Monthly Research Digests
 
-Daily runs are **ingestion**, not the long-term reading interface. The repository compacts accepted papers into:
+Daily runs are **ingestion**, not the long-term reading interface. The **same daily maintenance task** conditionally compacts completed periods into:
 
 - **Weekly synthesis** — what changed, which papers matter, where evidence conflicts, and what to read next.
 - **Monthly synthesis** — how the field map changed, emerging design patterns, evidence quality, and the most important open problems.
 
-See the [`digest archive`](digests/README.md) and the [`compaction protocol`](COMPACTION.md). Monthly reports re-check canonical paper records for important claims instead of recursively summarizing weekly summaries.
+On every run it checks whether the most recent completed week/month is missing or stale; if so it compacts it, otherwise it skips. See the [`digest archive`](digests/README.md) and [`compaction protocol`](COMPACTION.md). Monthly reports re-check canonical paper records for important claims instead of recursively summarizing weekly summaries.
 
 ## 🧱 Bootstrap Anchors
 
@@ -59,10 +59,10 @@ Ordinary fixed `retrieve top-k → generate` pipelines are not included merely b
 
 ## 🧠 AI Research Notes
 
-For every accepted paper, the curator aims to answer:
+For every accepted paper, the curator aims to provide both a **compact visual explainer** and a research read:
 
-- **TL;DR** — the actual research delta in one sentence.
-- **Problem / Core Idea** — what bottleneck is addressed and what abstraction changes.
+- **Visual Explainer** — one GitHub-native conceptual diagram showing the key control point / state / feedback loop; see [`VISUALS.md`](VISUALS.md).
+- **TL;DR / Problem / Core Idea** — the actual research delta and bottleneck.
 - **Agent Loop / Retrieval Design** — the control flow and retrieval interface.
 - **Compared to What** — nearest method families and the real difference.
 - **Evidence / Why It Matters** — what experiments support the claim and whether the contribution is important rather than merely relevant.
@@ -76,6 +76,7 @@ The AI notes are research aids, not authoritative summaries. Paper claims are di
 Agentic-RAG-Radar/
 ├── README.md                     # researcher-facing landing page
 ├── CURATION.md                   # multi-agent curation protocol
+├── VISUALS.md                    # per-paper visual explainer protocol
 ├── taxonomy.yaml                 # controlled taxonomy
 ├── COMPACTION.md                 # weekly/monthly synthesis protocol
 ├── digests/
@@ -84,7 +85,7 @@ Agentic-RAG-Radar/
 ├── data/
 │   ├── paper.schema.json         # canonical record schema
 │   └── papers/                   # one JSON record per paper
-├── papers/                       # researcher-facing AI research notes
+├── papers/                       # researcher-facing AI research notes + diagrams
 ├── templates/
 │   ├── paper.md                  # per-paper analysis template
 │   ├── weekly.md                 # weekly synthesis template
@@ -93,13 +94,13 @@ Agentic-RAG-Radar/
 └── .github/workflows/validate.yml
 ```
 
-The canonical source of truth is `data/papers/*.json`; README, per-paper notes, and weekly/monthly digests are derived research views.
+The canonical source of truth is `data/papers/*.json`; README, per-paper notes, diagrams, and weekly/monthly digests are derived research views.
 
 ## 🔄 Daily Curation
 
-A daily research task performs broad discovery with an overlapping recent window, semantic inclusion filtering, taxonomy assignment, full-paper interpretation, deduplication, and independent quality control. **Relevance and importance are scored separately.** See [`CURATION.md`](CURATION.md) for the four-role discovery / relevance / reader / skeptical-QC protocol.
+A single daily research task performs broad discovery with an overlapping recent window, semantic inclusion filtering, taxonomy assignment, full-paper interpretation, visual explanation, deduplication, and independent quality control. **Relevance and importance are scored separately.** See [`CURATION.md`](CURATION.md) for the discovery / relevance / reader / skeptical-QC protocol.
 
-Daily ingestion updates canonical records, useful per-paper notes, and the rolling README view; **it does not create one Markdown file per day**. Weekly and monthly jobs perform the durable human-facing compaction described in [`COMPACTION.md`](COMPACTION.md).
+Daily ingestion updates canonical records, useful per-paper notes, diagrams, and the rolling README view; **it does not create one Markdown file per day**. At the end of the same run, it conditionally performs any missing or stale weekly/monthly compaction described in [`COMPACTION.md`](COMPACTION.md).
 
 Discovery intentionally searches beyond the phrase “agentic RAG”, including adaptive/active retrieval, retrieval planning, search agents, iterative retrieval, verifier-guided retrieval, GraphRAG agents, tool-using RAG, retrieval RL, and agentic information seeking.
 
