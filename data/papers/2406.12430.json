@@ -1,0 +1,39 @@
+{
+  "id": "arxiv:2406.12430",
+  "arxiv_id": "2406.12430",
+  "title": "PlanRAG: A Plan-then-Retrieval Augmented Generation for Generative Large Language Models as Decision Makers",
+  "authors": ["Myeonghwa Lee", "Seonho An", "Min-Soo Kim"],
+  "first_seen": "2026-08-10",
+  "published": "2024-06-18",
+  "updated": null,
+  "venue": "NAACL 2024",
+  "urls": {
+    "paper": "https://arxiv.org/abs/2406.12430",
+    "pdf": "https://arxiv.org/pdf/2406.12430",
+    "code": "https://github.com/myeon9h/PlanRAG",
+    "project": null
+  },
+  "primary_category": "planning_query_formulation",
+  "tags": ["planning", "iterative_search", "database", "multi_hop_qa", "prompting"],
+  "benchmarks": ["DQA"],
+  "relevance": 0.98,
+  "importance": 3,
+  "analysis": {
+    "tldr": "PlanRAG makes an explicit decision plan the upstream controller for iterative data retrieval, rather than letting retrieval proceed as an unstructured sequence of searches.",
+    "problem": "Decision-making questions can require multiple dependent data analyses, while a one-shot or weakly structured retrieval loop does not encode what information should be acquired next.",
+    "core_idea": "Generate a plan for the decision task first, then derive retrieval/data-analysis queries conditioned on that plan and iterate toward the answer.",
+    "agent_loop": "Plan → formulate data query → retrieve/analyze → update reasoning → repeat → decide",
+    "retrieval_design": "Retrieval is driven by an explicit high-level plan and is used to acquire database evidence needed for decision QA rather than only retrieving semantically similar passages.",
+    "compared_to": ["iterative RAG", "single-step RAG"],
+    "evidence": "The paper reports a new Decision QA benchmark (DQA) and abstract-level gains over an iterative RAG baseline in two scenarios; the bootstrap curator has not yet re-checked the full experimental tables.",
+    "why_it_matters": "It is an early clean example of moving control from a fixed RAG pipeline into an explicit retrieval plan, making planning itself part of the retrieval abstraction.",
+    "limitations": ["The evaluation is centered on a specialized Decision QA setting.", "The bootstrap note has not yet been upgraded from abstract/metadata review to full-paper verification."],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": ["arXiv", "ACL Anthology"],
+    "full_text_checked": false,
+    "code_link_verified": true,
+    "last_reviewed": "2026-08-10"
+  }
+}
