@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/H20Zhang/Agentic-RAG-Radar/blob/main/data/paper.schema.json",
+  "title": "Agentic RAG Radar Paper Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "title",
+    "authors",
+    "first_seen",
+    "published",
+    "urls",
+    "primary_category",
+    "tags",
+    "relevance",
+    "importance",
+    "analysis"
+  ],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "arxiv_id": {"type": ["string", "null"]},
+    "title": {"type": "string", "minLength": 1},
+    "authors": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "first_seen": {"type": "string", "format": "date"},
+    "published": {"type": "string", "format": "date"},
+    "updated": {"type": ["string", "null"], "format": "date"},
+    "venue": {"type": ["string", "null"]},
+    "urls": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["paper"],
+      "properties": {
+        "paper": {"type": "string", "format": "uri"},
+        "pdf": {"type": ["string", "null"], "format": "uri"},
+        "code": {"type": ["string", "null"], "format": "uri"},
+        "project": {"type": ["string", "null"], "format": "uri"}
+      }
+    },
+    "primary_category": {
+      "enum": [
+        "planning_query_formulation",
+        "retrieval_tool_use",
+        "iterative_reasoning_verification",
+        "multi_agent_orchestration",
+        "learning_optimization",
+        "evaluation_analysis"
+      ]
+    },
+    "tags": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "benchmarks": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "relevance": {"type": "number", "minimum": 0, "maximum": 1},
+    "importance": {"type": "integer", "minimum": 1, "maximum": 5},
+    "analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tldr",
+        "problem",
+        "core_idea",
+        "agent_loop",
+        "retrieval_design",
+        "compared_to",
+        "evidence",
+        "why_it_matters",
+        "limitations",
+        "confidence"
+      ],
+      "properties": {
+        "tldr": {"type": "string"},
+        "problem": {"type": "string"},
+        "core_idea": {"type": "string"},
+        "agent_loop": {"type": "string"},
+        "retrieval_design": {"type": "string"},
+        "compared_to": {"type": "array", "items": {"type": "string"}},
+        "evidence": {"type": "string"},
+        "why_it_matters": {"type": "string"},
+        "limitations": {"type": "array", "items": {"type": "string"}},
+        "confidence": {"enum": ["high", "medium", "low"]}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "discovered_via": {"type": "array", "items": {"type": "string"}},
+        "full_text_checked": {"type": "boolean"},
+        "code_link_verified": {"type": "boolean"},
+        "last_reviewed": {"type": "string", "format": "date"}
+      }
+    }
+  }
+}
