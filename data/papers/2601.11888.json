@@ -18,6 +18,18 @@
   "benchmarks": [],
   "relevance": 0.99,
   "importance": 4,
+  "visual_explainer": {
+    "type": "trajectory_learning",
+    "question": "How does Agentic-R change retriever training from static relevance to trajectory-level utility?",
+    "takeaway": "The retriever and the agent's evolving query distribution are coupled: retrieval is optimized for usefulness to the final multi-turn trajectory, not only local similarity.",
+    "compared_with": "Static single-turn relevance training and agentic search with a frozen retriever.",
+    "full_text_grounded": false,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "image_path": "assets/visuals/2601.11888.png",
+    "prompt_path": "assets/visuals/prompts/2601.11888.md",
+    "artifact_path": "papers/2601.11888.md"
+  },
   "analysis": {
     "tldr": "Agentic-R trains the retriever for its downstream role inside a multi-turn search trajectory, combining local passage relevance with global answer utility and co-evolving retriever and agent queries.",
     "problem": "Retrievers optimized for static single-turn similarity can return passages that look relevant locally but are poor actions in a longer agentic search trajectory.",
