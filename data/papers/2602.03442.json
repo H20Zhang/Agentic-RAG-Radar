@@ -1,0 +1,39 @@
+{
+  "id": "arxiv:2602.03442",
+  "arxiv_id": "2602.03442",
+  "title": "A-RAG: Scaling Agentic Retrieval-Augmented Generation via Hierarchical Retrieval Interfaces",
+  "authors": ["Mingxuan Du", "Benfeng Xu", "Chiwei Zhu", "Shaohan Wang", "Pengyu Wang", "Xiaorui Wang", "Zhendong Mao"],
+  "first_seen": "2026-08-10",
+  "published": "2026-02-03",
+  "updated": null,
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2602.03442",
+    "pdf": "https://arxiv.org/pdf/2602.03442",
+    "code": "https://github.com/Ayanami0730/arag",
+    "project": "https://agentresearchlab.com/agents/a-rag/index.html"
+  },
+  "primary_category": "retrieval_tool_use",
+  "tags": ["tool_selection", "iterative_search", "dense", "sparse", "documents", "multi_hop_qa"],
+  "benchmarks": ["HotpotQA", "2WikiMultiHopQA"],
+  "relevance": 1.0,
+  "importance": 4,
+  "analysis": {
+    "tldr": "A-RAG gives the model a small hierarchy of retrieval tools—keyword search, semantic search, and chunk read—and lets it adaptively compose them instead of executing a predefined RAG workflow.",
+    "problem": "Most RAG systems either retrieve once with a fixed algorithm or ask the model to execute a hand-designed workflow, limiting the benefit of stronger tool-using reasoning models.",
+    "core_idea": "Expose retrieval at multiple granularities as direct model actions and let the agent decide which interface to invoke as its information need evolves.",
+    "agent_loop": "Reason → choose keyword/semantic search → inspect results → chunk read → refine search or answer",
+    "retrieval_design": "A hierarchical interface separates broad candidate discovery from fine-grained reading, making retrieval operations explicit tools under model control.",
+    "compared_to": ["single-shot RAG", "predefined iterative RAG workflows", "fixed retriever pipelines"],
+    "evidence": "The paper reports strong open-domain and multi-hop QA performance with comparable or lower retrieved-token budgets and studies scaling with model size and test-time compute; exact claims should be read from the full paper before reuse.",
+    "why_it_matters": "This is a clean systems abstraction for agentic RAG: improve the retrieval API rather than hard-coding another retrieval algorithm, then let stronger models exploit the interface through test-time interaction.",
+    "limitations": ["Performance may depend strongly on the base model's tool-use competence and test-time budget.", "The bootstrap note has not yet been upgraded to full-paper verification."],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": ["arXiv", "official GitHub repository", "project page"],
+    "full_text_checked": false,
+    "code_link_verified": true,
+    "last_reviewed": "2026-08-10"
+  }
+}
