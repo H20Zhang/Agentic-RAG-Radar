@@ -112,9 +112,9 @@ Prefer small auditable changes on `main` when reliable. For every accepted paper
 1. create/update the canonical JSON record;
 2. create/update the researcher-facing paper card;
 3. create/update the visual grounding brief and generated asset status;
-4. refresh README Latest/Notable views if the paper materially affects them;
+4. refresh README Latest/Notable views and the relevant research-problem category page when the field view changes;
 5. propagate meaningful corrections upward into weekly/monthly compactions.
 
-**Do not create one Markdown digest per day.** Daily is ingestion and maintenance; durable human-facing history is weekly/monthly compaction under `digests/`.
+Each run also writes **one compact archival provenance log** under `runs/daily/YYYY/MM/DD.md`. The log records accepted/deferred candidates, meaningful corrections, visual/workflow status, and compaction actions. It must not repeat full paper notes or become another primary feed.
 
-Never fabricate code/project links, benchmark results, full-text analysis, or visual components. See [`COMPACTION.md`](COMPACTION.md) for weekly/monthly synthesis and anti-summary-drift rules.
+Never fabricate code/project links, benchmark results, full-text analysis, or visual components. See [`COMPACTION.md`](COMPACTION.md) for weekly/monthly synthesis and anti-summary-drift rules, and [`runs/README.md`](runs/README.md) for run-log retention.
