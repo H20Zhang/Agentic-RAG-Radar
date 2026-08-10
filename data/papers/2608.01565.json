@@ -1,0 +1,39 @@
+{
+  "id": "arxiv:2608.01565",
+  "arxiv_id": "2608.01565",
+  "title": "DocNavRAG: Document-Structured Graph RAG with Stateful Evidence Construction for Complex Document Question Answering",
+  "authors": ["Dongyang Xie", "Yao Tian", "Hao Zhang", "Yifei Yuan", "Tieyun Qian", "Ming Zhong", "Jiawei Jiang", "Yuanyuan Zhu"],
+  "first_seen": "2026-08-10",
+  "published": "2026-08-03",
+  "updated": null,
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.01565",
+    "pdf": "https://arxiv.org/pdf/2608.01565",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "retrieval_tool_use",
+  "tags": ["graph", "documents", "planning", "iterative_search", "tool_selection", "long_document_qa", "multi_hop_qa"],
+  "benchmarks": [],
+  "relevance": 1.0,
+  "importance": 4,
+  "analysis": {
+    "tldr": "DocNavRAG makes document structure the agent's retrieval environment: the agent navigates hierarchy and cross-region relations with explicit graph operations while maintaining a stateful record of collected and missing evidence.",
+    "problem": "Complex document QA often requires complementary evidence across sections and documents; flat agentic search repeatedly starts from weakly structured passage retrieval, while conventional GraphRAG typically fixes the traversal strategy.",
+    "core_idea": "Represent document hierarchy and cross-region relations as a navigable graph, expose locate/navigate/expand/fetch operations, and condition each next retrieval action on an evolving evidence state.",
+    "agent_loop": "Locate → navigate/expand → fetch evidence → update evidence state → identify missing evidence → continue or answer",
+    "retrieval_design": "Retrieval is operation-based navigation over document-native structure rather than repeated global top-k search; the evidence state acts as retrieval progress state and stopping signal.",
+    "compared_to": ["flat passage-level agentic RAG", "fixed-traversal GraphRAG", "repeated global semantic search"],
+    "evidence": "The abstract reports evaluation across four long- and multi-document QA benchmarks, with average gains of 7.8% in answer quality and 17.7% in context sufficiency over the strongest baseline. Full benchmark-by-benchmark tables and ablations remain to be checked by the research-reader pass.",
+    "why_it_matters": "The key system-design claim is that retrieval interfaces should inherit structure already present in the data. If supported by the full ablations, this shifts agentic RAG research from learning ever-better search policies over flat chunks toward co-designing the environment and the policy.",
+    "limitations": ["The value of document-native navigation depends on reliable structure extraction and cross-region relation construction.", "The abstract alone does not isolate which graph operations or evidence-state components drive the gain.", "Full-paper verification is still pending."],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": ["arXiv recent search"],
+    "full_text_checked": false,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-10"
+  }
+}
