@@ -1,0 +1,39 @@
+{
+  "id": "arxiv:2603.07379",
+  "arxiv_id": "2603.07379",
+  "title": "SoK: Agentic Retrieval-Augmented Generation (RAG): Taxonomy, Architectures, Evaluation, and Research Directions",
+  "authors": ["Saroj Mishra", "Suman Niroula", "Umesh Yadav", "Dilip Thakur", "Srijan Gyawali", "Shiva Gaire"],
+  "first_seen": "2026-08-10",
+  "published": "2026-03-07",
+  "updated": null,
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2603.07379",
+    "pdf": "https://arxiv.org/pdf/2603.07379",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "evaluation_analysis",
+  "tags": ["planning", "tool_selection", "iterative_search", "multi_agent", "general"],
+  "benchmarks": [],
+  "relevance": 0.99,
+  "importance": 3,
+  "analysis": {
+    "tldr": "This SoK frames Agentic RAG as a sequential decision-making problem and organizes the field around control policies, state transitions, retrieval orchestration, memory, and tool use rather than treating it as a bag of RAG variants.",
+    "problem": "Agentic RAG architectures and evaluations are fragmented, making it difficult to compare systems or reason about reliability of autonomous retrieval loops.",
+    "core_idea": "Formalize the retrieval-generation loop as a finite-horizon partially observable decision process and use that lens to systematize architecture, evaluation, risks, and open problems.",
+    "agent_loop": "Observe state → choose retrieval/tool action → update hidden/visible state → repeat → generate/stop",
+    "retrieval_design": "The paper is primarily a systematization rather than a new retriever; its contribution is the control-policy view used to compare retrieval orchestration and tool-invocation designs.",
+    "compared_to": ["RAG taxonomies organized mainly by component or application", "static RAG evaluation"],
+    "evidence": "The abstract describes a literature systematization and risk analysis rather than a benchmarked new retrieval method; the radar has not yet performed a full-paper coverage/novelty audit.",
+    "why_it_matters": "The sequential-decision framing is useful if it yields sharper trajectory-level evaluation and failure analysis; its value depends more on the quality and coverage of the synthesis than on a new algorithm.",
+    "limitations": ["Taxonomy novelty and literature coverage require full-paper comparison against prior Agentic RAG surveys.", "The bootstrap note has not yet been upgraded to full-paper verification."],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": ["arXiv"],
+    "full_text_checked": false,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-10"
+  }
+}
