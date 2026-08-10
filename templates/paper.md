@@ -1,54 +1,63 @@
 # {{ title }}
 
-> **Primary category:** `{{ primary_category }}`  
-> **Tags:** {{ tags }}  
-> **Published:** {{ published }} · **First seen:** {{ first_seen }}  
-> **Relevance:** {{ relevance }} · **Importance:** {{ importance }}/5 · **AI confidence:** {{ confidence }}
+**arXiv:** [{{ arxiv_id }}]({{ paper_url }}) · **Published:** {{ published }} · **Category:** {{ primary_category }} · **Importance:** {{ importance }}/5 · **AI confidence:** {{ confidence }}
 
-[Paper]({{ paper_url }}) · [PDF]({{ pdf_url }}) · [Code]({{ code_url }}) · [Project]({{ project_url }})
+**Tags:** {{ tags }}
 
-## Visual Explainer
+> **TL;DR.** {{ tldr }}
 
-> AI-generated conceptual explainer; not a reproduction of the paper's figure.
+## Visual explainer
 
-```mermaid
-{{ visual_mermaid }}
-```
+> AI-generated conceptual explainer; **not** a reproduction of the paper's original figure.
+
+![Conceptual explainer for {{ title }}](../assets/visuals/{{ paper_id }}.png)
 
 **What to notice.** {{ visual_takeaway }}
 
 **Compared with.** {{ visual_compared_with }}
 
-## TL;DR
+**Grounding.** {{ visual_grounding }}
 
-{{ tldr }}
+## Problem
 
-## Research Read
+{{ problem }}
 
-**Problem.** {{ problem }}
+## Core idea
 
-**Core idea.** {{ core_idea }}
+{{ core_idea }}
 
-**Agent loop.** `{{ agent_loop }}`
+## Agent loop
 
-**Retrieval design.** {{ retrieval_design }}
+`{{ agent_loop }}`
 
-**Compared to what.** {{ compared_to }}
+## Retrieval design
 
-**Evidence.** {{ evidence }}
+{{ retrieval_design }}
 
-**Why it matters.** {{ why_it_matters }}
+## Compared to what
 
-**Limitations / open questions.**
+{{ compared_to }}
+
+## Evidence
+
+{{ evidence }}
+
+## Why it matters
+
+{{ why_it_matters }}
+
+## Limitations / questions
 
 {{ limitations }}
 
+**Curator take:** **{{ importance }}/5**. {{ curator_take }}
+
 ---
 
-### Curator notes
+### Provenance & visual audit
 
-- Follow [`VISUALS.md`](../VISUALS.md): one visual, one question; choose the visual form that matches the contribution rather than forcing an architecture diagram.
-- Distinguish claims made by the paper from curator inference.
-- Do not infer experimental superiority from an abstract alone.
-- `Compared to what` should identify the nearest method family, not a generic RAG baseline.
-- `Why it matters` should answer *so what?* and *compared to what?*, not restate the contribution.
+- Paper claims and curator inference must be distinguishable.
+- Never infer experimental superiority from an abstract alone.
+- `Compared to what` should identify the nearest design point, not a generic RAG baseline.
+- The visual must follow [`VISUALS.md`](../VISUALS.md) and be regenerated if a full-paper read changes the interpreted mechanism.
+- Store/review the image-generation grounding note at `../assets/visuals/prompts/{{ paper_id }}.md`.
