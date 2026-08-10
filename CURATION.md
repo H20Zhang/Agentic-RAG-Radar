@@ -73,4 +73,6 @@ Suggested importance interpretation:
 
 ## Update policy
 
-Prefer small auditable diffs. Add or correct canonical records under `data/papers/`, generate researcher-facing notes under `papers/`, and refresh README latest/notable views. Never silently fabricate code/project links, benchmark results, or full-text analysis.
+Prefer small auditable diffs. Add or correct canonical records under `data/papers/`, generate researcher-facing notes under `papers/` only when they add useful analysis, and refresh README latest/notable views. **Do not create one Markdown digest per day.** Daily output is an ingestion layer; durable human-facing history is compacted weekly and monthly under `digests/`.
+
+Never silently fabricate code/project links, benchmark results, or full-text analysis. See [`COMPACTION.md`](COMPACTION.md) for weekly/monthly synthesis rules, including the requirement that monthly reports re-check canonical records rather than recursively trusting summaries.
