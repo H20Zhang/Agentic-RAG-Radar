@@ -2,17 +2,18 @@
 
 Agentic RAG Radar treats paper curation as a **research-memory hierarchy**, not an append-only stream of Markdown summaries.
 
-The objective is to preserve enough provenance to revisit a paper while continuously compressing repeated detail into higher-level research judgments.
+The objective is to preserve enough provenance to revisit a paper or curation decision while continuously compressing repeated detail into higher-level research judgments.
 
 ## Levels
 
 | Level | Persistent artifact | Purpose | What must not be lost |
 |---|---|---|---|
 | **L0 · Paper records** | `data/papers/*.json` + `papers/*` | Canonical facts, provenance, classification, paper-level interpretation, visual grounding. | source links, evidence status, uncertainty, corrections |
+| **L0-log · Daily runs** | `runs/daily/YYYY/MM/DD.md` | Compact archival history of what the curator accepted, deferred, corrected, or failed to complete. | decision history, borderline exclusions, visual/workflow failures |
 | **L1 · Weekly compaction** | `digests/weekly/YYYY-Www.md` | Identify the week's real research deltas, disagreements, and reading priority. | negative results, conflicting assumptions, evidence caveats |
 | **L2 · Monthly compaction** | `digests/monthly/YYYY-MM.md` | Rebuild the field map: abstractions, evidence strength, open problems, and changes in research direction. | competing explanations, weakening claims, unresolved causal attribution |
 
-Daily ingestion updates L0 and the rolling README. It **does not create one Markdown file per day**.
+Daily ingestion updates L0 and writes **one compact nested run log** for provenance. Those run logs are not paper summaries and are never the primary browsing interface.
 
 ## Editorial principle
 
@@ -21,6 +22,23 @@ A compaction is successful only if it answers questions that a chronological lis
 > **So what changed? Compared with what? How strong is the evidence? What should a researcher do differently after reading this?**
 
 A report should become *shorter than the source material but harder to write*. If it is mostly one paragraph per paper, it is not compaction yet.
+
+## Daily run-log policy
+
+Daily logs exist to debug and audit the curator, not to accumulate another human-facing paper feed.
+
+A run log should record only:
+
+- discovery window / notable source changes when material;
+- newly accepted papers and one-line inclusion reason;
+- important deferred/rejected borderline candidates;
+- meaningful classification/evidence corrections;
+- visual-generation/backfill status or workflow blockers;
+- whether weekly/monthly compaction was created or revised.
+
+Do **not** duplicate full TL;DRs, experiment tables, or per-paper research notes. Those belong in canonical records/cards.
+
+Nest logs under `runs/daily/YYYY/MM/` so the repository does not degrade into hundreds of top-level date files.
 
 ## Weekly compaction
 
@@ -87,6 +105,7 @@ A headline gain is not automatically evidence for the `policy` axis if the opera
 
 - Keep every accepted canonical paper record.
 - Keep per-paper Markdown when it adds researcher-facing explanation beyond the JSON record.
+- Keep compact nested daily run logs as provenance; do not expose them as the main reading feed.
 - Keep one weekly report per ISO week and one monthly report per calendar month.
 - README is a rolling landing page, not an archive.
 - Correct upward: if a paper's classification, evidence, or importance changes enough to alter a weekly/monthly conclusion, revise the compaction.
