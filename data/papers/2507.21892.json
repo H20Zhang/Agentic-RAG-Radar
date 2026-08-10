@@ -1,0 +1,39 @@
+{
+  "id": "arxiv:2507.21892",
+  "arxiv_id": "2507.21892",
+  "title": "Graph-R1: Towards Agentic GraphRAG Framework via End-to-end Reinforcement Learning",
+  "authors": ["Haoran Luo", "Haihong E", "Guanting Chen", "Qika Lin", "Yikai Guo", "Fangzhi Xu", "Zemin Kuang", "Meina Song", "Xiaobao Wu", "Yifan Zhu", "Luu Anh Tuan"],
+  "first_seen": "2026-08-10",
+  "published": "2025-07-29",
+  "updated": null,
+  "venue": "ICML 2026",
+  "urls": {
+    "paper": "https://arxiv.org/abs/2507.21892",
+    "pdf": "https://arxiv.org/pdf/2507.21892",
+    "code": "https://github.com/LHRLAB/Graph-R1",
+    "project": null
+  },
+  "primary_category": "learning_optimization",
+  "tags": ["graph", "knowledge_graph", "iterative_search", "reinforcement_learning", "multi_hop_qa"],
+  "benchmarks": [],
+  "relevance": 0.99,
+  "importance": 4,
+  "analysis": {
+    "tldr": "Graph-R1 turns GraphRAG retrieval into a learned multi-turn agent–graph interaction and optimizes the whole retrieval/reasoning trajectory with reinforcement learning.",
+    "problem": "Conventional GraphRAG often performs fixed one-shot retrieval and leaves long-context reasoning to prompting, so the model does not learn a retrieval policy over graph structure.",
+    "core_idea": "Construct a lightweight knowledge hypergraph, expose retrieval as a sequential interaction, and train the agent end to end using outcome-based rewards.",
+    "agent_loop": "Reason → choose graph retrieval action → observe graph evidence → update state → repeat → answer",
+    "retrieval_design": "The graph is an interactive retrieval environment rather than a single precomputed context expansion; the retrieval trajectory is directly optimized by RL.",
+    "compared_to": ["traditional GraphRAG", "fixed one-shot graph retrieval", "RL-enhanced RAG"],
+    "evidence": "The paper reports improvements in reasoning accuracy, retrieval efficiency, and generation quality on standard RAG datasets; the bootstrap note has not yet re-checked the complete experimental tables and ablations.",
+    "why_it_matters": "It makes the retrieval trajectory itself a policy-learning object, connecting GraphRAG with end-to-end agent optimization rather than treating graph retrieval as a static preprocessing stage.",
+    "limitations": ["Outcome-level RL can provide weak credit assignment for intermediate retrieval actions.", "The bootstrap note has not yet been upgraded to full-paper verification."],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": ["arXiv", "official GitHub repository"],
+    "full_text_checked": false,
+    "code_link_verified": true,
+    "last_reviewed": "2026-08-10"
+  }
+}
