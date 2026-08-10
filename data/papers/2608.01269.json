@@ -18,6 +18,18 @@
   "benchmarks": ["HotpotQA", "2WikiMultiHopQA", "UltraDomain"],
   "relevance": 0.98,
   "importance": 4,
+  "visual_explainer": {
+    "type": "agent_loop",
+    "question": "How does ACE-GraphRAG separate a rich hierarchical graph representation from an adaptive context-construction policy?",
+    "takeaway": "The key delta is a context-policy layer that detects gaps and selects complementary depth/breadth retrieval branches rather than using fixed graph context assembly.",
+    "compared_with": "Fixed-context hierarchical GraphRAG and non-adaptive context construction.",
+    "full_text_grounded": false,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "image_path": "assets/visuals/2608.01269.png",
+    "prompt_path": "assets/visuals/prompts/2608.01269.md",
+    "artifact_path": "papers/2608.01269.md"
+  },
   "analysis": {
     "tldr": "ACE-GraphRAG treats context construction over a hierarchical graph as an inference-time policy that can branch into depth-oriented factual retrieval and breadth-oriented semantic retrieval, then adapt those choices per query.",
     "problem": "Hierarchical GraphRAG may build rich multi-resolution representations but still use fixed context construction, creating a gap between what is represented and what a particular query actually needs.",
