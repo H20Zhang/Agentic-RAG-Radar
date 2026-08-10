@@ -7,7 +7,11 @@
 ## 🔥 Latest Papers
 
 <!-- DAILY_PAPERS_START -->
-_The daily curator will populate newly accepted papers here._
+**2026-08-10 · [Full daily digest](daily/2026-08-10.md)**
+
+- **[Beyond Top-K / READ](https://arxiv.org/abs/2608.06305)** — replaces embedding top-k with replayable lexical search, structural navigation, and bounded reads. The key result is about the **retrieval interface**, not merely adding an agent loop. `Retrieval & Tool Use` · ★★★★☆
+- **[DocNavRAG](https://arxiv.org/abs/2608.01565)** — makes document hierarchy and cross-region relations a navigable retrieval environment and maintains explicit evidence state across actions. `Retrieval & Tool Use` · ★★★★☆
+- **[ACE-GraphRAG](https://arxiv.org/abs/2608.01269)** — turns hierarchical GraphRAG context assembly into an adaptive inference-time policy over complementary retrieval branches. `Iterative Reasoning & Verification` · ★★★★☆
 <!-- DAILY_PAPERS_END -->
 
 ## ⭐ Notable Recent Work
@@ -64,6 +68,7 @@ Agentic-RAG-Radar/
 ├── README.md                     # researcher-facing landing page
 ├── CURATION.md                   # multi-agent curation protocol
 ├── taxonomy.yaml                 # controlled taxonomy
+├── daily/                        # auditable daily digests
 ├── data/
 │   ├── paper.schema.json         # canonical record schema
 │   └── papers/                   # one JSON record per paper
@@ -73,7 +78,7 @@ Agentic-RAG-Radar/
 └── .github/workflows/validate.yml
 ```
 
-The canonical source of truth is `data/papers/*.json`; README and category views are derived representations.
+The canonical source of truth is `data/papers/*.json`; README and daily/category views are derived representations.
 
 ## 🔄 Daily Curation
 
