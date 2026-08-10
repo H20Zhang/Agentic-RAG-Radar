@@ -7,6 +7,18 @@
 
 [Paper]({{ paper_url }}) · [PDF]({{ pdf_url }}) · [Code]({{ code_url }}) · [Project]({{ project_url }})
 
+## Visual Explainer
+
+> AI-generated conceptual explainer; not a reproduction of the paper's figure.
+
+```mermaid
+{{ visual_mermaid }}
+```
+
+**What to notice.** {{ visual_takeaway }}
+
+**Compared with.** {{ visual_compared_with }}
+
 ## TL;DR
 
 {{ tldr }}
@@ -35,6 +47,7 @@
 
 ### Curator notes
 
+- Follow [`VISUALS.md`](../VISUALS.md): one visual, one question; choose the visual form that matches the contribution rather than forcing an architecture diagram.
 - Distinguish claims made by the paper from curator inference.
 - Do not infer experimental superiority from an abstract alone.
 - `Compared to what` should identify the nearest method family, not a generic RAG baseline.
