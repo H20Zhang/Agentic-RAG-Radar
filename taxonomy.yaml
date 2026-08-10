@@ -1,0 +1,105 @@
+version: 1
+
+primary_categories:
+  planning_query_formulation:
+    label: Planning & Query Formulation
+    description: Agent-controlled decomposition, retrieval planning, query generation, reformulation, and stopping plans.
+
+  retrieval_tool_use:
+    label: Retrieval & Tool Use
+    description: Agent-controlled selection or execution of retrievers, search engines, databases, corpora, tools, and retrieval operators.
+
+  iterative_reasoning_verification:
+    label: Iterative Reasoning & Verification
+    description: Interleaving retrieval with reasoning, critique, evidence inspection, verification, and adaptive stopping.
+
+  multi_agent_orchestration:
+    label: Multi-Agent & Orchestration
+    description: Coordination among specialized retrieval, search, reasoning, verification, or synthesis agents.
+
+  learning_optimization:
+    label: Learning & Optimization
+    description: Learning retrieval policies, routing, search strategies, workflow controllers, or agentic RAG behavior with SFT, preference learning, RL, or related optimization.
+
+  evaluation_analysis:
+    label: Evaluation & Analysis
+    description: Benchmarks, surveys, diagnostic studies, failure analyses, datasets, and evaluation methods specifically informative for agentic retrieval systems.
+
+orthogonal_tags:
+  retrieval_substrate:
+    - dense
+    - sparse
+    - hybrid
+    - graph
+    - knowledge_graph
+    - web
+    - sql
+    - database
+    - code
+    - documents
+    - multimodal_index
+    - memory
+
+  modality:
+    - text
+    - image
+    - video
+    - audio
+    - multimodal
+
+  control_pattern:
+    - retrieve_or_not
+    - query_rewrite
+    - query_decomposition
+    - retriever_routing
+    - iterative_search
+    - evidence_verification
+    - adaptive_stopping
+    - tool_selection
+    - multi_agent
+    - planning
+
+  training:
+    - prompting
+    - sft
+    - preference_learning
+    - reinforcement_learning
+    - distillation
+    - test_time_optimization
+    - training_free
+
+  task_domain:
+    - open_domain_qa
+    - multi_hop_qa
+    - long_document_qa
+    - scientific
+    - medical
+    - legal
+    - enterprise
+    - coding
+    - web_research
+    - multimodal_qa
+    - general
+
+inclusion_policy:
+  include_if: >-
+    Retrieval, search, or external context acquisition is a substantive research component and an agent,
+    controller, policy, or iterative reasoning loop materially controls whether, what, where, how, or how
+    many times information is retrieved.
+  exclude_if:
+    - Fixed retrieve-top-k-then-generate RAG with no adaptive retrieval control.
+    - Generic agents where retrieval is incidental rather than a research contribution.
+    - Pure retriever, embedding, reranker, or indexing work without agentic control.
+    - Pure long-context work without external retrieval or search control.
+    - Product/tutorial repositories without a research contribution, unless tracked separately as resources.
+
+scoring:
+  relevance:
+    scale: [0, 1]
+    meaning: Probability that the work satisfies the inclusion policy.
+  importance:
+    scale: [1, 5]
+    meaning: Estimated research significance relative to existing agentic RAG work, not topical fit.
+  confidence:
+    values: [high, medium, low]
+    meaning: Confidence in the curator's classification and interpretation.
