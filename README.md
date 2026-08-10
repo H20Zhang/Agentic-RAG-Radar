@@ -7,14 +7,23 @@
 ## 🔥 Latest Papers
 
 <!-- DAILY_PAPERS_START -->
-_No accepted papers yet. The daily curator will populate this section._
+_The daily curator will populate newly accepted papers here._
 <!-- DAILY_PAPERS_END -->
 
 ## ⭐ Notable Recent Work
 
 <!-- NOTABLE_PAPERS_START -->
-_Notable papers will be selected by research importance, separately from topical relevance._
+- **[A-RAG](https://arxiv.org/abs/2602.03442)** — exposes keyword search, semantic search, and chunk read as hierarchical retrieval tools directly controlled by the model. `Retrieval & Tool Use` · ★★★★☆
+- **[Agentic-R](https://arxiv.org/abs/2601.11888)** — trains a retriever for trajectory-level usefulness in multi-turn agentic search rather than static similarity alone. `Learning & Optimization` · ★★★★☆
+- **[Graph-R1](https://arxiv.org/abs/2507.21892)** — models GraphRAG retrieval as a multi-turn agent–graph interaction and optimizes the trajectory end to end with RL. `Learning & Optimization` · ★★★★☆
+- **[Search-o1](https://arxiv.org/abs/2501.05366)** — triggers search inside long reasoning traces and separately reasons over retrieved documents before reinjection. `Iterative Reasoning & Verification` · ★★★★☆
 <!-- NOTABLE_PAPERS_END -->
+
+## 🧱 Bootstrap Anchors
+
+The repository starts with six papers that help define the design space: **PlanRAG, Search-o1, Graph-R1, Agentic-R, A-RAG**, and an **Agentic RAG SoK**. Read the researcher-facing cards in [`papers/anchors.md`](papers/anchors.md). Canonical machine-readable records live under [`data/papers/`](data/papers/).
+
+These initial cards are deliberately conservative: where the bootstrap pass used verified metadata and abstracts rather than the full paper, the record explicitly sets `full_text_checked: false` so a later research-reader pass can upgrade it instead of silently overstating confidence.
 
 ## 🗂 Research Taxonomy
 
@@ -53,11 +62,12 @@ The AI notes are research aids, not authoritative summaries. Paper claims are di
 ```text
 Agentic-RAG-Radar/
 ├── README.md                     # researcher-facing landing page
+├── CURATION.md                   # multi-agent curation protocol
 ├── taxonomy.yaml                 # controlled taxonomy
 ├── data/
 │   ├── paper.schema.json         # canonical record schema
 │   └── papers/                   # one JSON record per paper
-├── papers/                       # long-form AI research notes
+├── papers/                       # researcher-facing AI research notes
 ├── templates/paper.md            # analysis template
 ├── scripts/validate.py           # repository integrity checks
 └── .github/workflows/validate.yml
@@ -67,7 +77,7 @@ The canonical source of truth is `data/papers/*.json`; README and category views
 
 ## 🔄 Daily Curation
 
-A daily research task performs broad discovery with an overlapping recent window, semantic inclusion filtering, taxonomy assignment, full-paper interpretation, deduplication, and independent quality control. **Relevance and importance are scored separately.** Updates should preferably land as reviewable GitHub changes rather than opaque generated prose.
+A daily research task performs broad discovery with an overlapping recent window, semantic inclusion filtering, taxonomy assignment, full-paper interpretation, deduplication, and independent quality control. **Relevance and importance are scored separately.** See [`CURATION.md`](CURATION.md) for the four-role discovery / relevance / reader / skeptical-QC protocol.
 
 Discovery intentionally searches beyond the phrase “agentic RAG”, including adaptive/active retrieval, retrieval planning, search agents, iterative retrieval, verifier-guided retrieval, GraphRAG agents, tool-using RAG, retrieval RL, and agentic information seeking.
 
