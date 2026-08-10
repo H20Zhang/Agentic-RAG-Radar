@@ -18,6 +18,18 @@
   "benchmarks": [],
   "relevance": 0.99,
   "importance": 4,
+  "visual_explainer": {
+    "type": "agent_loop",
+    "question": "How does Search-o1 insert external search into a long reasoning trajectory without flooding the main chain with raw documents?",
+    "takeaway": "Search is triggered at knowledge gaps inside reasoning, while a separate document-reasoning step distills retrieved evidence before reinjection into the main trajectory.",
+    "compared_with": "Static pre-retrieval RAG and iterative search that injects raw retrieved text directly into the main reasoning chain.",
+    "full_text_grounded": false,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "image_path": "assets/visuals/2501.05366.png",
+    "prompt_path": "assets/visuals/prompts/2501.05366.md",
+    "artifact_path": "papers/2501.05366.md"
+  },
   "analysis": {
     "tldr": "Search-o1 inserts on-demand search inside long reasoning traces and separately reasons over retrieved documents before feeding evidence back into the main chain.",
     "problem": "Long reasoning chains can hit knowledge gaps mid-trajectory, while injecting raw retrieved text can introduce noise and disrupt the reasoning process.",
