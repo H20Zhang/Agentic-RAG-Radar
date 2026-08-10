@@ -1,0 +1,39 @@
+{
+  "id": "arxiv:2601.11888",
+  "arxiv_id": "2601.11888",
+  "title": "Agentic-R: Learning to Retrieve for Agentic Search",
+  "authors": ["Wenhan Liu", "Xinyu Ma", "Yutao Zhu", "Yuchen Li", "Daiting Shi", "Dawei Yin", "Zhicheng Dou"],
+  "first_seen": "2026-08-10",
+  "published": "2026-01-17",
+  "updated": null,
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2601.11888",
+    "pdf": "https://arxiv.org/pdf/2601.11888",
+    "code": "https://github.com/8421BCD/Agentic-R",
+    "project": null
+  },
+  "primary_category": "learning_optimization",
+  "tags": ["dense", "iterative_search", "reinforcement_learning", "open_domain_qa", "multi_hop_qa"],
+  "benchmarks": [],
+  "relevance": 0.99,
+  "importance": 4,
+  "analysis": {
+    "tldr": "Agentic-R trains the retriever for its downstream role inside a multi-turn search trajectory, combining local passage relevance with global answer utility and co-evolving retriever and agent queries.",
+    "problem": "Retrievers optimized for static single-turn similarity can return passages that look relevant locally but are poor actions in a longer agentic search trajectory.",
+    "core_idea": "Measure passage utility using both local relevance and final answer correctness, then iteratively train the retriever with evolving queries produced by the search agent.",
+    "agent_loop": "Agent reasons → issues query → learned retriever returns evidence → agent updates query/state → repeat → answer; retriever and query distribution co-evolve during training",
+    "retrieval_design": "The retriever is explicitly trained against trajectory-level usefulness rather than treated as a frozen semantic-search component.",
+    "compared_to": ["single-turn RAG retrievers", "similarity-only retrievers", "agentic search with a frozen retriever"],
+    "evidence": "The abstract reports consistent gains across seven single-hop and multi-hop QA benchmarks and multiple search agents; detailed tables and training-cost trade-offs await full-paper verification in the radar.",
+    "why_it_matters": "It exposes an underappreciated coupling: once retrieval becomes an agent action, retriever quality should be judged by downstream trajectory utility, not only static query–passage relevance.",
+    "limitations": ["Jointly evolving agent queries and retriever behavior can complicate stability and attribution.", "The bootstrap note has not yet been upgraded to full-paper verification."],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": ["arXiv", "official GitHub repository"],
+    "full_text_checked": false,
+    "code_link_verified": true,
+    "last_reviewed": "2026-08-10"
+  }
+}
