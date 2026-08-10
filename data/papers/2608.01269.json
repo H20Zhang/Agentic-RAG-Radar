@@ -1,0 +1,39 @@
+{
+  "id": "arxiv:2608.01269",
+  "arxiv_id": "2608.01269",
+  "title": "ACE-GraphRAG: Agentic Context Engineering for Hierarchical GraphRAG",
+  "authors": ["Yongfeng Huang", "Yuren Lai", "Ruiying Chen", "Haoyu Huang", "Mingming Zhao", "James Cheng"],
+  "first_seen": "2026-08-10",
+  "published": "2026-08-02",
+  "updated": null,
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.01269",
+    "pdf": "https://arxiv.org/pdf/2608.01269",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "iterative_reasoning_verification",
+  "tags": ["graph", "knowledge_graph", "iterative_search", "retriever_routing", "multi_hop_qa", "documents"],
+  "benchmarks": ["HotpotQA", "2WikiMultiHopQA", "UltraDomain"],
+  "relevance": 0.98,
+  "importance": 4,
+  "analysis": {
+    "tldr": "ACE-GraphRAG treats context construction over a hierarchical graph as an inference-time policy that can branch into depth-oriented factual retrieval and breadth-oriented semantic retrieval, then adapt those choices per query.",
+    "problem": "Hierarchical GraphRAG may build rich multi-resolution representations but still use fixed context construction, creating a gap between what is represented and what a particular query actually needs.",
+    "core_idea": "Add an agentic context-policy layer that detects context gaps, launches complementary retrieval branches, consolidates evidence with provenance, and optionally selects policies based on task and graph topology.",
+    "agent_loop": "Build initial context → detect gap → choose depth/breadth retrieval branch → consolidate evidence → adapt policy → generate",
+    "retrieval_design": "Parallel Differential Retrieval separates depth-oriented factual evidence from breadth-oriented semantic evidence; Adaptive-ACE makes the context policy query- and topology-dependent.",
+    "compared_to": ["fixed-context hierarchical GraphRAG", "standard RAG", "non-adaptive GraphRAG context construction"],
+    "evidence": "The abstract reports evaluation on HotpotQA, 2WikiMultiHopQA, and four UltraDomain subsets, with Full-ACE outperforming evaluated RAG/GraphRAG baselines and Adaptive-ACE improving further in the reported settings. Exact effect sizes and ablations await full-paper verification.",
+    "why_it_matters": "The useful abstraction is the representation–inference separation: building a hierarchy does not guarantee the right evidence reaches the model, so context assembly itself becomes a policy rather than a fixed post-processing rule.",
+    "limitations": ["The benefit may depend on the quality and cost of the underlying hierarchical graph construction.", "The abstract does not yet let us separate gains from extra retrieval budget versus better policy selection.", "Full-paper verification is still pending."],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": ["arXiv recent search"],
+    "full_text_checked": false,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-10"
+  }
+}
