@@ -24,6 +24,10 @@
     "takeaway": "The key delta is an agent-controlled operation set—lexical search, structural navigation, and bounded reads—with observations feeding the next retrieval decision.",
     "compared_with": "Dense top-k RAG and the same iterative agent loop constrained to a top-k retrieval tool.",
     "full_text_grounded": false,
+    "renderer": "gpt-image-gen",
+    "status": "needs_regeneration",
+    "image_path": "assets/visuals/2608.06305.png",
+    "prompt_path": "assets/visuals/prompts/2608.06305.md",
     "artifact_path": "papers/2608.06305.md"
   },
   "analysis": {
