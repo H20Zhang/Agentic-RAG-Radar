@@ -1,19 +1,21 @@
 # Daily Curation Protocol
 
-This repository is maintained as a **research radar**, not a keyword dump. The daily updater should optimize for high recall during discovery and high precision at publication time.
+This repository is maintained as a **research radar**, not a keyword dump. Daily maintenance should optimize for **high recall during discovery, high precision at publication, and explicit skepticism before synthesis**.
 
-## Multi-agent workflow
+## Independent roles
 
-Each daily run should use independent parallel research roles whenever the execution environment supports subagents or parallel tasks.
+Each run should use independent parallel roles whenever the execution environment supports them. Roles should form judgments separately before the editor synthesizes them.
 
 | Role | Responsibility | Failure it should prevent |
 |---|---|---|
 | **Discovery** | Search a broad overlapping recent window across arXiv and other high-signal scholarly sources; expand beyond the literal phrase `agentic RAG`. | Missing papers because authors use different terminology. |
-| **Relevance & Taxonomy** | Independently decide whether retrieval is genuinely agent-controlled and assign the primary category + orthogonal tags. | Scope creep into ordinary RAG or generic agents. |
-| **Research Reader** | Read the paper deeply enough to extract the actual control loop, closest comparison, evidence, limitations, and the one mechanism that deserves a visual explainer. | Abstract paraphrases masquerading as research analysis. |
-| **Skeptical QC** | Challenge inclusion, importance, classification, unsupported claims, duplicate versions, broken/unverified links, and misleading visual simplifications. | LLM agreement bias and inflated novelty claims. |
+| **Inclusion Judge & Taxonomy** | Decide whether retrieval is genuinely agent-controlled and assign the primary category + orthogonal tags. | Scope creep into ordinary RAG or generic agents. |
+| **Research Reader** | Read deeply enough to identify the actual control loop, nearest design point, evidence, limitations, and the one mechanism worth teaching. | Abstract paraphrases masquerading as research analysis. |
+| **Visual Explainer** | Convert the verified mechanism into one original GPT-image-gen teaching figure with an auditable grounding brief. | Decorative or paper-copy visuals that do not improve understanding. |
+| **Evidence Auditor / Skeptical Reviewer** | Challenge inclusion, novelty, importance, baseline quality, matched budgets, unsupported claims, duplicate versions, links, and visual overstatement. Construct the strongest alternative explanation. | LLM agreement bias and inflated “agentic” causal claims. |
+| **Research Editor** | Produce the final paper card / compaction only after seeing the independent judgments. | Verbosity, paper-by-paper concatenation, and conclusions without consequences. |
 
-These roles should work independently before synthesis where practical. The QC role should not simply summarize the other roles.
+The skeptical role should not summarize the other roles. It should actively try to falsify the proposed interpretation.
 
 ## Discovery policy
 
@@ -38,47 +40,81 @@ Ask four questions in order:
 1. Is external retrieval/search/context acquisition a substantive component?
 2. Does an agent/controller/policy materially control retrieval behavior?
 3. Is that control part of the research contribution rather than implementation glue?
-4. Compared with the nearest static/adaptive baseline, is the claimed delta identifiable?
+4. Compared with the nearest static/adaptive design point, is the claimed delta identifiable?
 
-If (1)-(3) are not clearly yes, reject or hold for review.
+If (1)–(3) are not clearly yes, reject or hold for review. A paper can be highly relevant yet low importance.
 
 ## Analysis standard
 
-For accepted papers, record:
+For every accepted paper, record:
 
-- **TL;DR:** one-sentence research delta.
-- **Problem:** the concrete limitation in prior systems.
-- **Core Idea:** the mechanism or abstraction introduced.
-- **Agent Loop:** e.g. `Plan → Search → Inspect → Reformulate → Search → Verify → Answer`.
-- **Retrieval Design:** available retrieval operations, granularity, routing, state, and stopping behavior.
-- **Compared to What:** nearest method families and the actual delta.
-- **Evidence:** datasets, metrics, baselines, key ablations, and what the experiments do *not* establish.
-- **Why It Matters:** importance relative to existing agentic RAG work, not a contribution restatement.
-- **Limitations / Questions:** 1–3 assumptions or missing tests that could change the conclusion.
-- **AI Confidence:** high / medium / low.
+- **TL;DR** — one-sentence research delta.
+- **Problem** — the concrete limitation in prior systems.
+- **Core Idea** — the mechanism or abstraction introduced.
+- **Agent Loop** — what the model observes, chooses, retrieves, updates, repeats, and how it stops.
+- **Retrieval Design** — available operations, granularity, routing, state, and stopping behavior.
+- **Compared to What** — nearest design points and the actual delta.
+- **Evidence** — datasets, metrics, baselines, ablations, budgets, negative results, and what the experiments do *not* establish.
+- **Why It Matters** — what research/system decision changes if the claim is true.
+- **Limitations / Questions** — assumptions or missing tests that could change the conclusion.
+- **AI Confidence** — high / medium / low.
 
 Do not claim experimental superiority from an abstract alone. Set `provenance.full_text_checked` accurately.
 
-## Visual explainer standard
+## Causal-attribution checklist
 
-Every accepted paper should have **one conceptual visual explainer** in its researcher-facing Markdown, following [`VISUALS.md`](VISUALS.md). The diagram should answer the single question that makes the paper easiest to understand: agent control loop for method papers, operation/state diagram for retrieval-interface work, trajectory-to-policy diagram for learning papers, evidence/failure map for analysis papers, or taxonomy map for surveys.
+Agentic RAG papers often change multiple variables at once. Before attributing a gain to an agent policy, explicitly ask whether it may instead come from:
 
-Prefer GitHub-native Mermaid so diagrams stay text-diffable and easy to correct. Keep the main diagram compact and explicitly mark the research delta rather than reproducing implementation detail. Follow it with **What to notice** and **Compared with**. If only the abstract has been checked, the visual must be labeled as abstract-grounded rather than presented as a verified reconstruction of the full method.
+`substrate × operation set × state × policy × budget × base model`
+
+Useful checks include:
+
+- same retrieval primitive, fixed vs adaptive policy;
+- same calls/tokens/latency budget;
+- explicit state vs raw history/reasoning trace;
+- strong lexical/sparse as well as dense baselines;
+- component ablations that isolate interface, state, routing, and learning.
+
+Negative results and baseline reversals should be preserved because they often change the research conclusion more than another positive headline.
+
+## GPT-image visual standard
+
+Every accepted paper must have a `visual_explainer` contract in its canonical record and an auditable grounding brief under `assets/visuals/prompts/`.
+
+**GPT-image-gen is the preferred renderer.** Follow [`VISUALS.md`](VISUALS.md): one visual, one research question; minimal image text; original conceptual explanation; no reproduction or stylistic copy of the paper figure.
+
+The visual status is explicit:
+
+- `pending` — research card + grounding brief exist; PNG still needs generation/commit;
+- `needs_regeneration` — an old or newly-invalid visual should be replaced;
+- `generated` — PNG exists and CI should require it.
+
+The skeptical reviewer separately audits the figure: does it invent an edge, make causality look stronger than the evidence, hide a budget confound, or choose an unfair baseline? A beautiful misleading image is worse than no image.
+
+Existing accepted papers with pending visuals are a **backfill queue** and take priority over decorative repo graphics.
 
 ## Scoring
 
-`relevance ∈ [0,1]` measures topical fit. `importance ∈ {1,...,5}` measures estimated research significance. A paper can be highly relevant and low importance.
+`relevance ∈ [0,1]` measures topical fit. `importance ∈ {1,...,5}` measures estimated research significance.
 
-Suggested importance interpretation:
-
-- **5 — Field-shaping:** changes the abstraction, benchmark, or dominant research direction.
+- **5 — Field-shaping:** changes an abstraction, benchmark, or dominant research direction with unusually strong evidence.
 - **4 — Important:** clear reusable idea or strong evidence likely to influence follow-up work.
 - **3 — Solid:** meaningful contribution but narrower delta or evidence.
 - **2 — Incremental:** valid but limited novelty, evidence, or scope.
 - **1 — Peripheral:** included for completeness; little expected research impact.
 
+Do not reward a paper for recency or fashionable naming.
+
 ## Update policy
 
-Prefer small auditable diffs. Add or correct canonical records under `data/papers/`, generate researcher-facing notes under `papers/` when they add useful analysis, include the visual explainer, and refresh README latest/notable views. **Do not create one Markdown digest per day.** Daily output is an ingestion layer; durable human-facing history is compacted weekly and monthly under `digests/`.
+Prefer small auditable changes on `main` when reliable. For every accepted paper:
 
-Never silently fabricate code/project links, benchmark results, full-text analysis, or diagram edges/components. See [`COMPACTION.md`](COMPACTION.md) for weekly/monthly synthesis rules, including the requirement that monthly reports re-check canonical records rather than recursively trusting summaries.
+1. create/update the canonical JSON record;
+2. create/update the researcher-facing paper card;
+3. create/update the visual grounding brief and generated asset status;
+4. refresh README Latest/Notable views if the paper materially affects them;
+5. propagate meaningful corrections upward into weekly/monthly compactions.
+
+**Do not create one Markdown digest per day.** Daily is ingestion and maintenance; durable human-facing history is weekly/monthly compaction under `digests/`.
+
+Never fabricate code/project links, benchmark results, full-text analysis, or visual components. See [`COMPACTION.md`](COMPACTION.md) for weekly/monthly synthesis and anti-summary-drift rules.
