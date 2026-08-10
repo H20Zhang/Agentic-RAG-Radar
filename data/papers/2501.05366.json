@@ -1,0 +1,39 @@
+{
+  "id": "arxiv:2501.05366",
+  "arxiv_id": "2501.05366",
+  "title": "Search-o1: Agentic Search-Enhanced Large Reasoning Models",
+  "authors": ["Xiaoxi Li", "Guanting Dong", "Jiajie Jin", "Yuyao Zhang", "Yujia Zhou", "Yutao Zhu", "Peitian Zhang", "Zhicheng Dou"],
+  "first_seen": "2026-08-10",
+  "published": "2025-01-09",
+  "updated": null,
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2501.05366",
+    "pdf": "https://arxiv.org/pdf/2501.05366",
+    "code": "https://github.com/sunnynexus/Search-o1",
+    "project": null
+  },
+  "primary_category": "iterative_reasoning_verification",
+  "tags": ["iterative_search", "retrieve_or_not", "documents", "open_domain_qa", "coding", "scientific"],
+  "benchmarks": [],
+  "relevance": 0.99,
+  "importance": 4,
+  "analysis": {
+    "tldr": "Search-o1 inserts on-demand search inside long reasoning traces and separately reasons over retrieved documents before feeding evidence back into the main chain.",
+    "problem": "Long reasoning chains can hit knowledge gaps mid-trajectory, while injecting raw retrieved text can introduce noise and disrupt the reasoning process.",
+    "core_idea": "Let the reasoning model trigger search when it encounters uncertain knowledge and use a dedicated Reason-in-Documents step to distill retrieved evidence before reintegration.",
+    "agent_loop": "Reason → detect knowledge gap → search → reason over documents → inject evidence → continue reasoning",
+    "retrieval_design": "Retrieval is demand-driven by the evolving reasoning state rather than executed once before generation; a separate evidence-processing module mediates the retrieved context.",
+    "compared_to": ["static RAG", "single-shot search-augmented reasoning", "iterative retrieval without dedicated document reasoning"],
+    "evidence": "The abstract reports experiments across complex science, mathematics, coding, and six open-domain QA benchmarks; this bootstrap note does not yet reproduce or verify the full result tables.",
+    "why_it_matters": "The important shift is not merely adding search to a reasoning model, but treating external search as an action available inside the reasoning trajectory and explicitly managing the retrieved evidence before resuming that trajectory.",
+    "limitations": ["Search quality and trigger calibration can compound errors across long trajectories.", "The bootstrap note has not yet been upgraded to full-paper verification."],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": ["arXiv", "official GitHub repository"],
+    "full_text_checked": false,
+    "code_link_verified": true,
+    "last_reviewed": "2026-08-10"
+  }
+}
