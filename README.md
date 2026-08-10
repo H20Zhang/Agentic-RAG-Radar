@@ -55,31 +55,32 @@ Compaction is deliberately **lossy for repetition, not for disagreement**. Weekl
 
 [Paper](https://arxiv.org/abs/2608.06305) · [AI Analysis](papers/2608.06305.md)
 
-### [DocNavRAG: Document-Structured Graph RAG with Stateful Evidence Construction](https://arxiv.org/abs/2608.01565)
+### [DocNavRAG: Document-Structured Graph RAG with Stateful Evidence Construction](papers/2608.01565.md)
 `Retrieval & Tool Use` · `graph` `documents` `planning` `multi-hop QA` · **★★★★☆** · 2026-08-03
 
 **AI take:** The useful abstraction is **environment–policy co-design**: preserve document-native hierarchy/relations as retrieval operations, then maintain explicit collected/missing evidence state so the next action is conditioned on information progress rather than another global search.
 
-[Paper](https://arxiv.org/abs/2608.01565)
+[Paper](https://arxiv.org/abs/2608.01565) · [AI Analysis](papers/2608.01565.md)
 
-### [ACE-GraphRAG: Agentic Context Engineering for Hierarchical GraphRAG](https://arxiv.org/abs/2608.01269)
+### [ACE-GraphRAG: Agentic Context Engineering for Hierarchical GraphRAG](papers/2608.01269.md)
 `Iterative Reasoning & Verification` · `graph` `routing` `multi-hop QA` · **★★★★☆** · 2026-08-02
 
 **AI take:** Building a richer hierarchy does not guarantee better context. ACE-GraphRAG makes the missing layer explicit: **context assembly itself is a query-dependent policy** over complementary retrieval branches. The remaining question is whether gains survive matched retrieval/token budgets.
 
-[Paper](https://arxiv.org/abs/2608.01269)
+[Paper](https://arxiv.org/abs/2608.01269) · [AI Analysis](papers/2608.01269.md)
 
 ## ⭐ Notable Design Anchors
 
 These are not “top papers of all time”; they are useful design points for understanding the current radar:
 
-- **[A-RAG](https://arxiv.org/abs/2602.03442)** — hierarchical keyword / semantic / chunk-read retrieval interface controlled by the model.
-- **[Agentic-R](https://arxiv.org/abs/2601.11888)** — train retrieval for trajectory-level downstream utility rather than static relevance.
-- **[Graph-R1](https://arxiv.org/abs/2507.21892)** — learn multi-turn graph retrieval/reasoning trajectories end to end with RL.
-- **[Search-o1](https://arxiv.org/abs/2501.05366)** — trigger search inside the reasoning trace and separately reason over retrieved documents before reinjection.
-- **[PlanRAG](https://arxiv.org/abs/2406.12430)** — make the information-acquisition plan explicit before iterative data retrieval.
+- **[A-RAG](papers/2602.03442.md)** — hierarchical keyword / semantic / chunk-read retrieval interface controlled by the model.
+- **[Agentic-R](papers/2601.11888.md)** — train retrieval for trajectory-level downstream utility rather than static relevance.
+- **[Graph-R1](papers/2507.21892.md)** — learn multi-turn graph retrieval/reasoning trajectories end to end with RL.
+- **[Search-o1](papers/2501.05366.md)** — trigger search inside the reasoning trace and separately reason over retrieved documents before reinjection.
+- **[PlanRAG](papers/2406.12430.md)** — make the information-acquisition plan explicit before iterative data retrieval.
+- **[Agentic RAG SoK](papers/2603.07379.md)** — organize systems as sequential retrieval/control processes rather than a bag of RAG variants.
 
-[Read the bootstrap anchor cards →](papers/anchors.md)
+[Read the design-anchor index →](papers/anchors.md)
 
 ## 🗂 Browse by Research Problem
 
@@ -102,9 +103,11 @@ A work is included when **external retrieval/search/context acquisition is a sub
 
 Ordinary fixed `retrieve top-k → generate` RAG is excluded merely for using an LLM. Generic agents are excluded when retrieval is incidental. Pure retriever/reranker/index work is excluded unless agentic control is part of the research contribution.
 
-## 🖼️ Research Note for Each Paper
+## 🖼️ Research Note & Visual for Every Paper
 
-Each accepted paper should eventually have one concise researcher-facing page with:
+Every accepted paper now has a **canonical record + individual research card + auditable GPT-image visual brief**. The rendered PNG is tracked explicitly as `pending`, `needs_regeneration`, or `generated`; missing rendered images therefore remain visible backfill debt rather than silently disappearing.
+
+Each research card contains:
 
 - **GPT-image-gen visual explainer** — one original conceptual figure showing the paper's key control point / state / feedback loop, not a reproduction of the paper figure.
 - **TL;DR / Problem / Core Idea** — the actual research delta.
@@ -113,11 +116,11 @@ Each accepted paper should eventually have one concise researcher-facing page wi
 - **Evidence / Why It Matters** — strongest support, important negative results, and whether the contribution is interesting or actually important.
 - **Limitations / Questions / AI Confidence** — assumptions and missing tests that could change the conclusion.
 
-Image assets are presentation; their research grounding is stored separately so a figure can be regenerated or challenged without losing provenance. See [`VISUALS.md`](VISUALS.md).
+Image assets are presentation; their research grounding is stored separately so a figure can be regenerated or challenged without losing provenance. See [`VISUALS.md`](VISUALS.md) and the [`visual asset index`](assets/visuals/README.md).
 
 ## 🔄 Curation & Provenance
 
-The scheduled curator uses independent roles for broad discovery, inclusion/taxonomy, deep reading, visual explanation, evidence auditing, and skeptical QC. The QC role explicitly challenges novelty, matched-budget fairness, baseline choice, unsupported claims, and misleading visual simplifications before synthesis.
+The scheduled curator uses independent roles for **Discovery → Inclusion/Taxonomy → Research Reading → Visual Explanation → Evidence Audit/Skeptical Review → Research Editing**. The skeptical role explicitly challenges novelty, matched-budget fairness, baseline choice, unsupported causal attribution, and misleading visual simplifications before synthesis.
 
 Canonical structured records live under [`data/papers/`](data/papers/). README, paper notes, generated figures, and compactions are derived views. Full-text-grounded claims are distinguished from abstract-grounded first-pass interpretations.
 
