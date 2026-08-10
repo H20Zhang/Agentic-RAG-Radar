@@ -18,6 +18,18 @@
   "benchmarks": ["DQA"],
   "relevance": 0.98,
   "importance": 3,
+  "visual_explainer": {
+    "type": "agent_loop",
+    "question": "How does PlanRAG use an explicit decision plan to control what data is retrieved next?",
+    "takeaway": "The high-level plan becomes the controller for iterative data acquisition instead of letting retrieval evolve as an unstructured sequence of searches.",
+    "compared_with": "Single-step RAG and iterative RAG without an explicit upstream information-acquisition plan.",
+    "full_text_grounded": false,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "image_path": "assets/visuals/2406.12430.png",
+    "prompt_path": "assets/visuals/prompts/2406.12430.md",
+    "artifact_path": "papers/2406.12430.md"
+  },
   "analysis": {
     "tldr": "PlanRAG makes an explicit decision plan the upstream controller for iterative data retrieval, rather than letting retrieval proceed as an unstructured sequence of searches.",
     "problem": "Decision-making questions can require multiple dependent data analyses, while a one-shot or weakly structured retrieval loop does not encode what information should be acquired next.",
