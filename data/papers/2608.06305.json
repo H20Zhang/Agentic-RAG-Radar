@@ -18,6 +18,14 @@
   "benchmarks": [],
   "relevance": 0.99,
   "importance": 4,
+  "visual_explainer": {
+    "type": "retrieval_interface",
+    "question": "How does READ change the retrieval interface compared with fixed dense top-k?",
+    "takeaway": "The key delta is an agent-controlled operation set—lexical search, structural navigation, and bounded reads—with observations feeding the next retrieval decision.",
+    "compared_with": "Dense top-k RAG and the same iterative agent loop constrained to a top-k retrieval tool.",
+    "full_text_grounded": false,
+    "artifact_path": "papers/2608.06305.md"
+  },
   "analysis": {
     "tldr": "READ replaces opaque top-k embedding retrieval with three replayable document operations—lexical search, structural navigation, and bounded reads—so the agent controls evidence acquisition through an interpretable interface.",
     "problem": "Chunk-and-embed retrieval can destroy structural context in table-heavy long documents, where values depend on distant headers, units, and document layout.",
