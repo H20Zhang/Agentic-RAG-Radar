@@ -54,12 +54,13 @@
     "visual_explainer": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["type", "question", "takeaway", "compared_with"],
+      "required": ["type", "question", "takeaway", "compared_with", "status"],
       "properties": {
         "type": {
           "enum": [
             "agent_loop",
             "retrieval_interface",
+            "state_progression",
             "trajectory_learning",
             "evidence_failure_map",
             "taxonomy_map"
@@ -69,6 +70,10 @@
         "takeaway": {"type": "string"},
         "compared_with": {"type": "string"},
         "full_text_grounded": {"type": "boolean"},
+        "renderer": {"enum": ["gpt-image-gen", "other"]},
+        "status": {"enum": ["pending", "generated", "needs_regeneration"]},
+        "image_path": {"type": ["string", "null"]},
+        "prompt_path": {"type": ["string", "null"]},
         "artifact_path": {"type": ["string", "null"]}
       }
     },
