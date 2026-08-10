@@ -18,6 +18,18 @@
   "benchmarks": [],
   "relevance": 0.99,
   "importance": 4,
+  "visual_explainer": {
+    "type": "trajectory_learning",
+    "question": "How does Graph-R1 turn graph retrieval from a fixed context-building step into a learned multi-turn policy?",
+    "takeaway": "The knowledge graph becomes an interactive environment and the whole reason→graph-action→observation trajectory is optimized with outcome-level reinforcement learning.",
+    "compared_with": "Traditional GraphRAG with fixed one-shot graph retrieval and graph context construction outside the learned policy.",
+    "full_text_grounded": false,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "image_path": "assets/visuals/2507.21892.png",
+    "prompt_path": "assets/visuals/prompts/2507.21892.md",
+    "artifact_path": "papers/2507.21892.md"
+  },
   "analysis": {
     "tldr": "Graph-R1 turns GraphRAG retrieval into a learned multi-turn agent–graph interaction and optimizes the whole retrieval/reasoning trajectory with reinforcement learning.",
     "problem": "Conventional GraphRAG often performs fixed one-shot retrieval and leaves long-context reasoning to prompting, so the model does not learn a retrieval policy over graph structure.",
