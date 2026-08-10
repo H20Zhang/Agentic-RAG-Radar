@@ -16,6 +16,22 @@ SCHEMA_PATH = ROOT / "data" / "paper.schema.json"
 PAPERS_DIR = ROOT / "data" / "papers"
 
 
+def check_repo_path(record_path: Path, value: object, label: str, *, required: bool = True) -> int:
+    if value is None:
+        if required:
+            print(f"ERROR {record_path}:{label}: path is null")
+            return 1
+        return 0
+    if not isinstance(value, str) or not value.strip():
+        print(f"ERROR {record_path}:{label}: expected non-empty repository-relative path")
+        return 1
+    target = ROOT / value
+    if not target.exists():
+        print(f"ERROR {record_path}:{label}: missing {value}")
+        return 1
+    return 0
+
+
 def main() -> int:
     schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
     validator = jsonschema.Draft202012Validator(
@@ -52,11 +68,27 @@ def main() -> int:
             print(f"ERROR {path}:{where}: {error.message}")
             errors += 1
 
+        if record_errors:
+            continue
+
+        visual = record["visual_explainer"]
+        errors += check_repo_path(path, visual.get("prompt_path"), "visual_explainer.prompt_path")
+        errors += check_repo_path(path, visual.get("artifact_path"), "visual_explainer.artifact_path")
+
+        status = visual.get("status")
+        if status == "generated":
+            errors += check_repo_path(path, visual.get("image_path"), "visual_explainer.image_path")
+        elif status in {"pending", "needs_regeneration"}:
+            image_path = visual.get("image_path")
+            if not isinstance(image_path, str) or not image_path.strip():
+                print(f"ERROR {path}:visual_explainer.image_path: pending visuals still need their intended asset path")
+                errors += 1
+
     if errors:
         print(f"Validation failed with {errors} error(s).")
         return 1
 
-    print(f"Validated {len(paths)} paper record(s).")
+    print(f"Validated {len(paths)} paper record(s), including visual provenance contracts.")
     return 0
 
 
