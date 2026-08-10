@@ -18,6 +18,18 @@
   "benchmarks": ["HotpotQA", "2WikiMultiHopQA"],
   "relevance": 1.0,
   "importance": 4,
+  "visual_explainer": {
+    "type": "retrieval_interface",
+    "question": "How does A-RAG turn retrieval from a fixed pipeline into a hierarchy of model-controlled search and read operations?",
+    "takeaway": "The key delta is the retrieval API: broad keyword/semantic discovery and fine-grained chunk reading become explicit actions that the model composes adaptively.",
+    "compared_with": "Single-shot RAG, fixed retriever pipelines, and hand-designed iterative RAG workflows.",
+    "full_text_grounded": false,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "image_path": "assets/visuals/2602.03442.png",
+    "prompt_path": "assets/visuals/prompts/2602.03442.md",
+    "artifact_path": "papers/2602.03442.md"
+  },
   "analysis": {
     "tldr": "A-RAG gives the model a small hierarchy of retrieval tools—keyword search, semantic search, and chunk read—and lets it adaptively compose them instead of executing a predefined RAG workflow.",
     "problem": "Most RAG systems either retrieve once with a fixed algorithm or ask the model to execute a hand-designed workflow, limiting the benefit of stronger tool-using reasoning models.",
