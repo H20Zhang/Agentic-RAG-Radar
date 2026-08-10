@@ -1,0 +1,39 @@
+{
+  "id": "arxiv:2608.06305",
+  "arxiv_id": "2608.06305",
+  "title": "Beyond Top-K: Replacing Black-Box Retrieval with Interpretable Agentic Operations",
+  "authors": ["Sagar Tamang", "Ayush Vyas", "Tabarakul Hazarika"],
+  "first_seen": "2026-08-10",
+  "published": "2026-08-06",
+  "updated": null,
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.06305",
+    "pdf": "https://arxiv.org/pdf/2608.06305",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "retrieval_tool_use",
+  "tags": ["tool_selection", "iterative_search", "documents", "sparse", "enterprise", "planning"],
+  "benchmarks": [],
+  "relevance": 0.99,
+  "importance": 4,
+  "analysis": {
+    "tldr": "READ replaces opaque top-k embedding retrieval with three replayable document operations—lexical search, structural navigation, and bounded reads—so the agent controls evidence acquisition through an interpretable interface.",
+    "problem": "Chunk-and-embed retrieval can destroy structural context in table-heavy long documents, where values depend on distant headers, units, and document layout.",
+    "core_idea": "Expose deterministic search/navigation/read primitives over the raw document via MCP and let an agent compose them into an auditable retrieval trajectory.",
+    "agent_loop": "Search lexically → navigate structure → bounded read → inspect evidence → refine location/query → answer",
+    "retrieval_design": "The retrieval interface is embedding-free and operation-oriented: normalized lexical search for locating, structural navigation for movement, and bounded spans for controlled evidence reads.",
+    "compared_to": ["dense top-k retrieval", "table-aware chunking", "agent loop with a top-k retrieval tool", "BM25"],
+    "evidence": "The abstract reports 58.8% accuracy on 51 verified questions versus 15.7% for dense retrieval and 27.5% for an agent using the same loop with a top-k tool. Crucially, it also reports BM25 as statistically indistinguishable from READ, so the evidence supports an embedding-vs-lexical/interface claim more strongly than an agentic-vs-non-agentic claim.",
+    "why_it_matters": "The important result is the interface ablation: simply iterating with an agent is insufficient if the retrieval primitive is wrong. The negative BM25 result also prevents overclaiming and makes this more informative than a typical 'agent beats RAG' paper.",
+    "limitations": ["The reported evaluation is small and centered on a single table-heavy government financial report.", "The abstract does not establish that agentic composition is necessary versus a strong non-agentic lexical pipeline.", "Full-paper verification is still pending."],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": ["arXiv recent search"],
+    "full_text_checked": false,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-10"
+  }
+}
