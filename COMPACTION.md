@@ -1,57 +1,95 @@
 # Research Compaction Protocol
 
-Agentic RAG Radar uses a **three-level research memory hierarchy** rather than accumulating one Markdown file per day.
+Agentic RAG Radar treats paper curation as a **research-memory hierarchy**, not an append-only stream of Markdown summaries.
+
+The objective is to preserve enough provenance to revisit a paper while continuously compressing repeated detail into higher-level research judgments.
 
 ## Levels
 
-| Level | Persistent artifact | Purpose |
-|---|---|---|
-| **L0 · Paper records** | `data/papers/*.json` + `papers/*` | Lossless-ish canonical facts, provenance, classification, and per-paper research notes. |
-| **L1 · Weekly compaction** | `digests/weekly/YYYY-Www.md` | Compress the week's papers into research deltas, clusters, disagreements, and a reading priority. |
-| **L2 · Monthly compaction** | `digests/monthly/YYYY-MM.md` | Rebuild the field-level picture: which abstractions are gaining traction, what evidence changed, and which open questions matter next. |
+| Level | Persistent artifact | Purpose | What must not be lost |
+|---|---|---|---|
+| **L0 · Paper records** | `data/papers/*.json` + `papers/*` | Canonical facts, provenance, classification, paper-level interpretation, visual grounding. | source links, evidence status, uncertainty, corrections |
+| **L1 · Weekly compaction** | `digests/weekly/YYYY-Www.md` | Identify the week's real research deltas, disagreements, and reading priority. | negative results, conflicting assumptions, evidence caveats |
+| **L2 · Monthly compaction** | `digests/monthly/YYYY-MM.md` | Rebuild the field map: abstractions, evidence strength, open problems, and changes in research direction. | competing explanations, weakening claims, unresolved causal attribution |
 
-Daily ingestion **does not create a daily Markdown archive**. It updates canonical records, per-paper notes when useful, and the rolling `Latest Papers` section in the README.
+Daily ingestion updates L0 and the rolling README. It **does not create one Markdown file per day**.
+
+## Editorial principle
+
+A compaction is successful only if it answers questions that a chronological list cannot:
+
+> **So what changed? Compared with what? How strong is the evidence? What should a researcher do differently after reading this?**
+
+A report should become *shorter than the source material but harder to write*. If it is mostly one paragraph per paper, it is not compaction yet.
 
 ## Weekly compaction
 
-A weekly digest is not a concatenation of paper summaries. It should answer:
+A weekly report should be detailed when the number of papers is small. Sparse weeks are an opportunity to compare mechanisms and evidence carefully rather than pad the report with more papers.
 
-1. **What changed this week?** Identify 1–3 research shifts that would still matter if individual paper titles were hidden.
-2. **Which papers matter most, compared with what?** Rank only the few papers that materially change an abstraction, method family, evidence base, or benchmark.
-3. **Where do papers agree or conflict?** Preserve negative results, baseline reversals, and incompatible assumptions.
-4. **What should a researcher read next?** End with a compact reading order and 1–3 open questions worth tracking.
+It should contain:
 
-The weekly compactor must read the canonical paper records and available full-paper notes for that week. Do not summarize the README alone.
+1. **Week thesis** — one falsifiable statement about what changed.
+2. **1–3 durable shifts** — clusters defined by research delta/control point, not title keywords.
+3. **Most important papers** — only papers that change an abstraction, method family, benchmark, or evidence base; each must answer `delta → compared with → evidence → so what`.
+4. **Tension / disagreement** — at least one alternative explanation, negative result, or reason the apparent trend may be overstated when evidence permits.
+5. **Evidence audit** — matched retrieval/token budget, baseline quality, ablations, benchmark concentration, and full-text-grounding status.
+6. **Reading order + open questions** — minimal sequence that teaches the design space, followed by 1–3 questions worth tracking.
+
+### Weekly attribution rule
+
+A paper can be discussed as **adjacent context** when its publication date falls just outside the ISO week but it is needed to make a comparison intelligible. Label this explicitly; do not silently inflate the week's paper count.
 
 ## Monthly compaction
 
-A monthly digest should operate at a higher abstraction level than the weekly reports. It should include:
+The monthly report operates one abstraction level higher. During an open month it may exist as **rolling**, but it must be rewritten as evidence changes rather than appended chronologically. After the month closes it becomes **finalized** unless later corrections materially change the synthesis.
 
-- **Field map changes:** which taxonomy areas grew, converged, split, or became less convincing.
-- **Most important papers:** usually 5–10 maximum, selected by research significance rather than recency.
-- **Emerging design patterns:** recurring agent loops, retrieval interfaces, training strategies, or evaluation protocols.
-- **Evidence audit:** benchmark concentration, matched-budget issues, repeated baselines, negative results, and claims that strengthened or weakened during the month.
-- **Open problems:** 3–5 questions whose resolution could change the direction of Agentic RAG research.
+A monthly report should contain:
 
-Monthly compaction may use weekly digests as an index, but **must re-check canonical paper records and source notes for load-bearing claims**. Never recursively summarize summaries as the sole evidence source; that creates compounding interpretation error.
+- **Month thesis** — the best current model of how the field map changed.
+- **Field-map clusters** — method families/control points that grew, converged, split, or weakened.
+- **Older anchors reinterpreted** — when new work changes how earlier papers should be understood, make that connection explicit.
+- **Most important papers** — usually 5–10 maximum for a mature month; fewer is better when evidence is sparse.
+- **Core tension** — competing causal explanations for observed gains.
+- **Evidence audit** — budget fairness, benchmark concentration, repeated baselines, negative results, and full-text coverage.
+- **Open problems** — 3–5 questions whose answers could change what researchers build or evaluate next.
+- **Minimal reading path** — teach the abstraction efficiently, not chronologically.
 
-## Retention policy
+Monthly reports may use weekly reports as an **index only**. Every load-bearing claim must be re-grounded in canonical paper records and source/full-paper notes. Never recursively summarize weekly summaries as the sole evidence source.
+
+## Multi-role challenge before synthesis
+
+When parallel research roles are supported, roles should work independently before the final editor sees their outputs:
+
+| Role | Job | What it should challenge |
+|---|---|---|
+| **Clusterer / Field Mapper** | Group papers by actual research delta and identify a candidate field map. | keyword similarity, fashionable naming, forced taxonomy fit |
+| **Evidence Auditor** | Compare benchmarks, baselines, calls/tokens/latency, ablations, effect sizes, and negative results. | causal over-attribution, unfair budgets, weak baseline selection |
+| **Trend Skeptic** | Construct the strongest alternative explanation for each proposed trend. | confirmation bias, three papers being mistaken for a paradigm shift |
+| **Research Editor** | Write the synthesis after seeing the independent analyses. | verbosity, paper-by-paper concatenation, claims without consequences |
+
+The editor should prefer **one important tension** over five weak trends.
+
+## Factorized evaluation lens
+
+Agentic RAG results frequently change several variables simultaneously. When possible, compactions should reason about these axes separately:
+
+| Axis | Example values |
+|---|---|
+| **Substrate** | flat chunks / documents / graph / SQL / web / code |
+| **Operation set** | top-k / lexical search / navigation / bounded read / graph actions / tool routing |
+| **State** | raw history / evidence set / missing-information state / provenance / uncertainty |
+| **Policy** | fixed heuristic / prompted agent / planner / learned policy / RL |
+| **Budget** | retrieval calls / retrieved tokens / latency / monetary or energy cost |
+
+A headline gain is not automatically evidence for the `policy` axis if the operation set or budget also changed.
+
+## Retention and correction policy
 
 - Keep every accepted canonical paper record.
-- Keep per-paper Markdown only when it adds researcher-facing analysis beyond the JSON record; do not create files merely for symmetry.
-- Keep one weekly digest per ISO week and one monthly digest per calendar month.
-- README is a rolling view, not an archive.
-- Corrections propagate upward: if an important paper is reclassified or a claim is corrected, update the relevant weekly/monthly digest when the correction changes its synthesis.
+- Keep per-paper Markdown when it adds researcher-facing explanation beyond the JSON record.
+- Keep one weekly report per ISO week and one monthly report per calendar month.
+- README is a rolling landing page, not an archive.
+- Correct upward: if a paper's classification, evidence, or importance changes enough to alter a weekly/monthly conclusion, revise the compaction.
+- Do not preserve an old narrative merely for consistency. A rolling report should explicitly change its thesis when new evidence falsifies it.
 
-## Multi-agent compaction
-
-When parallel research roles are available, use independent roles before synthesis:
-
-| Role | Weekly / monthly responsibility |
-|---|---|
-| **Clusterer** | Group papers by actual research delta, not keyword similarity. |
-| **Evidence Auditor** | Compare benchmarks, baselines, budgets, ablations, and negative results. |
-| **Trend Skeptic** | Challenge whether an apparent trend is real or merely several similarly framed papers. |
-| **Synthesizer** | Produce the final compact report only after seeing the independent analyses. |
-
-The goal is **lossy compression of repetition, not loss of disagreement or uncertainty**.
+The goal is **lossy compression of repetition, not loss of disagreement, provenance, or uncertainty**.
