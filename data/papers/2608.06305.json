@@ -25,8 +25,8 @@
     "compared_with": "Dense top-k RAG and the same iterative agent loop constrained to a top-k retrieval tool.",
     "full_text_grounded": false,
     "renderer": "gpt-image-gen",
-    "status": "needs_regeneration",
-    "image_path": "assets/visuals/2608.06305.png",
+    "status": "generated",
+    "image_path": "assets/visuals/2608.06305.webp",
     "prompt_path": "assets/visuals/prompts/2608.06305.md",
     "artifact_path": "papers/2608.06305.md"
   },
