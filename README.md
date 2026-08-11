@@ -54,6 +54,23 @@ The goal is **lossy compression of repetition, not loss of disagreement**.
 
 [Paper](https://arxiv.org/abs/2608.06305) · [Research note](papers/2608.06305.md)
 
+<details>
+<summary><strong>Understand this paper in 60 seconds</strong></summary>
+
+**Problem.** Chunk-and-embed retrieval can destroy structural context in table-heavy long documents, especially when values depend on distant headers, units, or layout.
+
+**Core mechanism.** Replace one opaque dense top-k call with three explicit operations the agent can compose: **lexical search → structural navigation → bounded read**.
+
+**Agent loop.** `Search → navigate → bounded read → inspect → refine → answer`
+
+**Compared with.** Dense top-k RAG, the same iterative agent loop restricted to a top-k tool, and BM25.
+
+**Evidence to remember.** The abstract reports 58.8% accuracy versus 15.7% for dense retrieval and 27.5% for the same agent loop with top-k. But BM25 is statistically indistinguishable from READ — so the strongest conclusion is about the **retrieval interface / primitive**, not that agentic control itself is always necessary.
+
+**Open question.** Under matched lexical primitives and retrieval budgets, how much extra value comes from adaptive agent composition?
+
+</details>
+
 ### [DocNavRAG: Document-Structured Graph RAG with Stateful Evidence Construction](papers/2608.01565.md)
 `Retrieval & Tool Use` · `graph` `documents` `planning` `multi-hop QA` · **★★★★☆** · 2026-08-03
 
@@ -61,12 +78,46 @@ The goal is **lossy compression of repetition, not loss of disagreement**.
 
 [Paper](https://arxiv.org/abs/2608.01565) · [Research note](papers/2608.01565.md)
 
+<details>
+<summary><strong>Understand this paper in 60 seconds</strong></summary>
+
+**Problem.** Complex document questions need complementary evidence across sections or documents. Flat retrieval repeatedly reconstructs location through semantic similarity, while many GraphRAG systems build structure but traverse it with a fixed policy.
+
+**Core mechanism.** Turn document hierarchy and cross-region relations into a navigable environment, expose operations such as locate / navigate / expand / fetch, and maintain explicit **collected evidence + missing evidence** state.
+
+**Agent loop.** `Locate → navigate/expand → fetch → update evidence state → identify what is missing → continue or answer`
+
+**Compared with.** Flat passage-level iterative RAG, repeated global semantic search, and fixed-traversal GraphRAG.
+
+**Evidence to remember.** The abstract reports average gains of **7.8% in answer quality** and **17.7% in context sufficiency** across four long-/multi-document QA benchmarks. The current radar has not yet isolated how much comes from structure, evidence state, or additional retrieval budget.
+
+**Open question.** Does explicit evidence state remain useful when the retrieval substrate changes from long documents to web search, SQL, code, or knowledge graphs?
+
+</details>
+
 ### [ACE-GraphRAG: Agentic Context Engineering for Hierarchical GraphRAG](papers/2608.01269.md)
 `Iterative Reasoning & Verification` · `graph` `routing` `multi-hop QA` · **★★★★☆** · 2026-08-02
 
 **AI take:** Building a richer hierarchy does not guarantee better context. ACE-GraphRAG makes the missing layer explicit: **context assembly itself is a query-dependent policy** over complementary retrieval branches. The remaining question is whether gains survive matched retrieval/token budgets.
 
 [Paper](https://arxiv.org/abs/2608.01269) · [Research note](papers/2608.01269.md)
+
+<details>
+<summary><strong>Understand this paper in 60 seconds</strong></summary>
+
+**Problem.** A hierarchical GraphRAG can represent rich multi-resolution evidence and still send the wrong context to the model because context construction remains fixed.
+
+**Core mechanism.** Add an inference-time context policy that detects context gaps and chooses between complementary **depth-oriented factual** and **breadth-oriented semantic** retrieval branches before consolidating evidence.
+
+**Agent loop.** `Build context → detect gap → choose branch → retrieve → consolidate → adapt → generate`
+
+**Compared with.** Hierarchical GraphRAG with fixed or largely predetermined context construction.
+
+**Evidence to remember.** The abstract reports gains on HotpotQA, 2WikiMultiHopQA, and UltraDomain subsets, but the radar still needs full-paper budget matching and component ablations before assigning those gains specifically to the adaptive policy.
+
+**Open question.** Is the policy itself better, or does the system simply spend more retrieval/context budget through multiple branches?
+
+</details>
 
 ## ⭐ Design Anchors
 
@@ -81,7 +132,23 @@ Use these to orient yourself in the design space rather than as a “best papers
 | **[PlanRAG](papers/2406.12430.md)** | Makes the information-acquisition plan explicit before iterative retrieval. |
 | **[Agentic RAG SoK](papers/2603.07379.md)** | Frames Agentic RAG as a sequential retrieval/control process. |
 
+<details>
+<summary><strong>How these anchors fit together</strong></summary>
+
+One useful way to read the field is as a sequence of changing control boundaries:
+
+1. **PlanRAG** — make the information-acquisition **plan** explicit.
+2. **Search-o1** — move retrieval **inside the reasoning trajectory**.
+3. **A-RAG** — replace one retrieval call with an explicit **operation/interface hierarchy**.
+4. **Graph-R1** — treat retrieval actions as a **multi-turn policy** and optimize the trajectory with RL.
+5. **Agentic-R** — train the retriever for **trajectory-level downstream utility**, not static relevance alone.
+6. **Agentic RAG SoK** — abstract these systems as a broader **sequential retrieval/control problem**.
+
+The current 2026 work is pushing especially hard on the middle of this stack: **what operations the agent controls, what state it carries, and how context policy should adapt under a budget.**
+
 [See the full anchor notes →](papers/anchors.md)
+
+</details>
 
 ## 🗂 Browse by Research Problem
 
@@ -100,13 +167,13 @@ Rather than grouping papers only by application, the radar asks **which part of 
 
 ## 🖼️ How to Read a Paper Here
 
-Each accepted paper is intended to tell you more than its abstract:
+The README is intentionally layered:
 
-- **Visual explainer** — one original conceptual figure focused on the key mechanism or research delta.
-- **Research read** — problem, core idea, agent loop, retrieval design, and the closest comparison point.
-- **Evidence check** — strongest evidence, important negative results, and likely confounders.
-- **Why it matters** — whether the paper changes a reusable design point or is mainly incremental.
-- **Limitations / open questions** — assumptions or missing tests that could change the conclusion.
+- **30-second scan:** title, category, importance, and the one-paragraph AI take.
+- **60-second expand:** problem, mechanism, agent loop, closest comparison, strongest evidence, and the one open question that matters most.
+- **Deep dive:** open the full research note for the visual explainer, detailed evidence, limitations, and provenance.
+
+This keeps the homepage useful both as a radar and as a lightweight reading interface.
 
 ## What Counts as Agentic RAG?
 
