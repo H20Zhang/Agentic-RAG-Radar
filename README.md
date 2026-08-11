@@ -1,47 +1,60 @@
 # 🤖 Agentic RAG Radar
 
 **A living research map of Agentic Retrieval-Augmented Generation.**  
-Track new papers, understand what actually changed, and see how the field is moving — with skeptical AI research notes, visual explainers, and weekly/monthly synthesis.
+Track new papers, understand what actually changed, and see how the field is moving — with skeptical AI research notes, visual explainers, and weekly/monthly/yearly synthesis.
 
-**Last updated:** 2026-08-11 · [Weekly synthesis](digests/weekly/2026-W32.md) · [August research map](digests/monthly/2026-08.md) · [Browse by research problem](categories/README.md)
+**Last updated:** 2026-08-11 · [Research compactions](#-research-compactions) · [Latest papers](#-latest-papers) · [Browse by research problem](categories/README.md)
 
 ## 🧭 Research Compactions
 
-If you only have a few minutes, **start here**. These reports compress individual papers into the research shifts, tensions, and open questions that matter.
+If you only have a few minutes, **start here**. The archive deliberately becomes coarser with time:
 
-### [Weekly · 2026-W32](digests/weekly/2026-W32.md)
+`recent month → weekly` · `recent quarter → monthly` · `all years → yearly`
 
-**Early-August Agentic RAG is shifting from “better retrieval” toward designing the retrieval interaction itself.**
+### Recent Month · Weekly
 
-Three ideas are beginning to converge:
+Weekly compactions preserve the local research movement while it is still useful to inspect week by week.
 
-- **Retrieval interface > another agent loop.** READ and DocNavRAG expose lexical search, structural navigation, bounded reads, or document-native graph operations instead of repeatedly calling the same black-box top-k primitive.
-- **Evidence state > implicit history.** DocNavRAG makes collected/missing evidence explicit, turning retrieval progress into state that can drive the next action and stopping decision.
-- **Context assembly becomes a policy.** ACE-GraphRAG separates rich hierarchical representation from the inference-time policy that decides which evidence actually reaches the model.
-
-The main tension is causal attribution: **are gains coming from agentic control, or simply from stronger retrieval primitives and larger budgets?** READ is especially informative because BM25 is reported as statistically indistinguishable from READ, weakening a simplistic “agent beats RAG” story.
+**[2026-W32 · Designing the retrieval interaction](digests/weekly/2026-W32.md)**  
+Early-August Agentic RAG is shifting from “better retrieval” toward **designing the retrieval interaction itself**: richer operation spaces, explicit evidence state, and adaptive context policies. The central tension is whether gains come from agentic control or from stronger primitives and larger budgets; READ's BM25 result is the strongest current warning against over-attribution.
 
 **Suggested reading:** A-RAG → READ → DocNavRAG → ACE-GraphRAG → Agentic-R / Graph-R1.  
 [Read the full weekly synthesis →](digests/weekly/2026-W32.md)
 
-### [Monthly · 2026-08 (rolling)](digests/monthly/2026-08.md)
+> As new weeks arrive, this section keeps the meaningful weekly compactions from roughly the latest month. Older weekly reports remain in the repository but stop competing for homepage attention once monthly synthesis covers them.
 
-**Month-to-date thesis:** Agentic RAG is beginning to look less like a retriever problem and more like a **control-stack problem**:
+### Recent Quarter · Monthly
+
+Monthly compactions answer a slower question: **how should your mental model of the field change?**
+
+**[2026-08 · Rolling research map](digests/monthly/2026-08.md)**  
+Agentic RAG is beginning to look less like a retriever problem and more like a **control-stack problem**:
 
 `retrieval substrate → operation/interface → evidence state/controller → learning/evaluation`
 
-The current August map has three provisional clusters: **retrieval-interface redesign**, **stateful evidence construction**, and **adaptive context engineering**. The key unresolved issue is evaluation: a credible comparison increasingly needs to separate **substrate, operation set, state, policy, budget, and base model** rather than changing several at once and attributing the gain to “agentic RAG.”
+The current August map has three provisional clusters: **retrieval-interface redesign**, **stateful evidence construction**, and **adaptive context engineering**. The unresolved issue is causal attribution across **substrate × operation set × state × policy × budget × base model**.
 
 [Explore the rolling August research map →](digests/monthly/2026-08.md)
 
+> This section keeps monthly maps from roughly the latest quarter. Older monthly reports remain available, but the long-term public history is compressed again at yearly granularity.
+
+### All Years · Yearly
+
+Yearly compactions are the durable archive: **what survived the year, what weakened, which papers defined the field, and what questions carried forward?**
+
+**[2026 · Rolling year-to-date map](digests/yearly/2026.md)**  
+The strongest 2026 signal so far is a move from “agent + retriever” toward an explicit **information-acquisition control stack** in which retrieval operations, evidence state, adaptive policy, and trajectory-level learning/evaluation are increasingly separable research objects.
+
+This report is deliberately labeled rolling. Earlier historical years will only receive an annual map after backfill is sufficiently complete; a few selected anchors will never be presented as “full-year coverage.”
+
+[Explore the 2026 year-to-date map →](digests/yearly/2026.md) · [Browse all compactions →](digests/README.md)
+
 <details>
-<summary><strong>What is a research compaction?</strong></summary>
+<summary><strong>How the time hierarchy works</strong></summary>
 
-Paper-by-paper notes preserve detail; compactions answer a different question: **what changed in the research landscape?**
+**Weekly** keeps local changes and disagreements while they are fresh. **Monthly** compresses several weeks into field-map movement. **Yearly** re-evaluates the entire period and preserves only durable shifts, defining papers, failed or weakening ideas, evidence standards, and open problems entering the next year.
 
-Weekly reports identify the few shifts worth carrying forward, compare the papers that actually change a design point, and preserve tensions or negative results. Monthly reports rebuild the field map at a higher level and revise earlier interpretations when new evidence weakens them.
-
-The goal is **lossy compression of repetition, not loss of disagreement**.
+Lower-level reports are retained for provenance; they simply age out of the primary reading surface. Higher-level reports are also **re-grounded from canonical paper records**, not produced by recursively summarizing lower-level prose.
 
 </details>
 
