@@ -25,8 +25,8 @@
     "compared_with": "Fixed-context hierarchical GraphRAG and non-adaptive context construction.",
     "full_text_grounded": false,
     "renderer": "gpt-image-gen",
-    "status": "pending",
-    "image_path": "assets/visuals/2608.01269.png",
+    "status": "generated",
+    "image_path": "assets/visuals/2608.01269.webp",
     "prompt_path": "assets/visuals/prompts/2608.01269.md",
     "artifact_path": "papers/2608.01269.md"
   },
