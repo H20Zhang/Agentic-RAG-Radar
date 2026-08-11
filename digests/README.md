@@ -1,43 +1,50 @@
-# Agentic RAG Research Compactions
+# 🧭 Agentic RAG Research Compactions
 
-This directory is the **human reading layer** of Agentic RAG Radar. Canonical records preserve papers and provenance; compactions preserve the research picture.
+Start here when you want the **research picture**, not a list of papers.
 
-## Current research map
+Compactions answer three questions:
 
-### [Weekly · 2026-W32](weekly/2026-W32.md)
+1. **What changed?**
+2. **Which papers actually matter?**
+3. **What should we believe or test next?**
 
-**Thesis:** early-August work shifts attention from repeatedly calling a better retriever toward **designing the retrieval interface, making evidence progress explicit, and treating context assembly as a policy**.
+## Latest Weekly
 
-The report keeps an important counter-signal: READ's BM25 result suggests some apparent “agentic” gains may actually come from a better lexical/interface choice. That motivates primitive-matched, budget-matched, and state-ablation comparisons rather than another aggregate leaderboard.
+### [2026-W32 · Designing the retrieval interaction](weekly/2026-W32.md)
 
-### [Monthly · 2026-08 (rolling)](monthly/2026-08.md)
+**Thesis:** early-August Agentic RAG work is moving beyond “call a better retriever more times” toward **designing the retrieval interface, making evidence progress explicit, and treating context construction as a policy**.
 
-**Thesis:** Agentic RAG is beginning to look like a control stack:
+The strongest tension is equally important: READ reports BM25 as statistically indistinguishable from its agentic method. That suggests some apparent Agentic RAG gains may come from **better retrieval primitives rather than better adaptive control**.
+
+**Best entry path:** A-RAG → READ → DocNavRAG → ACE-GraphRAG.  
+[Read the weekly synthesis →](weekly/2026-W32.md)
+
+## Current Monthly Map
+
+### [2026-08 · Rolling research map](monthly/2026-08.md)
+
+**Current thesis:** Agentic RAG is beginning to look like a control stack:
 
 `retrieval substrate → operation/interface → evidence state/controller → learning/evaluation`
 
-The current month map is provisional and organized around three clusters: retrieval-interface redesign, stateful evidence construction, and adaptive context engineering. The report is intentionally revised when new evidence contradicts the map; it is not a chronological append-only log.
+Three provisional clusters organize the month so far:
 
-## What a compaction keeps
+- **Retrieval-interface redesign** — richer operations than fixed top-k.
+- **Stateful evidence construction** — explicit representations of what is known and missing.
+- **Adaptive context engineering** — query-dependent policies for assembling context from richer substrates.
 
-A compaction should preserve information that changes a researcher's decision:
+The unresolved research problem is causal attribution: to understand whether an “agentic” method is genuinely better, comparisons increasingly need to separate **substrate, operation set, state, policy, budget, and base model**.
 
-- a real abstraction shift that survives hiding paper titles;
-- the few papers that materially change the design space or evidence base;
-- negative results, baseline reversals, and incompatible assumptions;
-- evidence strength, retrieval/token-budget caveats, and missing ablations;
-- a minimal reading order and open questions worth spending attention on.
+[Explore the August research map →](monthly/2026-08.md)
 
-It should aggressively remove repeated background, contribution boilerplate, and paper-by-paper details already recoverable from canonical records.
+## How to Use These Reports
 
-## Hierarchy
+**Weekly** is for deciding what to read now. It keeps the few shifts, disagreements, and papers worth carrying into the next week.
 
-| Layer | Artifact | Reader question |
-|---|---|---|
-| **L0 · Canonical papers** | `../data/papers/*.json` + `../papers/` | What exactly did this paper claim, compare, and show? |
-| **L1 · Weekly** | `weekly/YYYY-Www.md` | What changed this week, and which disagreements matter? |
-| **L2 · Monthly** | `monthly/YYYY-MM.md` | How is the field map changing, and what should influence research direction? |
+**Monthly** is for deciding how your mental model of the field should change. It revisits older anchors when new work makes them look different and highlights open problems that may deserve research investment.
 
-The same daily maintenance task performs ingestion and checks whether a completed week/month is missing or stale. Monthly reports may use weekly reports as an index, but load-bearing claims are re-grounded in canonical paper records to avoid recursive summary drift.
+Paper-level details remain available in [`../papers/`](../papers/) and the [research-problem map](../categories/README.md).
 
-See [`../COMPACTION.md`](../COMPACTION.md) for the editorial protocol.
+---
+
+For curation and compaction methodology, see the [maintainer guide](../docs/MAINTENANCE.md).
