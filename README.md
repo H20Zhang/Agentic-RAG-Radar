@@ -45,6 +45,29 @@ The goal is **lossy compression of repetition, not loss of disagreement**.
 
 </details>
 
+## 🚀 Start Here
+
+Different papers matter depending on what you want to understand. These are deliberately short reading paths rather than exhaustive lists.
+
+| If you want to understand… | Read in this order | What you should learn |
+|---|---|---|
+| **Why Agentic RAG is more than repeated top-k** | [A-RAG](papers/2602.03442.md) → [READ](papers/2608.06305.md) → [DocNavRAG](papers/2608.01565.md) | How the retrieval API itself becomes part of the research design. |
+| **How retrieval becomes a sequential policy** | [Search-o1](papers/2501.05366.md) → [ACE-GraphRAG](papers/2608.01269.md) → [Graph-R1](papers/2507.21892.md) | How observations, state, routing, stopping, and policy interact across multiple retrieval steps. |
+| **How Agentic RAG should be learned and evaluated** | [Agentic-R](papers/2601.11888.md) → [Graph-R1](papers/2507.21892.md) → [Agentic RAG SoK](papers/2603.07379.md) → [August map](digests/monthly/2026-08.md) | Why trajectory utility, matched budgets, and causal attribution matter more than another unconstrained QA score. |
+
+<details>
+<summary><strong>If you only read three papers</strong></summary>
+
+**A-RAG** gives the cleanest starting abstraction: retrieval is an **interface of controllable operations**, not just a retriever call.
+
+**READ** is useful because it both strengthens and attacks the agentic story: richer retrieval operations help substantially, yet BM25 matching READ warns that the primitive may matter more than the policy.
+
+**DocNavRAG** adds the next layer: the agent needs not only operations, but also explicit **evidence/progress state** telling it what has been collected and what remains missing.
+
+Together they motivate the current radar thesis: **Agentic RAG is increasingly a problem of environment + state + policy co-design.**
+
+</details>
+
 ## 🔥 Latest Papers
 
 ### [Beyond Top-K: Replacing Black-Box Retrieval with Interpretable Agentic Operations](papers/2608.06305.md)
@@ -152,7 +175,7 @@ The current 2026 work is pushing especially hard on the middle of this stack: **
 
 ## 🗂 Browse by Research Problem
 
-Rather than grouping papers only by application, the radar asks **which part of the Agentic RAG control stack is changing?**
+Rather than grouping papers only by application, the radar asks **which part of the Agentic RAG control stack is changing?** Open a research problem for the current design points, strongest signal, and the next decisive question.
 
 | Research problem | Question |
 |---|---|
@@ -163,7 +186,97 @@ Rather than grouping papers only by application, the radar asks **which part of 
 | **[Learning & Optimization](categories/learning-optimization.md)** | How should retrieval/routing/search policies be trained rather than hand-prompted? |
 | **[Evaluation & Analysis](categories/evaluation-analysis.md)** | How do we isolate agentic control from better tools, larger budgets, or benchmark artifacts? |
 
-[Explore the research map →](categories/README.md)
+<details>
+<summary><strong>Planning & Query Formulation — plan first, or react to evidence?</strong></summary>
+
+**Current anchor.** [PlanRAG](papers/2406.12430.md): make the information-acquisition plan explicit before iterative retrieval.
+
+**Strongest signal.** Explicit planning gives the retrieval process a stable upstream objective, but recent stateful systems raise a competing design: decide the next step directly from what evidence is still missing.
+
+**Biggest unresolved question.** When is a precommitted plan better than online replanning, especially after contradictory or failed retrieval?
+
+**Next decisive evidence.** Plan-repair and decomposition experiments under matched retrieval/token budgets, ideally over structured targets such as SQL, graphs, web, or code rather than only passage queries.
+
+[Explore this research problem →](categories/planning-query-formulation.md)
+
+</details>
+
+<details>
+<summary><strong>Retrieval & Tool Use — what should the agent actually be allowed to do?</strong></summary>
+
+**Current anchors.** [A-RAG](papers/2602.03442.md), [READ](papers/2608.06305.md), and [DocNavRAG](papers/2608.01565.md).
+
+**Strongest signal.** This is the strongest current cluster: the field is moving from “choose a retriever” toward **designing a minimal sufficient retrieval API** — search, navigation, read, graph operations, or other data-native actions.
+
+**Biggest unresolved question.** How much capability comes from a richer action space, and how much from the agent policy choosing among those actions?
+
+**Next decisive evidence.** Same-controller operation-set ablations, same-operation fixed-vs-agentic policy comparisons, matched calls/tokens/latency, and transfer of one interface across documents, web, SQL, graphs, and code.
+
+[Explore this research problem →](categories/retrieval-tool-use.md)
+
+</details>
+
+<details>
+<summary><strong>Iterative Reasoning & Verification — what state should drive the next retrieval?</strong></summary>
+
+**Current anchors.** [Search-o1](papers/2501.05366.md) and [ACE-GraphRAG](papers/2608.01269.md), with DocNavRAG providing an important adjacent signal around explicit evidence state.
+
+**Strongest signal.** Iteration alone is becoming too weak a description. The emerging question is what **progress/evidence state** the controller should maintain, how it detects a gap, and when it should stop.
+
+**Biggest unresolved question.** Does explicit evidence/progress state outperform simply conditioning on the raw reasoning/history once retrieval budgets are matched?
+
+**Next decisive evidence.** Explicit-state vs raw-history ablations, adaptive vs fixed stopping at equal budgets, and conflict/adversarial-evidence tests.
+
+[Explore this research problem →](categories/iterative-reasoning-verification.md)
+
+</details>
+
+<details>
+<summary><strong>Multi-Agent & Orchestration — is another agent worth the coordination cost?</strong></summary>
+
+**Current status.** No paper currently clears this radar's precision threshold as a primary multi-agent retrieval contribution. That emptiness is intentional.
+
+**Strongest signal.** Parallel LLM calls are not enough. A convincing multi-agent RAG contribution needs identifiable specialization, coordination, conflict resolution, or adaptive budget allocation.
+
+**Biggest unresolved question.** Does orchestration outperform a strong single-agent controller when total model and retrieval budgets are comparable?
+
+**Next decisive evidence.** Matched-budget many-vs-one comparisons where agents truly have different tools/corpora/evidence objectives and where coordination quality, not extra compute, explains the gain.
+
+[Explore this research problem →](categories/multi-agent-orchestration.md)
+
+</details>
+
+<details>
+<summary><strong>Learning & Optimization — what should be learned once retrieval is a trajectory?</strong></summary>
+
+**Current anchors.** [Agentic-R](papers/2601.11888.md) and [Graph-R1](papers/2507.21892.md).
+
+**Strongest signal.** Static relevance becomes a mismatched objective once retrieval is one action in a multi-step policy. Training is starting to target trajectory utility rather than isolated query–passage similarity.
+
+**Biggest unresolved question.** What deserves credit when the final answer improves — the retriever, intermediate actions, the controller, or the changed environment/action space?
+
+**Next decisive evidence.** Learned-vs-prompted policies on the same interface, convincing intermediate-action credit assignment, transfer across agents/substrates, and sample-efficiency/stability analysis beyond final QA accuracy.
+
+[Explore this research problem →](categories/learning-optimization.md)
+
+</details>
+
+<details>
+<summary><strong>Evaluation & Analysis — how do we know the “agentic” part caused the gain?</strong></summary>
+
+**Current anchor.** [Agentic RAG SoK](papers/2603.07379.md) provides a sequential-decision framing; recent READ/DocNavRAG/ACE results expose why stronger evaluation is needed.
+
+**Strongest signal.** A system-level score is not enough when papers simultaneously change **substrate × operation set × state × policy × budget × base model**.
+
+**Biggest unresolved question.** Can we measure policy/trajectory quality independently of simply giving a system better tools, more retrieval calls, or more context?
+
+**Next decisive evidence.** Matched-budget trajectory benchmarks, explicit failure labels for routing/stopping/state/tool-selection, diverse workloads beyond document QA, and reproducible quality–cost frontiers.
+
+[Explore this research problem →](categories/evaluation-analysis.md)
+
+</details>
+
+[Explore the full research map →](categories/README.md)
 
 ## 🖼️ How to Read a Paper Here
 
@@ -173,7 +286,7 @@ The README is intentionally layered:
 - **60-second expand:** problem, mechanism, agent loop, closest comparison, strongest evidence, and the one open question that matters most.
 - **Deep dive:** open the full research note for the visual explainer, detailed evidence, limitations, and provenance.
 
-This keeps the homepage useful both as a radar and as a lightweight reading interface.
+This keeps the homepage useful both as a radar and as a lightweight reading interface. GitHub's native collapsed sections let the deeper layer stay available without making the default view dense.
 
 ## What Counts as Agentic RAG?
 
