@@ -7,7 +7,7 @@ Track new papers, understand what actually changed, and see how the field is mov
 
 ## 🧭 Research Compactions
 
-If you only have a few minutes, start here. These reports compress individual papers into the **research shifts, tensions, and open questions** that matter.
+If you only have a few minutes, **start here**. These reports compress individual papers into the research shifts, tensions, and open questions that matter.
 
 ### [Weekly · 2026-W32](digests/weekly/2026-W32.md)
 
@@ -35,11 +35,13 @@ The current August map has three provisional clusters: **retrieval-interface red
 [Explore the rolling August research map →](digests/monthly/2026-08.md)
 
 <details>
-<summary><strong>How compaction works</strong></summary>
+<summary><strong>What is a research compaction?</strong></summary>
 
-The radar keeps detailed paper records, but does not expect readers to consume a stream of daily logs. Weekly synthesis asks what changed, which papers matter, where evidence conflicts, and what to read next. Monthly synthesis rebuilds the higher-level field map and tracks which ideas are strengthening, weakening, or still under-tested.
+Paper-by-paper notes preserve detail; compactions answer a different question: **what changed in the research landscape?**
 
-Compaction is deliberately **lossy for repetition, not for disagreement**: negative results, uncertainty, and competing explanations are preserved. [Methodology →](COMPACTION.md)
+Weekly reports identify the few shifts worth carrying forward, compare the papers that actually change a design point, and preserve tensions or negative results. Monthly reports rebuild the field map at a higher level and revise earlier interpretations when new evidence weakens them.
+
+The goal is **lossy compression of repetition, not loss of disagreement**.
 
 </details>
 
@@ -96,18 +98,15 @@ Rather than grouping papers only by application, the radar asks **which part of 
 
 [Explore the research map →](categories/README.md)
 
-## 🖼️ What You Get for Each Paper
+## 🖼️ How to Read a Paper Here
 
-Each accepted paper is intended to be understandable without reading a generic abstract summary:
+Each accepted paper is intended to tell you more than its abstract:
 
-- **Visual explainer** — an original GPT-image-gen conceptual figure focused on the paper's key mechanism or research delta.
-- **Research read** — TL;DR, problem, core idea, agent loop, and retrieval design.
-- **Compared to what** — the nearest design point, not just a generic RAG baseline.
+- **Visual explainer** — one original conceptual figure focused on the key mechanism or research delta.
+- **Research read** — problem, core idea, agent loop, retrieval design, and the closest comparison point.
 - **Evidence check** — strongest evidence, important negative results, and likely confounders.
-- **Why it matters** — whether the work changes a reusable design point or is mainly incremental.
+- **Why it matters** — whether the paper changes a reusable design point or is mainly incremental.
 - **Limitations / open questions** — assumptions or missing tests that could change the conclusion.
-
-Visuals are treated as explanations rather than decoration; their grounding is kept separately so they can be corrected or regenerated. [Visual methodology →](VISUALS.md)
 
 ## What Counts as Agentic RAG?
 
@@ -117,13 +116,24 @@ Ordinary fixed `retrieve top-k → generate` pipelines are not included merely b
 
 ## About the Radar
 
-This is a curated living bibliography, not an exhaustive keyword feed. New papers are screened for relevance, compared against nearby work, and reviewed skeptically for baseline quality, budget fairness, unsupported causal attribution, and overclaimed novelty. **Relevance and importance are scored separately.**
+This is a **curated research map, not an exhaustive keyword feed**. The aim is to help researchers answer three questions quickly:
 
-For methodology, provenance, structured data, or contribution details, see [Curation](CURATION.md), [Compaction](COMPACTION.md), [Taxonomy](taxonomy.yaml), [canonical paper records](data/papers/), and the [digest archive](digests/README.md).
+1. **What is actually new?**
+2. **Compared with what?**
+3. **Does the evidence justify the claim?**
+
+Relevance and importance are deliberately separated, and negative results are kept when they change the interpretation of a paper.
 
 ## 🤝 Contributing
 
 Corrections are especially welcome when they change the research conclusion: a missing baseline, unfair budget, wrong taxonomy, overclaimed novelty, broken provenance, or a visual that makes the mechanism look cleaner than it really is.
+
+<details>
+<summary><strong>Methodology & maintenance</strong></summary>
+
+The public README intentionally hides most maintenance mechanics. If you want the reproducibility and curation details, see the [maintainer guide](docs/MAINTENANCE.md), [curation protocol](CURATION.md), [compaction protocol](COMPACTION.md), [visual grounding rules](VISUALS.md), [taxonomy](taxonomy.yaml), and [structured paper records](data/papers/).
+
+</details>
 
 ---
 
