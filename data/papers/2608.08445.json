@@ -1,0 +1,51 @@
+{
+  "id": "arxiv:2608.08445",
+  "arxiv_id": "2608.08445",
+  "title": "Forgotten History or Test-of-Time? Retrospect and Prospect on RAG from an IR Perspective",
+  "authors": ["Xiaoyan Zhao", "Yujie Cai", "Yang Zhang", "Grace Hui Yang", "Tat-Seng Chua"],
+  "first_seen": "2026-08-12",
+  "published": "2026-08-09",
+  "updated": null,
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.08445",
+    "pdf": "https://arxiv.org/pdf/2608.08445",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "evaluation_analysis",
+  "tags": ["documents", "query_rewrite", "evidence_verification", "adaptive_stopping", "general"],
+  "benchmarks": ["TREC 2002 QA"],
+  "relevance": 0.98,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "taxonomy_map",
+    "question": "What in modern Agentic RAG is genuinely new, and what is a new implementation of older closed-loop IR/QA ideas?",
+    "takeaway": "The useful novelty baseline extends back to classical IR/QA: query reformulation, verification, constraint relaxation, and iterative retrieval existed long before LLMs, while LLMs change the interface and implementation regime.",
+    "compared_with": "LLM-centric histories that treat retrieval adaptation and iterative verification as concepts born with modern RAG.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "image_path": "assets/visuals/2608.08445.webp",
+    "prompt_path": "assets/visuals/prompts/2608.08445.md",
+    "artifact_path": "papers/2608.08445.md"
+  },
+  "analysis": {
+    "tldr": "This perspective pushes the novelty baseline for Agentic RAG back to classical IR/QA, using systems such as QUALIFIER to show that iterative query refinement, answer verification, and closed-loop retrieval have decades-old antecedents.",
+    "problem": "Fast-moving RAG work is often compared only with recent LLM-era baselines, which can make old IR/QA ideas look newly invented and can hide mature evaluation and interaction lessons.",
+    "core_idea": "Trace modern RAG mechanisms to earlier retrieval-based QA and use QUALIFIER as a concrete proto-agentic case: retrieve under structured constraints, verify whether the answer satisfies them, relax/reformulate when necessary, and iterate before returning an answer or NIL.",
+    "agent_loop": "Structured query/constraints → retrieve and extract → verify answer → relax or reformulate constraints when evidence is insufficient → repeat → answer or abstain",
+    "retrieval_design": "The contribution is historical and analytical rather than a new retriever: it reframes iterative retrieval, query refinement, verification, and stopping as continuations of long-standing closed-loop IR/QA design patterns.",
+    "compared_to": ["LLM-centric RAG histories", "taxonomies that compare mostly recent RAG variants", "single-pass retrieval-based QA"],
+    "evidence": "The paper reconstructs QUALIFIER across TREC/SIGIR-era publications. It reports that the TREC 2002 pris2002 run answered 290/500 questions correctly, second to LCC at 415/500, and documents a successive-constraint-relaxation loop that could retry retrieval up to five times. The authors infer that iterative refinement helped explain its competitiveness; that causal explanation is historical interpretation, not a modern matched ablation.",
+    "why_it_matters": "For a research radar, this changes the comparison standard: novelty claims about adaptive retrieval, verification, or query refinement should be checked against classical IR/QA, not only against 2024–2026 RAG papers. The likely novelty of modern systems lies more in model capabilities, interfaces, scale, and learned control than in the existence of closed-loop retrieval itself.",
+    "limitations": ["This is a perspective/systematization paper, not an exhaustive meta-analysis of all classical IR and QA systems.", "Historical performance does not establish equivalence between symbolic QA loops and modern LLM-agent policies.", "The claim that QUALIFIER's iterative loop explains its strong TREC result is plausible but not causally isolated by a matched ablation."],
+    "confidence": "high"
+  },
+  "provenance": {
+    "discovered_via": ["arXiv recent search", "arXiv full HTML"],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-12"
+  }
+}
