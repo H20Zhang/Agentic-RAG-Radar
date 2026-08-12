@@ -49,6 +49,7 @@ orthogonal_tags:
 
   control_pattern:
     - retrieve_or_not
+    - budget_allocation
     - query_rewrite
     - query_decomposition
     - retriever_routing
