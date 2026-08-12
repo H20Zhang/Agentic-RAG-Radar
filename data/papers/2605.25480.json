@@ -1,0 +1,51 @@
+{
+  "id": "arxiv:2605.25480",
+  "arxiv_id": "2605.25480",
+  "title": "Retrieval as Reasoning: Self-Evolving Agent-Native Retrieval via LLM-Wiki",
+  "authors": ["Haoliang Ming", "Feifei Li", "Xiaoqing Wu", "Wenhui Que"],
+  "first_seen": "2026-08-12",
+  "published": "2026-05-25",
+  "updated": "2026-05-26",
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2605.25480",
+    "pdf": "https://arxiv.org/pdf/2605.25480",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "retrieval_tool_use",
+  "tags": ["documents", "tool_selection", "iterative_search", "adaptive_stopping", "multi_hop_qa", "graph"],
+  "benchmarks": ["HotpotQA", "MuSiQue", "2WikiMultiHopQA", "AuthTrace"],
+  "relevance": 1.0,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "retrieval_interface",
+    "question": "How does LLM-Wiki replace flat retrieval-as-lookup with agent-composable traversal over a compiled, linked knowledge surface?",
+    "takeaway": "The important delta is environment/interface co-design: documents are compiled into traversable Wiki pages, while the agent composes search, read, link-following, and sufficiency checks instead of consuming one fixed top-k context.",
+    "compared_with": "Flat dense RAG, summary-tree retrieval, and graph-enhanced systems whose index products are not directly exposed as a human-readable agent traversal surface.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "image_path": "assets/visuals/2605.25480.webp",
+    "prompt_path": "assets/visuals/prompts/2605.25480.md",
+    "artifact_path": "papers/2605.25480.md"
+  },
+  "analysis": {
+    "tldr": "LLM-Wiki compiles raw documents into persistent interlinked Wiki pages and gives an agent search/read/link traversal operations plus evidence-sufficiency stopping; an Error Book separately maintains the compiled structure across ingestion batches.",
+    "problem": "Flat chunk indexes make multi-hop evidence acquisition depend on repeatedly rediscovering semantically distant intermediate entities, while static graph/summary representations may still not expose a composable traversal interface to the agent.",
+    "core_idea": "Move structure to compile time: build human-readable Wiki pages with aliases, facts, provenance and bidirectional links, then let the agent compose wiki_search and wiki_read calls, follow links, browse indices, and stop when evidence is sufficient. Persist recurring construction errors in an Error Book that feeds constraints and repair back into later compilation.",
+    "agent_loop": "search or browse → read page/index → follow discovered links or reformulate search → check evidence sufficiency → repeat or answer",
+    "retrieval_design": "The agent gets two concrete tools, wiki_search and wiki_read; links returned by reads become traversal affordances. Termination occurs when reasoning chains are traced, the tool budget is reached, or repeated empty searches exceed a patience threshold. The Error Book is an index-maintenance loop rather than query-time memory.",
+    "compared_to": ["Dense RAG", "RAPTOR/MemWalker summary trees", "GraphRAG", "HippoRAG 2", "LightRAG", "fixed one-shot retrieval over the same compiled Wiki in ablation"],
+    "evidence": "The paper reports 2.0–8.1 F1 gains over its strongest graph baselines on HotpotQA, MuSiQue and 2WikiMultiHopQA and best overall AuthTrace accuracy. More causally useful are the ablations: disabling progressive traversal while keeping the compiled Wiki causes an 11.7–13.8 F1 drop, and disabling the Error Book causes a 3.4–4.0 F1 drop. The evaluation corpora for the public multi-hop datasets are constructed from the first 500 examples' associated context paragraphs rather than full Wikipedia, so web-scale claims remain untested.",
+    "why_it_matters": "This is a strong pre-August anchor for the radar's interface thesis. It shows that agent-native retrieval-interface redesign was already explicit in May and provides a cleaner structure-vs-traversal ablation than many recent papers. August should therefore be described as convergence/sharpening, not the origin of retrieval-interface redesign.",
+    "limitations": ["Compilation is more expensive than chunk-and-embed and the paper identifies scalability issues as the Wiki grows to tens of thousands of pages.", "The public multi-hop benchmark corpora are bounded subsets, not full-Wikipedia or rapidly changing production corpora.", "The method changes both knowledge organization and query-time control, so cross-system gains still mix substrate and policy even though the traversal ablation helps."],
+    "confidence": "high"
+  },
+  "provenance": {
+    "discovered_via": ["arXiv backfill search", "arXiv full HTML"],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-12"
+  }
+}
