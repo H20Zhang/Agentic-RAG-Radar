@@ -6,60 +6,54 @@ The archive intentionally becomes coarser with time:
 
 `recent month → weekly` · `recent quarter → monthly` · `all years → yearly`
 
-The underlying paper records remain available for detail; compactions preserve the conclusions, disagreements, and research questions that are worth carrying forward.
+The underlying paper records remain available for detail; compactions preserve the conclusions, disagreements, and research questions worth carrying forward.
 
 ## Recent Month · Weekly
 
-Use weekly reports to decide **what changed recently and what is worth reading now**.
+### [2026-W32 · Convergence, factorization, and a stricter novelty baseline](weekly/2026-W32.md)
 
-### [2026-W32 · Designing the retrieval interaction](weekly/2026-W32.md)
+**Revised thesis:** W32 is not best described as the week Agentic RAG “moved beyond top-k.” Earlier 2026 work already made agent-facing retrieval environments explicit. The more durable change is that **interface, evidence state, context policy, and retrieval budget are becoming separable control variables**, while the new IR-history perspective pushes the novelty baseline back to classical QA.
 
-**Thesis:** early-August work is moving beyond “call a better retriever more times” toward **designing the retrieval interface, making evidence progress explicit, and treating context construction as a policy**.
-
-The most useful counter-signal is READ's BM25 result: some apparent Agentic RAG gains may come from a stronger retrieval primitive rather than adaptive control itself.
+The strongest tensions are now: **better primitive vs better policy**, **adaptive budget vs real resource cost**, and **modern capability vs older control-loop precedent**.
 
 [Read the weekly synthesis →](weekly/2026-W32.md)
 
-> Weekly reports remain visible in this section while they fall inside the most recent ~1 month. Older weekly files are retained for provenance but stop occupying the primary archive view once monthly compactions cover that period.
+> Weekly reports stay on the primary archive surface for roughly the latest month; older weekly files remain for provenance.
 
 ## Recent Quarter · Monthly
 
-Use monthly reports to decide **how the field map is changing**, not merely what was published.
-
 ### [2026-08 · Rolling research map](monthly/2026-08.md)
 
-**Current thesis:** Agentic RAG is beginning to look like a control stack:
+**Current thesis:** August is a **convergence + factorization** story:
 
-`retrieval substrate → operation/interface → evidence state/controller → learning/evaluation`
+`environment/interface → evidence state → policy/stopping → resource allocation → evaluation`
 
-The current month is organized around retrieval-interface redesign, stateful evidence construction, and adaptive context engineering. The unresolved problem is causal attribution across **substrate × operation set × state × policy × budget × base model**.
+The rolling map now groups evidence into **environment/interface design**, **state + resource-aware control**, and **evaluation/novelty discipline**. Backfilled LLM-Wiki and Know Before You Fetch materially changed the chronology and baseline standard rather than simply adding two more papers.
 
 [Explore the August research map →](monthly/2026-08.md)
 
-> Monthly reports remain visible in this section while they fall inside the most recent ~3 months. Older monthly files stay in the repository, but the long-term public archive rolls them into yearly research maps.
+> Monthly reports stay on the primary archive surface for roughly the latest quarter; older files remain in the repository and are compressed again at yearly granularity.
 
 ## All Years · Yearly
 
-Use yearly reports for the **durable research map**: which abstractions survived, which claims weakened, which papers defined the year, and what open problems carried forward.
-
 ### [2026 · Rolling year-to-date map](yearly/2026.md)
 
-**Current thesis:** the durable 2026 movement is from “agent + retriever” toward an explicit **information-acquisition control stack** in which retrieval operations, evidence state, adaptive policy, and trajectory-level learning/evaluation are increasingly treated as separate research objects.
+**Current thesis:** the durable 2026 movement is toward an explicit **information-acquisition control stack** whose environment, state, policy, and resource objective can be tested separately. The year map now also tracks a second axis: whether a claimed agentic mechanism is genuinely new or a new LLM-era implementation of an older IR/QA control principle.
 
-The report is deliberately labeled rolling: historical coverage before the radar's backfill is not yet complete, so it does not pretend to be a full-year census.
+The report remains explicitly rolling; incomplete historical backfill is not presented as full-year coverage.
 
 [Explore the 2026 year-to-date map →](yearly/2026.md)
 
-Future finalized yearly reports will be kept here permanently. Earlier years will only be added after historical backfill is sufficiently complete to justify calling the report an annual map rather than an anchor sample.
+Earlier years will only be added when backfill is sufficiently complete to justify an annual map rather than an anchor sample.
 
 ## How the Time Hierarchy Works
 
-**Weekly** preserves local changes and tensions while they are fresh. **Monthly** compresses several weeks into a field-map update. **Yearly** re-evaluates the whole year and keeps only durable shifts, defining papers, failed/weakening ideas, evidence standards, and open problems entering the next year.
+**Weekly** preserves local deltas and tensions. **Monthly** rebuilds the field map. **Yearly** keeps only durable shifts, defining papers, weakened claims, evidence standards, and open problems.
 
-This is **not recursive summarization**: monthly and yearly reports may use lower-level reports as indexes, but load-bearing conclusions are re-grounded in canonical paper records and source/full-paper notes to avoid compounding interpretation error.
+This is **not recursive summarization**: lower-level compactions are indexes, while load-bearing monthly/yearly conclusions are re-grounded in canonical records and source/full-paper notes.
 
-Paper-level details remain available in [`../papers/`](../papers/) and the [research-problem map](../categories/README.md).
+Paper-level detail remains in [`../papers/`](../papers/) and the [research-problem map](../categories/README.md).
 
 ---
 
-For curation and compaction methodology, see the [maintainer guide](../docs/MAINTENANCE.md).
+For methodology, see the [maintainer guide](../docs/MAINTENANCE.md) and [compaction protocol](../COMPACTION.md).
