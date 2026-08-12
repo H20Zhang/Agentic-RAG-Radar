@@ -1,0 +1,51 @@
+{
+  "id": "arxiv:2608.08237",
+  "arxiv_id": "2608.08237",
+  "title": "SAGE: SLO-Aware Adaptive Retrieval for Production RAG Systems",
+  "authors": ["Muhammad Faizan Raza", "Shuo (Luna) Yang", "Satish Mahadevan Srinivasan"],
+  "first_seen": "2026-08-12",
+  "published": "2026-08-08",
+  "updated": null,
+  "venue": "IEEE CoDIT 2026",
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.08237",
+    "pdf": "https://arxiv.org/pdf/2608.08237",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "learning_optimization",
+  "tags": ["hybrid", "budget_allocation", "open_domain_qa", "multi_hop_qa", "enterprise"],
+  "benchmarks": ["Natural Questions", "HotpotQA", "UnSeenTimeQA"],
+  "relevance": 0.96,
+  "importance": 3,
+  "visual_explainer": {
+    "type": "retrieval_interface",
+    "question": "How does SAGE turn retrieval depth into a learned per-query resource-allocation decision under a latency SLO?",
+    "takeaway": "A lightweight policy uses retrieval-side features to choose a query-specific passage budget k before generation, making retrieval budget a controllable systems action rather than a global constant.",
+    "compared_with": "Fixed-k hybrid RAG under the same retrieval stack; adaptive-k and learned stopping methods are relevant prior art but are not directly compared in the main baseline table.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "image_path": "assets/visuals/2608.08237.webp",
+    "prompt_path": "assets/visuals/prompts/2608.08237.md",
+    "artifact_path": "papers/2608.08237.md"
+  },
+  "analysis": {
+    "tldr": "SAGE learns a lightweight policy over retrieval-side features to choose the number of passages per query under an explicit tail-latency SLO, reframing retrieval depth as resource allocation rather than a globally tuned constant.",
+    "problem": "A fixed retrieval budget over-serves easy queries and under-serves hard ones, creating a global quality-versus-tail-latency trade-off that does not match heterogeneous production traffic.",
+    "core_idea": "Run a small probe retrieval, extract score/rank and sparse-dense agreement features, then use an offline-oracle-trained RandomForest policy to select k from a discrete budget set before generation. Calibration on held-out data tunes the policy toward a target SLO.",
+    "agent_loop": "Hybrid probe retrieval → extract retrieval-side features → learned policy chooses k → assemble top-k context → generate → log latency/SLO outcome; training labels come from offline budget sweeps",
+    "retrieval_design": "The substrate remains a standard hybrid BM25 + BGE-M3/RRF stack; the research object is the per-query budget policy. The policy adds no LLM call and is reported below 1 ms, while the probe retrieval is about 300 ms and is folded into the retrieval path.",
+    "compared_to": ["static-k hybrid RAG", "random budget allocation", "dense-only retrieval", "adaptive-k and Stop-RAG as related but not main-table baselines"],
+    "evidence": "On a 334-query Natural Questions test under a 5 s target, the main table reports SAGE at 95% SLO compliance, 3.6 s P95, 22% EM, average k=9.8 and 49% relative retrieval cost, versus static k=20 at 30%, 5.6 s, 24% EM, k=20 and 100% cost. The paper reports cross-dataset/model transfer against static k=10 with similar EM. The key evidence gap is that the main experimental baseline family is static-k; Adaptive-k and Stop-RAG are discussed as prior work but not directly benchmarked.",
+    "why_it_matters": "SAGE adds a systems axis the radar should track explicitly: how much retrieval to buy for each query under a resource objective. This is important for production Agentic RAG, but the novelty claim should be narrower than 'adaptive retrieval works' because adaptive-k and stopping policies predate it.",
+    "limitations": ["The strongest experimental comparison is against fixed-k baselines rather than contemporary adaptive budget controllers.", "The main NQ latency table uses only 334 test queries, so tail-latency conclusions deserve larger deployment-scale validation.", "The reported dollar-cost projection is a simple passage-volume model rather than a full end-to-end production cost accounting."],
+    "confidence": "high"
+  },
+  "provenance": {
+    "discovered_via": ["arXiv recent search", "arXiv full HTML"],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-12"
+  }
+}
