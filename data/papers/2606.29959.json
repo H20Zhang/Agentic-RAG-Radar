@@ -1,0 +1,51 @@
+{
+  "id": "arxiv:2606.29959",
+  "arxiv_id": "2606.29959",
+  "title": "Know Before You Fetch: Calibrated Retrieval-Budget Allocation for Retrieval-Augmented Generation",
+  "authors": ["Zhe Dong", "Fang Qin", "Manish Shah", "Yicheng Wang"],
+  "first_seen": "2026-08-12",
+  "published": "2026-06-29",
+  "updated": null,
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2606.29959",
+    "pdf": "https://arxiv.org/pdf/2606.29959",
+    "code": "https://github.com/dongzhe1/know-before-you-fetch",
+    "project": null
+  },
+  "primary_category": "retrieval_tool_use",
+  "tags": ["dense", "retrieve_or_not", "budget_allocation", "adaptive_stopping", "open_domain_qa"],
+  "benchmarks": ["TriviaQA", "Natural Questions", "MS MARCO", "PopQA"],
+  "relevance": 0.97,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "retrieval_interface",
+    "question": "How does calibrated confidence become an interface for choosing no retrieval, compact retrieval, full retrieval, or abstention?",
+    "takeaway": "The important abstraction is graded budget allocation with separate cost axes: retrieval-call rate, full-context rate, passage budget, and measured latency are not interchangeable.",
+    "compared_with": "Fixed always-retrieve RAG, binary retrieval gating, and raw uncertainty signals such as TARG-style prefix entropy/margin.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "image_path": "assets/visuals/2606.29959.webp",
+    "prompt_path": "assets/visuals/prompts/2606.29959.md",
+    "artifact_path": "papers/2606.29959.md"
+  },
+  "analysis": {
+    "tldr": "Know Before You Fetch reframes adaptive RAG as calibrated multi-action budget allocation: answer closed-book, retrieve one passage, retrieve five passages, or abstain, while explicitly separating retrieval calls from context volume and measured latency.",
+    "problem": "Binary retrieve-or-not gates collapse several distinct deployment costs and can make compact retrieval look free. Raw uncertainty scores can rank queries without providing stable probabilities for thresholding across actions and datasets.",
+    "core_idea": "Calibrate a reader uncertainty signal into a probability of closed-book correctness, then use thresholds to choose k=0, k=1, or k=5; optionally abstain using the confidence of the answer actually selected. Evaluate policies on separate retrieval-call, full-context, passage-budget, and latency axes.",
+    "agent_loop": "closed-book probe → calibrated correctness probability → choose k=0 / k=1 / k=5 → answer; optional abstention if selected-answer confidence is too low",
+    "retrieval_design": "The reader and retriever are frozen. A lightweight calibration-and-threshold layer controls whether and how much context is acquired. The paper explicitly accounts for the closed-book probe as an added generation cost and treats compact retrieval as a real retrieval call.",
+    "compared_to": ["always-retrieve RAG", "binary retrieval gating", "TARG-style prefix entropy/margin", "Self-RAG trigger", "Adaptive-RAG-inspired classifier under a matched-reader decision table"],
+    "evidence": "Across TriviaQA, NQ, and MS MARCO, the paper reports large calibration-error reductions and improved passage-budget/full-context frontiers from graded allocation. It also reports a useful negative result: retrieval-call AUC is essentially tied with binary gating because k=1 still incurs a retrieval call. At matched-accuracy frontier points, the measured two-stage cost model reports gating about 27% slower on Qwen3-8B but about 8% faster on Qwen3-32B, showing that an extra confidence probe can reverse the latency story depending on the reader.",
+    "why_it_matters": "This paper provides a cleaner systems vocabulary for adaptive retrieval. 'How much context?' and 'did we call retrieval at all?' are different resources, and the controller should be judged on a quality-cost frontier rather than a single skip-rate number. It is also an important prior-art baseline for later SLO-aware budget policies such as SAGE.",
+    "limitations": ["The core experiments focus on short-answer QA and small discrete budgets rather than long-horizon multi-step retrieval.", "The closed-book probe makes the policy attractive only in cost regimes where enough queries can skip or shrink retrieval.", "Calibration can drift when model, corpus, or query distribution changes."],
+    "confidence": "high"
+  },
+  "provenance": {
+    "discovered_via": ["arXiv backfill search", "arXiv full HTML", "official GitHub link from paper"],
+    "full_text_checked": true,
+    "code_link_verified": true,
+    "last_reviewed": "2026-08-12"
+  }
+}
