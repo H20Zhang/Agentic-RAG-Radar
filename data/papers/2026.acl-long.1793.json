@@ -1,0 +1,53 @@
+{
+  "id": "acl:2026.acl-long.1793",
+  "arxiv_id": null,
+  "title": "SPARKLE: A Structured and Plug-and-play Agentic Retrieval Policy for Adaptive RAG Models",
+  "authors": ["Jinyuan Fang", "Zaiqiao Meng", "Craig Macdonald"],
+  "first_seen": "2026-08-12",
+  "published": "2026-06-24",
+  "updated": null,
+  "venue": "ACL 2026",
+  "urls": {
+    "paper": "https://aclanthology.org/2026.acl-long.1793/",
+    "pdf": "https://aclanthology.org/2026.acl-long.1793.pdf",
+    "code": "https://github.com/jyfang6/sparkle",
+    "project": null
+  },
+  "primary_category": "learning_optimization",
+  "tags": ["adaptive_rag", "reinforcement_learning", "retriever_routing", "query_formulation", "knowledge_graph", "plug_and_play"],
+  "benchmarks": ["HotpotQA", "2WikiMultiHopQA", "PopQA", "TriviaQA", "Natural Questions", "WebQuestions", "Bamboogle"],
+  "relevance": 0.99,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "trajectory_learning",
+    "question": "What does SPARKLE learn when the retriever and answer LLM are treated as a fixed environment?",
+    "takeaway": "A separate proxy policy decides whether to retrieve, formulates queries, and integrates retrieved knowledge; PPO with tree-structured rollouts optimizes that policy without finetuning the retriever or answer LLM.",
+    "compared_with": "Prompted adaptive RAG and adaptive retrieval policies that rely on the answer LLM itself or finetune the main LLM.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2026.acl-long.1793.png",
+    "image_path": "assets/visuals/2026.acl-long.1793.webp",
+    "prompt_path": "assets/visuals/prompts/2026.acl-long.1793.md",
+    "artifact_path": "papers/2026.acl-long.1793.md"
+  },
+  "analysis": {
+    "tldr": "SPARKLE moves adaptive retrieval control into a separate learned proxy policy: retrieval decision, query formulation, and knowledge integration are optimized with RL while the retriever and answer LLM remain part of the environment.",
+    "problem": "Prompt-only adaptive RAG lacks explicit supervision, while finetuning the main LLM can be expensive and tightly couples the retrieval policy to one generator/retriever stack.",
+    "core_idea": "Use a lightweight proxy model with structured knowledge-graph reasoning to control when to retrieve, how to formulate the query, and how to integrate knowledge; train it with SFT plus PPO and binary tree-structured rollouts.",
+    "agent_loop": "Answer-model reasoning state → proxy retrieval decision → optional query formulation/retrieval → proxy knowledge integration → updated reasoning state → repeat or answer",
+    "retrieval_design": "The proxy is decoupled from the retriever and answer LLM. Training treats the retriever/LLM as an environment and explores multiple trajectories with tree-structured rollout; inference swaps retrievers and LLMs without retraining the policy in the reported transfer tests.",
+    "compared_to": ["Adaptive-RAG", "Search-o1", "Search-R1", "R1-Searcher", "prompted adaptive RAG"],
+    "evidence": "Across three in-domain and four out-of-domain QA benchmarks, the ACL paper reports average gains of 9.17% and 2.85% over state-of-the-art adaptive RAG baselines. Its matched-generator comparison is more nuanced: with the same Qwen2.5-7B answer model, SPARKLE is competitive but not uniformly best against RL search baselines, so the strongest evidence is plug-and-play control and transfer rather than universal policy dominance.",
+    "why_it_matters": "This is a stronger learning baseline for the radar than static-vs-adaptive comparisons: it directly learns a multi-action retrieval policy and compares against other adaptive/search-RL systems. It also cleanly separates policy capacity from the answer model, which is useful for causal analysis of learned retrieval control.",
+    "limitations": ["The proxy itself still adds inference/training complexity and structured KG machinery, so improvements cannot be attributed to RL alone.", "Using a stronger answer LLM improves results, which reinforces rather than removes the base-model confound.", "Matched-generator tables show the policy is competitive rather than uniformly dominant over all RL search baselines."],
+    "confidence": "high"
+  },
+  "provenance": {
+    "discovered_via": ["ACL Anthology", "University of Glasgow published-version record"],
+    "full_text_checked": true,
+    "code_link_verified": true,
+    "last_reviewed": "2026-08-12",
+    "publication_date_source": "University of Glasgow first online publication date"
+  }
+}
