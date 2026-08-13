@@ -2,9 +2,15 @@
 
 > **Core question:** How should new evidence change the next retrieval, reasoning, verification, and stopping decision?
 
-This category is about the **closed loop after retrieval begins**. It includes on-demand search, evidence checking, context-gap detection, adaptive stopping, and context construction driven by intermediate observations.
+This category is about the **closed loop after retrieval begins**. The important object is increasingly not “iteration” itself, but the state that tells the controller what has been established, what is missing, and whether another information-acquisition action is justified.
 
 ## Current papers
+
+### [S2G-RAG](../papers/2604.23783.md) — ★★★★☆
+
+**Design point:** explicitly predict whether current evidence is sufficient and, if not, represent missing information as structured gap items that become the next query.
+
+**Why it changes the map:** a matched-budget ablation isolates a strong contribution from the sufficiency/gap controller. It also shows that explicit missing-evidence state was already a concrete 2026 design point before the August DocNavRAG work.
 
 ### [ACE-GraphRAG](../papers/2608.01269.md) — ★★★★☆
 
@@ -20,14 +26,10 @@ This category is about the **closed loop after retrieval begins**. It includes o
 
 ## Current tension
 
-Iterative retrieval is easy to claim and hard to evaluate. More iterations can mean better decisions—or simply **more opportunities, more tokens, and more latency**. A credible result should separate adaptive control from extra budget.
+The useful comparison is now **explicit state versus implicit history**, not “iterative versus one-shot.” S2G-RAG gives explicit sufficiency/missing-information state a stronger baseline; DocNavRAG later couples a related evidence state to a document-native navigation environment; ACE changes the context policy over a graph substrate.
 
-A second issue is **state representation**. Raw conversation/reasoning history may be a poor control state. Explicit evidence sufficiency, uncertainty, provenance, or missing-information state may make the loop more inspectable and transferable.
+That makes causal attribution harder but cleaner: representation, state, action space, stopping policy, and retrieval budget should be varied separately when possible.
 
 ## What would count as meaningful progress?
 
-- adaptive versus fixed stopping under matched retrieval/token budgets;
-- explicit evidence/progress state versus raw history alone;
-- verifier decisions tied to measurable error reduction rather than extra sampling;
-- robust loop behavior when retrieved evidence conflicts or is adversarial;
-- transfer of the control policy across different retrieval substrates.
+A decisive next result would compare explicit evidence/gap state against a strong raw-history controller while matching retrieval calls, retrieved tokens, and answer-model capacity. It should also stress conflicting evidence and transfer the same state abstraction across documents, web, SQL, code, or graphs.
