@@ -1,10 +1,18 @@
 # Evaluation & Analysis
 
-> **Core question:** How do we tell whether an Agentic RAG system is genuinely making better information-acquisition decisions rather than using better tools, more context, more compute, easier benchmarks—or rediscovering an older IR/QA control pattern under new terminology?
+> **Core question:** How do we tell whether an Agentic RAG system is genuinely making better information-acquisition decisions rather than using better tools, looser budgets, more compute, easier benchmarks—or rediscovering an older IR/QA control pattern under new terminology?
 
 This category covers benchmarks, surveys/SoKs, diagnostic studies, failure analysis, historical/systematization work, and evaluation methodology for adaptive retrieval systems.
 
 ## Current design anchors
+
+### [When Should Active RAG Retrieve?](../papers/2607.24010.md) — ★★★★☆
+
+**Design point:** make the router's **operating point** auditable: separate utility ranking, calibrated threshold transfer, realized evidence usage, retrieval harm, and trigger-side cost.
+
+**Why it matters:** two systems with the same nominal “50% retrieval budget” are not matched if their held-out usage differs. Even matched evidence use is not matched total cost when one controller needs a probe retrieval or no-retrieval generation before deciding.
+
+**Caveat:** the main experiments are controlled routing diagnostics, not full open-domain multi-tool search.
 
 ### [Forgotten History or Test-of-Time?](../papers/2608.08445.md) — ★★★★☆
 
@@ -12,33 +20,22 @@ This category covers benchmarks, surveys/SoKs, diagnostic studies, failure analy
 
 **Why it matters:** “iterative retrieval,” query refinement, verification, or stopping are not sufficient novelty claims by themselves. Modern work should isolate what LLM-era interfaces, learning, state, scale, or capability add.
 
-**Caveat:** historical continuity does not establish technical equivalence, and the paper's explanation of QUALIFIER's competitive TREC result is retrospective rather than causally ablated.
-
 ### [Agentic RAG SoK](../papers/2603.07379.md) — ★★★☆☆
 
 **Design point:** organize Agentic RAG as a sequential decision process over state, retrieval/tool actions, observations, and stopping.
-
-**Potential value:** trajectory-level framing can make architecture comparison and failure analysis cleaner than a taxonomy based only on retriever/application labels.
-
-**Current caveat:** taxonomy novelty and literature coverage still need comparison against prior surveys and older IR/QA systematizations.
 
 ## Evaluation lens used by this radar
 
 For a system-level gain, separate when possible:
 
-`substrate × operation set × state × policy × budget × base model × historical baseline`
+`substrate × operation set × state × policy × realized budget × base model × historical baseline`
 
-At minimum, inspect retrieval calls and retrieved tokens, controller/probe overhead, latency/cost, lexical/sparse as well as dense baselines when appropriate, policy ablations using the same operation set, explicit state versus raw context/history, benchmark diversity, negative results/baseline reversals, and whether the claimed mechanism has meaningful pre-LLM antecedents.
+The new emphasis on **realized** budget is deliberate. Report calls/tokens/context volume/latency separately, but also ask whether a learned threshold actually transfers to the held-out usage target and how often retrieval changes a correct no-retrieval answer into a wrong one.
 
-The historical axis does **not** mean “nothing is new.” It asks a sharper question: is the novelty in the control-loop shape, or in how modern models represent state, choose actions, learn policies, operate at scale, and interact with richer information environments?
+A second hidden variable is the controller's pre-decision path. Query-only routing, uncertainty from a no-retrieval generation, and probe-retrieval scoring can share the same final evidence-use rate while paying meaningfully different costs.
+
+The historical axis does **not** mean “nothing is new.” It asks whether novelty lies in the control-loop shape or in modern representation, learning, scale, tool interfaces, and richer information environments.
 
 ## What would count as meaningful progress?
 
-- benchmarks that evaluate **trajectory quality**, not only final answer accuracy;
-- matched-budget protocols for adaptive variable-length search;
-- tests that isolate stopping, routing, evidence-state, tool-selection, and budget-allocation failures;
-- modern re-implementations of strong classical IR/QA ideas as baselines where relevant;
-- workloads beyond document QA: web research, SQL/data analysis, code, scientific retrieval, multimodal evidence;
-- reproducible cost–quality frontiers rather than one unconstrained best score.
-
-The goal is not more metrics. It is an evaluation design that makes causal and novelty claims about “agentic” control harder to fake.
+The next bar is a trajectory benchmark that reports quality against **realized multi-resource frontiers**—retrieval calls, retrieved/context tokens, controller compute, wall-clock/latency—while labeling routing, stopping, evidence-state, and tool-selection failures. Strong historical and simple uncertainty/lexical baselines should remain in the comparison when they attack the same information-acquisition decision.
