@@ -1,0 +1,52 @@
+{
+  "id": "arxiv:2604.23783",
+  "arxiv_id": "2604.23783",
+  "title": "S2G-RAG: Structured Sufficiency and Gap Judging for Iterative Retrieval-Augmented QA",
+  "authors": ["Minghan Li", "Junjie Zou", "Xinxuan Lv", "Chao Zhang", "Guodong Zhou"],
+  "first_seen": "2026-08-12",
+  "published": "2026-04-26",
+  "updated": null,
+  "venue": "ACL 2026",
+  "urls": {
+    "paper": "https://aclanthology.org/2026.acl-long.1185/",
+    "pdf": "https://aclanthology.org/2026.acl-long.1185.pdf",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "iterative_reasoning_verification",
+  "tags": ["iterative_search", "evidence_state", "gap_prediction", "stopping", "multi_hop_qa", "compression"],
+  "benchmarks": ["TriviaQA", "HotpotQA", "2WikiMultiHopQA"],
+  "relevance": 0.99,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "state_progression",
+    "question": "How does S2G-RAG turn sufficiency and missing-information gaps into the next retrieval action?",
+    "takeaway": "The controller explicitly separates 'is current evidence sufficient?' from 'what is missing?', then maps structured gap items into the next retrieval query while keeping a compact evidence memory.",
+    "compared_with": "Iterative RAG that conditions the next search on raw reasoning/provisional answers without an explicit structured gap state.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2604.23783.png",
+    "image_path": "assets/visuals/2604.23783.webp",
+    "prompt_path": "assets/visuals/prompts/2604.23783.md",
+    "artifact_path": "papers/2604.23783.md"
+  },
+  "analysis": {
+    "tldr": "S2G-RAG makes retrieval progress explicit: a lightweight judge predicts whether accumulated evidence is sufficient and, when it is not, emits structured missing-information items that deterministically become the next retrieval query.",
+    "problem": "Multi-turn RAG can answer from incomplete evidence or keep retrieving redundant text because the controller lacks a clean representation of what has been established and what remains missing.",
+    "core_idea": "Maintain a sentence-level Evidence Context and use S2G-Judge to output either sufficient or structured gap items; gap items drive the next query, separating evidence-state representation from the answer reasoner.",
+    "agent_loop": "Accumulate compact evidence → judge sufficiency → if insufficient predict gap items → construct next query → retrieve/extract → update evidence → repeat or answer",
+    "retrieval_design": "The judge is a LoRA-tuned Llama-3.2-3B controller distilled from GPT-4o-mini traces; retrieval uses matched BM25 or E5 settings, with at most four turns and fixed per-turn top-k in the main experiments.",
+    "compared_to": ["SIM-RAG", "RAG-Critic", "IR-CoT", "FLARE", "Self-RAG", "standard RAG"],
+    "evidence": "Under matched BM25 with the same Llama-3-8B answer reasoner, S2G-RAG reaches 43.3/56.5 EM/F1 on HotpotQA versus 32.7/43.3 for SIM-RAG, and 41.7/48.6 on 2Wiki versus 34.1/40.2. Removing S2G-Judge drops HotpotQA by 15.8 EM and 19.0 F1 while keeping retriever, maximum turns, per-turn top-k, and answer reasoner fixed. The sentence-level extractor also reduces reported per-sample latency by 17.7% versus appending full retrieved text while improving EM/F1.",
+    "why_it_matters": "This is a cleaner predecessor for explicit evidence/missing-state control than August-only narratives suggest. It strengthens the claim that state representation is becoming a first-class control object, while separating that idea from document-structure navigation such as DocNavRAG.",
+    "limitations": ["The main setting is benchmark QA with capped retrieval turns and fixed per-turn top-k, so the state controller is not yet a general resource-allocation policy.", "Teacher-distilled supervision and a separate evidence extractor add components beyond the sufficiency/gap interface itself.", "The strongest evidence is on multi-hop QA; transfer to web, SQL, code, or multimodal retrieval remains open."],
+    "confidence": "high"
+  },
+  "provenance": {
+    "discovered_via": ["ACL Anthology", "arXiv backfill"],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-12"
+  }
+}
