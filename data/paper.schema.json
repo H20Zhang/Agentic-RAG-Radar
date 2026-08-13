@@ -73,6 +73,7 @@
         "full_text_grounded": {"type": "boolean"},
         "renderer": {"enum": ["gpt-image-gen", "other"]},
         "status": {"enum": ["pending", "generated", "needs_regeneration"]},
+        "master_image_path": {"type": ["string", "null"]},
         "image_path": {"type": ["string", "null"]},
         "prompt_path": {"type": ["string", "null"]},
         "artifact_path": {"type": ["string", "null"]}
