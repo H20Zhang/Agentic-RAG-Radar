@@ -1,0 +1,52 @@
+{
+  "id": "arxiv:2607.24010",
+  "arxiv_id": "2607.24010",
+  "title": "When Should Active RAG Retrieve? A Budget-Aware Evaluation of Utility, Calibration, and Cost",
+  "authors": ["Pin Qian", "Su Wang", "Chong Peng", "Junxian You", "Lifei Liu", "Haoran Yu", "Yihang Chen", "Xiaochong Jiang"],
+  "first_seen": "2026-08-12",
+  "published": "2026-07-27",
+  "updated": null,
+  "venue": "KDD 2026 Workshop on Evaluation and Trustworthiness of Agentic AI",
+  "urls": {
+    "paper": "https://arxiv.org/abs/2607.24010",
+    "pdf": "https://arxiv.org/pdf/2607.24010",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "evaluation_analysis",
+  "tags": ["active_rag", "budget", "calibration", "retrieval_harm", "cost", "evaluation"],
+  "benchmarks": ["HotpotQA", "2WikiMultiHopQA", "MuSiQue"],
+  "relevance": 0.98,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "evidence_failure_map",
+    "question": "Why is a nominal retrieval rate not enough to compare Active RAG routers?",
+    "takeaway": "A router must be evaluated at an operating point that separates utility ranking, threshold-to-budget calibration, retrieval harm, and trigger-side cost.",
+    "compared_with": "Single-point Active RAG evaluations that report accuracy at a nominal target budget without realized usage, harm, or trigger cost.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2607.24010.png",
+    "image_path": "assets/visuals/2607.24010.webp",
+    "prompt_path": "assets/visuals/prompts/2607.24010.md",
+    "artifact_path": "papers/2607.24010.md"
+  },
+  "analysis": {
+    "tldr": "This paper turns 'when should Active RAG retrieve?' into a budgeted utility-evaluation problem: compare routers under matched realized usage, audit harmful retrieval, test whether thresholds transfer, and include the computation required to make the routing decision.",
+    "problem": "A nominal 50% retrieval target does not imply two routers actually use evidence at the same held-out rate, and accuracy can hide both retrieval harm and different trigger-side compute costs.",
+    "core_idea": "Define per-example retrieval utility as the correctness change versus a no-retrieval answer, then evaluate exact matched-usage frontiers, deployable calibrated-threshold frontiers, conservative budget frontiers, harm audits, and router-specific cost decompositions.",
+    "agent_loop": "Compute routing score → calibrate/apply operating threshold → retrieve or skip → answer → measure realized usage, marginal utility/harm, and total decision cost",
+    "retrieval_design": "The study isolates binary evidence-use decisions over BM25 candidate/global retrieval and dense diagnostics, comparing uncertainty, retrieval-score, query-complexity, and lightweight learned utility routers across explicit usage budgets.",
+    "compared_to": ["Adaptive-RAG-style query-complexity routing", "uncertainty triggers", "BM25 score/margin triggers", "learned budgeted utility routers"],
+    "evidence": "On 2,000-example Qwen2.5-1.5B runs, retrieval is sometimes harmful (8.8% on 2Wiki and 4.0% on HotpotQA in the candidate setting). At a nominal 50% target, realized usage and violation rates differ across routers, while simple uncertainty/query-complexity baselines often overlap or beat learned utility routers. The best router also changes with dataset, model family, and retrieval source.",
+    "why_it_matters": "This sharpens the radar's causal standard: 'same budget' must mean the same realized operating point, and retrieval-call rate is still not total cost when some routers require a no-retrieval generation or probe retrieval before deciding. It turns budget matching from a reporting nicety into part of the method comparison.",
+    "limitations": ["The main routing diagnostics use candidate-paragraph retrieval and small open models; the paper explicitly frames these as controlled diagnostics rather than full open-domain RAG.", "The Adaptive-RAG-style baseline approximates query-complexity routing rather than reproducing the original system end to end.", "Binary evidence use is simpler than multi-action agentic search with variable turns, tools, or context size."],
+    "confidence": "high"
+  },
+  "provenance": {
+    "discovered_via": ["arXiv backfill"],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-12"
+  }
+}
