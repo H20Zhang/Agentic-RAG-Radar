@@ -1,0 +1,52 @@
+{
+  "id": "arxiv:2608.11967",
+  "arxiv_id": "2608.11967",
+  "title": "LoongReflect: Boosting Long-Horizon Reflection in Search Agents via Global Perspective Distillation",
+  "authors": ["Zhixin Zhang", "Xinke Jiang", "Zhibang Yang", "Weixuan Xu", "Guohong Qiu", "Xu Chu", "Junfeng Zhao", "Yasha Wang"],
+  "first_seen": "2026-08-13",
+  "published": "2026-08-12",
+  "updated": null,
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.11967",
+    "pdf": "https://arxiv.org/pdf/2608.11967",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "learning_optimization",
+  "tags": ["memory", "iterative_search", "evidence_verification", "adaptive_stopping", "reinforcement_learning", "multi_hop_qa"],
+  "benchmarks": ["2WikiMultiHopQA", "HotpotQA", "Bamboogle", "FRAMES", "MuSiQue", "Natural Questions", "TriviaQA"],
+  "relevance": 0.99,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "trajectory_learning",
+    "question": "How does LoongReflect turn reflection into reversible memory control, and how are local recovery decisions aligned with final trajectory success?",
+    "takeaway": "The agent can explicitly reflect on evidence/risk and backtrack to a trusted prefix, while privileged local supervision and outcome RL jointly train those recovery decisions.",
+    "compared_with": "Outcome-only search-agent RL or linear-context reflection that cannot explicitly remove a contaminated trajectory suffix from active state.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2608.11967.png",
+    "image_path": "assets/visuals/2608.11967.webp",
+    "prompt_path": "assets/visuals/prompts/2608.11967.md",
+    "artifact_path": "papers/2608.11967.md"
+  },
+  "analysis": {
+    "tldr": "LoongReflect treats reflection as a learned memory-control policy over a reversible trajectory tree: reflect consolidates verified facts, missing evidence, and branch risks; backtrack removes an unreliable suffix from active context while preserving a corrective lesson.",
+    "problem": "In long-horizon search, a locally plausible branch can contaminate many later decisions, while terminal reward provides sparse and delayed credit for the reflection decision that should have caught or repaired the error.",
+    "core_idea": "Represent execution as a trajectory tree with an active path and compressed working memory, add explicit reflect/backtrack controls, then train them with a fast privileged-teacher channel localized to recovery tokens plus a slow GRPO channel on final trajectory outcomes, coordinated by a look-ahead update.",
+    "agent_loop": "Reason/retrieve → reflect on verified facts, missing evidence, and branch risk → continue or backtrack to a trusted prefix → preserve a corrective lesson → resume search → answer",
+    "retrieval_design": "The retrieval substrate itself is not the claimed novelty. The control contribution sits above retrieval: it decides when accumulated search state is unreliable, what to retain, and when to remove a bad branch from active context before continuing retrieval/reasoning.",
+    "compared_to": ["ReAct", "Search-R1", "AgenticRAG-R1", "outcome-only reinforcement learning", "self-distillation without reversible branch recovery"],
+    "evidence": "The full paper compares Qwen2.5-3B/7B variants against naive RAG, agentic RAG, and RL-based search baselines including Search-R1 and AgenticRAG-R1. For the 3B setting, LoongReflect reports 46.15 average F1 across seven RAG benchmarks versus 33.55 for AgenticRAG-R1. The experimental setup holds the retrieval environment and tool budgets fixed across retrieval methods, and component ablations report material degradation when reflection/backtracking or either training channel is removed.",
+    "why_it_matters": "This strengthens a more precise 2026 trend: explicit state is not only about recording what evidence is missing; it can become an actively editable control surface. The strongest research delta is reversible state recovery plus targeted credit assignment, not generic self-reflection prose.",
+    "limitations": ["The fast channel uses privileged global trajectory information during training, so gains do not imply that local self-reflection alone is sufficient at inference time.", "Training-data construction preferentially emphasizes cases where reflective supervision is useful, which can amplify the apparent benefit of the learned recovery policy.", "The retrieval evaluation is still dominated by QA-style benchmarks; transfer to noisy web, enterprise APIs, SQL, or code search remains open."],
+    "confidence": "high"
+  },
+  "provenance": {
+    "discovered_via": ["arXiv recent search", "arXiv full HTML"],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-13"
+  }
+}
