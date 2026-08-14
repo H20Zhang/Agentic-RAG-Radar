@@ -1,0 +1,52 @@
+{
+  "id": "arxiv:2608.12282",
+  "arxiv_id": "2608.12282",
+  "title": "VAKRA: Evaluating Multi-Hop Reasoning Across APIs and Retrieval Under Tool-Use Policies",
+  "authors": ["Ankita Rajaram Naik", "Anupama Murthi", "Benjamin Elder", "Siyu Huo", "Raavi Gupta", "Abhinav Jain", "Praveen Venkateswaran", "Abdulhamid Adebayo", "Danish Contractor"],
+  "first_seen": "2026-08-13",
+  "published": "2026-08-12",
+  "updated": null,
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.12282",
+    "pdf": "https://arxiv.org/pdf/2608.12282",
+    "code": "https://github.com/IBM/vakra",
+    "project": null
+  },
+  "primary_category": "evaluation_analysis",
+  "tags": ["database", "documents", "tool_selection", "multi_hop_qa", "enterprise"],
+  "benchmarks": ["VAKRA"],
+  "relevance": 0.99,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "evidence_failure_map",
+    "question": "Where do agents fail when a task requires multi-hop reasoning across executable APIs and document retrieval under tool-use policies?",
+    "takeaway": "VAKRA evaluates executable cross-source trajectories under a fixed agent harness and finds that the difficult boundary is often language-mediated entity and evidence grounding rather than API invocation syntax alone.",
+    "compared_with": "Benchmarks that isolate API tool use from document retrieval or evaluate only final answers without replaying executable tool trajectories.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2608.12282.png",
+    "image_path": "assets/visuals/2608.12282.webp",
+    "prompt_path": "assets/visuals/prompts/2608.12282.md",
+    "artifact_path": "papers/2608.12282.md"
+  },
+  "analysis": {
+    "tldr": "VAKRA is an executable benchmark for agents that must combine structured API calls with document retrieval and obey natural-language tool-use policies, using a fixed ReAct harness and tool-call re-execution to expose cross-source reasoning failures.",
+    "problem": "Most agent benchmarks separate API interaction, document retrieval, and policy compliance, making it hard to see whether a model can compose them into one reliable information-acquisition trajectory.",
+    "core_idea": "Provide thousands of executable APIs across many domains plus document collections, construct increasingly compositional tasks, re-execute predicted tool calls for correctness, and use a fixed ReAct harness so differences primarily reflect model capability rather than changing agent architecture.",
+    "agent_loop": "Interpret task/policy → choose API or document retrieval action → observe structured/unstructured evidence → resolve entities and compose sources → continue or abstain → answer",
+    "retrieval_design": "The benchmark includes multi-source tasks where the agent must decide which source to use and integrate document retrieval with API observations under natural-language constraints; retrieval is therefore part of the evaluated policy rather than a fixed preprocessing step.",
+    "compared_to": ["API-only tool-use benchmarks", "document-only RAG benchmarks", "final-answer-only agent evaluation", "benchmarks with varying agent harnesses"],
+    "evidence": "The paper reports more than 8,000 executable APIs across 62 domains and evaluates frontier/open-weight models with a fixed ReAct harness. The best model reaches 70.4% on single-hop endpoint-style tasks but about 50–51% on compositional APIs; performance falls sharply with reasoning depth, and some policy-constrained unanswerable cases fall to 2.4%. Trace analysis attributes many failures to entity disambiguation and cross-source grounding rather than tool invocation mechanics.",
+    "why_it_matters": "VAKRA shifts evaluation closer to the setting Agentic RAG systems claim to solve: information has to be acquired across heterogeneous sources under execution and policy constraints. It also warns that improving tool-call syntax alone may miss the dominant failure surface.",
+    "limitations": ["A fixed ReAct harness deliberately isolates model capability, so VAKRA does not establish which alternative planning, memory, or retrieval controller would repair the failures.", "The benchmark's enterprise-like APIs and document collections are more controlled than noisy open-web environments.", "Aggregate trajectory failures bundle entity resolution, source selection, policy interpretation, retrieval, and synthesis; further interventions are needed to causally isolate each control failure."],
+    "confidence": "high"
+  },
+  "provenance": {
+    "discovered_via": ["arXiv recent search", "arXiv full HTML"],
+    "full_text_checked": true,
+    "code_link_verified": true,
+    "last_reviewed": "2026-08-13"
+  }
+}
