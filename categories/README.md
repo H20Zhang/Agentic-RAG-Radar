@@ -6,16 +6,18 @@ The taxonomy is organized by **which part of the information-acquisition control
 |---|---|---|
 | [Planning & Query Formulation](planning-query-formulation.md) | What information should be acquired next, and how is that need planned/decomposed? | PlanRAG anchor; open question is explicit planning vs reactive evidence-driven control. |
 | [Retrieval & Tool Use](retrieval-tool-use.md) | What retrieval operations/corpora/tools—and what retrieval budget—should the agent control? | Strong cluster spans A-RAG, LLM-Wiki, READ, DocNavRAG, and graded budget control. |
-| [Iterative Reasoning & Verification](iterative-reasoning-verification.md) | What state should make the next retrieval, verification, or stopping decision? | S2G-RAG gives explicit sufficiency/gap state a strong earlier baseline; Search-o1, DocNavRAG, and ACE vary the surrounding environment/policy. |
+| [Iterative Reasoning & Verification](iterative-reasoning-verification.md) | What state should make the next retrieval, verification, or stopping decision? | S2G-RAG gives explicit sufficiency/gap state an earlier baseline; LoongReflect now pushes state further toward explicit rollback/recovery. |
 | [Multi-Agent & Orchestration](multi-agent-orchestration.md) | When does specialization/coordination justify multiple agents? | No paper currently clears the radar's precision threshold as a primary contribution. |
-| [Learning & Optimization](learning-optimization.md) | What should be learned once retrieval is a sequential/resource-allocation action space? | SPARKLE adds strong adaptive-vs-adaptive policy learning; Agentic-R/Graph-R1 target trajectory utility; SAGE isolates k allocation. |
-| [Evaluation & Analysis](evaluation-analysis.md) | How do we isolate agentic control from stronger tools, budgets, models, or rediscovered prior art? | Evaluation now needs historical baselines **and** matched realized operating points, harm, and controller-cost accounting. |
+| [Learning & Optimization](learning-optimization.md) | What should be learned once retrieval is a sequential/resource-allocation/state-control action space? | SPARKLE raises adaptive-policy baselines; LoongReflect learns reversible recovery; Agentic-R/Graph-R1 target trajectory utility; SAGE isolates k allocation. |
+| [Evaluation & Analysis](evaluation-analysis.md) | How do we isolate agentic control from stronger tools, budgets, models, or rediscovered prior art? | Evaluation now spans historical baselines, realized operating points, and VAKRA-style executable cross-source grounding. |
 
 ## Cross-cutting lens
 
-For system claims, the radar now reasons over:
+For system claims, the radar reasons over:
 
 `substrate × operation set × state × policy × realized resources × base model × historical baseline`
+
+Two additional stress tests now matter. First, **state can be editable**, not only descriptive: rollback semantics should be separated from the learned policy that decides when to use them. Second, **cross-source composition** can fail even when individual tools work: API choice, document retrieval, entity grounding, and policy constraints need trajectory-level evaluation.
 
 “Realized resources” is intentionally stronger than a nominal budget: a claimed target retrieval rate, call cap, or context budget is not a matched comparison until held-out usage and controller-side cost are reported.
 
