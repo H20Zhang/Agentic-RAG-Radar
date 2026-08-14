@@ -6,13 +6,19 @@ This category covers benchmarks, surveys/SoKs, diagnostic studies, failure analy
 
 ## Current design anchors
 
+### [VAKRA](../papers/2608.12282.md) — ★★★★☆
+
+**Design point:** evaluate **executable cross-source trajectories** that combine APIs and document retrieval under natural-language tool-use policies, while holding the ReAct harness fixed across models.
+
+**Why it matters:** isolated API accuracy and document QA miss the composition failure. VAKRA's trace analysis points instead to entity disambiguation and cross-source grounding as major failure surfaces. The benchmark therefore tests a capability closer to enterprise research agents: maintaining a coherent evidence chain across heterogeneous sources.
+
+**Caveat:** the fixed harness isolates model capability but does not identify which planner, memory, or retrieval-controller architecture would repair the failures.
+
 ### [When Should Active RAG Retrieve?](../papers/2607.24010.md) — ★★★★☆
 
 **Design point:** make the router's **operating point** auditable: separate utility ranking, calibrated threshold transfer, realized evidence usage, retrieval harm, and trigger-side cost.
 
 **Why it matters:** two systems with the same nominal “50% retrieval budget” are not matched if their held-out usage differs. Even matched evidence use is not matched total cost when one controller needs a probe retrieval or no-retrieval generation before deciding.
-
-**Caveat:** the main experiments are controlled routing diagnostics, not full open-domain multi-tool search.
 
 ### [Forgotten History or Test-of-Time?](../papers/2608.08445.md) — ★★★★☆
 
@@ -30,12 +36,12 @@ For a system-level gain, separate when possible:
 
 `substrate × operation set × state × policy × realized budget × base model × historical baseline`
 
-The new emphasis on **realized** budget is deliberate. Report calls/tokens/context volume/latency separately, but also ask whether a learned threshold actually transfers to the held-out usage target and how often retrieval changes a correct no-retrieval answer into a wrong one.
+VAKRA adds a complementary question: **does the benchmark require the agent to compose those variables across heterogeneous sources in one executable trajectory?** A model can be good at selecting an API and good at document QA independently yet still fail when entity identity, retrieved evidence, and policy constraints must remain consistent across both.
 
-A second hidden variable is the controller's pre-decision path. Query-only routing, uncertainty from a no-retrieval generation, and probe-retrieval scoring can share the same final evidence-use rate while paying meaningfully different costs.
+“Realized” budget remains deliberate. Report calls/tokens/context volume/latency separately, and ask whether a learned threshold actually transfers to the held-out usage target and how often retrieval changes a correct no-retrieval answer into a wrong one.
 
-The historical axis does **not** mean “nothing is new.” It asks whether novelty lies in the control-loop shape or in modern representation, learning, scale, tool interfaces, and richer information environments.
+The historical axis does not mean “nothing is new.” It asks whether novelty lies in the control-loop shape or in modern representation, learning, scale, tool interfaces, and richer information environments.
 
 ## What would count as meaningful progress?
 
-The next bar is a trajectory benchmark that reports quality against **realized multi-resource frontiers**—retrieval calls, retrieved/context tokens, controller compute, wall-clock/latency—while labeling routing, stopping, evidence-state, and tool-selection failures. Strong historical and simple uncertainty/lexical baselines should remain in the comparison when they attack the same information-acquisition decision.
+The next bar is an executable trajectory benchmark that combines **cross-source grounding + intervention-style attribution + realized multi-resource frontiers**. VAKRA supplies the first part; Active-RAG evaluation supplies operating-point discipline. The missing experiment would replay the same failing task under alternate controllers or patched intermediate states to isolate whether the error came from source selection, entity grounding, retrieval, policy interpretation, or synthesis.
