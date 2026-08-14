@@ -10,13 +10,19 @@ The underlying paper records remain available for detail; compactions preserve t
 
 ## Recent Month · Weekly
 
+### [2026-W33 · State recovery and cross-source trajectory integrity](weekly/2026-W33.md)
+
+**Rolling thesis:** the new pressure point is no longer just “what should the agent retrieve next?” LoongReflect makes accumulated execution state **reversible**, while VAKRA tests whether agents can keep identity and evidence coherent across APIs and document retrieval in one executable trajectory.
+
+The key tension is causal: rollback-style state control may help long-horizon search, but VAKRA's failures often look like entity/schema grounding rather than a clearly bad branch. Those are different failure modes and should not be collapsed into one “memory problem.”
+
+[Read the rolling W33 synthesis →](weekly/2026-W33.md)
+
 ### [2026-W32 · Convergence, factorization, and a stricter novelty baseline](weekly/2026-W32.md)
 
 **Revised thesis:** W32 is not best described as the week Agentic RAG “moved beyond top-k.” Earlier 2026 work already made agent-facing retrieval environments explicit. The more durable change is that **interface, evidence state, context policy, and retrieval budget are becoming separable control variables**, while the new IR-history perspective pushes the novelty baseline back to classical QA.
 
-The strongest tensions are now: **better primitive vs better policy**, **adaptive budget vs real resource cost**, and **modern capability vs older control-loop precedent**.
-
-[Read the weekly synthesis →](weekly/2026-W32.md)
+[Read the W32 synthesis →](weekly/2026-W32.md)
 
 > Weekly reports stay on the primary archive surface for roughly the latest month; older weekly files remain for provenance.
 
@@ -24,11 +30,11 @@ The strongest tensions are now: **better primitive vs better policy**, **adaptiv
 
 ### [2026-08 · Rolling research map](monthly/2026-08.md)
 
-**Current thesis:** August is a **convergence + factorization** story:
+**Current thesis:** August is a **factorization + trajectory-integrity** story:
 
-`environment/interface → evidence state → policy/stopping → resource allocation → evaluation`
+`environment/interface → explicit/editable state → adaptive policy/stopping → resource allocation → executable evaluation`
 
-The rolling map now groups evidence into **environment/interface design**, **state + resource-aware control**, and **evaluation/novelty discipline**. Backfilled LLM-Wiki and Know Before You Fetch materially changed the chronology and baseline standard rather than simply adding two more papers.
+W33 adds state rollback and cross-source grounding without invalidating the earlier map; it makes the state and evaluation layers sharper.
 
 [Explore the August research map →](monthly/2026-08.md)
 
@@ -38,7 +44,7 @@ The rolling map now groups evidence into **environment/interface design**, **sta
 
 ### [2026 · Rolling year-to-date map](yearly/2026.md)
 
-**Current thesis:** the durable 2026 movement is toward an explicit **information-acquisition control stack** whose environment, state, policy, and resource objective can be tested separately. The year map now also tracks a second axis: whether a claimed agentic mechanism is genuinely new or a new LLM-era implementation of an older IR/QA control principle.
+**Current thesis:** the durable 2026 movement is toward an explicit **information-acquisition control stack** whose environment, state, policy, and resource objective can be tested separately. The year map also tracks whether a claimed mechanism is genuinely new or a new LLM-era implementation of an older IR/QA control principle.
 
 The report remains explicitly rolling; incomplete historical backfill is not presented as full-year coverage.
 
