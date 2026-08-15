@@ -1,6 +1,6 @@
 # Evaluation & Analysis
 
-> **Core question:** How do we tell whether an Agentic RAG system is genuinely making better information-acquisition decisions rather than using better tools, looser budgets, more compute, easier benchmarks—or rediscovering an older IR/QA control pattern under new terminology?
+> **Core question:** How do we tell whether an Agentic RAG system genuinely makes better information-acquisition decisions rather than using a richer interface, different harness, looser resource budget, stronger model, easier benchmark—or rediscovered prior art?
 
 This category covers benchmarks, surveys/SoKs, diagnostic studies, failure analysis, historical/systematization work, and evaluation methodology for adaptive retrieval systems.
 
@@ -8,23 +8,23 @@ This category covers benchmarks, surveys/SoKs, diagnostic studies, failure analy
 
 ### [VAKRA](../papers/2608.12282.md) — ★★★★☆
 
-**Design point:** evaluate **executable cross-source trajectories** that combine APIs and document retrieval under natural-language tool-use policies, while holding the ReAct harness fixed across models.
+**Design point:** executable cross-source trajectories combining APIs, document retrieval, multi-hop reasoning, and policy constraints under a fixed ReAct harness.
 
-**Why it matters:** isolated API accuracy and document QA miss the composition failure. VAKRA's trace analysis points instead to entity disambiguation and cross-source grounding as major failure surfaces. The benchmark therefore tests a capability closer to enterprise research agents: maintaining a coherent evidence chain across heterogeneous sources.
+**Why it matters:** capability composition fails around entity disambiguation and cross-source grounding even when individual API/document tasks look much easier.
 
-**Caveat:** the fixed harness isolates model capability but does not identify which planner, memory, or retrieval-controller architecture would repair the failures.
+### [Is Grep All You Need?](../papers/2605.15184.md) — ★★★★☆
+
+**Design point:** factor retrieval mode from **agent harness and evidence-delivery path**. On LongMemEval-S, grep-versus-vector conclusions can flip when inline tool output becomes programmatic file delivery, and the same model/retrieval mode moves substantially across harnesses.
+
+**Why it matters:** “same model + different retriever” is not a clean retrieval comparison if prompt/tool/result rendering/stopping semantics also change.
 
 ### [When Should Active RAG Retrieve?](../papers/2607.24010.md) — ★★★★☆
 
-**Design point:** make the router's **operating point** auditable: separate utility ranking, calibrated threshold transfer, realized evidence usage, retrieval harm, and trigger-side cost.
-
-**Why it matters:** two systems with the same nominal “50% retrieval budget” are not matched if their held-out usage differs. Even matched evidence use is not matched total cost when one controller needs a probe retrieval or no-retrieval generation before deciding.
+**Design point:** make the router's realized operating point auditable: separate utility ranking, calibrated threshold transfer, evidence use, retrieval harm, and trigger-side cost.
 
 ### [Forgotten History or Test-of-Time?](../papers/2608.08445.md) — ★★★★☆
 
-**Design point:** push the novelty baseline for Agentic RAG back to classical IR/QA, with QUALIFIER as a concrete retrieve→verify→reformulate precedent.
-
-**Why it matters:** “iterative retrieval,” query refinement, verification, or stopping are not sufficient novelty claims by themselves. Modern work should isolate what LLM-era interfaces, learning, state, scale, or capability add.
+**Design point:** push the novelty baseline back to classical IR/QA retrieve→verify→reformulate loops.
 
 ### [Agentic RAG SoK](../papers/2603.07379.md) — ★★★☆☆
 
@@ -32,16 +32,18 @@ This category covers benchmarks, surveys/SoKs, diagnostic studies, failure analy
 
 ## Evaluation lens used by this radar
 
-For a system-level gain, separate when possible:
+The earlier lens was:
 
-`substrate × operation set × state × policy × realized budget × base model × historical baseline`
+`substrate × operation set × state × policy × realized resources × base model × historical baseline`
 
-VAKRA adds a complementary question: **does the benchmark require the agent to compose those variables across heterogeneous sources in one executable trajectory?** A model can be good at selecting an API and good at document QA independently yet still fail when entity identity, retrieved evidence, and policy constraints must remain consistent across both.
+The DCI/harness backfill adds a missing factor:
 
-“Realized” budget remains deliberate. Report calls/tokens/context volume/latency separately, and ask whether a learned threshold actually transfers to the held-out usage target and how often retrieval changes a correct no-retrieval answer into a wrong one.
+`substrate × corpus boundary/interface resolution × harness/delivery × state × policy × realized resources × base model × historical baseline`
 
-The historical axis does not mean “nothing is new.” It asks whether novelty lies in the control-loop shape or in modern representation, learning, scale, tool interfaces, and richer information environments.
+That change is substantive. DCI/RISE/DR-DCI show that the corpus boundary and evidence operations can alter what the agent is capable of expressing; Is Grep All You Need? shows the same retrieval primitive can behave very differently depending on how the harness presents tool results. A system-level score cannot attribute gains to “retrieval” while those variables move together.
+
+VAKRA adds the complementary composition test: after factorizing components, do they still maintain entity/provenance/policy coherence across heterogeneous sources in one executable trajectory?
 
 ## What would count as meaningful progress?
 
-The next bar is an executable trajectory benchmark that combines **cross-source grounding + intervention-style attribution + realized multi-resource frontiers**. VAKRA supplies the first part; Active-RAG evaluation supplies operating-point discipline. The missing experiment would replay the same failing task under alternate controllers or patched intermediate states to isolate whether the error came from source selection, entity grounding, retrieval, policy interpretation, or synthesis.
+The next bar is a factorial executable benchmark that can replay the same task under controlled **interface × harness × controller** substitutions, while logging realized calls/tokens/latency and allowing counterfactual repair of one intermediate decision. That would separate a better retriever from a higher-resolution interface, a better evidence-delivery path, a better policy, and a cross-source grounding failure instead of treating all four as “agent quality.”

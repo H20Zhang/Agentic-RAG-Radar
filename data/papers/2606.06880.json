@@ -1,0 +1,42 @@
+{
+  "id": "arxiv:2606.06880",
+  "arxiv_id": "2606.06880",
+  "title": "Towards Retrieving Interaction Spaces for Agentic Search",
+  "authors": ["Shengyao Zhuang", "Yuansheng Ni", "Hengxin Fun", "Jimmy Lin", "Xueguang Ma"],
+  "first_seen": "2026-08-14",
+  "published": "2026-06-05",
+  "updated": null,
+  "venue": null,
+  "urls": {"paper": "https://arxiv.org/abs/2606.06880", "pdf": "https://arxiv.org/pdf/2606.06880", "code": "https://github.com/texttron/RISE", "project": null},
+  "primary_category": "retrieval_tool_use",
+  "tags": ["sparse", "documents", "tool_selection", "iterative_search", "budget_allocation", "web_research"],
+  "benchmarks": ["BrowseComp-Plus"],
+  "relevance": 1.0,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "retrieval_interface",
+    "question": "How can retrieval preserve DCI-style interaction resolution without forcing shell commands to scan the full corpus?",
+    "takeaway": "RISE makes retrieval construct a persistent bounded interaction space outside the context window, then preprocesses documents with navigational structure for shell-style local inspection.",
+    "compared_with": "Snippet/top-k retrieval and unbounded full-corpus DCI.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2606.06880.png",
+    "image_path": "assets/visuals/2606.06880.webp",
+    "prompt_path": "assets/visuals/prompts/2606.06880.md",
+    "artifact_path": "papers/2606.06880.md"
+  },
+  "analysis": {
+    "tldr": "RISE reframes retrieval as construction of a bounded, re-explorable interaction space: BM25 supplies the corpus boundary, while documents inside the workspace retain verbatim text plus structure for shell-style navigation.",
+    "problem": "Top-k snippet retrieval scales but hides evidence operations; raw DCI exposes fine-grained operations but broad shell commands become slow and noisy as the corpus grows.",
+    "core_idea": "Retrieve a large persistent candidate set into a per-query workspace outside the model context, then let the agent repeatedly search/read within that set; optionally preprocess documents with line-numbered table-of-contents anchors to improve local navigation.",
+    "agent_loop": "generate subquery → retrieve/import candidates → shell-search bounded workspace → targeted read/verify → import more if needed → answer",
+    "retrieval_design": "Retrieval is a boundary constructor rather than the final evidence channel. RISE-BM25 isolates the bounded-space effect; full RISE adds navigable document processing.",
+    "compared_to": ["raw DCI", "RISE-BM25 boundary-only ablation", "BM25 retrieval agent with snippets", "retriever-mediated top-k interfaces"],
+    "evidence": "On a 100-query BrowseComp-Plus sample, RISE with gpt-5.4-mini matches raw DCI at 78% accuracy while reducing per-query cost from roughly $1.10 to $0.28. The boundary-only ablation is 1–4 points lower across model tiers, supporting the document-processing contribution at 100K scale. At 1M documents RISE-BM25 remains robust while raw DCI suffers substantial wall-clock failures, although the headline 1M comparison uses different model tiers.",
+    "why_it_matters": "RISE resolves the central DCI tension by separating two jobs: global retrieval defines a scalable search region, while local interaction preserves high evidence resolution. It turns 'retrieval vs DCI' into a composable interface design space.",
+    "limitations": ["The full structured RISE system was not run at 1M because TOC preprocessing for the added 900K distractors was not incurred.", "The proof of concept uses BM25 and an LLM-based one-time document-structuring pipeline; other boundary and navigation mechanisms remain untested.", "Some scaling comparisons across RISE and DCI use different model tiers, so absolute accuracy should not be read as a fully matched causal comparison."],
+    "confidence": "high"
+  },
+  "provenance": {"discovered_via": ["historical backfill", "arXiv full HTML"], "full_text_checked": true, "code_link_verified": true, "last_reviewed": "2026-08-14"}
+}

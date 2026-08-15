@@ -1,0 +1,42 @@
+{
+  "id": "arxiv:2606.00590",
+  "arxiv_id": "2606.00590",
+  "title": "Critic-R: Improving Agentic Search using Instruction-tuned Retrievers with Natural Language Introspective Feedback",
+  "authors": ["Md Zarif Ul Alam", "Alireza Salemi", "Hamed Zamani"],
+  "first_seen": "2026-08-14",
+  "published": "2026-05-30",
+  "updated": null,
+  "venue": null,
+  "urls": {"paper": "https://arxiv.org/abs/2606.00590", "pdf": "https://arxiv.org/pdf/2606.00590", "code": "https://github.com/zarif98sjs/Critic-R", "project": null},
+  "primary_category": "learning_optimization",
+  "tags": ["dense", "query_rewrite", "evidence_verification", "iterative_search", "open_domain_qa"],
+  "benchmarks": ["HotpotQA", "2WikiMultiHopQA", "MuSiQue", "Bamboogle"],
+  "relevance": 0.99,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "trajectory_learning",
+    "question": "Can the reasoner's natural-language dissatisfaction with retrieved evidence become both an inference-time recovery signal and retriever supervision?",
+    "takeaway": "A separate critic judges evidence sufficiency from the reasoner's introspective trace, rewrites failed queries at inference, and converts accepted/rejected refinement trajectories into positives and hard negatives for retriever training.",
+    "compared_with": "Frozen-retriever search agents and co-trained retriever/agent systems such as Agentic-R or CoSearch.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2606.00590.png",
+    "image_path": "assets/visuals/2606.00590.webp",
+    "prompt_path": "assets/visuals/prompts/2606.00590.md",
+    "artifact_path": "papers/2606.00590.md"
+  },
+  "analysis": {
+    "tldr": "Critic-R closes a feedback loop from reasoning back to retrieval: a critic inspects the reasoner's reaction to evidence, repairs failed retrievals through query/instruction refinement, and distills successful/failed refinement trajectories into retriever supervision without gold passage labels.",
+    "problem": "A reasoning agent can recognize that retrieved evidence is inadequate, but conventional pipelines do not systematically feed that dissatisfaction back into the retriever; retriever co-training often requires gold passages or retraining the reasoner.",
+    "core_idea": "Critic-R-Zero speculatively gives retrieved evidence to the reasoner, uses a separate critic to judge sufficiency and rewrite the query/instruction when needed, then Critic-Embed treats accepted documents as positives and rejected attempts as intra-trajectory hard negatives.",
+    "agent_loop": "search → reason over evidence → critic checks sufficiency → accept or rewrite query/instruction → retrieve again → commit evidence → continue reasoning",
+    "retrieval_design": "The retriever is instruction-aware and can remain frozen at inference; failed interactions create supervision that later improves the retrieval backbone.",
+    "compared_to": ["Search-R1", "Agentic-R", "CoSearch", "off-the-shelf instruction-tuned retrievers", "frozen retrieval without critic refinement"],
+    "evidence": "The paper reports an overall 12.4% relative improvement from Critic-R-Zero, up to 7.5% from Critic-Embed, and further gains from combining the two across four multi-hop QA benchmarks. It also compares Critic-Embed with Agentic-R-style retriever training. The mechanism is supported by trajectory-based positives/negatives, but the inference-time critic adds extra model and retrieval computation.",
+    "why_it_matters": "This is an important alternative to end-to-end agent/retriever co-training: natural-language process feedback becomes a reusable supervisory channel for both test-time recovery and retriever learning.",
+    "limitations": ["Inference-time refinement adds critic calls and repeated retrieval attempts; the paper does not make latency/cost the primary evaluation axis.", "Critic supervision depends on the reasoner's introspective trace accurately revealing its information need.", "The evaluation is concentrated on multi-hop QA and one reasoning-agent family."],
+    "confidence": "high"
+  },
+  "provenance": {"discovered_via": ["historical backfill", "arXiv full HTML"], "full_text_checked": true, "code_link_verified": true, "last_reviewed": "2026-08-14"}
+}

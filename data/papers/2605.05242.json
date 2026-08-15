@@ -1,0 +1,42 @@
+{
+  "id": "arxiv:2605.05242",
+  "arxiv_id": "2605.05242",
+  "title": "Beyond Semantic Similarity: Rethinking Retrieval for Agentic Search via Direct Corpus Interaction",
+  "authors": ["Zhuofeng Li", "Haoxiang Zhang", "Cong Wei", "Pan Lu", "Ping Nie", "Yi Lu", "Yuyang Bai", "Shangbin Feng", "Hangxiao Zhu", "Ming Zhong", "Yuyu Zhang", "Jianwen Xie", "Yejin Choi", "James Zou", "Jiawei Han", "Wenhu Chen", "Jimmy Lin", "Dongfu Jiang", "Yu Zhang"],
+  "first_seen": "2026-08-14",
+  "published": "2026-05-03",
+  "updated": null,
+  "venue": null,
+  "urls": {"paper": "https://arxiv.org/abs/2605.05242", "pdf": "https://arxiv.org/pdf/2605.05242", "code": "https://github.com/DCI-Agent/DCI-Agent-Lite", "project": null},
+  "primary_category": "retrieval_tool_use",
+  "tags": ["sparse", "documents", "tool_selection", "iterative_search", "planning", "web_research"],
+  "benchmarks": ["BrowseComp-Plus", "Natural Questions", "TriviaQA", "Bamboogle", "HotpotQA", "2WikiMultiHopQA", "MuSiQue", "BRIGHT", "BEIR"],
+  "relevance": 1.0,
+  "importance": 5,
+  "visual_explainer": {
+    "type": "retrieval_interface",
+    "question": "What changes when a search agent bypasses fixed top-k retrieval and directly operates on the raw corpus?",
+    "takeaway": "DCI reframes retrieval as interface resolution: grep/find/read/shell operations expose fine-grained evidence actions that a top-k similarity API hides.",
+    "compared_with": "Retriever-mediated agentic search with sparse/dense top-k results and document/snippet views.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2605.05242.png",
+    "image_path": "assets/visuals/2605.05242.webp",
+    "prompt_path": "assets/visuals/prompts/2605.05242.md",
+    "artifact_path": "papers/2605.05242.md"
+  },
+  "analysis": {
+    "tldr": "Direct Corpus Interaction (DCI) replaces the fixed retriever API with general-purpose corpus operations such as grep, find, file reads, and shell pipelines, making retrieval-interface resolution itself a first-class design variable for search agents.",
+    "problem": "A top-k similarity interface filters and chunks evidence before the agent can inspect it, making exact conjunctions, local verification, and multi-step hypothesis refinement difficult even when the reasoning model is strong.",
+    "core_idea": "Expose the raw corpus as the agent's searchable environment. The agent composes terminal primitives for discovery, exact matching, local inspection, counting, filtering, and follow-up search without a separate embedding model or retrieval API.",
+    "agent_loop": "form hypothesis → shell/grep/find over corpus → inspect local evidence → extract new constraints/entities → refine command → verify → answer",
+    "retrieval_design": "Retrieval becomes direct, high-resolution interaction with files and spans. The key abstraction is retrieval-interface resolution: what evidence operations the agent can express, not only how documents are ranked.",
+    "compared_to": ["dense/sparse top-k retrieval agents", "Qwen3-Embedding-8B retrieval tool", "retrieval-agent baselines on BrowseComp-Plus and QA", "restricted bash/read tool ablations"],
+    "evidence": "With the same Claude Sonnet 4.6 backbone on BrowseComp-Plus, the paper reports 80.0% accuracy for DCI versus 69.0% for a Qwen3-Embedding-8B retrieval agent, while estimated total API cost falls from $1,440 to $1,016. Trajectory analysis finds many DCI wins even when the retriever already surfaced gold documents, supporting a localization/interface-resolution explanation. The paper also reports a sharp scaling weakness: full-corpus interaction becomes slower, noisier, and less accurate as distractor corpus size grows.",
+    "why_it_matters": "This is a field-shaping interface result: it moves the design question from 'which retriever?' toward 'what corpus operations should an agent control?' and motivates the later bounded-workspace lineage that tries to preserve DCI resolution without full-corpus scans.",
+    "limitations": ["Raw DCI scales poorly because broad terminal commands scan increasingly large corpora and produce noisy outputs.", "Lexical operations are sensitive to surface-form mismatch and lack semantic ranking.", "Performance depends materially on harness/context-management quality, so interface and harness effects must be separated."],
+    "confidence": "high"
+  },
+  "provenance": {"discovered_via": ["historical backfill", "arXiv full HTML"], "full_text_checked": true, "code_link_verified": true, "last_reviewed": "2026-08-14"}
+}

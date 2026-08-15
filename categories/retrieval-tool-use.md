@@ -1,56 +1,61 @@
 # Retrieval & Tool Use
 
-> **Core question:** What retrieval operations, corpora, tools, or databases should the agent be able to invoke—and what information should each operation expose back to the controller?
+> **Core question:** What information-access operations should an agent control, what evidence resolution should they expose, and where should retrieval draw the scalable boundary?
 
-This category covers the **retrieval interface / action space**. The main design variable is not just the retriever model; it is what operations are exposed, how they can be composed, and increasingly **how much retrieval resource** an action is allowed to consume.
+This category covers the **agent-facing retrieval environment**: operation set, corpus boundary, local evidence resolution, and resource semantics. The central 2026 correction is that “retriever versus agent” is the wrong binary. A better decomposition is **global candidate discovery × local interaction × execution guidance**.
 
 ## Current papers
 
+### [Direct Corpus Interaction](../papers/2605.05242.md) — ★★★★★
+
+**Design point:** bypass the fixed similarity API and let the agent compose grep/find/read/shell operations over raw corpus files.
+
+**Why it is an anchor:** introduces **retrieval-interface resolution** as the explanation for why capable agents can outperform a stronger ranker even when the ranker already surfaced gold documents.
+
+**Boundary:** raw full-corpus interaction degrades sharply with distractor scale; high resolution is not free.
+
+### [RISE](../papers/2606.06880.md) — ★★★★☆
+
+**Design point:** retrieval constructs a persistent bounded **interaction space** outside the prompt; shell operations happen inside that space. Full RISE adds navigational document structure.
+
+**Key evidence:** matches raw DCI at 78% on a 100-query BrowseComp-Plus setup with gpt-5.4-mini at roughly one quarter of per-query cost. The 1M scaling result supports the boundary idea but is not fully model-matched.
+
+### [DR-DCI](../papers/2606.14885.md) — ★★★★☆
+
+**Design point:** turn retrieval into an agent-callable `pull(query,k)` action that dynamically expands persistent workspace state.
+
+**Key evidence:** on the full 830-query BrowseComp-Plus evaluation, 71.20% versus 62.90% for Raw-DCI while using fewer tools and sharply less wall time/cost under the shared DCI harness.
+
+### [RARG](../papers/2607.24223.md) — ★★★★☆
+
+**Design point:** carry relevance **inside** interaction as an execution prior: document order, entry points, and local grep-match visibility are prioritized instead of treating every file/match equally.
+
+**Useful negative:** a faster generative reranking variant uses fewer tools but loses accuracy, so “fewer interactions” is not itself a better policy.
+
 ### [LLM-Wiki](../papers/2605.25480.md) — ★★★★☆
 
-**Design point:** compile documents into a persistent linked Wiki and expose search/read/link traversal as an agent-native environment rather than a flat retrieval index.
-
-**Strong ablation:** keeping the compiled Wiki but disabling progressive traversal causes a reported 11.7–13.8 F1 drop, giving direct evidence that runtime composition adds value beyond the richer substrate.
-
-**Caveat:** public multi-hop experiments use bounded benchmark corpora rather than web-scale Wikipedia; compilation cost and maintenance are real system costs.
+**Design point:** compile documents into a persistent linked Wiki and expose search/read/link traversal as an agent-native environment. Keeping the structure while disabling progressive traversal produces a large reported drop, directly separating substrate from runtime navigation.
 
 ### [Beyond Top-K / READ](../papers/2608.06305.md) — ★★★★☆
 
-**Design point:** replace one opaque dense top-k call with lexical search, structural navigation, and bounded reads.
+**Design point:** lexical search, structural navigation, and bounded reads replace one opaque dense top-k call.
 
-**Skeptical result:** BM25 is reported as statistically indistinguishable from READ, so the evidence favors an interface/lexical-access claim more strongly than a generic “agentic beats non-agentic” claim.
-
-### [DocNavRAG](../papers/2608.01565.md) — ★★★★☆
-
-**Design point:** make document-native hierarchy and cross-region relations navigable operations while carrying explicit collected/missing evidence state.
-
-**Open attribution:** structure, state, and retrieval budget all need component-level separation.
-
-### [A-RAG](../papers/2602.03442.md) — ★★★★☆
-
-**Design point:** expose keyword search, semantic search, and chunk read as a hierarchy of model-controlled retrieval actions.
-
-**Why it is an anchor:** it makes retrieval API design a first-class systems question rather than hard-coding another workflow.
+**Skeptical result:** BM25 is statistically indistinguishable from READ in the reported setting, so the primitive/interface claim is stronger than a generic agentic-policy claim.
 
 ### [Know Before You Fetch](../papers/2606.29959.md) — ★★★★☆
 
-**Design point:** make retrieval amount an explicit action: answer closed-book, retrieve compact context, retrieve full context, or abstain based on calibrated correctness probability.
-
-**Important negative result:** compact retrieval can improve passage-budget/full-context frontiers without reducing retrieval-call rate, and the confidence probe can make gating slower on smaller readers. “Less context” is not the same as “less retrieval cost.”
+**Design point:** make retrieval amount explicit and distinguish calls, context volume, latency, and abstention rather than collapsing them into one “budget.”
 
 ## Current tension
 
-The interface question has expanded from **which operations?** to **which operations at what resource budget?** A richer action space can improve capability while making control harder, and adaptive budget policies can save passages while adding their own probe/control overhead.
+The field has moved through a useful dialectic:
 
-The useful target is therefore a **minimal sufficient retrieval API with explicit resource semantics**: expressive enough to preserve structure and evidence needs, small enough for reliable control, and measurable in calls, tokens/passages, latency, and cost rather than one aggregate “retrieval budget.”
+`fixed top-k → raw high-resolution interaction → bounded/persistent workspace → relevance-guided interaction`
 
-A chronology correction also matters: recent August papers sharpen this direction, but they did not originate it. A-RAG and especially LLM-Wiki already made the agent-facing retrieval-interface argument earlier in 2026.
+The lesson is not that relevance or indexes should disappear. DCI shows that a ranked-list interface can be too low-resolution; RISE and DR-DCI show that unrestricted interaction loses scale; RARG shows that relevance is valuable again when it **guides execution without becoming the final evidence bottleneck**.
+
+This also changes how later document-navigation work should be read. A-RAG, LLM-Wiki, READ, and DocNavRAG are part of a broader question about the agent's information environment, not isolated GraphRAG/RAG workflow inventions.
 
 ## What would count as meaningful progress?
 
-- operation-set ablations with the same controller and substrate;
-- fixed/heuristic versus agentic control using identical retrieval primitives;
-- adaptive-budget versus adaptive-budget comparisons, not only against static k;
-- matched calls, context volume, latency, and controller overhead;
-- transfer of the same interface across document/web/SQL/graph/code substrates;
-- interpretable failures showing whether the missing capability was an operation, state variable, or resource allocation decision.
+The decisive comparison is now **same model + same harness + same corpus + matched realized resources** across three interfaces: conventional top-k/snippet delivery, raw DCI, and bounded/dynamic interaction space. Then independently vary boundary retriever, local operation set, relevance guidance, and state persistence. Without that factorial design, a gain can still be caused by a better ranker, richer operations, a larger workspace, or a different harness.

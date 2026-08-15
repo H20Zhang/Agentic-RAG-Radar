@@ -1,0 +1,42 @@
+{
+  "id": "arxiv:2606.14885",
+  "arxiv_id": "2606.14885",
+  "title": "DR-DCI: Scaling Direct Corpus Interaction via Dynamic Workspace Expansion",
+  "authors": ["Yi Lu", "Zhuofeng Li", "Ping Nie", "Haoxiang Zhang", "Yuyu Zhang", "Kai Zou", "Wenhu Chen", "Jimmy Lin", "Dongfu Jiang", "Yu Zhang"],
+  "first_seen": "2026-08-14",
+  "published": "2026-06-12",
+  "updated": null,
+  "venue": null,
+  "urls": {"paper": "https://arxiv.org/abs/2606.14885", "pdf": "https://arxiv.org/pdf/2606.14885", "code": "https://github.com/EigenTom/DR-DCI", "project": null},
+  "primary_category": "retrieval_tool_use",
+  "tags": ["hybrid", "documents", "tool_selection", "iterative_search", "budget_allocation", "web_research"],
+  "benchmarks": ["BrowseComp-Plus", "Natural Questions", "TriviaQA", "Bamboogle", "HotpotQA", "2WikiMultiHopQA", "MuSiQue"],
+  "relevance": 1.0,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "retrieval_interface",
+    "question": "Can retrieval become an agent action that dynamically grows a persistent DCI workspace instead of fixing the evidence set up front?",
+    "takeaway": "DR-DCI alternates retriever-steered workspace expansion with local DCI operations, using retrieval for corpus-scale recall and direct interaction for evidence resolution.",
+    "compared_with": "Raw full-corpus DCI, static retrieved workspaces, and conventional top-k retrieval agents.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2606.14885.png",
+    "image_path": "assets/visuals/2606.14885.webp",
+    "prompt_path": "assets/visuals/prompts/2606.14885.md",
+    "artifact_path": "papers/2606.14885.md"
+  },
+  "analysis": {
+    "tldr": "DR-DCI turns retrieval into an agent-callable pull operation that expands a persistent local workspace, then applies shell-style DCI inside that bounded state; global recall and local evidence interaction become separate control layers.",
+    "problem": "Raw DCI is expressive but operationally unstable at large corpus scale, while fixed retrieval limits the agent to the ranking/view chosen before local evidence constraints emerge.",
+    "core_idea": "Maintain a query-specific workspace. At any turn the agent can pull ranked documents with a chosen query/budget, inspect and compare all materialized documents through DCI tools, or finalize. Retrieved evidence persists across subsequent actions.",
+    "agent_loop": "reason → pull(query,k) to expand workspace → inspect/compare with DCI → refine constraints → pull again or verify → answer",
+    "retrieval_design": "Retrieval performs corpus-level candidate discovery; DCI performs workspace-level search, comparison, and span verification. A ranked preview guides attention without becoming the canonical evidence interface.",
+    "compared_to": ["Raw DCI / DCI-Agent-Lite", "single-pull static workspace", "BM25 search-only agent", "large-corpus trained search-agent baselines"],
+    "evidence": "On the full 830-query BrowseComp-Plus evaluation, DR-DCI reports 71.20% accuracy versus 62.90% for Raw-DCI while reducing average tool calls from 37.53 to 30.94, wall time from 3139.10s to 146.16s, and estimated total cost from $88.13 to $34.91. Optional workspace-preserving context reset reaches 73.25%. Controlled scaling covers 100K–10M documents, and the interface also transfers to a 20M-document Wiki-18 setting.",
+    "why_it_matters": "This is a strong systems answer to the DCI scaling problem: the environment is no longer either a fixed top-k result or the entire corpus. Retrieval itself becomes a state-changing workspace-management action.",
+    "limitations": ["The method bundles retrieval, workspace materialization, terminal-aware harness engineering, ranked previews, and optional context reset.", "External reference systems are not fully controlled baselines; the strongest causal evidence is Raw-DCI and interface ablations under the shared harness.", "Large-scale QA uses sampled evaluation splits and file-per-document corpora; open-web freshness and mutable sources remain outside scope."],
+    "confidence": "high"
+  },
+  "provenance": {"discovered_via": ["historical backfill", "arXiv full HTML"], "full_text_checked": true, "code_link_verified": true, "last_reviewed": "2026-08-14"}
+}

@@ -1,0 +1,42 @@
+{
+  "id": "arxiv:2605.15184",
+  "arxiv_id": "2605.15184",
+  "title": "Is Grep All You Need? How Agent Harnesses Reshape Agentic Search",
+  "authors": ["Sahil Sen", "Akhil Kasturi", "Elias Lumer", "Anmol Gulati", "Vamse Kumar Subbiah"],
+  "first_seen": "2026-08-14",
+  "published": "2026-05-14",
+  "updated": null,
+  "venue": null,
+  "urls": {"paper": "https://arxiv.org/abs/2605.15184", "pdf": "https://arxiv.org/pdf/2605.15184", "code": null, "project": null},
+  "primary_category": "evaluation_analysis",
+  "tags": ["sparse", "dense", "documents", "tool_selection", "long_document_qa", "general"],
+  "benchmarks": ["LongMemEval"],
+  "relevance": 0.99,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "evidence_failure_map",
+    "question": "How much of an apparent retriever advantage is actually caused by the surrounding agent harness and the way tool results are delivered?",
+    "takeaway": "Retriever ranking can flip when the same model/retrieval method is placed in a different harness or when results move from inline context to programmatic file delivery.",
+    "compared_with": "Studies that compare retrievers while holding the agent harness/tool-delivery path implicit.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2605.15184.png",
+    "image_path": "assets/visuals/2605.15184.webp",
+    "prompt_path": "assets/visuals/prompts/2605.15184.md",
+    "artifact_path": "papers/2605.15184.md"
+  },
+  "analysis": {
+    "tldr": "A factorial grep-versus-vector study shows that agent harness and tool-result delivery can shift or even reverse retriever rankings, making the harness part of the causal system rather than implementation detail.",
+    "problem": "Agentic retrieval papers often attribute outcome differences to the retriever while changing prompts, tool schemas, result rendering, file access, and stopping behavior through the surrounding harness.",
+    "core_idea": "Cross lexical versus vector retrieval with multiple harnesses and two delivery modes—inline tool output versus programmatic file-based reading—on the same LongMemEval-S questions.",
+    "agent_loop": "query → harness schedules retrieval tool → results delivered inline or via file → model inspects evidence → continue/answer",
+    "retrieval_design": "The paper does not propose a new retriever; it treats retrieval mode × harness × delivery path as interacting experimental factors.",
+    "compared_to": ["grep-only retrieval", "vector retrieval", "Chronos harness", "Claude Code", "Codex CLI", "Gemini CLI", "inline versus programmatic result delivery"],
+    "evidence": "On the 116-question LongMemEval-S subset, inline grep beats inline vector for every tested harness-model pair, but programmatic delivery reverses the ordering on five of ten pairs. For GPT-5.4 in Codex, grep drops from 93.1% with inline delivery to 55.2% with programmatic delivery, while programmatic vector reaches 67.2%. The same Claude Opus 4.6 model reaches 93.1% under Chronos grep and 76.7% under Claude Code grep.",
+    "why_it_matters": "This raises the evaluation bar for Agentic RAG: retriever comparisons are not interpretable unless the harness and evidence-delivery path are controlled or explicitly factorized.",
+    "limitations": ["The benchmark is long-memory conversational QA with many literal witnesses, which may favor lexical retrieval.", "Provider harnesses differ in several coupled behaviors, so the study diagnoses a confound more cleanly than it isolates one harness mechanism.", "Some scaling comparisons remain incomplete or stack-specific."],
+    "confidence": "high"
+  },
+  "provenance": {"discovered_via": ["historical backfill", "arXiv full HTML"], "full_text_checked": true, "code_link_verified": false, "last_reviewed": "2026-08-14"}
+}

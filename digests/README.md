@@ -20,7 +20,7 @@ The key tension is causal: rollback-style state control may help long-horizon se
 
 ### [2026-W32 · Convergence, factorization, and a stricter novelty baseline](weekly/2026-W32.md)
 
-**Revised thesis:** W32 is not best described as the week Agentic RAG “moved beyond top-k.” Earlier 2026 work already made agent-facing retrieval environments explicit. The more durable change is that **interface, evidence state, context policy, and retrieval budget are becoming separable control variables**, while the new IR-history perspective pushes the novelty baseline back to classical QA.
+**Revised thesis:** W32 is not best described as the week Agentic RAG “moved beyond top-k.” Historical backfill now makes that correction stronger: by May–July, DCI, RISE, DR-DCI, and RARG had already made corpus-interface resolution, bounded interaction spaces, dynamic workspaces, and relevance-guided interaction explicit research objects.
 
 [Read the W32 synthesis →](weekly/2026-W32.md)
 
@@ -30,21 +30,21 @@ The key tension is causal: rollback-style state control may help long-horizon se
 
 ### [2026-08 · Rolling research map](monthly/2026-08.md)
 
-**Current thesis:** August is a **factorization + trajectory-integrity** story:
+**Current thesis:** August is a **factorization + trajectory-integrity** story, now re-grounded against a stronger pre-August interaction-space lineage:
 
-`environment/interface → explicit/editable state → adaptive policy/stopping → resource allocation → executable evaluation`
+`corpus boundary/interface resolution → explicit/editable state → adaptive policy/stopping → resource allocation → harness/delivery → executable evaluation`
 
-W33 adds state rollback and cross-source grounding without invalidating the earlier map; it makes the state and evaluation layers sharper.
+The important correction is that “retrieval interface” was already more mature than this radar previously represented. DCI exposes interface resolution; RISE/DR-DCI recover scale through persistent workspaces; RARG carries relevance into execution; Is Grep All You Need? shows the surrounding harness can reverse retrieval conclusions.
 
 [Explore the August research map →](monthly/2026-08.md)
 
-> Monthly reports stay on the primary archive surface for roughly the latest quarter; older files remain in the repository and are compressed again at yearly granularity.
+> Monthly reports stay on the primary archive surface for roughly the latest quarter. Older files remain in the repository and are compressed again at yearly granularity.
 
 ## All Years · Yearly
 
 ### [2026 · Rolling year-to-date map](yearly/2026.md)
 
-**Current thesis:** the durable 2026 movement is toward an explicit **information-acquisition control stack** whose environment, state, policy, and resource objective can be tested separately. The year map also tracks whether a claimed mechanism is genuinely new or a new LLM-era implementation of an older IR/QA control principle.
+**Current thesis:** the durable 2026 movement is toward explicit design of the agent's **information environment**—corpus boundary, evidence operations, persistent state, adaptive policy, and realized resources—plus a stricter causal bar that treats harness/evidence delivery as part of the system.
 
 The report remains explicitly rolling; incomplete historical backfill is not presented as full-year coverage.
 

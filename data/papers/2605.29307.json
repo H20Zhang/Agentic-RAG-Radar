@@ -1,0 +1,42 @@
+{
+  "id": "arxiv:2605.29307",
+  "arxiv_id": "2605.29307",
+  "title": "GrepSeek: Training Search Agents for Direct Corpus Interaction",
+  "authors": ["Alireza Salemi", "Chang Zeng", "Atharva Nijasure", "Jui-Hui Chung", "Razieh Rahimi", "Fernando Diaz", "Hamed Zamani"],
+  "first_seen": "2026-08-14",
+  "published": "2026-05-28",
+  "updated": null,
+  "venue": null,
+  "urls": {"paper": "https://arxiv.org/abs/2605.29307", "pdf": "https://arxiv.org/pdf/2605.29307", "code": "https://github.com/alirezasalemi7/grepseek", "project": null},
+  "primary_category": "learning_optimization",
+  "tags": ["sparse", "documents", "iterative_search", "tool_selection", "reinforcement_learning", "open_domain_qa"],
+  "benchmarks": ["Natural Questions", "TriviaQA", "PopQA", "HotpotQA", "2WikiMultiHopQA", "MuSiQue", "Bamboogle"],
+  "relevance": 0.99,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "trajectory_learning",
+    "question": "Can a compact model learn effective direct-corpus search behavior rather than relying on a frontier model to improvise shell interaction?",
+    "takeaway": "GrepSeek trains the DCI policy itself with verified cold-start trajectories followed by GRPO, while a sharded execution engine reduces shell-search cost without changing command semantics.",
+    "compared_with": "Prompted/frontier-model DCI and retriever-mediated Search-R1 baselines.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2605.29307.png",
+    "image_path": "assets/visuals/2605.29307.webp",
+    "prompt_path": "assets/visuals/prompts/2605.29307.md",
+    "artifact_path": "papers/2605.29307.md"
+  },
+  "analysis": {
+    "tldr": "GrepSeek turns DCI from a frontier-model prompting result into a trainable search policy: verified cold-start trajectories initialize shell-search behavior, GRPO refines it, and sharded execution accelerates exact command evaluation.",
+    "problem": "Raw DCI depends on a capable model discovering good shell-search behavior online, while direct RL over a large corpus is unstable and sequential shell scans are slow.",
+    "core_idea": "Generate causally grounded search trajectories with an answer-aware tutor and answer-blind planner, train an initial policy with SFT, refine it with GRPO through direct corpus interaction, and execute shell commands across semantics-preserving shards in parallel.",
+    "agent_loop": "reason → emit shell search/filter command → observe raw-corpus matches → refine constraints → compose evidence → answer",
+    "retrieval_design": "The corpus remains the environment rather than a ranked top-k API; the learned object is the policy that chooses exact lexical/file operations.",
+    "compared_to": ["Search-R1 with E5/Qwen3 dense retrievers", "off-the-shelf dense retrieval search agents", "GrepSeek without SFT", "GrepSeek without GRPO"],
+    "evidence": "Across seven QA benchmarks the paper reports a 0.5691 micro-average F1, above the strongest Search-R1 dense configuration at 0.5441, with significant overall improvement. SFT and GRPO ablations both degrade strongly. The sharded executor reduces average shell-search latency from 5.39s to 0.71s (up to 7.6×). A key negative result is PopQA, where GrepSeek is significantly worse than the best dense baseline because exact lexical matching is brittle to surface-form variation.",
+    "why_it_matters": "It shows that the retrieval interface and the policy over that interface can be learned separately: DCI is not only a capability of expensive frontier harnesses. It also exposes the semantic tail where dense retrieval remains complementary.",
+    "limitations": ["Exact lexical interaction is brittle to paraphrases, diacritics, and overloaded keywords.", "The end-to-end method bundles trajectory synthesis, SFT, RL, and an execution engine, so aggregate gains do not isolate one component.", "The corpus interface remains file/text-centric; transfer to web/API/structured-data environments is open."],
+    "confidence": "high"
+  },
+  "provenance": {"discovered_via": ["historical backfill", "arXiv full HTML"], "full_text_checked": true, "code_link_verified": true, "last_reviewed": "2026-08-14"}
+}

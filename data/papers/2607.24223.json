@@ -1,0 +1,42 @@
+{
+  "id": "arxiv:2607.24223",
+  "arxiv_id": "2607.24223",
+  "title": "A New Role for Relevance: Guiding Corpus Interaction in Agentic Search",
+  "authors": ["Jiangnan Li", "Yuqing Li", "Mo Yu", "Jinchao Zhang", "Jie Zhou"],
+  "first_seen": "2026-08-14",
+  "published": "2026-07-27",
+  "updated": null,
+  "venue": null,
+  "urls": {"paper": "https://arxiv.org/abs/2607.24223", "pdf": "https://arxiv.org/pdf/2607.24223", "code": "https://github.com/LeqsNaN/RARG", "project": null},
+  "primary_category": "retrieval_tool_use",
+  "tags": ["hybrid", "documents", "tool_selection", "iterative_search", "retriever_routing", "web_research"],
+  "benchmarks": ["BrowseComp-Plus", "BRIGHT"],
+  "relevance": 0.99,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "retrieval_interface",
+    "question": "Once retrieval has bounded the interaction space, can relevance continue to guide the order and visibility of local corpus operations?",
+    "takeaway": "RARG carries relevance into DCI execution: document order, entry points, and match-level observations are prioritized rather than treating all files/matches as equally promising.",
+    "compared_with": "Raw DCI and bounded interaction-space systems such as RISE/DR-DCI where relevance mostly constructs the workspace.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2607.24223.png",
+    "image_path": "assets/visuals/2607.24223.webp",
+    "prompt_path": "assets/visuals/prompts/2607.24223.md",
+    "artifact_path": "papers/2607.24223.md"
+  },
+  "analysis": {
+    "tldr": "RARG makes relevance an execution prior rather than a one-time candidate filter: it orders document traversal, initializes likely entry points, and reranks local grep matches so limited observation budget reaches useful evidence earlier.",
+    "problem": "Raw DCI wastes interaction budget on relevance-agnostic traversal, while bounded workspaces still treat local files and grep matches too uniformly once the candidate set has been constructed.",
+    "core_idea": "Use document-level relevance to define traversal order, query-relevant paragraphs to initialize promising entry points, and optional match-level reranking to prioritize local excerpts before they reach the model.",
+    "agent_loop": "recall/rank corpus → traverse scoped documents in relevance order → grep locally → prioritize matches → inspect/verify → answer",
+    "retrieval_design": "Retrieval scores remain active during interaction rather than only selecting the workspace boundary; relevance controls which local operations and observations get scarce execution/attention budget.",
+    "compared_to": ["RISE", "RISE-BM25", "raw DCI", "embedding retrieval agent", "NeMo retrieval agent"],
+    "evidence": "On the 100-query BrowseComp-Plus setup with GPT-5.4-mini, RARG++ reports 84% accuracy with 23.9 tool calls versus 78%/28.7 for RISE and 78%/99.1 for DCI. At 1M documents RARG++ retains 79% versus 69% for RISE-BM25. The generative reranking variant is a useful negative: it uses fewer tools but drops to 75%, showing faster convergence is not automatically better search.",
+    "why_it_matters": "The DCI lineage evolves from 'remove relevance bottlenecks' to a more nuanced conclusion: relevance is valuable when it guides interaction without collapsing the environment back into fixed top-k evidence delivery.",
+    "limitations": ["Effectiveness depends on embedding quality at both document and local-match granularity.", "Order-preserving grep and match reranking add latency, creating a performance-time trade-off.", "Evaluation is concentrated on BrowseComp-Plus, four BRIGHT subsets, and GPT-5.x backbones."],
+    "confidence": "high"
+  },
+  "provenance": {"discovered_via": ["historical backfill", "arXiv full HTML"], "full_text_checked": true, "code_link_verified": true, "last_reviewed": "2026-08-14"}
+}
