@@ -1,0 +1,52 @@
+{
+  "id": "arxiv:2608.01822",
+  "arxiv_id": "2608.01822",
+  "title": "SearchMaster: Grounded and Regulated Self-Play for Search Agents",
+  "authors": ["Wentao Tan", "Qiong Cao", "Jiaqi Wang", "Nan Duan"],
+  "first_seen": "2026-08-15",
+  "published": "2026-08-03",
+  "updated": null,
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.01822",
+    "pdf": "https://arxiv.org/pdf/2608.01822",
+    "code": "https://github.com/WentaoTan/SearchMaster",
+    "project": null
+  },
+  "primary_category": "learning_optimization",
+  "tags": ["web", "iterative_search", "reinforcement_learning", "self_play", "multi_hop_qa", "tool_selection", "training_data"],
+  "benchmarks": ["BrowseComp-Plus", "BrowseComp", "GAIA", "SEAL-0", "WebWalkerQA", "XBench-DeepSearch"],
+  "relevance": 0.99,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "trajectory_learning",
+    "question": "How does SearchMaster turn self-play task generation itself into a controlled learning problem for search depth and tool-use quality?",
+    "takeaway": "The key delta is not self-play alone: explicit evidence-chain task generation, search-depth-aware task reward, and an over-opening penalty shape which tasks and trajectories become training signal.",
+    "compared_with": "Naive same-pipeline self-play using success-rate difficulty, plus prior search-agent self-play that does not jointly control evidence-chain grounding, search depth, and opening behavior.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2608.01822.png",
+    "image_path": "assets/visuals/2608.01822.webp",
+    "prompt_path": "assets/visuals/prompts/2608.01822.md",
+    "artifact_path": "papers/2608.01822.md"
+  },
+  "analysis": {
+    "tldr": "SearchMaster treats self-play supervision as a first-class search-agent design problem: it generates evidence-chain-grounded tasks, rewards tasks whose easiest successful solution still needs multiple searches, penalizes over-opening, and jointly trains proposer/solver behavior with GRPO.",
+    "problem": "Search-agent self-play can collapse into pseudo multi-hop questions, difficulty signals that reward shallow tasks, and trajectories that open many documents without targeted evidence acquisition. More synthetic data is not automatically useful search supervision.",
+    "core_idea": "Use one shared policy as Proposer and Solver in a local search environment, but regulate the self-play loop with Evidence-Chain Generation (ECG), Search-Depth Reward (SDR), an Over-Opening Penalty (OOP), frozen verification, and GRPO over verified proposer/solver rollouts.",
+    "agent_loop": "seed document → proposer builds evidence chain and task → filters/verifier → solver search rollouts → correctness + search-depth + opening rewards → joint GRPO update → repeat",
+    "retrieval_design": "The deployed search policy uses search/open/find tools over a retrieval environment. The main research object is training-signal construction: task generation and trajectory selection are shaped so that learned search behavior remains evidence-grounded, multi-step, and less opening-heavy.",
+    "compared_to": ["naive same-pipeline self-play", "Search Self-Play", "Dr. Zero", "Search-R1", "teacher-generated multi-turn search training"],
+    "evidence": "Using the same Qwen3.5-9B backbone, SearchMaster raises average accuracy across six deep-search benchmarks from 38.19% to 51.52%, including 30.12% to 60.24% on BrowseComp-Plus. On BrowseComp-Plus, naive self-play reaches 45.18%; ECG alone 53.25%, SDR alone 52.89%, ECG+SDR 57.71%, and full SearchMaster 60.24%. Separate analyses show higher true multi-hop task rates, sustained search depth, and reduced over-opening behavior.",
+    "why_it_matters": "This expands the learning axis beyond 'which retrieval action should the policy take?' to 'which tasks and trajectories should exist as supervision?'. For self-improving search agents, the training distribution and reward semantics can be as causal as the inference-time controller.",
+    "limitations": ["Training is computationally heavy: many proposer/solver rollouts plus frozen-verifier calls are required for each retained seed.", "Most external systems in the headline table are not controlled same-backbone/harness baselines; the strongest causal evidence comes from the internal naive-self-play and component ablations.", "Training occurs in a large local corpus and evaluation uses a long-context scaffold without context management, so robustness to different search environments and harnesses remains open."],
+    "confidence": "high"
+  },
+  "provenance": {
+    "discovered_via": ["overlapping arXiv/Hugging Face backfill search"],
+    "full_text_checked": true,
+    "code_link_verified": true,
+    "last_reviewed": "2026-08-15"
+  }
+}
