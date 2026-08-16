@@ -3,7 +3,7 @@
 **A living research map of Agentic Retrieval-Augmented Generation.**  
 Track new papers, understand what actually changed, and see how the field is moving — with skeptical research notes, visual explainers, and weekly/monthly/yearly synthesis.
 
-**Last updated:** 2026-08-14 · [Latest papers](#-latest-papers) · [Start here](#-start-here) · [Browse by research problem](categories/README.md) · [Research compactions](#-research-compactions)
+**Last updated:** 2026-08-15 · [Latest papers](#-latest-papers) · [Start here](#-start-here) · [Browse by research problem](categories/README.md) · [Research compactions](#-research-compactions)
 
 ## 🔥 Latest Papers
 
@@ -169,10 +169,10 @@ The biggest chronology correction is the interface lineage: **A-RAG → DCI → 
 | Research problem | Question |
 |---|---|
 | **[Planning & Query Formulation](categories/planning-query-formulation.md)** | What information should be acquired next, and how is that need planned/decomposed? |
-| **[Retrieval & Tool Use](categories/retrieval-tool-use.md)** | What corpus boundary, evidence operations, and resource semantics should the agent control? |
+| **[Retrieval & Tool Use](categories/retrieval-tool-use.md)** | What corpus boundary, candidate-selection/inspection interface, evidence operations, and resource semantics should the agent control? |
 | **[Iterative Reasoning & Verification](categories/iterative-reasoning-verification.md)** | What state should make the next retrieval, verification, recovery, or stopping decision? |
 | **[Multi-Agent & Orchestration](categories/multi-agent-orchestration.md)** | When does specialization/coordination justify multiple agents? |
-| **[Learning & Optimization](categories/learning-optimization.md)** | What should be learned: ranking, query refinement, corpus operations, recovery, or resource allocation? |
+| **[Learning & Optimization](categories/learning-optimization.md)** | What should be learned: ranking, query refinement, corpus operations, recovery, resource allocation, or the training-task distribution itself? |
 | **[Evaluation & Analysis](categories/evaluation-analysis.md)** | How do we isolate policy/retrieval gains from richer interfaces, harnesses, budgets, models, or prior art? |
 
 <details>
@@ -191,13 +191,13 @@ The biggest chronology correction is the interface lineage: **A-RAG → DCI → 
 <details>
 <summary><strong>Retrieval & Tool Use — what should the agent actually be allowed to do?</strong></summary>
 
-**Current anchors.** A-RAG, DCI, RISE, DR-DCI, RARG, LLM-Wiki, READ, and Know Before You Fetch.
+**Current anchors.** A-RAG, DCI, RISE, DR-DCI, RARG, SIEVE, LLM-Wiki, READ, and Know Before You Fetch.
 
-**Strongest signal.** The field has moved through `fixed top-k → raw high-resolution interaction → bounded/dynamic workspace → relevance-guided interaction`. The stable abstraction is **interaction-space design**, not a lexical-versus-dense contest.
+**Strongest signal.** The field has moved through `fixed top-k → raw high-resolution interaction → bounded/dynamic workspace → relevance-guided interaction`. SIEVE adds a second factorization inside the boundary: `candidate admissibility → ranking → inspection → selective read`. The stable abstraction is **interaction-space/interface design**, not a lexical-versus-dense contest.
 
-**Biggest unresolved question.** Where should relevance constrain the environment: hard top-k boundary, workspace constructor, dynamic expansion policy, or local execution prior?
+**Biggest unresolved question.** Which interface decision matters on which workload: corpus boundary, exact eligibility constraints, ranker, result-card information, reading granularity, or local operation set?
 
-**Next decisive evidence.** Same model/harness/corpus/resources across conventional top-k, raw DCI, and bounded/dynamic interaction, independently varying boundary retriever and local operation set.
+**Next decisive evidence.** Same model/harness/corpus/resources while independently toggling boundary retriever, admissibility, ranker, inspection surface, read granularity, and local operations rather than comparing two complete stacks.
 
 </details>
 
@@ -230,13 +230,13 @@ The biggest chronology correction is the interface lineage: **A-RAG → DCI → 
 <details>
 <summary><strong>Learning & Optimization — what exactly is being learned?</strong></summary>
 
-**Current anchors.** Agentic-R, Critic-R, GrepSeek, SPARKLE, Graph-R1, SAGE, and LoongReflect.
+**Current anchors.** Agentic-R, Critic-R, GrepSeek, SearchMaster, SPARKLE, Graph-R1, SAGE, and LoongReflect.
 
-**Strongest signal.** “Learned retrieval policy” now hides distinct objects: retriever utility, query/refinement policy, direct-corpus operations, state recovery, and budget allocation.
+**Strongest signal.** “Learned retrieval policy” hides distinct objects: retriever utility, query/refinement policy, direct-corpus operations, state recovery, budget allocation, and now **which self-generated tasks/trajectories become supervision**.
 
-**Biggest unresolved question.** Did learning improve decisions, or did a richer interface/state/action space, privileged teacher, or extra refinement budget provide most of the gain?
+**Biggest unresolved question.** Did learning improve decisions, or did a richer interface/state/action space, privileged verifier/teacher, extra refinement budget, or easier/better-curated self-play distribution provide most of the gain?
 
-**Next decisive evidence.** Prompted, supervised, and RL controllers on the same environment/state/action space/base model with matched realized calls/tokens/latency/controller compute.
+**Next decisive evidence.** Prompted, supervised, RL, and self-play controllers on the same environment/state/action space/base model with matched realized calls/tokens/latency/controller compute, plus explicit measurements of task shortcut rate, search-depth drift, and verifier/rollout cost.
 
 </details>
 
@@ -245,11 +245,11 @@ The biggest chronology correction is the interface lineage: **A-RAG → DCI → 
 
 **Current anchors.** Is Grep All You Need?, When Should Active RAG Retrieve?, VAKRA, Forgotten History or Test-of-Time?, and Agentic RAG SoK.
 
-**Strongest signal.** The causal lens now needs a **harness/delivery axis** in addition to substrate, interface, state, policy, resources, model, and historical baseline. Identical retrieval can change rank when evidence is delivered through a different harness path.
+**Strongest signal.** The causal lens now needs a **harness/delivery axis** in addition to substrate, interface, state, policy, resources, model, training distribution, and historical baseline. Identical retrieval can change rank when evidence is delivered through a different harness path.
 
 **Biggest unresolved question.** Can we causally locate a trajectory failure or performance gain rather than only observe the final score?
 
-**Next decisive evidence.** Factorial executable evaluation that independently swaps corpus interface, evidence-delivery path, controller, and model, plus counterfactual replay of one patched intermediate decision.
+**Next decisive evidence.** Factorial executable evaluation that independently swaps corpus interface, evidence-delivery path, controller, model, and supervision source, plus counterfactual replay of one patched intermediate decision.
 
 </details>
 
@@ -267,21 +267,21 @@ W33 adds two current stress tests: **editable/recoverable state** and **cross-so
 [Read the rolling W33 synthesis →](digests/weekly/2026-W33.md)
 
 **[2026-W32 · Convergence, factorization, and a stricter novelty baseline](digests/weekly/2026-W32.md)**  
-Historical backfill now makes the W32 chronology stricter: DCI, RISE, DR-DCI, and RARG already made interface resolution and interaction-space design explicit before August. The sharper W32 question is what a paper adds after matching **interface, harness, state, adaptive baseline, and realized resources**.
+The Aug-15 revision adds two more factorization lessons: **SIEVE separates candidate admissibility, ranking, inspection, and selective reading**, while **SearchMaster makes the self-generated task/trajectory distribution part of the learning causal model**. Combined with the earlier DCI lineage, the sharper W32 question is what remains after matching interface, harness, adaptive baseline, realized resources, and supervision distribution.
 
 [Read the revised W32 synthesis →](digests/weekly/2026-W32.md)
 
 ### Recent Quarter · Monthly
 
 **[2026-08 · Rolling research map](digests/monthly/2026-08.md)**  
-The corrected map is `corpus boundary/interface resolution → explicit/editable state → adaptive policy/stopping → resource allocation → harness/delivery → executable evaluation`. The DCI lineage materially strengthens the environment layer; W33 sharpens state and cross-source trajectory integrity.
+The corrected map is `corpus boundary/interface resolution → admissibility/ranking/inspection/read granularity → explicit/editable state → adaptive policy/stopping → resource allocation → training distribution → harness/delivery → executable evaluation`. SIEVE sharpens the interface layer; SearchMaster sharpens the self-improvement layer; W33 sharpens state and cross-source trajectory integrity.
 
 [Explore the August map →](digests/monthly/2026-08.md)
 
 ### All Years · Yearly
 
 **[2026 · Rolling year-to-date map](digests/yearly/2026.md)**  
-The durable 2026 shift is toward explicit design of the agent's **information environment**—corpus boundary, evidence operations, persistent/editable state, adaptive control, and realized resources—under a causal bar that now treats harness/evidence delivery as part of the system.
+The durable 2026 shift is toward explicit design of the agent's **information and learning environments**—corpus boundary, evidence operations, persistent/editable state, adaptive control, supervision distribution, and realized resources—under a causal bar that treats harness/evidence delivery as part of the system.
 
 [Explore the 2026 year-to-date map →](digests/yearly/2026.md) · [Browse all compactions →](digests/README.md)
 
