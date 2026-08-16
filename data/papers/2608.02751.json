@@ -1,0 +1,52 @@
+{
+  "id": "arxiv:2608.02751",
+  "arxiv_id": "2608.02751",
+  "title": "Search, Inspect, Fetch: Exploiting Boolean Retrieval for Deep-Research Agents",
+  "authors": ["Shuai Wang", "Haodong Chen", "Yu Yin", "Shengyao Zhuang", "Bevan Koopman", "Guido Zuccon"],
+  "first_seen": "2026-08-15",
+  "published": "2026-08-03",
+  "updated": null,
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.02751",
+    "pdf": "https://arxiv.org/pdf/2608.02751",
+    "code": "https://github.com/ielab/skim-search-agent",
+    "project": null
+  },
+  "primary_category": "retrieval_tool_use",
+  "tags": ["documents", "sparse", "hybrid", "tool_selection", "iterative_search", "web_research", "structured_retrieval"],
+  "benchmarks": ["HotpotQA", "MuSiQue", "BrowseComp-Plus"],
+  "relevance": 0.99,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "retrieval_interface",
+    "question": "How does SIEVE separate candidate eligibility, ranking, result inspection, and reading granularity instead of collapsing them into Search-Visit?",
+    "takeaway": "The research delta is a structure-preserving search-inspect-fetch interface: Boolean constraints define what may be considered, ranking orders it, result cards expose addressable structure, and fetch reads only the selected section.",
+    "compared_with": "Conventional iterative Search-Visit, plus the matched Search-Fetch control that keeps section-level reading but removes BQL candidate selection.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2608.02751.png",
+    "image_path": "assets/visuals/2608.02751.webp",
+    "prompt_path": "assets/visuals/prompts/2608.02751.md",
+    "artifact_path": "papers/2608.02751.md"
+  },
+  "analysis": {
+    "tldr": "SIEVE turns document structure into an agent-controlled retrieval interface: fielded Boolean constraints select eligible sources, an interchangeable ranker orders them, structure-rich cards support inspection, and the agent fetches only named sections instead of opening whole pages.",
+    "problem": "Deep-research agents usually alternate search and whole-page visits. That collapses source eligibility, ranking, pre-read inspection, and reading granularity, so structured web fields cannot directly constrain what enters the search set or context.",
+    "core_idea": "Preserve source structure through a search-inspect-fetch loop. BQL expresses exact field/range/inclusion/exclusion constraints, ranking prioritizes the admitted set, result cards expose headings and focused snippets, and fetch retrieves one selected section.",
+    "agent_loop": "formulate BQL → select eligible sources → rank → inspect structure-rich cards → fetch named section → update evidence/constraints → repeat or answer",
+    "retrieval_design": "Boolean filtering and ranking are deliberately separate. Search-Fetch is the closest no-BQL control because it keeps the same ranker, result depth, and section-level reading; paired flat/structured collections hold emitted text fixed while changing whether structure is addressable.",
+    "compared_to": ["iterative Search-Visit", "iterative Search-Fetch without BQL", "DCI", "RISE-style bounded DCI", "one-shot retrieve-then-read"],
+    "evidence": "Across HotpotQA, MuSiQue, and BrowseComp-Plus-Structured, the default SIEVE configuration improves over the most accurate conventional Search-Visit configuration on each collection while reading 20.7–50.6% fewer distinct tokens. Matched Search-Fetch controls isolate BQL candidate selection and report improvements across all nine ranker–collection pairs; retriever and agent-backbone studies test robustness.",
+    "why_it_matters": "SIEVE sharpens interface factorization. A retrieval API is not one decision: admissibility, ranking, inspection, and reading granularity can be controlled separately. That creates a more testable design space than treating a richer agent loop as one monolithic intervention.",
+    "limitations": ["The BrowseComp-Plus structured variant uses model-proposed section boundaries, so structure quality is partly constructed rather than natively observed.", "Zero-result fallback removes Boolean constraints in a large fraction of SIEVE search calls, showing that exact selection is brittle and recovery behavior is part of the effective method.", "The evaluation uses three QA collections and controlled source representations rather than the full volatility and markup diversity of live web search."],
+    "confidence": "high"
+  },
+  "provenance": {
+    "discovered_via": ["overlapping arXiv/Hugging Face backfill search"],
+    "full_text_checked": true,
+    "code_link_verified": true,
+    "last_reviewed": "2026-08-15"
+  }
+}
