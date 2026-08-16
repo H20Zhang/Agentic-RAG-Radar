@@ -2,7 +2,7 @@
 
 > **Core question:** What information-access operations should an agent control, what evidence resolution should they expose, and where should retrieval draw the scalable boundary?
 
-This category covers the **agent-facing retrieval environment**: operation set, corpus boundary, local evidence resolution, and resource semantics. The central 2026 correction is that “retriever versus agent” is the wrong binary. A better decomposition is **global candidate discovery × local interaction × execution guidance**.
+This category covers the **agent-facing retrieval environment**: operation set, corpus boundary, local evidence resolution, source structure, and resource semantics. The central 2026 correction is that “retriever versus agent” is the wrong binary. A better decomposition is **global candidate discovery × admissibility × local interaction × evidence delivery × execution guidance**.
 
 ## Current papers
 
@@ -32,6 +32,14 @@ This category covers the **agent-facing retrieval environment**: operation set, 
 
 **Useful negative:** a faster generative reranking variant uses fewer tools but loses accuracy, so “fewer interactions” is not itself a better policy.
 
+### [SIEVE](../papers/2608.02751.md) — ★★★★☆
+
+**Design point:** separate **candidate admissibility, ranking, inspection, and reading granularity**. Fielded Boolean constraints define which sources may be considered, ranking orders that set, result cards expose headings/snippets, and fetch reads a selected section.
+
+**Key evidence:** the matched Search–Fetch control keeps the same ranker, result depth, and section-level reading while removing BQL selection; this makes the candidate-selection claim more identifiable than a full-stack comparison.
+
+**Boundary:** zero-result fallback is frequent, so exact constraints are useful only together with recovery from over-constrained search.
+
 ### [LLM-Wiki](../papers/2605.25480.md) — ★★★★☆
 
 **Design point:** compile documents into a persistent linked Wiki and expose search/read/link traversal as an agent-native environment. Keeping the structure while disabling progressive traversal produces a large reported drop, directly separating substrate from runtime navigation.
@@ -52,10 +60,16 @@ The field has moved through a useful dialectic:
 
 `fixed top-k → raw high-resolution interaction → bounded/persistent workspace → relevance-guided interaction`
 
-The lesson is not that relevance or indexes should disappear. DCI shows that a ranked-list interface can be too low-resolution; RISE and DR-DCI show that unrestricted interaction loses scale; RARG shows that relevance is valuable again when it **guides execution without becoming the final evidence bottleneck**.
+SIEVE adds an orthogonal decomposition: even after the corpus boundary is chosen, the interface can still separate **which sources are admissible, how they are ranked, what structure is visible before reading, and what content is fetched**.
 
-This also changes how later document-navigation work should be read. A-RAG, LLM-Wiki, READ, and DocNavRAG are part of a broader question about the agent's information environment, not isolated GraphRAG/RAG workflow inventions.
+The lesson is not that relevance or indexes should disappear. DCI shows that a ranked-list interface can be too low-resolution; RISE and DR-DCI show that unrestricted interaction loses scale; RARG shows that relevance is valuable again when it **guides execution without becoming the final evidence bottleneck**; SIEVE shows that source structure can remain actionable without exposing raw files.
+
+This changes how later document-navigation work should be read. A-RAG, LLM-Wiki, READ, SIEVE, and DocNavRAG are part of a broader question about the agent's information environment, not isolated GraphRAG/RAG workflow inventions.
 
 ## What would count as meaningful progress?
 
-The decisive comparison is now **same model + same harness + same corpus + matched realized resources** across three interfaces: conventional top-k/snippet delivery, raw DCI, and bounded/dynamic interaction space. Then independently vary boundary retriever, local operation set, relevance guidance, and state persistence. Without that factorial design, a gain can still be caused by a better ranker, richer operations, a larger workspace, or a different harness.
+The decisive comparison is now **same model + same harness + same corpus + matched realized resources** while independently varying:
+
+`corpus boundary × candidate admissibility × ranker × inspection surface × read granularity × local operation set × state persistence`.
+
+Without that factorial design, a gain can still be caused by a better ranker, richer operations, more informative result cards, a larger workspace, or a different harness. SIEVE is useful precisely because its Search–Fetch control starts to separate some of those variables.
