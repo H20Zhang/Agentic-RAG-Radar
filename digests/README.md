@@ -20,9 +20,11 @@ The key tension is causal: rollback-style state control may help long-horizon se
 
 ### [2026-W32 · Convergence, factorization, and a stricter novelty baseline](weekly/2026-W32.md)
 
-**Revised thesis:** W32 is not best described as the week Agentic RAG “moved beyond top-k.” Historical backfill now makes that correction stronger: by May–July, DCI, RISE, DR-DCI, and RARG had already made corpus-interface resolution, bounded interaction spaces, dynamic workspaces, and relevance-guided interaction explicit research objects.
+**Revised thesis:** W32 is not best described as the week Agentic RAG “moved beyond top-k.” Historical backfill already makes that chronology too late. The Aug-15 revision sharpens two more variables: **SIEVE factorizes candidate admissibility, ranking, inspection, and reading**, while **SearchMaster makes the self-generated training distribution itself a causal learning variable**.
 
-[Read the W32 synthesis →](weekly/2026-W32.md)
+The resulting W32 question is harder: what remains after matching the information interface, harness, adaptive baseline, realized resources, and—when self-improvement is claimed—the task/trajectory curriculum?
+
+[Read the revised W32 synthesis →](weekly/2026-W32.md)
 
 > Weekly reports stay on the primary archive surface for roughly the latest month; older weekly files remain for provenance.
 
@@ -32,9 +34,9 @@ The key tension is causal: rollback-style state control may help long-horizon se
 
 **Current thesis:** August is a **factorization + trajectory-integrity** story, now re-grounded against a stronger pre-August interaction-space lineage:
 
-`corpus boundary/interface resolution → explicit/editable state → adaptive policy/stopping → resource allocation → harness/delivery → executable evaluation`
+`corpus boundary/interface resolution → admissibility/ranking/inspection/read granularity → explicit/editable state → adaptive policy/stopping → resource allocation → training distribution → harness/delivery → executable evaluation`
 
-The important correction is that “retrieval interface” was already more mature than this radar previously represented. DCI exposes interface resolution; RISE/DR-DCI recover scale through persistent workspaces; RARG carries relevance into execution; Is Grep All You Need? shows the surrounding harness can reverse retrieval conclusions.
+DCI/RISE/DR-DCI/RARG establish the interaction-space lineage; SIEVE splits the structured interface into independently testable decisions; SearchMaster adds supervision-distribution quality to the learning causal model; W33 sharpens state recovery and cross-source trajectory integrity.
 
 [Explore the August research map →](monthly/2026-08.md)
 
@@ -44,7 +46,7 @@ The important correction is that “retrieval interface” was already more matu
 
 ### [2026 · Rolling year-to-date map](yearly/2026.md)
 
-**Current thesis:** the durable 2026 movement is toward explicit design of the agent's **information environment**—corpus boundary, evidence operations, persistent state, adaptive policy, and realized resources—plus a stricter causal bar that treats harness/evidence delivery as part of the system.
+**Current thesis:** the durable 2026 movement is toward explicit design of the agent's **information environment and learning environment**—corpus boundary, admissibility, evidence operations, persistent state, adaptive policy, training distribution, and realized resources—plus a stricter causal bar that treats harness/evidence delivery as part of the system.
 
 The report remains explicitly rolling; incomplete historical backfill is not presented as full-year coverage.
 
