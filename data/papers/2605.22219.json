@@ -1,0 +1,52 @@
+{
+  "id": "arxiv:2605.22219",
+  "arxiv_id": "2605.22219",
+  "title": "SGR-Bench: Benchmarking Search Agents on State-Gated Retrieval",
+  "authors": ["Ningyuan Li", "Haiyang Shen", "Mugeng Liu", "Yudong Han", "Zhuofan Shi", "Sixiong Xie", "Yun Ma"],
+  "first_seen": "2026-08-16",
+  "published": "2026-05-21",
+  "updated": null,
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2605.22219",
+    "pdf": "https://arxiv.org/pdf/2605.22219",
+    "code": null,
+    "project": "https://huggingface.co/datasets/PKUAIWeb/SGR-BENCH"
+  },
+  "primary_category": "evaluation_analysis",
+  "tags": ["web", "database", "tool_selection", "iterative_search", "web_research", "state_gated_retrieval"],
+  "benchmarks": ["SGR-Bench"],
+  "relevance": 1.0,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "state_progression",
+    "question": "What does state-gated retrieval add to search-agent evaluation beyond simply finding the right website or page?",
+    "takeaway": "The benchmark separates source discovery from environment configuration: the agent must preserve the site-specific retrieval state under which answer-bearing evidence becomes visible.",
+    "compared_with": "Open-web search benchmarks centered on source discovery/traversal and browser-agent benchmarks centered on generic action execution rather than state-gated evidence exposure.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2605.22219.png",
+    "image_path": "assets/visuals/2605.22219.webp",
+    "prompt_path": "assets/visuals/prompts/2605.22219.md",
+    "artifact_path": "papers/2605.22219.md"
+  },
+  "analysis": {
+    "tldr": "SGR-Bench isolates state-gated retrieval: search agents may find the correct specialized website yet fail because answer-bearing evidence remains hidden behind the wrong filters, views, hierarchy, scope, or time window.",
+    "problem": "Existing search-agent and browser-agent benchmarks underrepresent specialized retrieval tasks where evidence becomes accessible only after configuring a source into the correct site-specific retrieval state.",
+    "core_idea": "Create 100 expert-curated tasks across 12 public data ecosystems in which the agent must discover the source and establish the correct retrieval state; pair constraint-guided and goal-oriented formulations of the same underlying task to diagnose how explicit retrieval guidance changes performance.",
+    "agent_loop": "Discover source → infer required site state → set filter/view/hierarchy/scope → inspect exposed evidence → update state → continue or answer",
+    "retrieval_design": "The benchmark makes environment configuration part of retrieval. Evidence exposed under one state can determine the next state-setting operation, so source discovery, environment retrieval state, and answer synthesis are separable stages.",
+    "compared_to": ["BrowseComp-style deep search benchmarks", "WideSearch-style broad search benchmarks", "WebArena/Mind2Web/WorkArena-style browser benchmarks", "source-discovery-only evaluation"],
+    "evidence": "The strongest evaluated system reaches 66.18% item-level F1 while row-level correctness remains materially lower. A manual audit of 156 analyzable failed CLI trajectories attributes 37.2% to retrieval-scope drift and 27.6% to criterion mismatch, versus 10.3% to final answer composition. The error profile shows many failures occur after a relevant source has already been reached.",
+    "why_it_matters": "SGR-Bench adds an environment-state axis to Agentic RAG evaluation. Internal evidence tracking cannot substitute for correctly configuring an external data system; a cleaner decomposition is source discovery × environment retrieval state × agent evidence state × policy.",
+    "limitations": ["The benchmark contains 100 tasks and is concentrated on specialized public data-retrieval websites.", "CLI results are system-level outcomes because model and harness choices differ; they should not be read as pure model rankings.", "Retrieval-state errors may depend on website stability and source-specific interaction affordances.", "The benchmark diagnoses failures but does not causally identify which controller or state representation repairs them."],
+    "confidence": "high"
+  },
+  "provenance": {
+    "discovered_via": ["overlapping recent/backfill web search", "arXiv full HTML", "official Hugging Face dataset"],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-16"
+  }
+}
