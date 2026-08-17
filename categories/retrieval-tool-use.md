@@ -2,7 +2,7 @@
 
 > **Core question:** What information-access operations should an agent control, what evidence resolution should they expose, and where should retrieval draw the scalable boundary?
 
-This category covers the **agent-facing retrieval environment**: operation set, corpus boundary, local evidence resolution, source structure, and resource semantics. The central 2026 correction is that “retriever versus agent” is the wrong binary. A better decomposition is **global candidate discovery × admissibility × local interaction × evidence delivery × execution guidance**.
+This category covers the **agent-facing retrieval environment**: operation set, corpus boundary, local evidence resolution, source structure, environment retrieval state, and resource semantics. The central 2026 correction is that “retriever versus agent” is the wrong binary. A better decomposition is **global candidate discovery × admissibility × environment state × local interaction × evidence delivery × execution guidance**.
 
 ## Current papers
 
@@ -13,6 +13,12 @@ This category covers the **agent-facing retrieval environment**: operation set, 
 **Why it is an anchor:** introduces **retrieval-interface resolution** as the explanation for why capable agents can outperform a stronger ranker even when the ranker already surfaced gold documents.
 
 **Boundary:** raw full-corpus interaction degrades sharply with distractor scale; high resolution is not free.
+
+### [Pi-Serini](../papers/2605.10848.md) — ★★★★☆
+
+**Design point:** keep a conventional lexical backend, but tune it for the corpus, surface a much deeper cached ranking, and expose browse/read operations so the agent can inspect that ranking incrementally.
+
+**Why it matters:** it is a useful counterweight to “richer interaction always beats retrieval.” On BrowseComp-Plus, well-configured BM25 plus a better inspection interface is already very strong. The negative detail is equally important: surfaced recall keeps rising with depth while previewed recall saturates, so backend recall and browsing policy remain separate bottlenecks.
 
 ### [RISE](../papers/2606.06880.md) — ★★★★☆
 
@@ -60,16 +66,16 @@ The field has moved through a useful dialectic:
 
 `fixed top-k → raw high-resolution interaction → bounded/persistent workspace → relevance-guided interaction`
 
+Pi-Serini adds an important correction to the first step: **a conventional retriever can look weak simply because its parameters, surfaced depth, or inspection interface are weak**. DCI therefore should not be read as “indexes are obsolete”; it shows that some fixed retrieval interfaces are too lossy. Pi-Serini shows that increasing backend recall and preserving deeper ranking access can recover much of the gap on at least one deep-research corpus.
+
 SIEVE adds an orthogonal decomposition: even after the corpus boundary is chosen, the interface can still separate **which sources are admissible, how they are ranked, what structure is visible before reading, and what content is fetched**.
 
-The lesson is not that relevance or indexes should disappear. DCI shows that a ranked-list interface can be too low-resolution; RISE and DR-DCI show that unrestricted interaction loses scale; RARG shows that relevance is valuable again when it **guides execution without becoming the final evidence bottleneck**; SIEVE shows that source structure can remain actionable without exposing raw files.
-
-This changes how later document-navigation work should be read. A-RAG, LLM-Wiki, READ, SIEVE, and DocNavRAG are part of a broader question about the agent's information environment, not isolated GraphRAG/RAG workflow inventions.
+The stable question is therefore not lexical versus dense or retriever versus shell. It is **where relevance constrains the search space, how much candidate information survives that boundary, and what operations the agent retains for inspecting and refining evidence**.
 
 ## What would count as meaningful progress?
 
-The decisive comparison is now **same model + same harness + same corpus + matched realized resources** while independently varying:
+The decisive comparison is **same model + same harness + same corpus + matched realized resources** while independently varying:
 
-`corpus boundary × candidate admissibility × ranker × inspection surface × read granularity × local operation set × state persistence`.
+`backend/ranker configuration × surfaced depth × corpus boundary × candidate admissibility × inspection surface × read granularity × local operation set × state persistence`.
 
-Without that factorial design, a gain can still be caused by a better ranker, richer operations, more informative result cards, a larger workspace, or a different harness. SIEVE is useful precisely because its Search–Fetch control starts to separate some of those variables.
+Without that factorial design, a gain can still be caused by a better-tuned backend, richer operations, deeper cached rankings, more informative result cards, a larger workspace, or a different harness. Pi-Serini and SIEVE are useful precisely because each begins to separate some of those variables rather than comparing only complete stacks.
