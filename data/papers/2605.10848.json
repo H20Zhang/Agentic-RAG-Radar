@@ -1,0 +1,52 @@
+{
+  "id": "arxiv:2605.10848",
+  "arxiv_id": "2605.10848",
+  "title": "Rethinking Agentic Search with Pi-Serini: Is Lexical Retrieval Sufficient?",
+  "authors": ["Tz-Huan Hsu", "Jheng-Hong Yang", "Jimmy Lin"],
+  "first_seen": "2026-08-16",
+  "published": "2026-05-11",
+  "updated": null,
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2605.10848",
+    "pdf": "https://arxiv.org/pdf/2605.10848",
+    "code": "https://github.com/justram/pi-serini",
+    "project": "https://ricky42613.github.io/piserini"
+  },
+  "primary_category": "evaluation_analysis",
+  "tags": ["sparse", "documents", "tool_selection", "iterative_search", "web_research", "retrieval_depth"],
+  "benchmarks": ["BrowseComp-Plus"],
+  "relevance": 0.99,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "retrieval_interface",
+    "question": "How does Pi-Serini separate lexical ranking quality, surfaced retrieval depth, and the agent-facing browse/read interface?",
+    "takeaway": "A strong lexical baseline is a system consisting of the backend ranker, how deep a ranking is surfaced, and how the agent can inspect that ranking; backend recall and agent-inspected evidence are distinct bottlenecks.",
+    "compared_with": "Released BrowseComp-Plus agents using default/shallow BM25 or dense retrieval, plus the paper's BM25-tuning and retrieval-depth ablations.",
+    "full_text_grounded": false,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2605.10848.png",
+    "image_path": "assets/visuals/2605.10848.webp",
+    "prompt_path": "assets/visuals/prompts/2605.10848.md",
+    "artifact_path": "papers/2605.10848.md"
+  },
+  "analysis": {
+    "tldr": "Pi-Serini is a baseline correction for agentic search: tuned BM25, deep cached rankings, and explicit browse/read tools can outperform released dense-retriever agents on BrowseComp-Plus, showing that retriever family, surfaced depth, and the agent-facing inspection interface must be separated.",
+    "problem": "Agentic-search evaluations can make lexical retrieval look intrinsically weak when the lexical baseline uses default parameters, shallow retrieval depth, or an interface that prevents the agent from inspecting deeper ranked evidence.",
+    "core_idea": "Use tuned Anserini BM25 to create deep cached rankings and expose three operations—search, browse cached search results, and read selected documents—so evidence surfaced by the backend can be distinguished from evidence actually previewed or read by the agent.",
+    "agent_loop": "Form lexical query → cache deep ranking → browse ranking pages → read selected document chunks → refine/search again or answer",
+    "retrieval_design": "The backend ranking and agent interaction are decoupled. Deep retrieval can populate a cache without dumping the full ranking into model context; the controller decides how far to browse and which documents to read.",
+    "compared_to": ["released BrowseComp-Plus BM25 agents", "released dense-retriever search agents", "default versus tuned BM25", "shallow versus deep surfaced rankings"],
+    "evidence": "The paper reports 83.1% answer accuracy and 94.7% surfaced evidence recall for Pi-Serini with GPT-5.5 on BrowseComp-Plus. On a 100-query ablation subset, BM25 tuning improves answer accuracy by 18.0 points and surfaced evidence recall by 11.1 points; increasing retrieval depth improves surfaced evidence recall by 25.3 points. Previewed recall saturates much earlier than surfaced recall, showing that backend recall and agent inspection are distinct bottlenecks.",
+    "why_it_matters": "Pi-Serini raises the baseline bar for agentic-search retrieval claims. A dense-versus-lexical comparison is not causal if backend tuning, ranking depth, or the inspection interface differ, and high surfaced recall is not sufficient if the agent does not inspect the evidence.",
+    "limitations": ["The headline evidence is concentrated on BrowseComp-Plus, so cross-domain generality is not established.", "The strongest tuning/depth ablations use a 100-query subset rather than the full 830-query benchmark.", "A frontier model is part of the success condition; the same BM25 backend can perform poorly with weaker search agents.", "Deep surfaced rankings still incur backend work even when the controller never previews most candidates."],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": ["overlapping recent/backfill web search", "official project page", "official GitHub repository"],
+    "full_text_checked": false,
+    "code_link_verified": true,
+    "last_reviewed": "2026-08-16"
+  }
+}
