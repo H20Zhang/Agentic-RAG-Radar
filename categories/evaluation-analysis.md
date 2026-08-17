@@ -1,6 +1,6 @@
 # Evaluation & Analysis
 
-> **Core question:** How do we tell whether an Agentic RAG system genuinely makes better information-acquisition decisions rather than using a richer interface, different harness, looser resource budget, stronger model, easier benchmark—or rediscovered prior art?
+> **Core question:** How do we tell whether an Agentic RAG system genuinely makes better information-acquisition decisions rather than using a richer interface, different environment state, different harness, looser resource budget, stronger model, easier benchmark—or rediscovered prior art?
 
 This category covers benchmarks, surveys/SoKs, diagnostic studies, failure analysis, historical/systematization work, and evaluation methodology for adaptive retrieval systems.
 
@@ -11,6 +11,18 @@ This category covers benchmarks, surveys/SoKs, diagnostic studies, failure analy
 **Design point:** executable cross-source trajectories combining APIs, document retrieval, multi-hop reasoning, and policy constraints under a fixed ReAct harness.
 
 **Why it matters:** capability composition fails around entity disambiguation and cross-source grounding even when individual API/document tasks look much easier.
+
+### [SGR-Bench](../papers/2605.22219.md) — ★★★★☆
+
+**Design point:** make **site-specific retrieval state** measurable. The agent must not only find the right specialized source, but also establish and preserve filters, views, hierarchies, scopes, or time windows under which answer-bearing evidence becomes visible.
+
+**Why it matters:** source discovery and internal evidence tracking are not enough if the external data system is in the wrong state. Retrieval-scope drift and criterion mismatch dominate the audited failure set.
+
+### [Pi-Serini](../papers/2605.10848.md) — ★★★★☆
+
+**Design point:** separate retriever family from **backend configuration, surfaced ranking depth, and agent inspection interface**.
+
+**Why it matters:** default/shallow BM25 can be a misleading baseline. On BrowseComp-Plus, tuned BM25 plus deep cached rankings and browse/read tools materially changes the dense-versus-lexical conclusion; previewed recall still saturates much earlier than surfaced recall.
 
 ### [Is Grep All You Need?](../papers/2605.15184.md) — ★★★★☆
 
@@ -32,18 +44,20 @@ This category covers benchmarks, surveys/SoKs, diagnostic studies, failure analy
 
 ## Evaluation lens used by this radar
 
-The earlier lens was:
+The current lens is:
 
-`substrate × operation set × state × policy × realized resources × base model × historical baseline`
+`substrate × corpus boundary/interface resolution × environment retrieval state × harness/delivery × agent state × policy × realized resources × base model × training distribution × historical baseline`
 
-The DCI/harness backfill adds a missing factor:
+Two distinctions matter.
 
-`substrate × corpus boundary/interface resolution × harness/delivery × state × policy × realized resources × base model × historical baseline`
+First, **environment retrieval state is not agent memory**. SGR-Bench shows that an agent can carry the right reasoning/evidence history and still fail because the external site is configured to the wrong scope, filter, or view. Conversely, better internal state does not prove better environment-state control.
 
-That change is substantive. DCI/RISE/DR-DCI show that the corpus boundary and evidence operations can alter what the agent is capable of expressing; Is Grep All You Need? shows the same retrieval primitive can behave very differently depending on how the harness presents tool results. A system-level score cannot attribute gains to “retrieval” while those variables move together.
+Second, **retriever family is not a sufficient experimental variable**. Pi-Serini shows that backend parameterization, how deep a ranking is surfaced, and what inspection operations the agent receives can reverse a naive lexical-versus-dense conclusion. These should normally be accounted for inside the interface/resource axes rather than promoted into an ever-growing list of independent buzzword factors.
 
-VAKRA adds the complementary composition test: after factorizing components, do they still maintain entity/provenance/policy coherence across heterogeneous sources in one executable trajectory?
+The DCI lineage and harness studies add complementary confounders: corpus boundary and evidence operations alter what the agent can express; result delivery and tool contracts alter how the same evidence is consumed. VAKRA then asks whether those components remain coherent across heterogeneous sources in one executable trajectory.
 
 ## What would count as meaningful progress?
 
-The next bar is a factorial executable benchmark that can replay the same task under controlled **interface × harness × controller** substitutions, while logging realized calls/tokens/latency and allowing counterfactual repair of one intermediate decision. That would separate a better retriever from a higher-resolution interface, a better evidence-delivery path, a better policy, and a cross-source grounding failure instead of treating all four as “agent quality.”
+The next bar is a factorial executable benchmark that can replay the same task under controlled **backend × interface × environment-state × harness × controller** substitutions while logging realized calls/tokens/latency and allowing counterfactual repair of one intermediate decision.
+
+That would let us distinguish five questions that current leaderboards often collapse: did the backend surface the evidence, could the agent inspect it, was the external source in the right state, did the controller choose the right action, and did the harness preserve the evidence faithfully?
