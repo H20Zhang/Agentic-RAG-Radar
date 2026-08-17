@@ -3,7 +3,7 @@
 **A living research map of Agentic Retrieval-Augmented Generation.**  
 Track new papers, understand what actually changed, and see how the field is moving — with skeptical research notes, visual explainers, and weekly/monthly/yearly synthesis.
 
-**Last updated:** 2026-08-15 · [Latest papers](#-latest-papers) · [Start here](#-start-here) · [Browse by research problem](categories/README.md) · [Research compactions](#-research-compactions)
+**Last updated:** 2026-08-16 · [Latest papers](#-latest-papers) · [Start here](#-start-here) · [Browse by research problem](categories/README.md) · [Research compactions](#-research-compactions)
 
 ## 🔥 Latest Papers
 
@@ -127,16 +127,16 @@ Track new papers, understand what actually changed, and see how the field is mov
 
 | If you want to understand… | Read in this order | What you should learn |
 |---|---|---|
-| **How corpus access becomes an interaction space** | [A-RAG](papers/2602.03442.md) → [DCI](papers/2605.05242.md) → [RISE](papers/2606.06880.md) → [DR-DCI](papers/2606.14885.md) → [RARG](papers/2607.24223.md) | Why the design variable is not “dense vs lexical” but **where the corpus boundary sits and what evidence operations remain available after it**. |
-| **How evidence state becomes controllable** | [S2G-RAG](papers/2604.23783.md) → [DocNavRAG](papers/2608.01565.md) → [LoongReflect](papers/2608.11967.md) | The move from sufficiency/missing-evidence state to environment-coupled state and then explicit rollback/recovery semantics. |
-| **How to evaluate agentic retrieval causally** | [Is Grep All You Need?](papers/2605.15184.md) → [Know Before You Fetch](papers/2606.29959.md) → [When Should Active RAG Retrieve?](papers/2607.24010.md) → [VAKRA](papers/2608.12282.md) | Why interface, harness/delivery, realized resources, and cross-source composition must be separated before crediting a policy or retriever. |
+| **How corpus access becomes an interaction space** | [Pi-Serini](papers/2605.10848.md) → [A-RAG](papers/2602.03442.md) → [DCI](papers/2605.05242.md) → [RISE](papers/2606.06880.md) → [DR-DCI](papers/2606.14885.md) → [RARG](papers/2607.24223.md) | Why “retriever vs agent” is the wrong binary: backend tuning/depth, corpus boundary, and the operations preserved after that boundary all change the evidence surface. |
+| **How state becomes controllable** | [SGR-Bench](papers/2605.22219.md) → [S2G-RAG](papers/2604.23783.md) → [DocNavRAG](papers/2608.01565.md) → [LoongReflect](papers/2608.11967.md) | The distinction between external retrieval state, persistent evidence state, and editable/recoverable agent state. |
+| **How to evaluate agentic retrieval causally** | [Pi-Serini](papers/2605.10848.md) → [Is Grep All You Need?](papers/2605.15184.md) → [SGR-Bench](papers/2605.22219.md) → [When Should Active RAG Retrieve?](papers/2607.24010.md) → [VAKRA](papers/2608.12282.md) | Why backend calibration, interface/harness, environment state, realized resources, and cross-source composition must be separated before crediting a policy or retriever. |
 
 <details>
 <summary><strong>If you only read three papers</strong></summary>
 
 **DCI** gives the clearest interface-resolution argument: relevant documents can be reachable while the evidence API is still too coarse. **LoongReflect** gives the strongest current argument that active reasoning state may need recovery semantics rather than append-only memory. **VAKRA** stress-tests the whole story in an executable API+documents environment where cross-source grounding becomes a distinct bottleneck.
 
-Together they suggest a harder model of Agentic RAG: **information environment × persistent/editable state × policy × realized resources × trajectory integrity**.
+Together they suggest a harder model of Agentic RAG: **information environment × layered state × policy × realized resources × trajectory integrity**.
 
 </details>
 
@@ -149,6 +149,7 @@ Together they suggest a harder model of Agentic RAG: **information environment �
 | **[RISE](papers/2606.06880.md)** | Makes retrieval construct a bounded persistent interaction space. |
 | **[DR-DCI](papers/2606.14885.md)** | Makes retrieval dynamically expand durable workspace state. |
 | **[RARG](papers/2607.24223.md)** | Reintroduces relevance as guidance inside direct interaction rather than a final evidence bottleneck. |
+| **[SGR-Bench](papers/2605.22219.md)** | Makes external **retrieval state** a first-class evaluation object: right source can still expose the wrong evidence state. |
 | **[S2G-RAG](papers/2604.23783.md)** | Makes sufficiency and missing-information state explicit. |
 | **[Critic-R](papers/2606.00590.md)** | Turns reasoning feedback into query repair and retriever learning. |
 | **[Is Grep All You Need?](papers/2605.15184.md)** | Makes harness and evidence-delivery path explicit retrieval confounders. |
@@ -156,9 +157,9 @@ Together they suggest a harder model of Agentic RAG: **information environment �
 <details>
 <summary><strong>How these anchors fit together</strong></summary>
 
-`information need → corpus interface/boundary → persistent evidence workspace → explicit/editable state → adaptive/learned control → resource/harness-aware evaluation`
+`information need → corpus interface/boundary → external retrieval state / persistent workspace → explicit/editable agent state → adaptive/learned control → resource/harness-aware evaluation`
 
-The biggest chronology correction is the interface lineage: **A-RAG → DCI → RISE → DR-DCI → RARG**. It replaces the false binary “semantic retriever or grep” with a systems question: **where should relevance constrain the search space, and what local operations should survive inside that boundary?**
+The interface lineage **A-RAG → DCI → RISE → DR-DCI → RARG** replaces the false binary “semantic retriever or grep” with a systems question: where should relevance constrain the search space, and what local operations should survive inside that boundary? **SGR-Bench adds a separate state boundary:** the external source can be in the wrong filter/scope/view state even when the agent's internal evidence state is coherent.
 
 [See the full anchor notes →](papers/anchors.md)
 
@@ -169,11 +170,11 @@ The biggest chronology correction is the interface lineage: **A-RAG → DCI → 
 | Research problem | Question |
 |---|---|
 | **[Planning & Query Formulation](categories/planning-query-formulation.md)** | What information should be acquired next, and how is that need planned/decomposed? |
-| **[Retrieval & Tool Use](categories/retrieval-tool-use.md)** | What corpus boundary, candidate-selection/inspection interface, evidence operations, and resource semantics should the agent control? |
-| **[Iterative Reasoning & Verification](categories/iterative-reasoning-verification.md)** | What state should make the next retrieval, verification, recovery, or stopping decision? |
+| **[Retrieval & Tool Use](categories/retrieval-tool-use.md)** | What backend/depth, corpus boundary, environment retrieval state, inspection interface, evidence operations, and resource semantics should the agent control? |
+| **[Iterative Reasoning & Verification](categories/iterative-reasoning-verification.md)** | What internal state should make the next retrieval, verification, recovery, or stopping decision? |
 | **[Multi-Agent & Orchestration](categories/multi-agent-orchestration.md)** | When does specialization/coordination justify multiple agents? |
 | **[Learning & Optimization](categories/learning-optimization.md)** | What should be learned: ranking, query refinement, corpus operations, recovery, resource allocation, or the training-task distribution itself? |
-| **[Evaluation & Analysis](categories/evaluation-analysis.md)** | How do we isolate policy/retrieval gains from richer interfaces, harnesses, budgets, models, or prior art? |
+| **[Evaluation & Analysis](categories/evaluation-analysis.md)** | How do we isolate policy/retrieval gains from backend calibration, environment state, richer interfaces, harnesses, budgets, models, or prior art? |
 
 <details>
 <summary><strong>Planning & Query Formulation — plan first, or react to evidence?</strong></summary>
@@ -191,13 +192,13 @@ The biggest chronology correction is the interface lineage: **A-RAG → DCI → 
 <details>
 <summary><strong>Retrieval & Tool Use — what should the agent actually be allowed to do?</strong></summary>
 
-**Current anchors.** A-RAG, DCI, RISE, DR-DCI, RARG, SIEVE, LLM-Wiki, READ, and Know Before You Fetch.
+**Current anchors.** Pi-Serini, A-RAG, DCI, RISE, DR-DCI, RARG, SIEVE, LLM-Wiki, READ, and Know Before You Fetch.
 
-**Strongest signal.** The field has moved through `fixed top-k → raw high-resolution interaction → bounded/dynamic workspace → relevance-guided interaction`. SIEVE adds a second factorization inside the boundary: `candidate admissibility → ranking → inspection → selective read`. The stable abstraction is **interaction-space/interface design**, not a lexical-versus-dense contest.
+**Strongest signal.** Pi-Serini raises the conventional-retrieval baseline: poor tuning, shallow surfaced rankings, or weak browsing affordances can make BM25 look artificially weak. DCI/RISE/DR-DCI/RARG then expose the opposite axis—how much local interaction survives a scalable boundary—while SIEVE factorizes `candidate admissibility → ranking → inspection → selective read`.
 
-**Biggest unresolved question.** Which interface decision matters on which workload: corpus boundary, exact eligibility constraints, ranker, result-card information, reading granularity, or local operation set?
+**Biggest unresolved question.** Which intervention actually matters on which workload: backend configuration, surfaced depth, corpus boundary, eligibility constraints, ranker, result-card information, reading granularity, or local operation set?
 
-**Next decisive evidence.** Same model/harness/corpus/resources while independently toggling boundary retriever, admissibility, ranker, inspection surface, read granularity, and local operations rather than comparing two complete stacks.
+**Next decisive evidence.** Same model/harness/corpus/resources while independently toggling backend/depth, boundary, admissibility, ranker, inspection surface, read granularity, and local operations rather than comparing two complete stacks.
 
 </details>
 
@@ -206,11 +207,11 @@ The biggest chronology correction is the interface lineage: **A-RAG → DCI → 
 
 **Current anchors.** S2G-RAG, DocNavRAG, LoongReflect, Search-o1, and ACE-GraphRAG.
 
-**Strongest signal.** “Iterative” is too weak a description. State is becoming an explicit control surface: sufficiency/gaps, persistent evidence workspace, and potentially editable active reasoning state with rollback semantics.
+**Strongest signal.** “Iterative” is too weak a description. Internal state is becoming an explicit control surface: sufficiency/gaps, persistent evidence workspace, and potentially editable active reasoning state with rollback semantics. SGR-Bench is a useful boundary condition: external source configuration is a different state layer and should not be collapsed into memory.
 
-**Biggest unresolved question.** Does rollback itself help, or do gains come from privileged recovery supervision and a richer state representation?
+**Biggest unresolved question.** Does rollback itself help, or do gains come from privileged recovery supervision and a richer state representation—and how does internal recovery interact with a misconfigured external source state?
 
-**Next decisive evidence.** Hold trajectory representation fixed and compare append-only reflection, prompted rollback, and learned rollback at equal tool/retrieval budgets; separately test whether external workspace persistence survives reasoning-context reset.
+**Next decisive evidence.** Hold trajectory representation fixed and compare append-only reflection, prompted rollback, and learned rollback at equal tool/retrieval budgets; independently intervene on external retrieval state versus internal state.
 
 </details>
 
@@ -243,13 +244,13 @@ The biggest chronology correction is the interface lineage: **A-RAG → DCI → 
 <details>
 <summary><strong>Evaluation & Analysis — how do we know what caused the gain?</strong></summary>
 
-**Current anchors.** Is Grep All You Need?, When Should Active RAG Retrieve?, VAKRA, Forgotten History or Test-of-Time?, and Agentic RAG SoK.
+**Current anchors.** Pi-Serini, SGR-Bench, Is Grep All You Need?, When Should Active RAG Retrieve?, VAKRA, Forgotten History or Test-of-Time?, and Agentic RAG SoK.
 
-**Strongest signal.** The causal lens now needs a **harness/delivery axis** in addition to substrate, interface, state, policy, resources, model, training distribution, and historical baseline. Identical retrieval can change rank when evidence is delivered through a different harness path.
+**Strongest signal.** The causal lens now needs to distinguish **backend/interface calibration, external retrieval state, harness/delivery, internal agent state, policy, realized resources, model, training distribution, and historical baseline**. Pi-Serini shows that a weakly configured lexical baseline can mislead; SGR-Bench shows that reaching the right source is not the same as exposing the right evidence state.
 
-**Biggest unresolved question.** Can we causally locate a trajectory failure or performance gain rather than only observe the final score?
+**Biggest unresolved question.** Can we locate a failure to the stage that caused it: backend exposure, agent inspection, environment state, controller decision, or cross-source grounding?
 
-**Next decisive evidence.** Factorial executable evaluation that independently swaps corpus interface, evidence-delivery path, controller, model, and supervision source, plus counterfactual replay of one patched intermediate decision.
+**Next decisive evidence.** Factorial executable evaluation that independently swaps backend/depth, corpus interface, environment state, evidence-delivery path, controller, model, and supervision source, plus counterfactual replay of one patched intermediate decision.
 
 </details>
 
@@ -267,21 +268,21 @@ W33 adds two current stress tests: **editable/recoverable state** and **cross-so
 [Read the rolling W33 synthesis →](digests/weekly/2026-W33.md)
 
 **[2026-W32 · Convergence, factorization, and a stricter novelty baseline](digests/weekly/2026-W32.md)**  
-The Aug-15 revision adds two more factorization lessons: **SIEVE separates candidate admissibility, ranking, inspection, and selective reading**, while **SearchMaster makes the self-generated task/trajectory distribution part of the learning causal model**. Combined with the earlier DCI lineage, the sharper W32 question is what remains after matching interface, harness, adaptive baseline, realized resources, and supervision distribution.
+W32's revised question is what remains after matching interface, harness, adaptive baseline, realized resources, and supervision distribution. SIEVE and SearchMaster provide the most useful Aug-03 factorization evidence.
 
 [Read the revised W32 synthesis →](digests/weekly/2026-W32.md)
 
 ### Recent Quarter · Monthly
 
 **[2026-08 · Rolling research map](digests/monthly/2026-08.md)**  
-The corrected map is `corpus boundary/interface resolution → admissibility/ranking/inspection/read granularity → explicit/editable state → adaptive policy/stopping → resource allocation → training distribution → harness/delivery → executable evaluation`. SIEVE sharpens the interface layer; SearchMaster sharpens the self-improvement layer; W33 sharpens state and cross-source trajectory integrity.
+The corrected map now separates **backend configuration/surfaced depth**, **environment retrieval state**, and **agent state** instead of hiding them inside one retriever/state variable. Pi-Serini raises the conventional lexical baseline; SGR-Bench shows that right source ≠ right evidence state; W33 still sharpens rollback and cross-source trajectory integrity.
 
 [Explore the August map →](digests/monthly/2026-08.md)
 
 ### All Years · Yearly
 
 **[2026 · Rolling year-to-date map](digests/yearly/2026.md)**  
-The durable 2026 shift is toward explicit design of the agent's **information and learning environments**—corpus boundary, evidence operations, persistent/editable state, adaptive control, supervision distribution, and realized resources—under a causal bar that treats harness/evidence delivery as part of the system.
+The durable 2026 shift is toward explicit design of the agent's **information and learning environments**—backend/corpus boundary, evidence operations, external retrieval state, persistent/editable agent state, adaptive control, supervision distribution, and realized resources—under a causal bar that treats harness/delivery and baseline calibration as part of the system.
 
 [Explore the 2026 year-to-date map →](digests/yearly/2026.md) · [Browse all compactions →](digests/README.md)
 
