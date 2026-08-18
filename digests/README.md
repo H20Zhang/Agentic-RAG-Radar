@@ -6,23 +6,17 @@ The archive intentionally becomes coarser with time:
 
 `recent month → weekly` · `recent quarter → monthly` · `all years → yearly`
 
-The underlying paper records remain available for detail; compactions preserve the conclusions, disagreements, and research questions worth carrying forward.
-
 ## Recent Month · Weekly
 
-### [2026-W33 · State recovery and cross-source trajectory integrity](weekly/2026-W33.md)
+### [2026-W33 · Where should retrieval intelligence live?](weekly/2026-W33.md)
 
-**Rolling thesis:** the new pressure point is no longer just “what should the agent retrieve next?” LoongReflect makes accumulated execution state **reversible**, while VAKRA tests whether agents can keep identity and evidence coherent across APIs and document retrieval in one executable trajectory.
-
-The key tension is causal: rollback-style state control may help long-horizon search, but VAKRA's failures often look like entity/schema grounding rather than a clearly bad branch. Those are different failure modes and should not be collapsed into one “memory problem.”
+**Rolling thesis:** runtime interaction is valuable only when it exposes information that could not have been compiled before retrieval. ReFind moves memory intelligence from offline structure into question-time raw-history search; LoongReflect makes accumulated state reversible; VAKRA stress-tests cross-source trajectory integrity. SIRA is the adjacent counterpoint: some adaptive search can be compiled before evidence is read.
 
 [Read the rolling W33 synthesis →](weekly/2026-W33.md)
 
 ### [2026-W32 · Convergence, factorization, and a stricter novelty baseline](weekly/2026-W32.md)
 
-**Revised thesis:** W32 is not best described as the week Agentic RAG “moved beyond top-k.” Historical backfill already makes that chronology too late. SIEVE factorizes candidate admissibility/ranking/inspection/reading, while SearchMaster makes the self-generated training distribution a causal learning variable.
-
-The resulting W32 question is harder: what remains after matching the information interface, harness, adaptive baseline, realized resources, and—when self-improvement is claimed—the task/trajectory curriculum?
+**Revised thesis:** W32 is best read as interface and learning factorization, not the origin of agentic retrieval. SIEVE separates admissibility/ranking/inspection/reading; SearchMaster makes self-generated training distribution a causal variable.
 
 [Read the revised W32 synthesis →](weekly/2026-W32.md)
 
@@ -32,11 +26,7 @@ The resulting W32 question is harder: what remains after matching the informatio
 
 ### [2026-08 · Rolling research map](monthly/2026-08.md)
 
-**Current thesis:** August is a **factorization + trajectory-integrity** story, now re-grounded against a stronger pre-August baseline:
-
-`corpus boundary/interface resolution → backend configuration + surfaced depth → admissibility/ranking/inspection/read granularity → environment retrieval state → explicit/editable agent state → adaptive control → realized resources → training distribution → harness/delivery → executable evaluation`
-
-Pi-Serini raises the conventional lexical baseline by separating backend tuning/depth from the browsing policy; SGR-Bench adds external retrieval state as distinct from agent memory/evidence state. DCI/RISE/DR-DCI/RARG, SIEVE, SearchMaster, LoongReflect, and VAKRA still supply the main interaction-space, learning, recovery, and cross-source pieces.
+**Current thesis:** August adds **adaptivity placement** to the control-stack map. SIRA shows that corpus-aware action compilation can remove some exploratory retrieval; ReFind shows that result-conditioned iteration still matters when useful cues only emerge after evidence inspection. Training Protocols moves the causal baseline earlier to evidence availability itself.
 
 [Explore the August research map →](monthly/2026-08.md)
 
@@ -46,7 +36,7 @@ Pi-Serini raises the conventional lexical baseline by separating backend tuning/
 
 ### [2026 · Rolling year-to-date map](yearly/2026.md)
 
-**Current thesis:** the durable 2026 movement is toward explicit design of the agent's **information and learning environments**—backend/corpus boundary, evidence operations, environment retrieval state, persistent/editable agent state, adaptive policy, training distribution, and realized resources—under a causal bar that treats harness/evidence delivery and baseline calibration as part of the system.
+**Current thesis:** the durable 2026 shift is toward explicit design of **where information-acquisition intelligence lives**—what is precomputed, what the controller can observe before retrieval, what changes after evidence arrives, what state persists, and how offline + online resources are spent.
 
 The report remains explicitly rolling; incomplete historical backfill is not presented as full-year coverage.
 
