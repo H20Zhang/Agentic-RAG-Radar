@@ -1,0 +1,52 @@
+{
+  "id": "arxiv:2608.12888",
+  "arxiv_id": "2608.12888",
+  "title": "When Your Agent Opens the Chat App: Agent-Controlled Search over Raw Chat Logs Rivals Structured Memory",
+  "authors": ["Ruizhe Li", "Licheng Zhang", "Benfeng Xu", "Mingxuan Du", "Zheren Fu", "Weidong Chen"],
+  "first_seen": "2026-08-17",
+  "published": "2026-08-13",
+  "updated": null,
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.12888",
+    "pdf": "https://arxiv.org/pdf/2608.12888",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "retrieval_tool_use",
+  "tags": ["memory", "sparse", "iterative_search", "query_rewrite", "adaptive_stopping", "documents"],
+  "benchmarks": ["MemoryAgentBench", "LongMemEval"],
+  "relevance": 0.99,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "retrieval_interface",
+    "question": "How can question-time search control over raw chat history substitute for pre-built semantic memory structure?",
+    "takeaway": "ReFind keeps the raw archive intact and moves intelligence into a stateful runtime interface: reformulate lexical queries, expand local context, use session/time structure, skip inspected sessions, and collect evidence over multiple rounds.",
+    "compared_with": "Structured memory systems and a matched generic multi-round BM25 agent without the chat-native controls.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2608.12888.png",
+    "image_path": "assets/visuals/2608.12888.webp",
+    "prompt_path": "assets/visuals/prompts/2608.12888.md",
+    "artifact_path": "papers/2608.12888.md"
+  },
+  "analysis": {
+    "tldr": "ReFind shows that conversational memory can remain as an append-only raw record if the agent receives chat-native retrieval controls—iterative lexical reformulation, session-aware ranking, local expansion, time filters, and cross-round deduplication—challenging the assumption that semantic memory structure must be built before the question arrives.",
+    "problem": "Agent-memory systems often preprocess chat history into summaries, embeddings, trees, graphs, or memory cards before the future question is known, which can lose details and incur construction/update cost. The unresolved question is how much of their benefit comes from that structure versus competent runtime retrieval over the raw record.",
+    "core_idea": "Index raw chat turns lexically and let a ReAct retrieval agent adapt queries and parameters over several rounds. The interface exploits native chat metadata through session-aware rank fusion, local neighboring-turn expansion, temporal filtering, and filtering of already-inspected sessions; a separate answer stage reasons only over saved verbatim evidence.",
+    "agent_loop": "form keywords/time scope → search raw turns → inspect expanded session-local evidence → save useful fragments → reformulate or narrow → skip seen sessions → stop when sufficient → answer from saved evidence",
+    "retrieval_design": "BM25 operates at turn granularity; RRF combines turn and session ranks; hits expand to nearby turns; timestamps can restrict scoring; seen sessions are excluded across rounds. The only learned/controller component is the LLM's question-time action policy, not an LLM-generated memory index.",
+    "compared_to": ["single-shot BM25-RAG", "matched generic agentic BM25", "structured memory systems including HippoRAG 2, GraphRAG, RAPTOR, STITCH, and A-Mem", "agentic dense and hybrid retrieval variants", "one-search control"],
+    "evidence": "Across six MemoryAgentBench-derived tasks totaling about 2,800 questions with GPT-4o-mini matched across reused baselines, ReFind reports 58.2 mean accuracy versus 53.2 for HippoRAG 2 and 48.8 for single-shot BM25-RAG. On LongMemEval-S/M with GPT-5-mini, the full method reports 93.2±3.3 / 89.3±6.0; a matched generic-agentic BM25 control reports 78.7±4.6 / 82.2±3.8, while forcing one search reports 84.7±3.1 / 68.9±3.8. EventQA is a useful negative: single-shot BM25-RAG is slightly higher there (74.6 vs 74.1), so iterative control is not universally needed. Dense/hybrid backends do not improve the mean in the matched backend ablation.",
+    "why_it_matters": "The paper moves the memory debate from 'which semantic memory structure?' to 'what information should be precomputed versus deferred to question-time control?'. It also provides unusually useful matched controls separating generic iteration from chat-native interface design and one-shot retrieval from result-conditioned reformulation.",
+    "limitations": ["The design assumes text chat with useful turn, session, and timestamp metadata; it does not establish that raw lexical search is enough for semantically diffuse or multimodal memory.", "The strongest GPT-5-mini ablations use small fixed LongMemEval-S/M subsets, including only 15 questions in M, and baseline values are partly reused from prior evaluations rather than all rerun locally.", "Avoiding LLM-based index construction shifts cost to question time: the paper reports roughly 2.5–2.6 searches and 5 LLM calls per query.", "The result supports a strong default for precise evidence refinding, not a claim that structured memory is unnecessary for low-latency abstraction, global summarization, or other workloads."],
+    "confidence": "high"
+  },
+  "provenance": {
+    "discovered_via": ["overlapping arXiv search", "full arXiv HTML"],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-17"
+  }
+}
