@@ -1,126 +1,103 @@
 # Research Compaction Protocol
 
-Agentic RAG Radar treats paper curation as a **research-memory hierarchy**, not an append-only stream of Markdown summaries.
-
-The objective is to preserve enough provenance to revisit a paper or curation decision while continuously compressing repeated detail into higher-level research judgments.
+Agentic RAG Radar treats curation as a **research-memory hierarchy**, not an append-only stream of paper summaries. Compaction should preserve disagreement, evidence status, and causal uncertainty while removing repeated detail.
 
 ## Levels
 
 | Level | Persistent artifact | Purpose | What must not be lost |
 |---|---|---|---|
-| **L0 · Paper records** | `data/papers/*.json` + `papers/*` | Canonical facts, provenance, classification, paper-level interpretation, visual grounding. | source links, evidence status, uncertainty, corrections |
-| **L0-log · Daily runs** | `runs/daily/YYYY/MM/DD.md` | Compact archival history of what the curator accepted, deferred, corrected, or failed to complete. | decision history, borderline exclusions, visual/workflow failures |
-| **L1 · Weekly compaction** | `digests/weekly/YYYY-Www.md` | Identify the week's real research deltas, disagreements, and reading priority. | negative results, conflicting assumptions, evidence caveats |
-| **L2 · Monthly compaction** | `digests/monthly/YYYY-MM.md` | Rebuild the field map: abstractions, evidence strength, open problems, and changes in research direction. | competing explanations, weakening claims, unresolved causal attribution |
-| **L3 · Yearly compaction** | `digests/yearly/YYYY.md` | Re-evaluate the year and preserve only durable field shifts, defining papers, failed ideas, and next-year research questions. | changes of mind, important negative evidence, durable evaluation lessons |
-
-Daily ingestion updates L0 and writes **one compact nested run log** for provenance. Those run logs are not paper summaries and are never the primary browsing interface.
+| **L0 · Paper records** | `data/papers/*.json` + `papers/*` | Canonical facts, provenance, classification, paper-level interpretation, visual grounding. | links, evidence status, uncertainty, corrections |
+| **L0-log · Daily runs** | `runs/daily/YYYY/MM/DD.md` | Compact history of accepted/deferred/corrected work. | decision history, edge cases, workflow failures |
+| **L1 · Weekly** | `digests/weekly/YYYY-Www.md` | Identify local research deltas, disagreements, and reading priority. | negative results, competing explanations |
+| **L2 · Monthly** | `digests/monthly/YYYY-MM.md` | Rebuild the field map and causal model. | weakening claims, open problems, reinterpreted anchors |
+| **L3 · Yearly** | `digests/yearly/YYYY.md` | Preserve only durable shifts and evidence standards. | changes of mind, failed ideas, next-year questions |
 
 ## Public time hierarchy
 
-The reader-facing archive deliberately reduces temporal resolution as work gets older:
+The reader-facing archive deliberately loses temporal resolution as work ages:
 
-- **Recent ~1 month → weekly reports.** Preserve local research movement while it is still useful to inspect week by week.
-- **Recent ~1 quarter → monthly reports.** Compress older weekly detail into field-map changes.
-- **All years → yearly reports.** Keep one durable research map per year as the long-term public history.
+- **Recent ~1 month → weekly.**
+- **Recent ~1 quarter → monthly.**
+- **All sufficiently covered years → yearly.**
 
-The lower-level files are **not deleted** when they age out of the primary navigation. They remain available for audit and provenance. The display hierarchy controls attention, not retention.
-
-Do not create a historical yearly report unless coverage is sufficient to justify it. A handful of hand-picked anchors must never be presented as a full-year research map. The current year may have an explicitly labeled **rolling** report.
+Lower-level files are never deleted merely because they age out of primary navigation. The current year may have an explicitly **rolling** report. Never present a few selected anchors as complete historical-year coverage.
 
 ## Editorial principle
 
-A compaction is successful only if it answers questions that a chronological list cannot:
+A compaction succeeds only if it answers questions a chronological list cannot:
 
-> **So what changed? Compared with what? How strong is the evidence? What should a researcher do differently after reading this?**
+> **So what changed? Compared with what? How strong is the evidence? What should a researcher do differently?**
 
-A report should become *shorter than the source material but harder to write*. If it is mostly one paragraph per paper, it is not compaction yet.
+The report should be shorter than its sources but harder to write. A paragraph per paper is not compaction.
 
 ## Daily run-log policy
 
-Daily logs exist to debug and audit the curator, not to accumulate another human-facing paper feed. Record only discovery-window changes when material, newly accepted papers with one-line reasons, important deferred/rejected candidates, meaningful corrections, visual/backfill status, and compaction actions or blockers.
-
-Do **not** duplicate full TL;DRs, experiment tables, or per-paper research notes. Nest logs under `runs/daily/YYYY/MM/`.
+Daily logs exist for audit, not as another reader-facing feed. Record only material discovery changes, newly accepted papers with one-line reasons, important deferred/rejected candidates, meaningful corrections, visual/workflow status, and compaction actions. Do not duplicate full TL;DRs or experiment tables.
 
 ## Weekly compaction
 
-A weekly report should be detailed when the number of papers is small. Sparse weeks are an opportunity to compare mechanisms and evidence carefully rather than pad the report with more papers.
-
-It should contain:
+A weekly report should contain:
 
 1. **Week thesis** — one falsifiable statement about what changed.
-2. **1–3 durable shifts** — clusters defined by research delta/control point, not title keywords.
-3. **Most important papers** — only papers that change an abstraction, method family, benchmark, or evidence base; each must answer `delta → compared with → evidence → so what`.
-4. **Tension / disagreement** — at least one alternative explanation, negative result, or reason the apparent trend may be overstated when evidence permits.
-5. **Evidence audit** — matched retrieval/token budget, baseline quality, ablations, benchmark concentration, and full-text-grounding status.
-6. **Reading order + open questions** — minimal sequence that teaches the design space, followed by 1–3 questions worth tracking.
+2. **1–3 durable shifts** — clusters defined by actual control point/research delta.
+3. **Most important papers** — only papers that change an abstraction, method family, benchmark, or evidence base; each answers `delta → compared with → evidence → so what`.
+4. **Tension / disagreement** — the strongest alternative explanation or negative result.
+5. **Evidence audit** — baseline quality, evidence coverage, interface/harness matching, realized resources, and full-text status.
+6. **Reading order + open questions** — the smallest sequence that teaches the change.
 
-A paper can be discussed as **adjacent context** when its publication date falls just outside the ISO week but it is needed to make a comparison intelligible. Label this explicitly; do not silently inflate the week's paper count.
+Adjacent-context papers may be used when needed to interpret the week's delta, but must be labeled rather than silently counted as weekly papers.
 
 ## Monthly compaction
 
-The monthly report operates one abstraction level higher. During an open month it may exist as **rolling**, but it must be rewritten as evidence changes rather than appended chronologically. After the month closes it becomes **finalized** unless later corrections materially change the synthesis.
+A monthly report operates one abstraction level higher. During an open month it may be **rolling**, but it must be rewritten when new evidence changes the map rather than appended chronologically.
 
-A monthly report should contain a month thesis, field-map clusters, older anchors reinterpreted when useful, the few most important papers, a core causal tension, an evidence audit, 3–5 open problems, and a minimal reading path.
+It should contain a month thesis, field-map clusters, older anchors reinterpreted where useful, the few most important papers, one core causal tension, an evidence audit, 3–5 open problems, and a minimal reading path.
 
-Monthly reports may use weekly reports as an **index only**. Every load-bearing claim must be re-grounded in canonical paper records and source/full-paper notes. Never recursively summarize weekly summaries as the sole evidence source.
+Weekly reports may be used as an index only. Load-bearing claims must be re-grounded in canonical records and source/full-paper notes.
 
 ## Yearly compaction
 
-A yearly report is not twelve monthly summaries concatenated. It should answer a harder question: **what actually survived the year?**
+A yearly report is not twelve monthly summaries concatenated. It asks **what actually survived the year?** A finalized yearly report should contain a year thesis, start→end change, durable shifts, defining papers, ideas that weakened, year-level evidence audit, 3–7 open problems, and a minimal reading path.
 
-A finalized yearly report should contain:
-
-- **Year thesis** — the strongest field-level model that still holds after seeing the whole year.
-- **Start-of-year → end-of-year change** — what the field stopped treating as default and what became first-class.
-- **Durable shifts** — only changes supported across multiple months or by unusually strong evidence.
-- **Papers that defined the year** — a short ranked set chosen by lasting research impact, not publication count.
-- **Ideas that weakened or failed** — mid-year narratives, methods, or evaluation claims that did not survive stronger evidence.
-- **Year-level evidence audit** — benchmark concentration, budget matching, replication/open-source evidence, and recurring confounders.
-- **Open problems entering the next year** — questions whose answers could materially redirect the field.
-- **Minimal yearly reading path** — the smallest sequence that teaches the year's durable changes.
-
-The current year's report may be **rolling** and revised when monthly evidence changes the thesis. At year end it is finalized after re-grounding important claims in canonical paper records, not by recursively summarizing monthly reports.
-
-Historical yearly reports require adequate coverage. If backfill is incomplete, say so explicitly or do not create the report.
+The current year may be rolling. Historical yearly reports require adequate coverage; otherwise do not create them.
 
 ## Multi-role challenge before synthesis
 
-When parallel research roles are supported, roles should work independently before the final editor sees their outputs:
+When independent roles are supported:
 
 | Role | Job | What it should challenge |
 |---|---|---|
-| **Clusterer / Field Mapper** | Group papers by actual research delta and identify a candidate field map. | keyword similarity, fashionable naming, forced taxonomy fit |
-| **Evidence Auditor** | Compare benchmarks, baselines, calls/tokens/latency, ablations, effect sizes, and negative results. | causal over-attribution, unfair budgets, weak baseline selection |
-| **Trend Skeptic** | Construct the strongest alternative explanation for each proposed trend. | confirmation bias, three papers being mistaken for a paradigm shift |
-| **Research Editor** | Write the synthesis after seeing the independent analyses. | verbosity, paper-by-paper concatenation, claims without consequences |
+| **Clusterer / Field Mapper** | Group by actual research delta and propose a field map. | keyword similarity, fashionable naming |
+| **Evidence Auditor** | Compare evidence coverage, baselines, calls/tokens/latency, ablations, and negative results. | causal over-attribution |
+| **Trend Skeptic** | Construct the strongest alternative explanation. | three papers being mistaken for a paradigm shift |
+| **Research Editor** | Write after seeing the independent analyses. | paper-by-paper concatenation |
 
-The editor should prefer **one important tension** over five weak trends.
+Prefer **one important tension** over five weak trends.
 
 ## Factorized evaluation lens
 
-Agentic RAG results frequently change several variables simultaneously. Compactions should reason about these axes separately whenever possible:
+Agentic retrieval results frequently change several variables simultaneously. Compactions should reason over:
 
-| Axis | Example values |
-|---|---|
-| **Substrate** | flat chunks / documents / graph / SQL / web / code |
-| **Operation set** | top-k / lexical search / navigation / bounded read / graph actions / tool routing |
-| **State** | raw history / evidence set / missing-information state / provenance / uncertainty |
-| **Policy** | fixed heuristic / prompted agent / planner / learned policy / RL |
-| **Budget** | retrieval calls / retrieved tokens / latency / monetary or energy cost |
-| **Base model** | reasoning capability / tool-use capability / context window / model family |
+`substrate/evidence coverage × pre-retrieval corpus observability × corpus boundary/interface resolution × environment retrieval state × harness/delivery × agent state × policy × realized resources × base model × training distribution/protocol × historical baseline`
 
-A headline gain is not automatically evidence for the `policy` axis if the operation set, budget, or base model also changed.
+This is a causal checklist, not a taxonomy.
+
+Three ordering rules now matter:
+
+1. **Evidence validity precedes policy quality.** If answer-bearing evidence is absent from the external environment, a positive final-answer reward may reflect parametric knowledge rather than successful retrieval.
+2. **Adaptivity has a location.** Compare what can be compiled before evidence retrieval with what genuinely requires result-conditioned interaction; `number of rounds` is not itself a capability metric.
+3. **Cost spans offline and online work.** Index/memory construction, corpus enrichment, controller/probe compute, retrieval calls, inspected tokens, latency, and query-time model calls belong in the same systems accounting.
+
+A headline gain is not automatically evidence for `policy` if evidence coverage, corpus observability, interface, state, harness, budget, or supervision also changed.
 
 ## Retention and correction policy
 
-- Keep every accepted canonical paper record.
-- Keep per-paper Markdown when it adds researcher-facing explanation beyond the JSON record.
-- Keep compact nested daily run logs as provenance; do not expose them as the main reading feed.
-- Keep every weekly and monthly compaction file even after it ages out of the primary navigation.
-- Keep one yearly report per sufficiently covered calendar year; finalized yearly reports are the permanent long-term public archive.
-- README and `digests/README.md` use the attention hierarchy: recent month by week, recent quarter by month, all years by year.
-- Correct upward: if a paper's classification, evidence, or importance changes enough to alter a weekly/monthly/yearly conclusion, revise the affected compaction.
-- Do not preserve an old narrative merely for consistency. Rolling reports should change their thesis when new evidence falsifies it.
+- Keep every accepted canonical paper record and useful paper note.
+- Keep compact nested daily run logs as provenance, not primary browsing surfaces.
+- Keep every weekly/monthly compaction even after it ages out of primary navigation.
+- Keep one yearly report per sufficiently covered calendar year; the current year may remain rolling.
+- README and `digests/README.md` use the attention hierarchy: recent month by week, recent quarter by month, sufficiently covered years by year.
+- Correct upward: if a paper's classification, evidence, importance, or a newly discovered baseline changes a weekly/monthly/yearly conclusion, revise the affected compaction.
+- Do not preserve an old narrative merely for consistency.
 
 The goal is **lossy compression of repetition, not loss of disagreement, provenance, or uncertainty**.
