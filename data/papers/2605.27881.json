@@ -1,0 +1,52 @@
+{
+  "id": "arxiv:2605.27881",
+  "arxiv_id": "2605.27881",
+  "title": "Retrieval, Reward, and Training Protocols: What Matters in Training Search Agents?",
+  "authors": ["Yibo Zhao", "Zichen Ding", "Jiayi Wu", "Zun Wang", "Xiang Li"],
+  "first_seen": "2026-08-17",
+  "published": "2026-05-27",
+  "updated": "2026-05-29",
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2605.27881",
+    "pdf": "https://arxiv.org/pdf/2605.27881",
+    "code": "https://github.com/YiboZhao624/SearchAgentReview",
+    "project": null
+  },
+  "primary_category": "evaluation_analysis",
+  "tags": ["reinforcement_learning", "budget_allocation", "iterative_search", "open_domain_qa", "general"],
+  "benchmarks": ["2WikiMultiHopQA", "Bamboogle", "HotpotQA", "MuSiQue", "PopQA"],
+  "relevance": 0.99,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "evidence_failure_map",
+    "question": "Which apparent search-agent training gains survive when retrieval environment, reward design, tool format, data protocol, and search budget are controlled?",
+    "takeaway": "The study shows that environment coverage and training protocol can dominate algorithm choice; finer process rewards can also distort search behavior rather than uniformly improving it.",
+    "compared_with": "Search-R1 outcome reward versus GiGPO, IGPO, and Tree-GRPO process-credit methods under controlled corpora, backbones, tool formats, and budgets.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2605.27881.png",
+    "image_path": "assets/visuals/2605.27881.webp",
+    "prompt_path": "assets/visuals/prompts/2605.27881.md",
+    "artifact_path": "papers/2605.27881.md"
+  },
+  "analysis": {
+    "tldr": "This controlled study is a baseline correction for search-agent RL: incomplete retrieval corpora can create spurious reward signals, simple trajectory-level outcome reward is often competitive with process-credit methods, and tool format/off-policy degree/search budget materially change conclusions. Algorithm labels alone are not an adequate experimental variable.",
+    "problem": "Search-agent RL papers often compare algorithms across different corpora, tool formats, rewards, training data, and search budgets, making it unclear whether improvements come from the learning algorithm or from the environment/protocol around it.",
+    "core_idea": "Hold the search-agent setup comparatively fixed while varying three families of factors: retrieval environment quality, outcome versus process reward/credit assignment, and training protocol choices including data diversity, off-policy degree, and train/eval search budgets.",
+    "agent_loop": "reason about missing information → issue search query → observe retrieved passages → repeat until answer or budget; the paper studies how training signals and environment/protocol choices shape this loop rather than proposing a new inference controller",
+    "retrieval_design": "A local Wikipedia retrieval environment is treated as part of the experimental object. The authors identify missing answer-bearing passages in the widely reused Wiki-18 setup, construct a more complete Wiki-fixed corpus, and show that corpus completeness changes both reward validity and method ranking.",
+    "compared_to": ["Search-R1 outcome reward", "GiGPO", "IGPO", "Tree-GRPO", "Wiki-18 versus corrected Wiki-fixed retrieval environment", "different tool-call formats", "different off-policy batch sizes", "different train/evaluation search budgets"],
+    "evidence": "The authors find 3,321 training questions unanswerable from the incomplete corpus; Search-R1 still generated the correct answer at least once for 1,697 of them, exposing parametric-answer reward as a spurious training signal when evidence is absent. Under controlled reward comparison across three base-model settings/tool formats, the simple Search-R1 outcome reward has the highest average EM in three of five settings; process-credit methods trade query recall, redundancy, and search depth rather than uniformly improving them. Increasing train/eval search budget from 4 to 32 turns degrades Search-R1, GiGPO, and IGPO by about five points in the reported Qwen3-8B setting, and evaluation budget above the training budget adds at most about 0.3 points.",
+    "why_it_matters": "This paper raises the evidence bar for learned search agents. A sophisticated reward can look better or worse because the corpus is incomplete, the tool syntax matches post-training, the rollouts are stale, or the budget changes learned behavior. The correct unit of comparison is the entire training environment, not just the RL objective.",
+    "limitations": ["The controlled study is centered on local Wikipedia QA and a small set of 7B/8B-scale model families, so conclusions may not transfer unchanged to web search or frontier models.", "The corrected corpus improves experimental validity but remains a specific static retrieval environment rather than a general solution to corpus drift or live-web coverage.", "Some process metrics rely on annotated supporting documents and therefore are diagnostic rather than directly available as deployment-time signals.", "The paper studies training protocol rather than proposing a new controller; its value is methodological and should not be read as a leaderboard claim."],
+    "confidence": "high"
+  },
+  "provenance": {
+    "discovered_via": ["historical training-method backfill", "full arXiv HTML"],
+    "full_text_checked": true,
+    "code_link_verified": true,
+    "last_reviewed": "2026-08-17"
+  }
+}
