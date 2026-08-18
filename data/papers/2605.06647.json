@@ -1,0 +1,52 @@
+{
+  "id": "arxiv:2605.06647",
+  "arxiv_id": "2605.06647",
+  "title": "Superintelligent Retrieval Agent: The Next Frontier of Agentic Retrieval",
+  "authors": ["Zeyu Yang", "Qi Ma", "Jason Chen", "Anshumali Shrivastava"],
+  "first_seen": "2026-08-17",
+  "published": "2026-05-07",
+  "updated": "2026-06-04",
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2605.06647",
+    "pdf": "https://arxiv.org/pdf/2605.06647",
+    "code": "https://github.com/facebookresearch/sira",
+    "project": null
+  },
+  "primary_category": "retrieval_tool_use",
+  "tags": ["sparse", "query_rewrite", "planning", "training_free", "open_domain_qa"],
+  "benchmarks": ["BEIR", "NQ", "HotpotQA", "BrowseComp-Wikipedia"],
+  "relevance": 0.98,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "retrieval_interface",
+    "question": "When can corpus-aware retrieval-action compilation replace multi-round result-conditioned search?",
+    "takeaway": "SIRA moves control before evidence inspection: the LLM predicts missing evidence vocabulary, grounds it with corpus statistics, and compiles weighted lexical retrieval rather than learning vocabulary through repeated snippet exposure.",
+    "compared_with": "Multi-round search agents, generic LLM query expansion, trained dense/sparse retrievers, and ordinary BM25.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2605.06647.png",
+    "image_path": "assets/visuals/2605.06647.webp",
+    "prompt_path": "assets/visuals/prompts/2605.06647.md",
+    "artifact_path": "papers/2605.06647.md"
+  },
+  "analysis": {
+    "tldr": "SIRA challenges the assumption that search-agent intelligence requires many retrieval rounds: it uses LLM priors plus corpus-visible document-frequency signals to compile a discriminative weighted BM25 action before reading result passages, achieving strong retrieval quality while exposing a new control point—retrieval programming rather than result-conditioned exploration.",
+    "problem": "Multi-round search agents often compensate for a weak or opaque retrieval interface by reading snippets, discovering corpus vocabulary, and reformulating repeatedly. That can be expensive and confounds policy quality with information leaked by earlier retrieval rounds.",
+    "core_idea": "Use a frozen LLM to predict vocabulary that relevant evidence is likely to contain, ground those proposed terms against corpus statistics such as document frequency, prune absent/over-common terms, and compile a weighted BM25 retrieval action. The main BEIR setting additionally performs expensive offline LLM enrichment of document vocabulary; BrowseComp-Wikipedia removes that step and instead uses grounded Wikipedia categories as corpus-visible structure.",
+    "agent_loop": "predict expected evidence vocabulary → check corpus statistics / validate constraints → compile weighted lexical action → retrieve; in the strict BEIR setting there is no result-conditioned reformulation before the final retrieval",
+    "retrieval_design": "SIRA treats the inverted index as an observable control surface: document frequency and IDF make candidate terms measurable before retrieval. Query-side expansion is filtered and weighted; corpus-side enrichment injects predicted missing terms offline in the main method. The large-scale Wikipedia setting uses category-grounded lexical controls and may issue multiple evidence-blind BM25 calls under a fixed page budget.",
+    "compared_to": ["BM25", "E5", "SPLADE", "Doc2Query", "HyDE", "chain-of-thought query expansion", "Search-R1", "GrepRAG", "ShellAgent", "multi-round Perplexity search agents"],
+    "evidence": "Across ten BEIR datasets, SIRA reports average Recall@10 0.6908 and NDCG@10 0.5723, versus E5 at 0.6478 / 0.5434, SPLADE at 0.6253 / 0.5223, Search-R1(E5) at 0.6161 / 0.5216, and BM25 at 0.5302 / 0.4247. HyDE, CoT, GrepRAG, ShellAgent, and SIRA share the same frozen Qwen3.6-35B-A3B-FP8 backbone; Search-R1 does not. On BrowseComp-Wikipedia, the strongest SIRA configuration (Claude 4.6 Opus) reports Recall@1/10/100 of 9.70/15.27/36.14 versus the Claude Perplexity agent at 2.59/4.74/32.33. A useful counterexample is backbone-specific: with GPT-5.4, SIRA reaches 5.71/13.13/18.51 while Perplexity reaches 3.02/6.90/31.47, so SIRA is worse at Recall@100 for that backbone.",
+    "why_it_matters": "SIRA supplies a strong counterweight to 'more search rounds are better'. It suggests adaptivity can move upstream into corpus-aware action compilation: if the agent can observe discriminative index signals before retrieval, some exploratory rounds become unnecessary. The right comparison is therefore not one-shot versus multi-round in the abstract, but what corpus information and retrieval controls are available before the first evidence is read.",
+    "limitations": ["The main BEIR method uses expensive LLM corpus-side enrichment over every document; this is a substantial offline cost and is removed in the Wikipedia-scale setting.", "The frozen LLM is assumed to carry useful domain vocabulary priors; transfer to domains far outside pretraining knowledge is not established.", "Search-R1 is not a same-backbone/controller baseline, so some agentic comparisons are not fully controlled.", "BrowseComp-Wikipedia gives SIRA grounded Wikipedia category structure while the Perplexity baseline sees a production search interface; the result mixes retrieval-interface design with search policy.", "The Wikipedia setting is not literally one BM25 call: it may issue multiple evidence-blind category-grounded calls under the page budget, and GPT-5.4 SIRA loses to GPT-5.4 Perplexity at Recall@100."],
+    "confidence": "high"
+  },
+  "provenance": {
+    "discovered_via": ["historical backfill search", "full arXiv HTML"],
+    "full_text_checked": true,
+    "code_link_verified": true,
+    "last_reviewed": "2026-08-17"
+  }
+}
