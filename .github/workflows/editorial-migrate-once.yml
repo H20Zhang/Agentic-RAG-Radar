@@ -1,0 +1,38 @@
+name: Editorial Surface Migration Once
+
+on:
+  push:
+    branches: [polished-research-editorial]
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: polished-research-editorial
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Apply deterministic editorial migration
+        run: python scripts/editorial_migrate_once.py
+
+      - name: Commit migration
+        run: |
+          if git diff --quiet; then
+            echo "No migration changes needed"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add papers
+          git commit -m "Apply polished editorial migration"
+          git push origin HEAD:polished-research-editorial
