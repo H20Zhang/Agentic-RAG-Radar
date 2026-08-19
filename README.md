@@ -3,6 +3,8 @@
 **A living research map of Agentic Retrieval-Augmented Generation.**  
 Track new papers, understand what actually changed, and see how the field is moving — with skeptical research notes and weekly/monthly/yearly synthesis.
 
+⭐ **Star this repo to follow new Agentic RAG papers, skeptical research notes, and field-level synthesis.**
+
 **Last updated:** 2026-08-18 · [Latest papers](#-latest-papers) · [Start here](#-start-here) · [Browse by research problem](categories/README.md) · [Research compactions](#-research-compactions)
 
 **Current field thesis:** the useful question is no longer “retriever or agent?” or “one search or many?” It is **where information and state should be materialized, and where adaptivity should live**: compile structure before retrieval when it is stable and observable; defer localization/control until after evidence arrives when the next action depends on fresh information; preserve enough recoverable state that compression does not merely shift cost into re-querying.
@@ -354,6 +356,8 @@ Negative results are kept when they change the interpretation of a paper.
 
 Corrections are especially welcome when they change the conclusion: a missing baseline, unfair resource budget, wrong taxonomy, overclaimed novelty, broken provenance, or a visual that implies a mechanism the evidence does not support.
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the inclusion bar, evidence standard, and how to suggest papers or corrections.
+
 <details>
 <summary><strong>Methodology & maintenance</strong></summary>
 
@@ -363,4 +367,4 @@ See the [maintainer guide](docs/MAINTENANCE.md), [curation protocol](CURATION.md
 
 ---
 
-If this radar saves you research time, consider starring the repo.
+Found an important Agentic RAG paper we missed? [Suggest it](../../issues/new?template=suggest-paper.yml).
