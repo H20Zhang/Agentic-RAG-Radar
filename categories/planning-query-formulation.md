@@ -1,5 +1,6 @@
 # Planning & Query Formulation
 
+[← Research Map](README.md) · [Latest Papers](../README.md#-latest-papers) · [Reading Paths](../README.md#-reading-paths) · [Curated Paper Index](../papers/README.md)
 > **Core question:** What information should the agent acquire next, and how should a complex information need be decomposed, planned, or reformulated before retrieval?
 
 This category is about **control before the retrieval call**. A paper belongs here when planning/query formulation is a substantive research object rather than a prompt convenience.

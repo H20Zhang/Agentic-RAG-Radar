@@ -1,5 +1,6 @@
 # Learning & Optimization
 
+[← Research Map](README.md) · [Latest Papers](../README.md#-latest-papers) · [Reading Paths](../README.md#-reading-paths) · [Curated Paper Index](../papers/README.md)
 > **Core question:** Once information acquisition is a sequential action space, what should be learned—the retriever, the search policy, the evidence-state controller, recovery behavior, resource allocation, or even the training-task distribution itself?
 
 This category covers policy learning, retriever learning for agentic usage, reinforcement learning, distillation, optimization of search trajectories/state/budgets, and self-generated supervision for search agents.

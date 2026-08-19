@@ -1,5 +1,6 @@
 # Evaluation & Analysis
 
+[← Research Map](README.md) · [Latest Papers](../README.md#-latest-papers) · [Reading Paths](../README.md#-reading-paths) · [Curated Paper Index](../papers/README.md)
 > **Core question:** How do we tell whether an Agentic RAG system genuinely makes better information-acquisition decisions rather than benefiting from easier evidence, a richer interface, retained state, a different harness, looser resource budget, stronger model, or rediscovered prior art?
 
 This category covers benchmarks, controlled studies, failure analysis, historical/systematization work, and evaluation methodology for adaptive retrieval systems.
