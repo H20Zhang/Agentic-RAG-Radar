@@ -18,7 +18,6 @@ def load_category_labels() -> dict[str, str]:
     labels: dict[str, str] = {}
     in_primary = False
     current: str | None = None
-
     for raw in TAXONOMY.read_text(encoding="utf-8").splitlines():
         line = raw.rstrip()
         if line == "primary_categories:":
@@ -34,123 +33,101 @@ def load_category_labels() -> dict[str, str]:
             continue
         if current and line.startswith("    label:"):
             labels[current] = line.split(":", 1)[1].strip()
-
     if not labels:
         raise RuntimeError("Could not parse primary category labels from taxonomy.yaml")
     return labels
 
 
 def load_records() -> list[dict[str, object]]:
-    records: list[dict[str, object]] = []
-    for path in sorted(PAPERS_DIR.glob("*.json")):
-        records.append(json.loads(path.read_text(encoding="utf-8")))
-    return records
+    return [json.loads(path.read_text(encoding="utf-8")) for path in sorted(PAPERS_DIR.glob("*.json"))]
 
 
 def category_slug(category: str) -> str:
     return category.replace("_", "-")
 
 
-def stars(importance: int) -> str:
-    return "★" * importance + "☆" * (5 - importance)
-
-
-def evidence_basis(record: dict[str, object]) -> str:
+def review_level(record: dict[str, object]) -> str:
     provenance = record.get("provenance")
-    if isinstance(provenance, dict) and provenance.get("full_text_checked") is True:
-        return "full-text reviewed"
-    return "abstract-level"
+    return "Full text" if isinstance(provenance, dict) and provenance.get("full_text_checked") is True else "Abstract"
 
 
-def render_entry(record: dict[str, object], labels: dict[str, str]) -> list[str]:
-    published = str(record["published"])
-    title = str(record["title"])
-    category = str(record["primary_category"])
-    importance = int(record["importance"])
+def note_filename(record: dict[str, object]) -> str:
     visual = record.get("visual_explainer")
-    takeaway = ""
     if isinstance(visual, dict):
-        takeaway = str(visual.get("takeaway") or "").strip()
-
-    urls = record.get("urls")
-    assert isinstance(urls, dict)
-    paper_url = str(urls["paper"])
-    note_id = Path(str(record["id"]).replace("arxiv:", "")).name
+        artifact = visual.get("artifact_path")
+        if isinstance(artifact, str) and artifact.startswith("papers/"):
+            return Path(artifact).name
     arxiv_id = record.get("arxiv_id")
     if isinstance(arxiv_id, str) and arxiv_id:
-        note_id = arxiv_id
-    elif str(record["id"]).startswith("arxiv:"):
-        note_id = str(record["id"]).split(":", 1)[1]
-    else:
-        # Non-arXiv records use the canonical artifact filename convention.
-        artifact = visual.get("artifact_path") if isinstance(visual, dict) else None
-        if isinstance(artifact, str) and artifact.startswith("papers/"):
-            note_id = Path(artifact).stem
+        return f"{arxiv_id}.md"
+    raise RuntimeError(f"Cannot determine note filename for {record.get('id')}")
 
-    lines = [
-        f"#### {published} · [{title}]({note_id}.md)",
-        f"`{labels.get(category, category)}` · **{stars(importance)}**",
-        "",
-    ]
-    if takeaway:
-        lines.extend([f"**Research delta.** {takeaway}", ""])
-    lines.extend([f"**Evidence basis.** {evidence_basis(record)}", ""])
 
-    link_parts = [f"[Paper]({paper_url})", f"[Research note]({note_id}.md)"]
+def paper_cell(record: dict[str, object]) -> str:
+    title = str(record["title"]).replace("|", "\\|")
+    note = note_filename(record)
+    urls = record.get("urls")
+    assert isinstance(urls, dict)
+    links = [f"[paper]({urls['paper']})"]
     code = urls.get("code")
     project = urls.get("project")
     if isinstance(code, str) and code:
-        link_parts.append(f"[Code]({code})")
-    if isinstance(project, str) and project:
-        link_parts.append(f"[Project]({project})")
-    lines.extend([" · ".join(link_parts), ""])
-    return lines
+        links.append(f"[code]({code})")
+    elif isinstance(project, str) and project:
+        links.append(f"[project]({project})")
+    return f"**[{title}]({note})**<br><sub>{' · '.join(links)}</sub>"
+
+
+def render_month(records: list[dict[str, object]], labels: dict[str, str]) -> list[str]:
+    lines = ["| Date | Paper | Area | Importance | Review |", "|---|---|---|---:|---|"]
+    for record in records:
+        category = str(record["primary_category"])
+        lines.append(
+            "| {date} | {paper} | {area} | {importance}/5 | {review} |".format(
+                date=str(record["published"]),
+                paper=paper_cell(record),
+                area=labels.get(category, category).replace("|", "\\|"),
+                importance=int(record["importance"]),
+                review=review_level(record),
+            )
+        )
+    return lines + [""]
 
 
 def render() -> str:
     labels = load_category_labels()
     records = load_records()
-
     records.sort(key=lambda r: (str(r["published"]), str(r["title"])), reverse=True)
+
     by_year: dict[str, dict[str, list[dict[str, object]]]] = defaultdict(lambda: defaultdict(list))
     for record in records:
-        published = str(record["published"])
-        year, month, _ = published.split("-", 2)
+        year, month, _ = str(record["published"]).split("-", 2)
         by_year[year][month].append(record)
 
     years = sorted(by_year, reverse=True)
     current_year = years[0] if years else None
+    month_names = {
+        "01": "January", "02": "February", "03": "March", "04": "April",
+        "05": "May", "06": "June", "07": "July", "08": "August",
+        "09": "September", "10": "October", "11": "November", "12": "December",
+    }
+
+    category_links = " · ".join(
+        f"[{label}](../categories/{category_slug(key)}.md)" for key, label in labels.items()
+    )
 
     out = [
         "# Curated Paper Index",
         "",
-        "A complete chronology of papers **accepted by Agentic RAG Radar**. This is a curated research index, not a claim of exhaustive coverage of all Agentic RAG literature.",
+        "A compact chronology of papers **accepted by Agentic RAG Radar**. This is a selective research index, not a claim of exhaustive field coverage.",
         "",
-        "Use [Latest Papers](../README.md#-latest-papers) for the newest high-priority work, [What's Changing](../README.md#-whats-changing) for synthesis, [Reading Paths](../README.md#-reading-paths) for guided study, and the [Research Map](../categories/README.md) for problem-oriented browsing.",
+        "[Latest Papers](../README.md#latest-papers) · [What's Changing](../README.md#whats-changing) · [Reading Paths](../README.md#reading-paths) · [Research Map](../categories/README.md)",
         "",
-        "## Browse by Research Problem",
+        f"**Browse by canonical area:** {category_links}",
+        "",
+        "The index is deliberately terse: use a paper title for the deep research note, or the Research Map when you want the field-level argument.",
         "",
     ]
-
-    for key, label in labels.items():
-        out.append(f"- [{label}](../categories/{category_slug(key)}.md)")
-
-    out.extend(["", "## Chronology", ""])
-
-    month_names = {
-        "01": "January",
-        "02": "February",
-        "03": "March",
-        "04": "April",
-        "05": "May",
-        "06": "June",
-        "07": "July",
-        "08": "August",
-        "09": "September",
-        "10": "October",
-        "11": "November",
-        "12": "December",
-    }
 
     for year in years:
         months = sorted(by_year[year], reverse=True)
@@ -158,24 +135,18 @@ def render() -> str:
             out.extend([f"## {year}", ""])
             for month in months:
                 out.extend([f"### {month_names[month]}", ""])
-                for record in by_year[year][month]:
-                    out.extend(render_entry(record, labels))
+                out.extend(render_month(by_year[year][month], labels))
         else:
             out.extend(["<details>", f"<summary><strong>{year}</strong></summary>", ""])
             for month in months:
                 out.extend([f"### {month_names[month]}", ""])
-                for record in by_year[year][month]:
-                    out.extend(render_entry(record, labels))
+                out.extend(render_month(by_year[year][month], labels))
             out.extend(["</details>", ""])
 
-    out.extend(
-        [
-            "---",
-            "",
-            "The index is generated deterministically from `data/papers/*.json`; research theses, category tensions, and reading paths remain human-edited and evidence-grounded.",
-            "",
-        ]
-    )
+    out.extend([
+        "---", "",
+        "Generated deterministically from `data/papers/*.json`. Research judgments remain in the paper notes, synthesis, and Research Map.", "",
+    ])
     return "\n".join(out)
 
 
@@ -183,7 +154,6 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Build the curated paper index from canonical records.")
     parser.add_argument("--check", action="store_true", help="Fail if papers/README.md differs from generated output.")
     args = parser.parse_args()
-
     expected = render()
     if args.check:
         if not OUTPUT.exists():
@@ -195,7 +165,6 @@ def main() -> int:
             return 1
         print("Curated Paper Index is up to date.")
         return 0
-
     OUTPUT.write_text(expected, encoding="utf-8")
     print(f"Wrote {OUTPUT.relative_to(ROOT)}")
     return 0
