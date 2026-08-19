@@ -1,63 +1,49 @@
-# 🧭 What's Changing — Research Synthesis Archive
+# Research Synthesis Archive
 
-This archive is the deeper historical synthesis behind the homepage **What's Changing** section. Use it when you want the field-level interpretation rather than the chronological paper feed.
+[Latest Papers](../README.md#latest-papers) · [Reading Paths](../README.md#reading-paths) · [Research Map](../categories/README.md) · [Paper Index](../papers/README.md)
 
-The archive intentionally becomes coarser with time:
+This archive tracks **how the field interpretation changes**, not just which papers appeared. Weekly reports preserve local deltas and disagreements; monthly reports rebuild the research map; yearly reports keep only durable shifts, weakened ideas, and evidence standards.
 
-`recent month → weekly` · `recent quarter → monthly` · `all sufficiently covered years → yearly`
+| Horizon | Role | Current synthesis |
+|---|---|---|
+| **Weekly** | What changed locally, and what is still only an early signal? | [2026-W34 — Materialization, progress observability, and the hidden re-query tax](weekly/2026-W34.md) |
+| **Monthly** | What design space is emerging after re-grounding against older anchors? | [2026-08 — Placement of work across materialization, control, and state](monthly/2026-08.md) |
+| **Yearly** | Which shifts look durable enough to change how the field should be modeled? | [2026 YTD — Information-environment design and lifecycle accounting](yearly/2026.md) |
 
-## Recent Month · Weekly
+## Weekly
 
-### [2026-W34 · Materialization, progress observability, and the hidden re-query tax](weekly/2026-W34.md)
+**[2026-W34 · Materialization, progress observability, and the hidden re-query tax](weekly/2026-W34.md)**  
+Moving work out of an index, search loop, or prompt is only a systems improvement if the displaced work does not reappear as query-time localization, controller compute, or state reacquisition.
 
-**Rolling thesis:** moving work out of an index or prompt is only a systems improvement if it does not reappear as query-time localization, controller, or state-reacquisition cost. LENS, RAAC, and the context-compression study expose three different versions of that transfer.
+**[2026-W33 · Where should retrieval intelligence live?](weekly/2026-W33.md)**  
+Runtime interaction is valuable when it exposes information that could not have been compiled before retrieval; ReFind, LoongReflect, and VAKRA sharpen different runtime boundaries.
 
-[Read the rolling W34 synthesis →](weekly/2026-W34.md)
+**[2026-W32 · Convergence, factorization, and a stricter novelty baseline](weekly/2026-W32.md)**  
+Interface and learning factorization matter more than “agentic” naming; SIEVE separates access stages while SearchMaster makes the training distribution causal.
 
-### [2026-W33 · Where should retrieval intelligence live?](weekly/2026-W33.md)
+Older weekly files remain in the repository for provenance even after they age out of this primary surface.
 
-**Thesis:** runtime interaction is valuable when it exposes information that could not have been compiled before retrieval. ReFind, LoongReflect, and VAKRA expose runtime interface/state/trajectory bottlenecks; SIRA is the pre-retrieval counterpoint.
+## Monthly
 
-[Read the W33 synthesis →](weekly/2026-W33.md)
+**[2026-08 · Rolling research map](monthly/2026-08.md)**  
+August is a placement-of-work story: what evidence is materialized before the query, what control is deferred until after evidence arrives, and what state is retained versus reacquired.
 
-### [2026-W32 · Convergence, factorization, and a stricter novelty baseline](weekly/2026-W32.md)
+Monthly synthesis is rewritten when new evidence changes the map; it is not a concatenation of weekly reports.
 
-**Revised thesis:** interface and learning factorization matter more than “agentic” naming; SIEVE separates admissibility/ranking/inspection/reading, while SearchMaster makes training distribution causal.
+## Yearly
 
-[Read the revised W32 synthesis →](weekly/2026-W32.md)
+**[2026 · Rolling year-to-date map](yearly/2026.md)**  
+The durable 2026 shift is toward explicit design of the agent's information environment: what is precomputed/materialized, what becomes observable after retrieval, what state persists, and how offline + online resources are spent.
 
-> Weekly reports stay on the primary archive surface for roughly the latest month; older weekly files remain in the repository for provenance.
+The current year is explicitly rolling. Earlier years appear only when backfill is sufficient to support an annual map rather than a sample of anchors.
 
-## Recent Quarter · Monthly
+## How to Read Synthesis
 
-### [2026-08 · Rolling research map](monthly/2026-08.md)
+A useful synthesis should answer four questions that chronology cannot:
 
-**Current thesis:** August is a **placement-of-work** story: what evidence is materialized before the query, what control is deferred until after evidence arrives, and what state is retained versus reacquired. LENS, RAAC, and the context-compression study sharpen all three.
+1. **What changed?**
+2. **Compared with what?**
+3. **How strong is the causal evidence?**
+4. **What should a researcher build or measure differently next?**
 
-[Explore the August research map →](monthly/2026-08.md)
-
-> Monthly reports stay on the primary archive surface for roughly the latest quarter. Older files remain in the repository and are compressed again at yearly granularity.
-
-## All Years · Yearly
-
-### [2026 · Rolling year-to-date map](yearly/2026.md)
-
-**Current thesis:** the durable 2026 shift is toward explicit design of where information-acquisition work lives—what is precomputed/materialized, what becomes observable after retrieval, what state persists, and how offline + online resources are spent.
-
-The report remains explicitly rolling; incomplete historical backfill is not presented as full-year coverage.
-
-[Explore the 2026 year-to-date map →](yearly/2026.md)
-
-Earlier years will only appear when backfill is sufficient to justify an annual map rather than an anchor sample.
-
-## How the Time Hierarchy Works
-
-**Weekly** preserves local deltas and tensions. **Monthly** rebuilds the field map. **Yearly** keeps durable shifts, defining papers, weakened claims, evidence standards, and open problems.
-
-This is **not recursive summarization**: lower-level synthesis is an index for attention, while load-bearing monthly/yearly conclusions are re-grounded in canonical records and source/full-paper notes.
-
-Paper-level detail remains in [`../papers/`](../papers/), and problem-oriented browsing lives in the [Research Map](../categories/README.md).
-
----
-
-For methodology, see the [maintainer guide](../docs/MAINTENANCE.md) and [compaction protocol](../COMPACTION.md).
+Load-bearing monthly/yearly claims are re-grounded in canonical records and paper notes rather than recursively summarized from older digests.

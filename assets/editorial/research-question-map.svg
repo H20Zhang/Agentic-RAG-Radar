@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">Six live research questions in Agentic RAG</title>
+  <desc id="desc">A research-question map linking adaptivity, evidence materialization, persistent state, retrieval interfaces, learning, and causal evaluation around the information-acquisition path.</desc>
+  <defs><style>.t{font:600 22px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#172b36}.h{font:600 15px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#1c4557}.s{font:400 12.5px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#607681}.c{font:600 13px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#2d6e87}</style></defs>
+  <rect width="1200" height="520" rx="22" fill="#fbfdfe"/>
+  <text x="48" y="48" class="t">The field is better organized by questions than by paper labels</text>
+  <text x="48" y="73" class="s">Each question exposes a design choice, a boundary, and an experiment that could change the current view.</text>
+
+  <path d="M170 260 H1030" stroke="#bfd3dc" stroke-width="3"/>
+  <circle cx="210" cy="260" r="8" fill="#2f6f89"/><circle cx="405" cy="260" r="8" fill="#2f6f89"/><circle cx="600" cy="260" r="8" fill="#2f6f89"/><circle cx="795" cy="260" r="8" fill="#2f6f89"/><circle cx="990" cy="260" r="8" fill="#2f6f89"/>
+  <text x="155" y="292" class="s">observe</text><text x="365" y="292" class="s">retrieve</text><text x="559" y="292" class="s">inspect</text><text x="752" y="292" class="s">update</text><text x="956" y="292" class="s">stop</text>
+
+  <rect x="55" y="115" width="330" height="100" rx="16" fill="#eef5f7" stroke="#cbdde4"/>
+  <text x="78" y="146" class="h">Where should adaptivity live?</text>
+  <text x="78" y="170" class="s">Compile what can be known before retrieval;</text><text x="78" y="189" class="s">defer decisions that require fresh evidence.</text>
+  <text x="78" y="207" class="c">SIRA ↔ ReFind</text>
+
+  <rect x="435" y="115" width="330" height="100" rx="16" fill="#f2f7fa" stroke="#cbdde4"/>
+  <text x="458" y="146" class="h">When should evidence be materialized?</text>
+  <text x="458" y="170" class="s">Stable units favor preprocessing; dynamic or</text><text x="458" y="189" class="s">query-dependent evidence may justify localization.</text>
+  <text x="458" y="207" class="c">DCI → LENS</text>
+
+  <rect x="815" y="115" width="330" height="100" rx="16" fill="#eef5f7" stroke="#cbdde4"/>
+  <text x="838" y="146" class="h">What state should persist?</text>
+  <text x="838" y="170" class="s">Retain state when expected reacquisition cost</text><text x="838" y="189" class="s">exceeds its context or memory cost.</text>
+  <text x="838" y="207" class="c">S2G-RAG → RAAC → LoongReflect</text>
+
+  <rect x="55" y="345" width="330" height="100" rx="16" fill="#f2f7fa" stroke="#cbdde4"/>
+  <text x="78" y="376" class="h">How should the corpus be exposed?</text>
+  <text x="78" y="400" class="s">Ranking is only one layer: operations, depth,</text><text x="78" y="419" class="s">structure, and read granularity alter what is possible.</text>
+  <text x="78" y="437" class="c">A-RAG → DCI → RISE → RARG</text>
+
+  <rect x="435" y="345" width="330" height="100" rx="16" fill="#eef5f7" stroke="#cbdde4"/>
+  <text x="458" y="376" class="h">What should be learned?</text>
+  <text x="458" y="400" class="s">Retriever utility, query policy, recovery, budget,</text><text x="458" y="419" class="s">and even task generation are different targets.</text>
+  <text x="458" y="437" class="c">Agentic-R · Critic-R · SearchMaster</text>
+
+  <rect x="815" y="345" width="330" height="100" rx="16" fill="#f2f7fa" stroke="#cbdde4"/>
+  <text x="838" y="376" class="h">What makes an evaluation causal?</text>
+  <text x="838" y="400" class="s">Evidence, interface, state, harness, model, and</text><text x="838" y="419" class="s">realized resources must be separated.</text>
+  <text x="838" y="437" class="c">Pi-Serini · SGR-Bench · Training Protocols</text>
+
+  <text x="48" y="490" class="s">A paper is most useful when it moves one of these answers—or raises the evidence bar for deciding among them.</text>
+</svg>

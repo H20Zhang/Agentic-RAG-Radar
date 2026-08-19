@@ -58,122 +58,97 @@ def read(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
-def check_readme(records: list[dict[str, object]], errors: list[str]) -> None:
+def latest_records(text: str, records: list[dict[str, object]]) -> tuple[list[re.Match[str]], dict[str, dict[str, object]], str]:
+    record_by_note = {note_path(record): record for record in records}
+    latest_start = re.search(r"^##\s+Latest Papers\s*$", text, re.MULTILINE)
+    changes_start = re.search(r"^##\s+What[’']s Changing\s*$", text, re.MULTILINE)
+    if not latest_start or not changes_start or changes_start.start() <= latest_start.start():
+        return [], record_by_note, ""
+    latest = text[latest_start.end():changes_start.start()]
+    return list(LATEST_CARD_RE.finditer(latest)), record_by_note, latest
+
+
+def check_readme(records: list[dict[str, object]], errors: list[str]) -> set[str]:
     text = read(README)
     headings = [normalize_heading(m.group(1)) for m in re.finditer(r"^##\s+(.+?)\s*$", text, re.MULTILINE)]
-    if len(headings) < len(EXPECTED_README_H2):
-        add_error(errors, "README.md: missing required reader-facing H2 sections")
-        return
-
-    if headings[:4] != EXPECTED_README_H2:
-        add_error(
-            errors,
-            "README.md: first four substantive H2 sections must be "
-            + " -> ".join(EXPECTED_README_H2)
-            + f"; found {headings[:4]!r}",
-        )
+    if len(headings) < 4 or headings[:4] != EXPECTED_README_H2:
+        add_error(errors, "README.md: first four H2 sections must be " + " -> ".join(EXPECTED_README_H2) + f"; found {headings[:4]!r}")
 
     nav_needles = [
-        "[Latest papers](#-latest-papers)",
-        "[What’s changing](#-whats-changing)",
-        "[Reading paths](#-reading-paths)",
-        "[Research map](#-research-map)",
-        "[Paper index](papers/README.md)",
+        "[Latest Papers](#latest-papers)",
+        "[What's Changing](#whats-changing)",
+        "[Reading Paths](#reading-paths)",
+        "[Research Map](#research-map)",
+        "[Paper Index](papers/README.md)",
     ]
     for needle in nav_needles:
         if needle not in text:
             add_error(errors, f"README.md: top navigation is missing {needle}")
 
-    record_by_note = {note_path(record): record for record in records}
-    latest_start = re.search(r"^##\s+[^\n]*Latest Papers\s*$", text, re.MULTILINE)
-    changes_start = re.search(r"^##\s+[^\n]*What[’']s Changing\s*$", text, re.MULTILINE)
-    if not latest_start or not changes_start or changes_start.start() <= latest_start.start():
-        add_error(errors, "README.md: cannot isolate Latest Papers section")
-        return
+    if "assets/editorial/field-overview.svg" not in text:
+        add_error(errors, "README.md: missing field-overview research visual")
+    if "assets/editorial/research-question-map.svg" not in text:
+        add_error(errors, "README.md: missing Research Map visual")
 
-    latest = text[latest_start.end() : changes_start.start()]
-    matches = list(LATEST_CARD_RE.finditer(latest))
+    matches, record_by_note, latest = latest_records(text, records)
     if not matches:
         add_error(errors, "README.md: Latest Papers has no recognizable paper cards")
-        return
+        return set()
 
     dates: list[str] = []
+    latest_note_paths: set[str] = set()
     for i, match in enumerate(matches):
         rel = match.group("path")
+        latest_note_paths.add(rel)
         record = record_by_note.get(rel)
         if record is None:
             add_error(errors, f"README.md: Latest paper {rel} has no canonical record")
             continue
-        note = ROOT / rel
-        if not note.exists():
+        if not (ROOT / rel).exists():
             add_error(errors, f"README.md: Latest paper note does not exist: {rel}")
         dates.append(str(record["published"]))
 
         card_end = matches[i + 1].start() if i + 1 < len(matches) else len(latest)
-        card = latest[match.start() : card_end]
-        fold_marker = "Understand this paper in 60 seconds"
-        if card.count(fold_marker) != 1:
-            add_error(errors, f"README.md:{rel}: expected exactly one 60-second fold")
-
-        required = [
-            "**Problem.",
-            "**Core mechanism.",
-            "**Compared with.",
-            "**Evidence to remember.",
-            "**Open question.",
-        ]
-        for label in required:
+        card = latest[match.start():card_end]
+        for label in ["**Why it matters.**", "**Key result.**", "**The catch.**"]:
             if label not in card:
-                add_error(errors, f"README.md:{rel}: 60-second fold missing {label}")
-
-        analysis = record.get("analysis")
-        if isinstance(analysis, dict) and str(analysis.get("agent_loop") or "").strip():
-            if "**Agent loop." not in card and "**Control flow." not in card:
-                add_error(errors, f"README.md:{rel}: fold missing Agent loop/control flow")
+                add_error(errors, f"README.md:{rel}: latest card missing {label}")
+        if card.count("Research snapshot") != 1:
+            add_error(errors, f"README.md:{rel}: expected exactly one Research snapshot fold")
+        for label in ["**Research question.**", "**Mechanism.**", "**Nearest design point.**", "**Evidence & attribution.**", "**Open question.**"]:
+            if label not in card:
+                add_error(errors, f"README.md:{rel}: Research snapshot missing {label}")
 
         visual = record.get("visual_explainer")
         if isinstance(visual, dict) and visual.get("status") == "generated":
             image_path = visual.get("image_path")
             if not isinstance(image_path, str) or image_path not in card:
-                add_error(errors, f"README.md:{rel}: generated visual is not embedded in Latest fold")
+                add_error(errors, f"README.md:{rel}: canonical generated visual is not embedded in Latest card/fold")
             for label in ["**How to read this figure.**", "**Do not over-read.**"]:
                 if label not in card:
-                    add_error(errors, f"README.md:{rel}: generated visual lacks {label}")
-            problem_pos = card.find("**Problem.")
-            image_pos = card.find(str(image_path)) if isinstance(image_path, str) else -1
-            if problem_pos >= 0 and (image_pos < 0 or image_pos > problem_pos):
-                add_error(errors, f"README.md:{rel}: generated visual must appear before Problem")
+                    add_error(errors, f"README.md:{rel}: canonical generated visual lacks {label}")
 
     if dates != sorted(dates, reverse=True):
         add_error(errors, f"README.md: Latest Papers are not in non-increasing publication order: {dates}")
 
-    forbidden = [
-        "needs_regeneration",
-        "status=pending",
-        "backfill queue",
-        "renderer failure",
-        "scheduler mechanics",
-    ]
+    if "AI take" in text:
+        add_error(errors, "README.md: use researcher-facing verdict language instead of 'AI take'")
+    if "★" in text or "☆" in text:
+        add_error(errors, "README.md: star-glyph importance ratings are not allowed on the primary research surface")
+
+    forbidden = ["needs_regeneration", "status=pending", "backfill queue", "renderer failure", "scheduler mechanics"]
     lower = text.lower()
     for phrase in forbidden:
         if phrase.lower() in lower:
             add_error(errors, f"README.md: public surface exposes internal phrase {phrase!r}")
 
-    stale_headings = {"Start Here", "Research Compactions"}
-    for heading in headings:
-        if heading in stale_headings:
-            add_error(errors, f"README.md: stale public section name {heading!r}")
+    return latest_note_paths
 
 
-def check_paper_notes(records: list[dict[str, object]], errors: list[str]) -> None:
-    required_sections = [
-        "Problem",
-        "Core idea",
-        "Retrieval design",
-        "Compared to what",
-        "Evidence",
-        "Why it matters",
-    ]
+def check_paper_notes(records: list[dict[str, object]], latest_notes: set[str], errors: list[str]) -> None:
+    legacy_required = ["Problem", "Core idea", "Compared to what", "Evidence", "Why it matters"]
+    editorial_required = ["Research question", "Research delta", "Mechanism", "Evidence & attribution", "Where it fits", "Open question"]
+
     for record in records:
         rel = note_path(record)
         path = ROOT / rel
@@ -183,20 +158,54 @@ def check_paper_notes(records: list[dict[str, object]], errors: list[str]) -> No
         text = read(path)
         if "**TL;DR." not in text:
             add_error(errors, f"{rel}: missing TL;DR")
+
         headings = [normalize_heading(m.group(1)).lower() for m in re.finditer(r"^##\s+(.+?)\s*$", text, re.MULTILINE)]
-        for section in required_sections:
-            if section.lower() not in headings:
-                add_error(errors, f"{rel}: missing ## {section}")
-        if not any(h.startswith("limitations") for h in headings):
-            add_error(errors, f"{rel}: missing limitations/questions section")
+        if rel in latest_notes:
+            for section in editorial_required:
+                if section.lower() not in headings:
+                    add_error(errors, f"{rel}: current Latest note missing ## {section}")
+            for label in ["**Why this paper matters**", "**Strongest evidence**", "**Biggest caveat**"]:
+                if label not in text:
+                    add_error(errors, f"{rel}: current Latest note missing 30-second verdict field {label}")
+        else:
+            # Older notes can keep the legacy deep structure while they are progressively migrated.
+            if not any(section.lower() in headings for section in editorial_required):
+                for section in legacy_required:
+                    if section.lower() not in headings:
+                        add_error(errors, f"{rel}: legacy note missing ## {section}")
 
-        analysis = record.get("analysis")
-        if isinstance(analysis, dict) and str(analysis.get("agent_loop") or "").strip():
-            if not any(h in {"agent loop", "control flow"} for h in headings):
-                add_error(errors, f"{rel}: missing Agent loop/control flow section")
+        visual = record.get("visual_explainer")
+        if isinstance(visual, dict):
+            status = visual.get("status")
+            if status != "generated" and re.search(r"^##\s+Visual explainer\s*$", text, re.MULTILINE):
+                add_error(errors, f"{rel}: incomplete visual state must not appear as a public Visual explainer section")
+            if status == "generated":
+                image_path = visual.get("image_path")
+                if isinstance(image_path, str) and image_path not in text:
+                    add_error(errors, f"{rel}: canonical generated visual is not embedded")
+                for label in ["**How to read this figure.**", "**Do not over-read.**"]:
+                    if label not in text:
+                        add_error(errors, f"{rel}: canonical generated visual lacks {label}")
 
 
-def check_categories(records: list[dict[str, object]], errors: list[str]) -> None:
+def check_research_map(records: list[dict[str, object]], errors: list[str]) -> None:
+    map_path = CATEGORIES_DIR / "README.md"
+    text = read(map_path)
+    if "## Live Research Questions" not in text:
+        add_error(errors, "categories/README.md: Research Map must be research-question-first")
+    for question in [
+        "Where should adaptivity live?",
+        "When should evidence be materialized?",
+        "What state should persist?",
+        "How should retrieval expose the corpus?",
+        "What should be learned?",
+        "What makes an evaluation causal?",
+    ]:
+        if question not in text:
+            add_error(errors, f"categories/README.md: missing live research question {question!r}")
+    if "../assets/editorial/research-question-map.svg" not in text:
+        add_error(errors, "categories/README.md: missing research-question map visual")
+
     for record in records:
         category = str(record["primary_category"])
         filename = CATEGORY_FILES.get(category)
@@ -207,22 +216,34 @@ def check_categories(records: list[dict[str, object]], errors: list[str]) -> Non
         if not path.exists():
             add_error(errors, f"categories/{filename}: missing primary category page")
             continue
-        text = read(path)
+        category_text = read(path)
         rel_note = "../" + note_path(record)
-        if rel_note not in text:
+        if rel_note not in category_text:
             add_error(errors, f"categories/{filename}: missing link to {rel_note}")
 
     for filename in CATEGORY_FILES.values():
         path = CATEGORIES_DIR / filename
         if not path.exists():
             continue
-        text = read(path)
-        if "**Core question:**" not in text:
+        category_text = read(path)
+        if "**Core question:**" not in category_text:
             add_error(errors, f"categories/{filename}: missing Core question")
-        if "../papers/README.md" not in text:
+        if "../papers/README.md" not in category_text:
             add_error(errors, f"categories/{filename}: missing Curated Paper Index navigation")
-        if "README.md" not in text:
-            add_error(errors, f"categories/{filename}: missing Research Map/home navigation")
+
+
+def check_paper_index(errors: list[str]) -> None:
+    path = PAPERS_DIR / "README.md"
+    if not path.exists():
+        add_error(errors, "papers/README.md: generated index is missing")
+        return
+    text = read(path)
+    if "| Date | Paper | Area | Importance | Review |" not in text:
+        add_error(errors, "papers/README.md: index is not using the compact chronology table")
+    if "**Research delta.**" in text:
+        add_error(errors, "papers/README.md: lookup index should not repeat research-delta prose")
+    if "★" in text or "☆" in text:
+        add_error(errors, "papers/README.md: use textual importance rather than star glyphs")
 
 
 def local_link_target(source: Path, raw_target: str) -> Path | None:
@@ -232,14 +253,12 @@ def local_link_target(source: Path, raw_target: str) -> Path | None:
     if target.startswith("../../issues/") or target.startswith("/issues/"):
         return None
     if " " in target and not target.startswith("<"):
-        # Markdown titles are outside this repository's public-link convention.
         target = target.split(" ", 1)[0]
     target = target.strip("<>")
     target = target.split("#", 1)[0].split("?", 1)[0]
     if not target:
         return None
-    target = unquote(target)
-    return (source.parent / target).resolve()
+    return (source.parent / unquote(target)).resolve()
 
 
 def check_links(errors: list[str]) -> None:
@@ -271,8 +290,11 @@ def check_links(errors: list[str]) -> None:
 
 def check_contract_drift(errors: list[str]) -> None:
     template = read(ROOT / "templates" / "paper.md")
-    if ".webp" not in template or "**How to read this figure.**" not in template or "**Do not over-read.**" not in template:
-        add_error(errors, "templates/paper.md: does not match the live visual reader contract")
+    for needle in ["## Research question", "## Research delta", "## Evidence & attribution", "## Where it fits", "## Open question", "How to read this figure", "Do not over-read"]:
+        if needle not in template:
+            add_error(errors, f"templates/paper.md: missing editorial contract marker {needle!r}")
+    if "pending or needs regeneration" in template.lower() or "pointing to the grounded brief" in template.lower():
+        add_error(errors, "templates/paper.md: must not teach public visual-placeholder behavior")
 
     visual_readme = read(ROOT / "assets" / "visuals" / "README.md")
     for needle in ["assets/visuals/masters/<paper-id>.png", "assets/visuals/<paper-id>.webp", "How to read this figure"]:
@@ -283,9 +305,10 @@ def check_contract_drift(errors: list[str]) -> None:
 def main() -> int:
     errors: list[str] = []
     records = load_records()
-    check_readme(records, errors)
-    check_paper_notes(records, errors)
-    check_categories(records, errors)
+    latest_notes = check_readme(records, errors)
+    check_paper_notes(records, latest_notes, errors)
+    check_research_map(records, errors)
+    check_paper_index(errors)
     check_links(errors)
     check_contract_drift(errors)
 
@@ -295,7 +318,7 @@ def main() -> int:
         print(f"Public-surface validation failed with {len(errors)} error(s).")
         return 1
 
-    print(f"Validated public research surfaces for {len(records)} accepted paper record(s).")
+    print(f"Validated polished public research surfaces for {len(records)} accepted paper record(s).")
     return 0
 
 

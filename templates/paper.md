@@ -1,17 +1,21 @@
 # {{ title }}
 
-**arXiv:** [{{ arxiv_id }}]({{ paper_url }}) · **Published:** {{ published }} · **Category:** {{ primary_category }} · **Importance:** {{ importance }}/5 · **AI confidence:** {{ confidence }}
+*Published {{ published }} · {{ primary_category }} · Importance {{ importance }}/5 · {{ review_level }} · Confidence {{ confidence }}*
 
-**Tags:** {{ tags }}
+[Paper]({{ paper_url }}){{ optional_code_project_links }}
 
 > **TL;DR.** {{ tldr }}
 
-## Visual explainer
+| 30-second verdict | |
+|---|---|
+| **Why this paper matters** | {{ why_it_matters_short }} |
+| **Strongest evidence** | {{ strongest_evidence_short }} |
+| **Biggest caveat** | {{ biggest_caveat_short }} |
 
-{{ visual_explainer_block }}
+{{ generated_visual_block }}
 
 <!--
-When visual_explainer.status == generated, visual_explainer_block must use the committed WebP delivery asset and include all three reader-facing lines:
+When a validated visual is generated, generated_visual_block may contain one or more distinct grounded figures. The canonical visual must use the committed WebP delivery asset:
 
 ![Conceptual explainer for {{ title }}](../assets/visuals/{{ paper_id }}.webp)
 
@@ -21,50 +25,56 @@ When visual_explainer.status == generated, visual_explainer_block must use the c
 
 **Do not over-read.** {{ visual_caveat }}
 
-The PNG master remains at ../assets/visuals/masters/{{ paper_id }}.png and is not embedded in the paper page.
-
-When the visual is pending or needs regeneration, do not embed a missing/invalid bitmap. Keep the page understandable with a concise sentence pointing to the grounded brief at ../assets/visuals/prompts/{{ paper_id }}.md.
+Additional editorial figures are allowed only when they answer a distinct research question (for example mechanism vs evidence attribution). Do not show any placeholder or pending-status prose when no figure is ready.
 -->
 
-## Problem
+## Research question
 
-{{ problem }}
+{{ research_question }}
 
-## Core idea
+## Research delta
 
-{{ core_idea }}
+{{ research_delta }}
 
-## Agent loop
+State the **smallest claim that remains novel** after comparison with the closest historical and contemporary design points.
 
-`{{ agent_loop }}`
+## Mechanism
 
-## Retrieval design
+{{ mechanism }}
 
-{{ retrieval_design }}
+**Control flow.** `{{ agent_loop }}`
 
-## Compared to what
+Explain the relevant retrieval interface, state transition, learning loop, or evaluation intervention here rather than forcing every paper into identical subheadings.
 
-{{ compared_to }}
+## Evidence & attribution
 
-## Evidence
+{{ evidence_analysis }}
 
-{{ evidence }}
+When useful, include a compact table:
 
-## Why it matters
+| Claim | Evidence | Closest control | Assessment |
+|---|---|---|---|
+| {{ claim }} | {{ evidence }} | {{ control }} | {{ assessment }} |
 
-{{ why_it_matters }}
+Keep the strongest negative result, resource/harness/model confound, and what is actually identified causally next to the positive evidence.
 
-## Limitations / questions
+## Where it fits
 
-{{ limitations }}
+{{ lineage_and_comparison }}
 
-**Curator take:** **{{ importance }}/5**. {{ curator_take }}
+Connect the paper to a useful design lineage or tension, not merely a category label.
+
+## Open question
+
+{{ decisive_open_question }}
+
+End with the experiment or evidence that would most change the current interpretation.
 
 <details>
 <summary><strong>Evidence & provenance</strong></summary>
 
 {{ provenance_summary }}
 
-Visual grounding follows [`VISUALS.md`](../VISUALS.md); the auditable grounding brief lives at `../assets/visuals/prompts/{{ paper_id }}.md`.
+Visual grounding follows [`VISUALS.md`](../VISUALS.md); canonical records live under `../data/papers/`.
 
 </details>
