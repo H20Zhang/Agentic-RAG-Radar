@@ -1,0 +1,79 @@
+{
+  "id": "arxiv:2608.15191",
+  "arxiv_id": "2608.15191",
+  "title": "When Deep Research Agents Stagnate: Enhancing Reasoning with Retrieval-Aware Agent Control",
+  "authors": [
+    "Heydar Soudani",
+    "Elizabeth Lingg",
+    "Faegheh Hasibi",
+    "Navid Rekabsaz"
+  ],
+  "first_seen": "2026-08-18",
+  "published": "2026-08-15",
+  "updated": null,
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.15191",
+    "pdf": "https://arxiv.org/pdf/2608.15191",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "iterative_reasoning_verification",
+  "tags": [
+    "iterative_search",
+    "adaptive_stopping",
+    "query_rewrite",
+    "evidence_verification",
+    "web_research"
+  ],
+  "benchmarks": [
+    "BrowseComp-Plus",
+    "NeuCLIR",
+    "LegalSearch"
+  ],
+  "relevance": 0.99,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "agent_loop",
+    "question": "How can retrieval-aware progress signals turn a stagnant deep-research trajectory into a continue, redirect, or stop decision?",
+    "takeaway": "RAAC observes criteria coverage, document novelty, query diversity, and query-to-question similarity, then chooses continue, intervene with a critical re-thinker, or stop.",
+    "compared_with": "The same deep-research agent running its native multi-step search trajectory without the retrieval-aware controller.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2608.15191.png",
+    "image_path": "assets/visuals/2608.15191.webp",
+    "prompt_path": "assets/visuals/prompts/2608.15191.md",
+    "artifact_path": "papers/2608.15191.md"
+  },
+  "analysis": {
+    "tldr": "RAAC treats deep-research stagnation as a trajectory-control problem: unsupervised retrieval-aware signals summarize progress and a controller decides whether to continue, redirect search through a critical re-thinker, or stop. The matched same-agent comparisons are useful, but reduced search calls do not equal lower total compute because the controller and intervention add LLM work.",
+    "problem": "Deep research agents often keep searching after recall or answer quality has saturated, revisit already seen documents, and lack an explicit view of whether required criteria are covered or exploration is still productive.",
+    "core_idea": "Compute four trajectory signals—criteria coverage, document novelty, successive-query diversity, and similarity to the original question—and feed them with history to an agent-agnostic controller. The controller can continue, intervene by asking a critical re-thinker to diagnose stagnation and generate a substantially different query, or stop and answer.",
+    "agent_loop": "search/reason → update coverage/novelty/diversity/alignment signals → controller chooses continue | intervene | stop → if intervene, critical re-thinker generates a redirected query → retrieve → repeat or answer",
+    "retrieval_design": "All evaluated DRAs use the same top-k=5 retrieval pipeline within each dataset; RAAC sits above the existing agent and monitors its accumulated retrieval trajectory rather than replacing the retriever. BrowseComp-Plus provides explicit criteria; NeuCLIR and LegalSearch require an LLM component to create and update them.",
+    "compared_to": [
+      "the same seven deep research agents without RAAC",
+      "binary or single-signal adaptive retrieval controllers",
+      "ReAct-style, instruction-tuned, RL-trained, outline-guided, and report-writing DRA families"
+    ],
+    "evidence": "Across seven DRAs and three datasets, the paper first shows intermediate recall/accuracy often saturate while agents continue searching and increasingly revisit seen documents. On BrowseComp-Plus, adding RAAC reduces search calls by 14 on average and improves accuracy by about 3 points on average, with gains up to 10 points. The effect is not uniform: some agent/dataset cells increase search calls or lose recall, so the claim is a broad but not universal controller improvement.",
+    "why_it_matters": "RAAC makes progress observability a first-class control surface. It is stronger evidence than a new end-to-end agent because each DRA is compared with and without the same overlay controller. It also sharpens stopping: the important variable is not a nominal search-step cap but whether the agent can detect information saturation and redirect when novelty collapses.",
+    "limitations": [
+      "RAAC uses Claude Sonnet 4.5 for coverage updating, controller decisions, and the critical re-thinker, so search-call reduction does not by itself establish lower total model cost or latency.",
+      "Criteria are explicit in BrowseComp-Plus but LLM-generated and updated in NeuCLIR/LegalSearch, changing what the controller is allowed to observe across datasets.",
+      "The intervene action bundles stagnation diagnosis, extra reasoning compute, and query generation, so the contribution of the signals versus the added re-thinker is not fully isolated.",
+      "Improvements are heterogeneous across agents and datasets; some cells increase search calls or reduce recall."
+    ],
+    "confidence": "high"
+  },
+  "provenance": {
+    "discovered_via": [
+      "overlapping arXiv cs.IR/cs.AI/cs.CL recent search",
+      "full arXiv HTML"
+    ],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-18"
+  }
+}

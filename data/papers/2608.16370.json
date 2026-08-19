@@ -1,0 +1,75 @@
+{
+  "id": "arxiv:2608.16370",
+  "arxiv_id": "2608.16370",
+  "title": "What Does Context Compression Cost an Agent? Interaction Costs Unrevealed by Task-Completion Metrics",
+  "authors": [
+    "Shuyu Liu"
+  ],
+  "first_seen": "2026-08-18",
+  "published": "2026-08-17",
+  "updated": null,
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.16370",
+    "pdf": "https://arxiv.org/pdf/2608.16370",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "evaluation_analysis",
+  "tags": [
+    "memory",
+    "iterative_search",
+    "general"
+  ],
+  "benchmarks": [
+    "IRBench",
+    "ALFWorld"
+  ],
+  "relevance": 0.96,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "evidence_failure_map",
+    "question": "How can context compression leave task completion unchanged while forcing an agent to spend much more retrieval effort reacquiring dropped state?",
+    "takeaway": "When queryable execution state is dropped, the agent can enter a re-query loop: retrieval rises while task work stays roughly flat; restoring that state removes most of the added interaction.",
+    "compared_with": "Full context and fact-preserving compression under the same bounded-horizon tool-use protocol.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2608.16370.png",
+    "image_path": "assets/visuals/2608.16370.webp",
+    "prompt_path": "assets/visuals/prompts/2608.16370.md",
+    "artifact_path": "papers/2608.16370.md"
+  },
+  "analysis": {
+    "tldr": "This paper shows a completion-metric blind spot: context compression can force an agent to re-query external state far more often while task completion appears unchanged. Controlled restoration of dropped queryable state removes most of the extra retrieval, giving causal evidence that state retention and reacquisition cost must be evaluated together.",
+    "problem": "Context compression is usually judged by final task completion and token reduction. That can miss a runtime tax when the compressed context drops execution-relevant state that the agent can recover only by calling retrieval tools again.",
+    "core_idea": "Under a fixed 24-turn horizon, vary compression severity/operator, decompose tool use into retrieval versus execution, and inject exact dropped state through oracle interventions. The protocol distinguishes externally queryable state D from history-dependent state R and asks which missing state causes reacquisition.",
+    "agent_loop": "compressed context drops execution state → agent detects missing information during work → retrieval re-acquires queryable state → continue execution → repeated loss can create a re-query loop; oracle restoration short-circuits the loop",
+    "retrieval_design": "Retrieval is measured as compensatory state reacquisition rather than as a new search algorithm. Full context, sliding compression, fact-preserving summary, and oracle-restored variants share the same bounded-horizon tool-use environment, enabling a causal diagnostic of how context policy changes realized retrieval cost.",
+    "compared_to": [
+      "full uncompressed context",
+      "sliding-window compression at matched ratios",
+      "extractive fact-preserving summary at the same 5x budget",
+      "oracle restoration of dropped queryable versus history-dependent state",
+      "ALFWorld as an external environment boundary"
+    ],
+    "evidence": "At the pre-specified 5x point, retrieval calls increase in all six model-regime comparisons and five of six remain significant after Holm correction, while completion changes are not significant in any cell. GPT-5.5 High is the sharpest example: completion changes 80%→85% (p=1.0) while retrieval rises 21.0→63.9 (p=.002). In DeepSeek High, restoring dropped queryable D-state cuts tool calls from 72.9 to 35.8 and recovers most of the completion gap. The same sliding compression produces no retrieval surge in ALFWorld, showing the effect is environment-dependent.",
+    "why_it_matters": "It changes what 'efficient context management' means for agents. Reducing prompt state can simply move cost from tokens into external interaction, and final success can hide that transfer. For Agentic RAG evaluation, state retention, recoverability, and reacquisition calls belong in the same resource accounting as retrieval policy quality.",
+    "limitations": [
+      "The primary controlled environment is bounded and synthetic-adjacent, with a fixed 24-turn horizon; ALFWorld is only a boundary probe.",
+      "Only three models are tested, and model behavior differs materially in how missing state translates into completion loss.",
+      "Retrieval-call count is an interaction-cost proxy, not a complete wall-clock or monetary cost model.",
+      "The paper diagnoses a runtime failure mode; it does not propose a general compression or retrieval-control policy."
+    ],
+    "confidence": "high"
+  },
+  "provenance": {
+    "discovered_via": [
+      "overlapping arXiv cs.AI recent search",
+      "full arXiv HTML"
+    ],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-18"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "id": "arxiv:2608.16185",
+  "arxiv_id": "2608.16185",
+  "title": "LENS: In-Context Search via Latent Evidence Exploration over Dynamic Raw Documents",
+  "authors": [
+    "Xingjun Wang",
+    "Gongsheng Li",
+    "Qi Fan",
+    "Yunlin Mao",
+    "Luyan Su",
+    "Yingda Chen"
+  ],
+  "first_seen": "2026-08-18",
+  "published": "2026-08-17",
+  "updated": "2026-08-18",
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.16185",
+    "pdf": "https://arxiv.org/pdf/2608.16185",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "retrieval_tool_use",
+  "tags": [
+    "documents",
+    "iterative_search",
+    "budget_allocation",
+    "adaptive_stopping",
+    "open_domain_qa"
+  ],
+  "benchmarks": [],
+  "relevance": 0.99,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "retrieval_interface",
+    "question": "What changes when evidence is localized over raw dynamic documents at query time instead of being pre-materialized into fixed chunks and an index?",
+    "takeaway": "LENS keeps the evidence space latent until the query arrives, then iteratively proposes raw-document regions, observes LLM relevance, updates beliefs, and stops under a budget.",
+    "compared_with": "Pre-materialized indexed RAG and an index-free ReAct-style search baseline over the same raw corpus snapshot.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2608.16185.png",
+    "image_path": "assets/visuals/2608.16185.webp",
+    "prompt_path": "assets/visuals/prompts/2608.16185.md",
+    "artifact_path": "papers/2608.16185.md"
+  },
+  "analysis": {
+    "tldr": "LENS moves evidence materialization from indexing time to query time: it treats raw-document regions as a latent evidence space and sequentially proposes, scores, and refines regions under a budget. Its strongest result is better evidence localization/grounding and immediate freshness after corpus changes—not better answer EM than a ReAct baseline, which is tied or slightly better in the main controlled settings.",
+    "problem": "Fixed chunking and persistent indexes commit to evidence boundaries before the question is known and can become stale when raw documents change. The alternative—searching raw files at query time—needs a principled way to allocate a finite exploration budget rather than scanning blindly.",
+    "core_idea": "Formulate Budgeted Evidence Localization over query-dependent raw-document windows. A low-cost prior proposes candidates from lexical, local, structural, or reusable evidence cues; an LLM relevance oracle observes raw text, updates per-fact beliefs, adapts proposal weights, and stops when requirements are resolved or the budget is exhausted. Retrieved regions are consolidated into source-grounded evidence.",
+    "agent_loop": "build query-conditioned prior → propose lexical/local/exploratory raw-document regions → inspect with relevance oracle → update evidence beliefs and proposal weights → continue or stop under budget → consolidate grounded regions → answer",
+    "retrieval_design": "LENS is index-free at query time over the raw document collection. It does not pre-materialize fixed evidence chunks; candidate boundaries and search focus are induced after the query. The sequential controller trades online LLM/search work for freshness and finer evidence localization.",
+    "compared_to": [
+      "pre-indexed BM25/hybrid RAG under fresh and stale-index conditions",
+      "index-free ReAct-style search over matched corpus snapshots",
+      "closed-book no-retrieval reference",
+      "ablations without the multi-signal prior or without sequential exploration"
+    ],
+    "evidence": "On the controlled 500-question evaluation, LENS reports 62.4% EM and 84.8% evidence recall versus 65.2% EM and 50.4% evidence recall for the ReAct-style baseline. On a fixed 150-question fullwiki raw-dump subset with zero indexing, answer EM is nearly tied (43.3% LENS vs 42.7% ReAct) while grounded answers are higher for LENS (84.0% vs 70.7%). Stale-index experiments show indexed baselines lose sharply after corpus changes, while index-free methods remain query-ready. The sequential-exploration ablation is the main contributor; removing the multi-signal prior does not reduce EM in the reported fullwiki ablation.",
+    "why_it_matters": "LENS adds a second placement decision to the radar: not only where adaptivity lives, but when evidence itself is materialized. It extends raw-corpus interaction beyond fixed grep/read operations into query-conditioned region localization, while showing the real trade is freshness/grounding versus online compute rather than a clean answer-quality win.",
+    "limitations": [
+      "The strongest answer-quality comparisons do not show a clear LENS win: ReAct is higher on D500 EM and essentially tied on fullwiki.",
+      "The method spends more online tokens and latency than ReAct in the reported controlled accounting, so zero indexing is not zero cost.",
+      "A closed-book reference remains strong on fullwiki, making parametric knowledge a material confound in final-answer attribution.",
+      "The evidence-localization gains are demonstrated on the paper's tested raw-document workloads; transfer to other document formats and interaction substrates remains open."
+    ],
+    "confidence": "high"
+  },
+  "provenance": {
+    "discovered_via": [
+      "overlapping arXiv cs.CL/cs.AI recent search",
+      "full arXiv PDF/HTML"
+    ],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-18"
+  }
+}
