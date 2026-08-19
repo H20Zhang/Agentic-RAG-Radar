@@ -5,7 +5,7 @@ Track new papers, understand what actually changed, and see how the field is mov
 
 ⭐ **Star this repo to follow new Agentic RAG papers, skeptical research notes, and field-level synthesis.**
 
-**Last updated:** 2026-08-18 · [Latest papers](#-latest-papers) · [What’s changing](#-whats-changing) · [Reading paths](#-reading-paths) · [Research map](#-research-map)
+**Last updated:** 2026-08-18 · [Latest papers](#-latest-papers) · [What’s changing](#-whats-changing) · [Reading paths](#-reading-paths) · [Research map](#-research-map) · [Paper index](papers/README.md)
 
 **Current field thesis:** the useful question is no longer “retriever or agent?” or “one search or many?” It is **where information and state should be materialized, and where adaptivity should live**: compile structure before retrieval when it is stable and observable; defer localization/control until after evidence arrives when the next action depends on fresh information; preserve enough recoverable state that compression does not merely shift cost into re-querying.
 
@@ -330,7 +330,7 @@ The key correction is that **both adaptivity and materialization have a location
 
 </details>
 
-[Explore the full research map →](categories/README.md)
+[Explore the full research map →](categories/README.md) · [Browse the complete Curated Paper Index →](papers/README.md)
 
 ## 🖼️ How to Read a Paper Here
 

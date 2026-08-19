@@ -1,5 +1,6 @@
 # Multi-Agent & Orchestration
 
+[← Research Map](README.md) · [Latest Papers](../README.md#-latest-papers) · [Reading Paths](../README.md#-reading-paths) · [Curated Paper Index](../papers/README.md)
 > **Core question:** When does splitting information acquisition across specialized agents improve retrieval quality or reliability enough to justify the coordination cost?
 
 This category is intentionally **empty at the current precision threshold**. A paper is not included here merely because it runs several LLM agents in parallel. Retrieval/search orchestration must be a substantive research contribution.

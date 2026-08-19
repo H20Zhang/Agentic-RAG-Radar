@@ -1,10 +1,20 @@
 # Retrieval & Tool Use
 
+[← Research Map](README.md) · [Latest Papers](../README.md#-latest-papers) · [Reading Paths](../README.md#-reading-paths) · [Curated Paper Index](../papers/README.md)
 > **Core question:** What information-access operations should an agent control, what evidence resolution should they expose, and **what should be materialized before the query versus localized after it?**
 
 This category covers the agent-facing retrieval environment: corpus observability, operation set, corpus boundary, evidence granularity, source structure/state, and resource semantics. The central 2026 correction is that neither “retriever versus agent” nor “one search versus many” is a sufficient design axis.
 
 ## Current papers
+
+### [A-RAG](../papers/2602.03442.md) — ★★★★☆
+
+**Design point:** expose keyword search, semantic search, and chunk reads as a model-controlled retrieval-operation hierarchy rather than a fixed pipeline.
+
+### [DocNavRAG](../papers/2608.01565.md) — ★★★★☆
+
+**Design point:** couple document-native navigation with explicit collected/missing evidence state so structure and retrieval control evolve together.
+
 
 ### [Direct Corpus Interaction](../papers/2605.05242.md) — ★★★★★
 

@@ -1,5 +1,6 @@
 # Iterative Reasoning & Verification
 
+[← Research Map](README.md) · [Latest Papers](../README.md#-latest-papers) · [Reading Paths](../README.md#-reading-paths) · [Curated Paper Index](../papers/README.md)
 > **Core question:** What progress/state should make the next retrieval, redirect, verification, recovery, or stopping decision?
 
 This category is about the closed loop after retrieval begins. The important object is not “iteration” itself, but the state that tells the controller what has been established, what is missing, whether search is still producing new information, and whether the current branch should continue.

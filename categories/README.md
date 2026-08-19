@@ -1,5 +1,6 @@
-# Browse Agentic RAG by Research Problem
+# Research Map
 
+[Latest Papers](../README.md#-latest-papers) · [What's Changing](../README.md#-whats-changing) · [Reading Paths](../README.md#-reading-paths) · [Curated Paper Index](../papers/README.md)
 The taxonomy is organized by **which part of the information-acquisition control stack changes**, not primarily by application domain.
 
 | Category | Research question | Current signal |
