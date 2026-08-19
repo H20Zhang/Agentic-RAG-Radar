@@ -21,8 +21,14 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install validator
+      - name: Install validator dependencies
         run: pip install 'jsonschema[format]>=4.23,<5' 'pillow>=11,<12'
+
+      - name: Check generated paper index
+        run: python scripts/build_paper_index.py --check
 
       - name: Validate canonical paper records
         run: python scripts/validate.py
+
+      - name: Validate public research surfaces
+        run: python scripts/validate_public.py
