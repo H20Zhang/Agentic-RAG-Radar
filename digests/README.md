@@ -8,15 +8,21 @@ The archive intentionally becomes coarser with time:
 
 ## Recent Month · Weekly
 
+### [2026-W34 · Materialization, progress observability, and the hidden re-query tax](weekly/2026-W34.md)
+
+**Rolling thesis:** moving work out of an index or prompt is only a systems improvement if it does not reappear as query-time localization, controller, or state-reacquisition cost. LENS, RAAC, and the context-compression study expose three different versions of that transfer.
+
+[Read the rolling W34 synthesis →](weekly/2026-W34.md)
+
 ### [2026-W33 · Where should retrieval intelligence live?](weekly/2026-W33.md)
 
-**Rolling thesis:** runtime interaction is valuable only when it exposes information that could not have been compiled before retrieval. ReFind moves memory intelligence from offline structure into question-time raw-history search; LoongReflect makes accumulated state reversible; VAKRA stress-tests cross-source trajectory integrity. SIRA is the adjacent counterpoint: some adaptive search can be compiled before evidence is read.
+**Thesis:** runtime interaction is valuable when it exposes information that could not have been compiled before retrieval. ReFind, LoongReflect, and VAKRA expose runtime interface/state/trajectory bottlenecks; SIRA is the pre-retrieval counterpoint.
 
-[Read the rolling W33 synthesis →](weekly/2026-W33.md)
+[Read the W33 synthesis →](weekly/2026-W33.md)
 
 ### [2026-W32 · Convergence, factorization, and a stricter novelty baseline](weekly/2026-W32.md)
 
-**Revised thesis:** W32 is best read as interface and learning factorization, not the origin of agentic retrieval. SIEVE separates admissibility/ranking/inspection/reading; SearchMaster makes self-generated training distribution a causal variable.
+**Revised thesis:** interface and learning factorization matter more than “agentic” naming; SIEVE separates admissibility/ranking/inspection/reading, while SearchMaster makes training distribution causal.
 
 [Read the revised W32 synthesis →](weekly/2026-W32.md)
 
@@ -26,7 +32,7 @@ The archive intentionally becomes coarser with time:
 
 ### [2026-08 · Rolling research map](monthly/2026-08.md)
 
-**Current thesis:** August adds **adaptivity placement** to the control-stack map. SIRA shows that corpus-aware action compilation can remove some exploratory retrieval; ReFind shows that result-conditioned iteration still matters when useful cues only emerge after evidence inspection. Training Protocols moves the causal baseline earlier to evidence availability itself.
+**Current thesis:** August is a **placement-of-work** story: what evidence is materialized before the query, what control is deferred until after evidence arrives, and what state is retained versus reacquired. LENS, RAAC, and the context-compression study sharpen all three.
 
 [Explore the August research map →](monthly/2026-08.md)
 
@@ -36,7 +42,7 @@ The archive intentionally becomes coarser with time:
 
 ### [2026 · Rolling year-to-date map](yearly/2026.md)
 
-**Current thesis:** the durable 2026 shift is toward explicit design of **where information-acquisition intelligence lives**—what is precomputed, what the controller can observe before retrieval, what changes after evidence arrives, what state persists, and how offline + online resources are spent.
+**Current thesis:** the durable 2026 shift is toward explicit design of where information-acquisition work lives—what is precomputed/materialized, what becomes observable after retrieval, what state persists, and how offline + online resources are spent.
 
 The report remains explicitly rolling; incomplete historical backfill is not presented as full-year coverage.
 

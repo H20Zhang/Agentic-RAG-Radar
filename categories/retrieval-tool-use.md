@@ -1,56 +1,54 @@
 # Retrieval & Tool Use
 
-> **Core question:** What information-access operations should an agent control, what evidence resolution should they expose, and **when should adaptivity happen before versus after evidence retrieval?**
+> **Core question:** What information-access operations should an agent control, what evidence resolution should they expose, and **what should be materialized before the query versus localized after it?**
 
-This category covers the **agent-facing retrieval environment**: corpus observability, operation set, corpus boundary, local evidence resolution, source structure/state, and resource semantics. The central 2026 correction is that neither “retriever versus agent” nor “one search versus many” is a sufficient design axis.
+This category covers the agent-facing retrieval environment: corpus observability, operation set, corpus boundary, evidence granularity, source structure/state, and resource semantics. The central 2026 correction is that neither “retriever versus agent” nor “one search versus many” is a sufficient design axis.
 
 ## Current papers
 
 ### [Direct Corpus Interaction](../papers/2605.05242.md) — ★★★★★
 
-**Design point:** bypass the fixed similarity API and let the agent compose grep/find/read/shell operations over raw corpus files.
+**Design point:** bypass a fixed similarity API and let the agent compose grep/find/read/shell operations over raw corpus files.
 
-**Why it is an anchor:** introduces **retrieval-interface resolution** as an explanation for why capable agents can outperform a stronger ranker even when the ranker already surfaced gold documents.
-
-**Boundary:** raw full-corpus interaction degrades with distractor scale; high resolution is not free.
+**Why it is an anchor:** makes retrieval-interface resolution explicit. **Boundary:** raw full-corpus interaction degrades with distractor scale.
 
 ### [SIRA](../papers/2605.06647.md) — ★★★★☆
 
-**Design point:** move adaptivity **before evidence retrieval**. An LLM predicts discriminative evidence vocabulary; document-frequency/index signals validate and weight it; the result is compiled into a lexical retrieval action rather than learned from repeated result snippets.
+**Design point:** move adaptivity before evidence retrieval: predict discriminative evidence vocabulary, validate it with corpus statistics, and compile a lexical retrieval action.
 
-**Why it matters:** it is the strongest current counterexample to “more search rounds = more capable agent.” Across BEIR, the compiled retrieval program is competitive with learned dense/sparse and multi-round baselines. But the main method also pays substantial offline LLM document-enrichment cost, and its BrowseComp-Wikipedia advantage is not universal across backbone/budget: GPT-5.4 SIRA loses to GPT-5.4 Perplexity at Recall@100.
+**Boundary:** the setup pays offline LLM corpus-enrichment cost, and the advantage is not universal across backbone/budget.
 
 ### [Pi-Serini](../papers/2605.10848.md) — ★★★★☆
 
-**Design point:** keep a conventional lexical backend, tune it for the corpus, surface a deep cached ranking, and expose browse/read operations so the agent can inspect that ranking incrementally.
-
-**Why it matters:** backend recall and agent-inspected evidence are separate bottlenecks. A lexical system can look weak because tuning, surfaced depth, or browsing affordances are weak.
+**Design point:** separate lexical backend quality, surfaced ranking depth, and agent browse/read inspection. Backend recall and inspected evidence are different bottlenecks.
 
 ### [RISE](../papers/2606.06880.md) — ★★★★☆
 
-**Design point:** retrieval constructs a persistent bounded **interaction space** outside the prompt; shell operations happen inside that space.
+**Design point:** retrieval constructs a persistent bounded interaction space outside the prompt; shell operations happen inside that space.
 
 ### [DR-DCI](../papers/2606.14885.md) — ★★★★☆
 
-**Design point:** turn retrieval into an agent-callable `pull(query,k)` action that dynamically expands persistent workspace state.
+**Design point:** retrieval becomes an agent-callable `pull(query,k)` action that dynamically expands persistent workspace state.
 
 ### [RARG](../papers/2607.24223.md) — ★★★★☆
 
-**Design point:** carry relevance **inside** interaction as an execution prior: document order, entry points, and local grep-match visibility are prioritized instead of treating every file/match equally.
-
-**Useful negative:** a faster generative reranking variant uses fewer tools but loses accuracy, so “fewer interactions” is not itself a better policy.
+**Design point:** carry relevance inside interaction as an execution prior. A faster generative reranking variant uses fewer tools but loses accuracy, so fewer interactions is not automatically better.
 
 ### [ReFind](../papers/2608.12888.md) — ★★★★☆
 
-**Design point:** preserve raw chat history and move intelligence into a **question-time, substrate-native retrieval interface**: lexical reformulation, session-aware ranking, local turn expansion, time filtering, and seen-session state.
+**Design point:** preserve raw chat history and move intelligence into a question-time lexical/session/time/local-context interface.
 
-**Why it matters:** two matched controls separate the causal story. Generic multi-round BM25 is materially weaker than the full interface, so iteration alone is insufficient; forcing one search is also materially weaker on LongMemEval-M, so some useful query terms/scopes really do emerge only after inspecting evidence.
+**Why it matters:** generic multi-round BM25 is weaker than the full interface, while one-search control is also weaker on LongMemEval-M; both interface quality and result-conditioned iteration matter. EventQA slightly favors single-shot BM25.
 
-**Boundary:** EventQA slightly favors single-shot BM25-RAG, and the method shifts cost from memory construction to query time rather than eliminating it.
+### [LENS](../papers/2608.16185.md) — ★★★★☆
+
+**Design point:** move **evidence materialization** to query time over dynamic raw documents. Candidate evidence windows remain latent until the question arrives; a budgeted loop proposes regions, inspects relevance, updates beliefs, and narrows.
+
+**Why it matters:** LENS improves evidence localization/grounding and freshness, not answer EM: ReAct is higher on D500 EM and essentially tied on fullwiki. The trade is lifecycle freshness/evidence fidelity versus extra online compute.
 
 ### [SIEVE](../papers/2608.02751.md) — ★★★★☆
 
-**Design point:** separate **candidate admissibility, ranking, inspection, and reading granularity**. The matched Search–Fetch control keeps ranking/result depth/selective read while removing Boolean candidate selection.
+**Design point:** separate candidate admissibility, ranking, inspection, and reading granularity; its Search–Fetch control removes Boolean candidate selection while holding the rest closer to fixed.
 
 ### [LLM-Wiki](../papers/2605.25480.md) — ★★★★☆
 
@@ -60,32 +58,28 @@ This category covers the **agent-facing retrieval environment**: corpus observab
 
 **Design point:** lexical search, structural navigation, and bounded reads replace one opaque dense top-k call.
 
-**Skeptical result:** BM25 is statistically indistinguishable from READ in the reported setting, so the primitive/interface claim is stronger than a generic agentic-policy claim.
+**Skeptical result:** BM25 is statistically indistinguishable from READ in the reported setting, so the primitive/interface claim is stronger than a generic agent-policy claim.
 
 ### [Know Before You Fetch](../papers/2606.29959.md) — ★★★★☆
 
 **Design point:** make retrieval amount explicit and distinguish calls, context volume, latency, and abstention rather than collapsing them into one “budget.”
 
-## Current tension: compile control or defer it?
+## Current tension: compile, materialize, or defer?
 
-The older interaction-space lineage remains useful:
+Two orthogonal placement decisions now matter.
 
-`fixed top-k → raw high-resolution interaction → bounded/persistent workspace → relevance-guided interaction`
+**Where does adaptivity live?** SIRA shows some exploratory behavior can be compiled before retrieval when discriminative corpus signals are already observable. ReFind shows the opposite regime: when useful names/times/session context emerge only after retrieval, result-conditioned reformulation adds value.
 
-But **SIRA ↔ ReFind** adds a sharper orthogonal question: **where should adaptivity live?**
+**When does evidence become a retrieval unit?** Indexed RAG materializes chunks/vectors before the query. DCI preserves raw files but uses explicit operations over them. LENS goes further by treating evidence windows as query-conditioned latent objects that are localized online.
 
-SIRA shows that some exploratory search can be compiled away when the controller can predict discriminative vocabulary and validate it against corpus-visible statistics *before* evidence is read. ReFind shows the opposite regime: when useful names, timestamps, or session-local context only become visible after retrieval, result-conditioned reformulation adds value. Its generic-agentic control also shows that simply looping over BM25 is not enough; the interface has to expose the right substrate structure.
+So `number of rounds` remains an outcome, not a primitive. A more stable decomposition is:
 
-So `number of rounds` is an outcome, not a primitive. The more stable decomposition is:
-
-`pre-retrieval corpus observability × action expressivity × result-conditioned information gain × state persistence × realized cost`.
-
-Pi-Serini and SIEVE then refine the middle of that path: what ranking depth survives, which candidates are admissible, what the agent sees before reading, and how much content it fetches.
+`pre-retrieval corpus observability × evidence-materialization time × action expressivity × result-conditioned information gain × state persistence × lifecycle cost`.
 
 ## What would count as meaningful progress?
 
-The decisive experiment is **same model + same backend/corpus + same harness + equal total compute** while independently varying:
+The decisive experiment is the same changing corpus + same model + same answer budget while independently varying:
 
-`pre-retrieval corpus signals → compiled action → one-shot retrieval → result-conditioned iteration → inspection/read interface → persistent state`.
+`offline index/materialization → compiled one-shot action → direct raw interaction → latent query-time localization → result-conditioned iteration`.
 
-Cost must include both sides of the boundary. SIRA's offline corpus enrichment and ReFind's extra question-time LLM/search calls are different ways to spend computation. Without matching them, “one-shot” versus “agentic” remains another bundled systems comparison rather than a causal result.
+Cost must include construction/update, controller/oracle compute, retrieval calls, inspected tokens, latency, and freshness lag. Without that accounting, “index-free” can simply mean **offline work moved online**.
