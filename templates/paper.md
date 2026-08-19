@@ -8,15 +8,23 @@
 
 ## Visual explainer
 
-> AI-generated conceptual explainer; **not** a reproduction of the paper's original figure.
+{{ visual_explainer_block }}
 
-![Conceptual explainer for {{ title }}](../assets/visuals/{{ paper_id }}.png)
+<!--
+When visual_explainer.status == generated, visual_explainer_block must use the committed WebP delivery asset and include all three reader-facing lines:
 
-**What to notice.** {{ visual_takeaway }}
+![Conceptual explainer for {{ title }}](../assets/visuals/{{ paper_id }}.webp)
+
+**How to read this figure.** {{ visual_reading_guide }}
 
 **Compared with.** {{ visual_compared_with }}
 
-**Grounding.** {{ visual_grounding }}
+**Do not over-read.** {{ visual_caveat }}
+
+The PNG master remains at ../assets/visuals/masters/{{ paper_id }}.png and is not embedded in the paper page.
+
+When the visual is pending or needs regeneration, do not embed a missing/invalid bitmap. Keep the page understandable with a concise sentence pointing to the grounded brief at ../assets/visuals/prompts/{{ paper_id }}.md.
+-->
 
 ## Problem
 
@@ -52,12 +60,11 @@
 
 **Curator take:** **{{ importance }}/5**. {{ curator_take }}
 
----
+<details>
+<summary><strong>Evidence & provenance</strong></summary>
 
-### Provenance & visual audit
+{{ provenance_summary }}
 
-- Paper claims and curator inference must be distinguishable.
-- Never infer experimental superiority from an abstract alone.
-- `Compared to what` should identify the nearest design point, not a generic RAG baseline.
-- The visual must follow [`VISUALS.md`](../VISUALS.md) and be regenerated if a full-paper read changes the interpreted mechanism.
-- Store/review the image-generation grounding note at `../assets/visuals/prompts/{{ paper_id }}.md`.
+Visual grounding follows [`VISUALS.md`](../VISUALS.md); the auditable grounding brief lives at `../assets/visuals/prompts/{{ paper_id }}.md`.
+
+</details>
