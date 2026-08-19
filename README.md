@@ -5,7 +5,7 @@ Track new papers, understand what actually changed, and see how the field is mov
 
 ⭐ **Star this repo to follow new Agentic RAG papers, skeptical research notes, and field-level synthesis.**
 
-**Last updated:** 2026-08-18 · [Latest papers](#-latest-papers) · [Start here](#-start-here) · [Browse by research problem](categories/README.md) · [Research compactions](#-research-compactions)
+**Last updated:** 2026-08-18 · [Latest papers](#-latest-papers) · [What’s changing](#-whats-changing) · [Reading paths](#-reading-paths) · [Research map](#-research-map)
 
 **Current field thesis:** the useful question is no longer “retriever or agent?” or “one search or many?” It is **where information and state should be materialized, and where adaptivity should live**: compile structure before retrieval when it is stable and observable; defer localization/control until after evidence arrives when the next action depends on fresh information; preserve enough recoverable state that compression does not merely shift cost into re-querying.
 
@@ -155,7 +155,49 @@ Track new papers, understand what actually changed, and see how the field is mov
 
 </details>
 
-## 🚀 Start Here
+## 🧭 What’s Changing
+
+The archive deliberately becomes coarser with time: `recent month → weekly` · `recent quarter → monthly` · `all years → yearly`.
+
+### Recent Month · Weekly
+
+**[2026-W34 · Materialization, progress observability, and the hidden re-query tax](digests/weekly/2026-W34.md)**  
+W34 adds three coupled control points: LENS moves evidence materialization to query time, RAAC makes search progress visible to a continue/redirect/stop controller, and the context-compression study shows that removing state can simply move cost into external reacquisition.
+
+[Read the rolling W34 synthesis →](digests/weekly/2026-W34.md)
+
+**[2026-W33 · Where should retrieval intelligence live?](digests/weekly/2026-W33.md)**  
+ReFind moves memory intelligence from offline structure into question-time search, LoongReflect makes accumulated state reversible, and VAKRA tests cross-source trajectory integrity; SIRA is the pre-retrieval counterpoint.
+
+[Read the W33 synthesis →](digests/weekly/2026-W33.md)
+
+**[2026-W32 · Convergence, factorization, and a stricter novelty baseline](digests/weekly/2026-W32.md)**  
+W32 asks what remains after matching interface, harness, adaptive baseline, realized resources, and supervision distribution.
+
+[Read the revised W32 synthesis →](digests/weekly/2026-W32.md)
+
+### Recent Quarter · Monthly
+
+**[2026-08 · Rolling research map](digests/monthly/2026-08.md)**  
+August now separates **adaptivity placement, evidence-materialization placement, and state recoverability**. LENS adds the raw-dynamic-document case; RAAC adds progress-aware control; context compression shows why state savings must be charged against reacquisition.
+
+[Explore the August map →](digests/monthly/2026-08.md)
+
+### All Years · Yearly
+
+**[2026 · Rolling year-to-date map](digests/yearly/2026.md)**  
+The durable 2026 shift remains explicit design of the agent's information environment: what is precomputed, what becomes observable after retrieval, what state persists, and what offline + online resources are actually spent.
+
+[Explore the 2026 year-to-date map →](digests/yearly/2026.md) · [Browse all synthesis →](digests/README.md)
+
+<details>
+<summary><strong>How the time hierarchy works</strong></summary>
+
+**Weekly** preserves local changes while fresh. **Monthly** rebuilds the field map. **Yearly** keeps durable shifts, defining papers, weakened ideas, evidence standards, and open problems. Lower-level reports remain in the repository for provenance.
+
+</details>
+
+## 📚 Reading Paths
 
 | If you want to understand… | Read in this order | What you should learn |
 |---|---|---|
@@ -172,7 +214,9 @@ Together they suggest a systems view of Agentic RAG as **materialization placeme
 
 </details>
 
-## ⭐ Design Anchors
+## 🗺️ Research Map
+
+### Key Anchors
 
 | Work | Why it is a useful design point |
 |---|---|
@@ -197,7 +241,7 @@ The key correction is that **both adaptivity and materialization have a location
 
 </details>
 
-## 🗂 Browse by Research Problem
+### Research Problems
 
 | Research problem | Question |
 |---|---|
@@ -287,48 +331,6 @@ The key correction is that **both adaptivity and materialization have a location
 </details>
 
 [Explore the full research map →](categories/README.md)
-
-## 🧭 Research Compactions
-
-The archive deliberately becomes coarser with time: `recent month → weekly` · `recent quarter → monthly` · `all years → yearly`.
-
-### Recent Month · Weekly
-
-**[2026-W34 · Materialization, progress observability, and the hidden re-query tax](digests/weekly/2026-W34.md)**  
-W34 adds three coupled control points: LENS moves evidence materialization to query time, RAAC makes search progress visible to a continue/redirect/stop controller, and the context-compression study shows that removing state can simply move cost into external reacquisition.
-
-[Read the rolling W34 synthesis →](digests/weekly/2026-W34.md)
-
-**[2026-W33 · Where should retrieval intelligence live?](digests/weekly/2026-W33.md)**  
-ReFind moves memory intelligence from offline structure into question-time search, LoongReflect makes accumulated state reversible, and VAKRA tests cross-source trajectory integrity; SIRA is the pre-retrieval counterpoint.
-
-[Read the W33 synthesis →](digests/weekly/2026-W33.md)
-
-**[2026-W32 · Convergence, factorization, and a stricter novelty baseline](digests/weekly/2026-W32.md)**  
-W32 asks what remains after matching interface, harness, adaptive baseline, realized resources, and supervision distribution.
-
-[Read the revised W32 synthesis →](digests/weekly/2026-W32.md)
-
-### Recent Quarter · Monthly
-
-**[2026-08 · Rolling research map](digests/monthly/2026-08.md)**  
-August now separates **adaptivity placement, evidence-materialization placement, and state recoverability**. LENS adds the raw-dynamic-document case; RAAC adds progress-aware control; context compression shows why state savings must be charged against reacquisition.
-
-[Explore the August map →](digests/monthly/2026-08.md)
-
-### All Years · Yearly
-
-**[2026 · Rolling year-to-date map](digests/yearly/2026.md)**  
-The durable 2026 shift remains explicit design of the agent's information environment: what is precomputed, what becomes observable after retrieval, what state persists, and what offline + online resources are actually spent.
-
-[Explore the 2026 year-to-date map →](digests/yearly/2026.md) · [Browse all compactions →](digests/README.md)
-
-<details>
-<summary><strong>How the time hierarchy works</strong></summary>
-
-**Weekly** preserves local changes while fresh. **Monthly** rebuilds the field map. **Yearly** keeps durable shifts, defining papers, weakened ideas, evidence standards, and open problems. Lower-level reports remain in the repository for provenance.
-
-</details>
 
 ## 🖼️ How to Read a Paper Here
 
