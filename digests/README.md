@@ -1,10 +1,10 @@
-# 🧭 Agentic RAG Research Compactions
+# 🧭 What's Changing — Research Synthesis Archive
 
-Start here when you want the **research picture**, not a chronological paper feed.
+This archive is the deeper historical synthesis behind the homepage **What's Changing** section. Use it when you want the field-level interpretation rather than the chronological paper feed.
 
 The archive intentionally becomes coarser with time:
 
-`recent month → weekly` · `recent quarter → monthly` · `all years → yearly`
+`recent month → weekly` · `recent quarter → monthly` · `all sufficiently covered years → yearly`
 
 ## Recent Month · Weekly
 
@@ -26,7 +26,7 @@ The archive intentionally becomes coarser with time:
 
 [Read the revised W32 synthesis →](weekly/2026-W32.md)
 
-> Weekly reports stay on the primary archive surface for roughly the latest month; older weekly files remain for provenance.
+> Weekly reports stay on the primary archive surface for roughly the latest month; older weekly files remain in the repository for provenance.
 
 ## Recent Quarter · Monthly
 
@@ -48,15 +48,15 @@ The report remains explicitly rolling; incomplete historical backfill is not pre
 
 [Explore the 2026 year-to-date map →](yearly/2026.md)
 
-Earlier years will only be added when backfill is sufficiently complete to justify an annual map rather than an anchor sample.
+Earlier years will only appear when backfill is sufficient to justify an annual map rather than an anchor sample.
 
 ## How the Time Hierarchy Works
 
-**Weekly** preserves local deltas and tensions. **Monthly** rebuilds the field map. **Yearly** keeps only durable shifts, defining papers, weakened claims, evidence standards, and open problems.
+**Weekly** preserves local deltas and tensions. **Monthly** rebuilds the field map. **Yearly** keeps durable shifts, defining papers, weakened claims, evidence standards, and open problems.
 
-This is **not recursive summarization**: lower-level compactions are indexes, while load-bearing monthly/yearly conclusions are re-grounded in canonical records and source/full-paper notes.
+This is **not recursive summarization**: lower-level synthesis is an index for attention, while load-bearing monthly/yearly conclusions are re-grounded in canonical records and source/full-paper notes.
 
-Paper-level detail remains in [`../papers/`](../papers/) and the [research-problem map](../categories/README.md).
+Paper-level detail remains in [`../papers/`](../papers/), and problem-oriented browsing lives in the [Research Map](../categories/README.md).
 
 ---
 
