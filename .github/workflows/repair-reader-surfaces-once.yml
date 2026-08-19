@@ -1,0 +1,38 @@
+name: Repair Reader Surfaces Once
+
+on:
+  push:
+    branches: [reader-public-validation]
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: reader-public-validation
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Repair deterministic reader drift
+        run: python scripts/repair_public_surfaces_once.py
+
+      - name: Commit repairs
+        run: |
+          if git diff --quiet; then
+            echo "No repairs needed"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md papers categories
+          git commit -m "Repair reader-facing surface drift"
+          git push origin HEAD:reader-public-validation
