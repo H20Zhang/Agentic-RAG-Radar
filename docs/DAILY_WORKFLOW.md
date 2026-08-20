@@ -1,180 +1,114 @@
 # Daily Research-Maintenance Workflow
 
-This is the orchestration contract for the single recurring maintenance task that keeps Agentic RAG Radar current, visually coherent, and research-useful.
+This is the authoritative orchestration contract for Agentic RAG Radar. The recurring scheduler should stay short and point here.
 
-Deep domain rules remain authoritative in [`../CURATION.md`](../CURATION.md), [`../COMPACTION.md`](../COMPACTION.md), [`../VISUALS.md`](../VISUALS.md), [`../taxonomy.yaml`](../taxonomy.yaml), and the structured paper schema. This file defines **execution order and gates** so the scheduler prompt can stay short and stable.
+## Transaction
 
-## Principle
+One run is one idempotent transaction:
 
-One run is one idempotent maintenance transaction:
+`preflight → discover → independent judgment → canonical update → evidence note → relationship update → derive Chinese/English reader surfaces → editorial review → conditional synthesis/visual work → validate → log → notify only if material`
 
-`self-heal → discover → judge → update canonical truth → derive reader surfaces → editorial/visual gate → optionally synthesize → validate → log → notify only if material`
+An empty discovery day is successful when the repository remains correct.
 
-Do not create work merely because a scheduled run occurred. An empty discovery day is a successful run when the repository remains correct and readable.
+## 1. Preflight
 
-The public design principle is:
+Read `CURATION.md`, `COMPACTION.md`, `VISUALS.md`, `docs/EDITORIAL_STANDARD.md`, the current README pair, Research Library pair, taxonomy/schema, relevant categories/paper notes, and recent run logs.
 
-> **Visual polish up; research depth up; UI chrome down; repeated prose down.**
+Repair deterministic drift before adding work. Reader-surface drift is a correctness problem, but do not create changes merely because a scheduled run occurred.
 
-## Phase 1 — Preflight and self-heal
+## 2. Discovery and independent judgment
 
-Before discovery, read the public and maintenance contracts, relevant category/paper/digest surfaces, and recent daily logs.
+Use overlapping windows rather than strict day boundaries. Search beyond the literal phrase `agentic RAG`: adaptive/active retrieval, query formulation, direct corpus interaction, evidence localization, retrieval planning, search agents, deep research, verifier-guided retrieval, stateful search, GraphRAG agents, retrieval policy/RL, and adjacent information-seeking work.
 
-Check deterministic and reader-facing consistency first:
+When independent roles/subtasks are supported, separate:
 
-```bash
-python scripts/build_paper_index.py --check
-python scripts/validate.py
-python scripts/validate_public.py
-```
+- broad discovery;
+- inclusion/taxonomy judgment;
+- full-paper research analysis;
+- skeptical evidence/baseline/resource review;
+- reader-surface/editorial judgment.
 
-If drift exists, repair it before adding new papers. Reader-surface drift is a correctness problem, not cosmetic cleanup.
+Do not accept a paper to keep the feed busy. Relevance and importance are separate.
 
-## Phase 2 — Overlapping discovery and independent judgment
+## 3. Canonical-first publication
 
-Search high-signal scholarly sources beyond the literal phrase `agentic RAG`, including adaptive/active retrieval, retrieval planning, iterative/interleaved search, query reformulation/decomposition, verifier-guided retrieval, tool-using RAG, GraphRAG agents, retrieval policy/RL, search agents, and agentic information seeking.
+For accepted work:
 
-Use an overlapping window rather than a strict day boundary:
+`canonical JSON → evidence note → category/research-line relationship → reader projections`
 
-- **Monday:** approximately 96 hours, absorbing weekend publications and source-index lag;
-- **Tuesday–Friday:** approximately 48 hours.
+`data/papers/*.json` remains canonical. `papers/README.md` remains a compact generated chronology, not a prose surface.
 
-When independent roles/subtasks are supported, discovery, inclusion/taxonomy, research reading, and skeptical evidence review should form judgments independently before synthesis.
+Preserve negative results, matched-baseline weaknesses, resource mismatches, historical predecessors, and the strongest alternative explanation.
 
-Do not accept a paper to keep the feed busy. Inclusion still requires substantive external information acquisition **and** meaningful agent/controller/policy control over whether, what, where, how, or how much to retrieve.
+## 4. Research Explainer Standard
 
-## Phase 3 — Canonical-first publication
+Current/high-visibility notes must resolve:
 
-For every accepted paper, update in this order:
+`Research delta → Problem → Mechanism → Closest comparison → Decisive evidence → What remains unproven → Field-map consequence → Related reading`
 
-```text
-canonical JSON
-→ deep researcher-facing paper note
-→ grounded visual brief + accurate internal visual status
-→ primary category page
-→ Latest Papers / Reading Paths only when reader value warrants it
-→ regenerate Curated Paper Index
-```
+Use the information/control-placement lens where it helps: what is precomputed, what becomes observable after evidence arrives, what state persists, and where offline/online cost is paid.
 
-`data/papers/*.json` is canonical. `papers/README.md` is generated and must never be hand-edited.
+## 5. Bilingual publication
 
-Keep relevance separate from importance. Preserve negative results, matched-baseline weaknesses, resource mismatches, historical predecessors, and the strongest alternative explanation.
+Chinese is primary.
 
-### Paper-note depth contract
+- `README.md` is Simplified Chinese default; `README.en.md` is the complete English counterpart.
+- Research Library and current high-value public narrative should have both languages.
+- A material interpretation correction updates both language variants in the same transaction.
+- English is rewritten naturally from the same semantic judgment; it is not a shortened translation.
+- Keep paper titles, benchmarks, metrics, model names, tool/protocol names, and canonical technical terms in English when useful for precision/search.
 
-For a current/high-priority paper, preserve multiple reading depths rather than shortening the note for aesthetics:
+During migration, bilingual backfill priority is: current Latest/Reading Path papers → current category/field-map anchors → older high-importance notes. Do not rewrite the full archive for cosmetic uniformity.
 
-1. **30-second verdict** — why it matters, strongest evidence, biggest caveat;
-2. **3-minute understanding** — research question, smallest delta, mechanism/control flow, nearest design point;
-3. **deep assessment** — claim/evidence attribution, matched controls, ablations, negative results, resource/harness/model confounders, lineage, decisive open question.
+## 6. README projection
 
-Use a compact evidence table when it makes causal attribution faster to inspect. Do not replace deep interpretation with generic bullets.
+Public order:
 
-## Phase 4 — Visual isolation and research graphics
+`Latest Papers → What’s Changing → Field Map → Reading Paths → Research Library → How to Use / Scope / About`
 
-Per-paper canonical image generation must be isolated from the long repository-maintenance context.
+Keep roughly 6–8 high-signal Latest entries. Importance >=4/5 or field-map-changing work may receive a 60–90 second fold. The fold is a causal compression, not copied note prose.
 
-Each canonical image-generation invocation receives only:
+Field Map changes only when a real design axis changes. Reading Paths change only when a better conceptual route becomes available.
 
-1. the named paper's grounded research note;
-2. its grounded visual brief;
-3. the visual contract in `VISUALS.md`.
+## 7. Historical discoverability
 
-Generate exactly one named paper per invocation. Do not pass the whole daily-maintenance prompt into the image context; this is a deliberate guard against repository-dashboard or multi-paper drift.
+Time is one view, not the archive key. Every durable/high-importance work should be reachable through at least one non-temporal route: research problem, research line/design tension, controlled tag, or curated index.
 
-A canonical visual is complete only after the PNG master and same-resolution WebP pass QC, are committed, and required paper/README explanations are synchronized. Failed generation remains internal state and **must not create public placeholder prose**.
+Weekly/monthly/yearly synthesis answers what changed; it must never be the only way to find old work.
 
-### Rich visual support
+## 8. Editorial review
 
-The repository should actively use visuals when they make research comprehension faster. Ask whether the reader would benefit from:
+Apply `docs/EDITORIAL_STANDARD.md` after the research judgment is stable. Review recent neighboring notes together so repeated sentence skeletons are visible. In Chinese, watch especially for machine-translated English syntax and empty transitions.
 
-- a mechanism/control-flow figure;
-- an evidence/failure diagram;
-- a design-lineage strip;
-- a field-level map;
-- a stable semantic icon.
+Editorial lint should target pattern density, not ban individual words.
 
-More than one figure is encouraged for an important paper **only when the figures answer different questions**, e.g. mechanism vs evidence attribution. Secondary grounded editorial diagrams live under `assets/editorial/`; they are not decorative substitutes for the canonical paper visual.
+## 9. Visual isolation
 
-## Phase 5 — Editorial quality gate
+Per-paper visuals remain isolated from the long maintenance context. A visual is research compression, not decoration. Follow `VISUALS.md`; do not expose incomplete rendering state on public pages.
 
-Before publishing any public-surface change, review it as a researcher rather than as a maintainer.
+## 10. Compaction gate
 
-Ask:
+Update weekly/monthly/yearly synthesis only when a new paper/correction changes a field thesis, tension, evidence bar, or a period boundary requires a new artifact. Re-ground load-bearing claims in canonical records/full-text notes rather than recursively summarizing old digests.
 
-1. **20-second scan:** can a researcher identify the paper's actual delta, strongest result, and strongest caveat without opening the deep note?
-2. **Research depth:** does the deep note preserve enough evidence/attribution detail to substitute for a first rough paper read?
-3. **Compared with what:** is the nearest historical/contemporary design point explicit?
-4. **Causal boundary:** are negative results and confounders visually adjacent to the positive claim rather than buried later?
-5. **Information routing:** does each public surface do a distinct job, or are README/index/map/note repeating the same prose?
-6. **Visual speed:** would a figure, icon, table, or lineage make the idea materially faster to understand than prose alone?
-7. **Visual distinctness:** if adding another figure, does it answer a different grounded research question?
-8. **Aesthetic coherence:** did the update add unnecessary badges, tags, emoji, status chrome, or inconsistent visual language?
-9. **Operational leakage:** did any pending/backfill/renderer/scheduler state appear on a public page?
-10. **Research actionability:** does the reader leave with a comparison, boundary, or decisive experiment they could act on?
+## 11. Validation and log
 
-Prefer **no public structural change** over a mechanically complete but visually degraded or intellectually shallower update.
+Validate canonical/schema/visual state plus public reader contracts:
 
-## Phase 6 — Compaction gate
+- Chinese default + English counterpart exist and cross-link;
+- same Latest paper identities, importance, and primary links across languages;
+- section order and Latest bounds are preserved;
+- all current Latest items resolve to canonical records and notes;
+- historical high-value work remains reachable outside weekly digests;
+- no scheduler/schema/upload internals leak to public surfaces;
+- bilingual high-visibility facts do not drift;
+- generated paper index, taxonomy, links, and visual references remain consistent.
 
-Weekly/monthly/yearly synthesis is **conditional**, not a daily side effect.
-
-Update a compaction only when at least one is true:
-
-- a newly accepted paper changes a thesis, tension, anchor, or evidence bar;
-- a meaningful correction/reclassification changes prior interpretation;
-- a week/month/year boundary requires a new rolling or finalized artifact;
-- stale synthesis is discovered during preflight.
-
-When synthesis changes, re-ground load-bearing claims in canonical paper records/full-text notes rather than recursively summarizing older digests.
-
-Prefer one important tension over several weak trends. Homepage `What's Changing` should show only one current synthesis per useful time scale rather than replaying the archive.
-
-## Phase 7 — Derive and validate
-
-After canonical/research edits:
-
-```bash
-python scripts/build_paper_index.py
-python scripts/build_paper_index.py --check
-python scripts/validate.py
-python scripts/validate_public.py
-```
-
-All validation surfaces must agree before the run is considered complete:
-
-- compact generated Curated Paper Index;
-- canonical schema/visual contract;
-- polished public reader surfaces and links.
-
-Do not claim successful CI unless the check is actually observable.
-
-## Phase 8 — Compact archival log
-
-Write one compact log at:
-
-```text
-runs/daily/YYYY/MM/DD.md
-```
-
-Record only material discovery decisions, accepted/deferred/rejected edge cases, meaningful corrections, visual outcomes/blockers, compaction actions, and validation status. Do not duplicate paper notes or digest prose.
+Write one compact provenance log at `runs/daily/YYYY/MM/DD.md`.
 
 ## Notification gate
 
-Notify the user only for:
-
-- a newly accepted paper;
-- a meaningful correction or reclassification;
-- a meaningful weekly/monthly/yearly synthesis change;
-- successful meaningful visual repair/backfill;
-- an exact workflow blocker requiring attention.
-
-Otherwise finish silently.
+Notify only for a newly accepted paper, meaningful correction/reclassification, field-level synthesis change, meaningful visual repair/backfill, or an exact blocker requiring attention. Otherwise finish silently.
 
 ## Scheduled cadence
 
-The recurring task runs **Monday–Friday at 09:20 Asia/Shanghai** as one exact-scheduled transaction.
-
-Weekends have no routine maintenance run. Monday's wider overlap absorbs weekend publications and indexing lag. This avoids empty weekend work while keeping a single writer responsible for discovery, canonical updates, derived surfaces, editorial quality, synthesis gates, and validation.
-
-Do not split discovery, visuals, compaction, and validation into competing scheduled writers unless the repository architecture is deliberately redesigned for transactional concurrency.
+The current recurring task runs Monday–Friday. Monday should use a wider discovery window to absorb weekend releases and indexing lag. Keep a single writer responsible for the transaction unless the repository architecture is deliberately redesigned for transactional concurrency.
