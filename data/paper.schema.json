@@ -2,8 +2,51 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/H20Zhang/Agentic-RAG-Radar/blob/main/data/paper.schema.json",
   "title": "Agentic RAG Radar Paper Record",
+  "description": "V2 time/map fields are all-or-none; optional direction_keys binds native rolling-period supports to stable direction metadata.",
   "type": "object",
   "additionalProperties": false,
+  "oneOf": [
+    {
+      "not": {
+        "anyOf": [
+          {"required": ["published_at"]},
+          {"required": ["first_seen_at"]},
+          {"required": ["radar_published_at"]},
+          {"required": ["time_provenance"]},
+          {"required": ["map_delta"]},
+          {"required": ["direction_keys"]}
+        ]
+      }
+    },
+    {
+      "required": ["published_at", "first_seen_at", "radar_published_at", "time_provenance", "map_delta"],
+      "properties": {
+        "published_at": {"type": "string", "format": "date"},
+        "first_seen_at": {"type": "null"},
+        "radar_published_at": {"type": "null"},
+        "time_provenance": {"const": "legacy_unknown"}
+      }
+    },
+    {
+      "required": ["published_at", "first_seen_at", "radar_published_at", "time_provenance", "map_delta"],
+      "properties": {
+        "published_at": {"type": "string", "format": "date-time", "pattern": "Z$"},
+        "first_seen_at": {"type": "string", "format": "date-time", "pattern": "Z$"},
+        "radar_published_at": {"type": "string", "format": "date-time", "pattern": "Z$"},
+        "time_provenance": {"const": "native_v2"}
+      }
+    }
+  ],
+  "allOf": [
+    {
+      "if": {"required": ["direction_keys"]},
+      "then": {
+        "properties": {
+          "time_provenance": {"const": "native_v2"}
+        }
+      }
+    }
+  ],
   "required": [
     "id",
     "title",
@@ -25,6 +68,18 @@
     "authors": {"type": "array", "items": {"type": "string"}, "minItems": 1},
     "first_seen": {"type": "string", "format": "date"},
     "published": {"type": "string", "format": "date"},
+    "published_at": {"type": ["string", "null"]},
+    "first_seen_at": {"type": ["string", "null"]},
+    "radar_published_at": {"type": ["string", "null"]},
+    "time_provenance": {"enum": ["native_v2", "legacy_unknown"]},
+    "map_delta": {"enum": ["none", "early_signal", "reinforces", "revises", "splits", "retires"]},
+    "direction_keys": {
+      "description": "Non-empty unique stable keys for every rolling-period direction this native-v2 record supports.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"}
+    },
     "updated": {"type": ["string", "null"], "format": "date"},
     "venue": {"type": ["string", "null"]},
     "urls": {

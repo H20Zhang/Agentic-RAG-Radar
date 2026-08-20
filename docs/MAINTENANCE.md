@@ -7,22 +7,24 @@ This page collects repository-maintenance details that are intentionally kept ou
 - `data/papers/*.json` — canonical structured paper records.
 - `papers/*.md` — researcher-facing paper notes derived from the records and source reading.
 - `papers/README.md` — deterministic Curated Paper Index generated from canonical records.
-- `categories/*.md` — human-edited research-problem views.
+- `categories/*.md` — Agent-edited research-problem views derived from accepted evidence.
 - `assets/visuals/` — generated conceptual explainers and their grounding briefs.
 - `digests/weekly/`, `digests/monthly/`, and `digests/yearly/` — higher-level research synthesis.
-- `runs/daily/` — compact archival provenance for each maintenance run.
+- Git commit history — atomic publication and correction provenance. Public Daily Agent run logs are forbidden; operational state stays in ignored `.radar-private/` artifacts.
 
 ## Public reader model
 
 The root `README.md` is the primary reader-facing research surface. Its substantive order is:
 
-1. **Latest Papers** — what is newly worth reading;
-2. **What's Changing** — what recent papers collectively change;
-3. **Reading Paths** — how to learn a research question efficiently;
-4. **Research Map** — durable anchors and problem-oriented structure;
-5. **Curated Paper Index** — complete chronology of papers accepted by this radar, linked from navigation rather than duplicated as another large homepage section.
+1. **Latest Timeline** — every currently projected accepted record in compact scan/expand form;
+2. **7-day / 30-day Changes** — exact-window direction changes with evidence and confidence;
+3. **Field Map** — durable, evidence-gated problem and design structure;
+4. **Reading Paths** — how to learn a research question efficiently;
+5. **Research Library** — complete chronology and alternate problem/category routes.
 
 Operational details such as scheduling, generation mechanics, validation rules, visual backfill state, internal prompts, and run provenance must stay out of the public README.
+
+They must also stay out of standalone public run files. Validation rejects any file under `runs/daily/`; accepted outcomes are represented only in canonical/derived research surfaces and commit history.
 
 ## Maintenance contracts
 
@@ -35,13 +37,13 @@ Operational details such as scheduling, generation mechanics, validation rules, 
 
 ## Generate repetition; validate judgment
 
-Deterministic surfaces should be generated from canonical data when possible. Human research judgment should remain human-edited.
+Deterministic surfaces should be generated from canonical data when possible. Research judgment remains an explicit Agent editorial act after full-text and skeptical review; it is never inferred from counts or metadata.
 
 Generated/derived:
 
 - Curated Paper Index.
 
-Human-edited but validated:
+Agent-edited but validated:
 
 - README theses and Reading Paths;
 - category Current signal / Current tension / Next decisive evidence;
@@ -56,7 +58,7 @@ Before completing a maintenance run:
 
 1. check the generated paper index against canonical records;
 2. validate canonical records and visual assets;
-3. validate public surface order, links, paper/category synchronization, and Latest folds;
+3. validate public surface order, links, canonical/deep-note synchronization, and Timeline disclosures;
 4. correct upstream/downstream research synthesis when a material paper correction changes the conclusion.
 
 Reader-facing link failures and synchronization drift are correctness problems, not cosmetic cleanup.

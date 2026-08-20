@@ -1,31 +1,14 @@
-# Curation Run Archive
+# Operational Run Policy
 
-This directory stores **archival provenance**, not the primary reading interface.
+This repository publishes no Daily Agent run logs. Accepted outcomes are atomically projected into canonical records, paired deep notes, the Latest Timeline, rolling periods, due closed-period digests, and the evidence-gated Field Map. The corresponding commit preserves the public decision history without creating a second free-form operational surface.
 
-Daily maintenance logs are nested by date:
+Private scouting, candidate states, lane failures, retry triggers, dissent, and validation traces live only in the git-ignored `.radar-private/runs/<run_id>.json` path or ephemeral Agent memory. They must never be committed elsewhere.
 
-```text
-runs/daily/YYYY/MM/DD.md
-```
+The validator rejects every file under `runs/daily/` and any future configured public operational-run path. It proves the absence of public candidate or workflow inventory mechanically; it does not attempt to classify natural-language Markdown. Historical daily logs removed by this policy remain recoverable from Git history.
 
-A daily log records what the curator actually did: discovery window, accepted papers, deferred/rejected edge cases, meaningful corrections, visual backfill status, and whether compaction changed. It should remain compact and auditable.
+Reader-facing history belongs in:
 
-## Why keep daily logs?
-
-Canonical paper records tell us the current truth; run logs preserve **decision history**:
-
-- when a paper was first noticed or accepted;
-- why a borderline paper was held out;
-- when a classification/evidence interpretation changed;
-- whether visual generation failed or was deferred;
-- which weekly/monthly compaction was triggered by the run.
-
-This is useful for debugging the curator without forcing readers to browse hundreds of daily files.
-
-## Reading hierarchy
-
-- **Primary:** [`../README.md`](../README.md) + [`../digests/`](../digests/) — current research map and compactions.
-- **Paper detail:** [`../papers/`](../papers/) + [`../data/papers/`](../data/papers/) — researcher notes and canonical records.
-- **Archive:** `runs/daily/` — raw curation provenance only.
-
-Daily logs should never become a second paper database or repeat long research notes.
+- [`../README.md`](../README.md) and [`../digests/`](../digests/) for time-first synthesis;
+- [`../data/papers/`](../data/papers/) for canonical identity and provenance;
+- [`../papers/`](../papers/) for evidence-grounded deep notes;
+- Git history for atomic publication and correction provenance.

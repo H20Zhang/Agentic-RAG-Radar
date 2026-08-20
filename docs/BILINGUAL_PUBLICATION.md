@@ -7,7 +7,7 @@ Agentic RAG Radar is bilingual, with Simplified Chinese as the default reader ex
 - `README.md` — default Simplified Chinese landing page.
 - `README.en.md` — complete English counterpart.
 - Reader-facing Research Library/category pages, high-value paper notes, and public weekly/monthly/yearly synthesis should have both Chinese and English forms.
-- Canonical JSON, schemas, maintenance docs, scheduler prompts, validation output, and `runs/*` remain single-source unless localization adds reader value.
+- Canonical JSON, schemas, maintenance docs, scheduler prompts, and validation output remain single-source unless localization adds reader value. **No public operational run logs.** `runs/README.md` is static policy only; operational traces remain only in ignored `.radar-private/` artifacts or ephemeral Agent memory.
 
 ## One judgment, two editorial projections
 

@@ -2,7 +2,7 @@ name: Validate Radar Data
 
 on:
   push:
-    branches: [main, research-radar-reading-v1]
+    branches: [main, research-radar-reading-v1, agent/time-first-radar-v2]
   pull_request:
   workflow_dispatch:
 
@@ -24,6 +24,9 @@ jobs:
       - name: Install validator dependencies
         run: pip install 'jsonschema[format]>=4.23,<5' 'pillow>=11,<12'
 
+      - name: Run contract unit tests
+        run: python -m unittest discover -s tests -v
+
       - name: Check generated paper index
         run: python scripts/build_paper_index.py --check
 
@@ -32,3 +35,6 @@ jobs:
 
       - name: Validate bilingual progressive reading surfaces
         run: python scripts/validate_reading.py
+
+      - name: Validate public research surfaces
+        run: python scripts/validate_public.py

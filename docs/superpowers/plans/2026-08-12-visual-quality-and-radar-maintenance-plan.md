@@ -10,7 +10,7 @@ Implement the approved visual-quality/README-order design while using the daily 
 2. Audit current generated visuals. Do not upscale low-resolution assets. Keep any visual that cannot be regenerated and uploaded faithfully in `needs_regeneration` rather than presenting it as complete.
 3. Move README `Latest Papers` to the first substantive section, followed by Start Here, anchors/problem map, and Research Compactions.
 4. Backfill only papers that materially change the field map. This run prioritizes S2G-RAG (explicit sufficiency/gap state), SPARKLE (adaptive-vs-adaptive learned policy evidence), and budget-aware Active RAG evaluation (utility/calibration/cost).
-5. Propagate accepted backfills into canonical records, notes, visual briefs, category pages, compactions, digest index, and the daily run log. Re-run validation and inspect CI before completion.
+5. Propagate accepted backfills into canonical records, notes, visual briefs, category pages, compactions, and the digest index. Re-run validation and preserve the accepted transaction in commit history; never create a public Daily Agent run log.
 
 ## Verification
 

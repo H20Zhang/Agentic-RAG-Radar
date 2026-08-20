@@ -177,7 +177,9 @@ Keep the scheduler thin and the repository contract authoritative.
 
 Each run follows:
 
-`preflight → discover → independent judgment → canonical update → evidence note → relationship/category update → derive reader projections → editorial review → validate → compact log → material notification`
+`preflight → discover → independent judgment → canonical update → evidence note → relationship/category update → derive reader projections → editorial review → validate → atomic canonical/Timeline/digest projection → material notification`
+
+**No public operational run logs.** `runs/README.md` is static policy only. Accepted outcomes persist in the atomic canonical/Timeline/digest projection and Git commit history; operational traces remain only in ignored `.radar-private/` artifacts or ephemeral Agent memory.
 
 A newly accepted paper does not automatically enter Reading Paths or change Field Map. Those surfaces update only when the research relationship changes.
 

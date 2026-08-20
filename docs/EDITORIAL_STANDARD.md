@@ -22,16 +22,16 @@ For Agentic RAG, explicitly ask when useful: **what is precomputed, what becomes
 
 Keep canonical paper titles, benchmarks, model names, metrics, protocol/tool names, and established technical terms in English when that improves precision and literature search.
 
-Chinese entry prose must still use Chinese sentence structure. Preserve canonical names and standard acronyms, but write connective grammar and ordinary process descriptions in Chinese when a precise Chinese expression exists; do not place English clause skeletons inside Chinese particles.
+Chinese entry prose must still use Chinese sentence structure. Preserve canonical names and standard acronyms where they improve search, but write connective grammar and ordinary process descriptions in Chinese when a precise expression exists; do not place English clause skeletons inside Chinese particles.
 
 ## Public entry surfaces
 
-Root and Research Library READMEs should work like direct, curated lists: give a brief scope statement, then expose the papers, maps, and routes.
+Root and Research Library READMEs should work like direct, curated lists: give readers the current items, map, and routes before maintenance explanation.
 
-- Do not add estimated reading times, a methodology manifesto, or copy that explains how the page packaging works.
-- Do not summarize an adjacent table before and after it unless the prose adds a distinct research judgment.
-- Do not force every card, fold, or research line into the same label sequence. Use a wrapper only when it helps readers identify the content.
-- Preserve substantive causal folds, but title them by mechanism, evidence, or limitation rather than by reading time.
+- Keep depth navigation compact and do not repeat its promise in prose.
+- Do not add a methodology manifesto or summarize an adjacent table before and after it.
+- Do not add label wrappers beyond the required `Question / Evidence / Caveat / Map / Links` contract.
+- Preserve substantive expansions, but make the collapsed line identify the mechanism, evidence, or limitation rather than using a generic fold title.
 
 ## Preferred prose
 
@@ -57,9 +57,11 @@ Warn on repeated sentence skeletons across nearby notes, especially:
 
 Do not ban isolated words. The target is **pattern density and loss of specificity**.
 
-## README fold contract
+## README expansion contract
 
-A high-value fold is not a mini paper note. It should naturally explain the surviving problem, actual change, control/data flow, closest comparison, decisive evidence, and strongest caveat in 2–4 short paragraphs.
+A Timeline expansion is not a mini paper note. It should explain the surviving problem, decisive evidence, strongest caveat, map consequence, and audit links without copying the deep note.
+
+Put one Last updated / Last synthesized status directly after depth navigation and before Timeline so Timeline remains the first substantive feed. A closed Timeline summary uses the date, a short canonical label, an exact canonical Field Map axis prefix (optionally `axis → subproblem`), and the delta. Keep the complete canonical title visible as the primary-source link inside the expanded body; Chinese and English must preserve the same label, title link, and axis mapping.
 
 ## Epistemic language
 

@@ -342,7 +342,7 @@ This file becomes the operational entry point for the recurring research-mainten
 
 #### Phase 1 — Preflight and self-heal
 
-Read the public/maintenance contracts and recent run logs, then execute or reason through:
+Read the public/maintenance contracts and relevant commit history, then execute or reason through:
 
 ```text
 build_paper_index --check
@@ -397,9 +397,13 @@ Update a compaction only when:
 
 Weekly/monthly/yearly remain research products, not scheduler side effects.
 
-#### Phase 6 — Validation, log, notification
+#### Phase 6 — Validation, atomic publication, notification
 
-Regenerate the index, run all validators, then write one compact daily log.
+The terminal flow is:
+
+`validate → atomic canonical/Timeline/digest projection → material notification`
+
+Regenerate the index and run all validators. Preserve the accepted transaction in one commit. **No public operational run logs.** `runs/README.md` is static policy only; operational traces remain only in ignored `.radar-private/` artifacts or ephemeral Agent memory.
 
 Notify the user only for:
 
@@ -429,7 +433,7 @@ Rationale: the run should happen after the normal overnight scholarly update win
 
 The scheduler prompt should be short and stable:
 
-> Maintain H20Zhang/Agentic-RAG-Radar according to docs/DAILY_WORKFLOW.md and the repository contracts it references. Execute one complete idempotent maintenance transaction: preflight/self-heal, overlapping discovery and skeptical curation, canonical-first updates, isolated per-paper visual work when possible, conditional compaction, generated paper-index refresh, validation, compact run log, and notify only for material changes or exact blockers.
+> Maintain H20Zhang/Agentic-RAG-Radar according to docs/DAILY_WORKFLOW.md and the repository contracts it references. Execute one complete idempotent maintenance transaction: preflight/self-heal, overlapping discovery and skeptical curation, canonical-first updates, isolated per-paper visual work when possible, conditional compaction, generated paper-index refresh, validation, and one atomic commit. Keep operational state only in ignored `.radar-private/` artifacts; never create a public run log. Notify only for material changes or exact blockers.
 
 Do not duplicate CURATION/COMPACTION/VISUALS/schema details in the automation prompt. Keeping those rules in versioned repository docs allows the workflow to evolve without scheduler-prompt drift.
 
