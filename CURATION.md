@@ -1,98 +1,74 @@
-# Daily Curation Protocol
+# Agentic RAG Curation Contract
 
-This repository is maintained as a **research radar**, not a keyword dump. Daily maintenance should optimize for **high recall during discovery, high precision at publication, and explicit skepticism before synthesis**.
+This repository is maintained by the scheduled Daily Agent as a research radar, not a keyword dump or a human PR backlog. [`docs/RADAR_AGENT_PROTOCOL.md`](docs/RADAR_AGENT_PROTOCOL.md) controls orchestration; [`docs/DAILY_WORKFLOW.md`](docs/DAILY_WORKFLOW.md) is the RAG adapter. The orchestrator is the only writer and publishes no candidate queue.
 
-## Independent roles
+## Acceptance gate
 
-When the environment supports it, roles should form judgments independently before the editor synthesizes them.
+Discovery optimizes recall across overlapping source lanes. Publication requires identity resolution, in-scope judgment, primary full-text evidence, skeptical audit, canonical update, and bilingual projection in one transaction.
 
-| Role | Responsibility | Failure it should prevent |
-|---|---|---|
-| **Discovery** | Search a broad overlapping window across arXiv and other high-signal scholarly sources; expand beyond the literal phrase `agentic RAG`. | Missing papers because authors use different terminology. |
-| **Inclusion Judge & Taxonomy** | Decide whether external information acquisition is genuinely controlled by an agent/policy and assign category/tags. | Scope creep into ordinary RAG or generic agents. |
-| **Research Reader** | Read deeply enough to identify the actual control loop, nearest design point, evidence, limitations, and one mechanism worth teaching. | Abstract paraphrase masquerading as research analysis. |
-| **Visual Explainer** | Turn the grounded mechanism into one original teaching figure. | Decorative/dashboard visuals or invented mechanisms. |
-| **Evidence Auditor / Skeptical Reviewer** | Challenge novelty, causal attribution, baseline quality, resources, historical prior art, links, duplicate versions, and visual overstatement. | Inflated “agentic” claims. |
-| **Research Editor** | Publish only after seeing the independent judgments. | Verbosity and conclusions without consequences. |
+Ask:
 
-The skeptical role should actively try to falsify the proposed interpretation.
+1. Is external information acquisition substantive?
+2. Does the agent/controller materially control whether, what, where, how, or how much is acquired?
+3. Is that control a research contribution rather than glue?
+4. Is the smallest delta identifiable against the closest static, adaptive, and historical design point?
 
-## Discovery policy
+If 1–3 are not clearly yes, do not publish. Ordinary fixed RAG, generic tool use, and agent papers without a retrieval/interface/state contribution stay out. A relevant work may still be low importance.
 
-Use an overlapping lookback window rather than a strict calendar-day query. Search beyond naming conventions: agentic/adaptive/active retrieval, planning, decomposition/reformulation, iterative/interleaved search, verifier-guided retrieval, tool-using RAG, GraphRAG agents, retrieval policy learning, retrieval budgeting/stopping, agentic information seeking, and adjacent memory/search work where external acquisition is controlled at query time.
+`BLOCKED`, `DEFERRED`, rejected, duplicate, and abstract-only candidates remain private. Lack of full text or decisive evidence is a retry condition, not a reader-facing status.
 
-Deduplicate by canonical paper identity, preferably arXiv ID.
+## Evidence and attribution
 
-## Inclusion gate
+Every accepted record preserves the actual information loop, closest meaningful comparison, decisive evidence, negative result, realized cost, and strongest alternative explanation. Interpret gains through:
 
-Ask four questions in order:
+`evidence coverage × corpus observability × interface resolution × environment state × harness/delivery × agent state × policy × realized resources × base model × training protocol × historical baseline`
 
-1. Is external retrieval/search/context acquisition substantive?
-2. Does an agent/controller/policy materially control whether, what, where, how, or how much information is acquired?
-3. Is that control part of the research contribution rather than implementation glue?
-4. Compared with the nearest **static, adaptive, and historical** design point where relevant, is the claimed delta identifiable?
+- Evidence validity precedes policy quality.
+- Adaptivity has a location; round count is not a capability metric.
+- Match backend, surfaced depth, admissible candidates, read/navigation affordances, state, harness, and delivery before crediting policy.
+- Account for offline construction/update plus online calls, tokens, latency, controller/probe compute, and model calls.
+- Separate reward/credit assignment from tool format, corpus coverage, rollout freshness, teacher information, and budget.
 
-If (1)–(3) are not clearly yes, reject or hold. A paper can be highly relevant yet low importance.
+An abstract cannot support superiority. Author claims remain claims. A benchmark failure diagnoses the evaluated trajectory; it does not by itself identify the controller that would repair it.
 
-## Analysis standard
+## Canonical and time contract
 
-For every accepted paper, record TL;DR, Problem, Core Idea, Agent Loop, Retrieval Design, Compared to What, Evidence, Why It Matters, Limitations/Questions, AI Confidence, and accurate provenance/full-text status.
+Canonical JSON lives under `data/papers/`; paired deep notes live at `papers/<identity>.md` and `papers/<identity>.zh.md`. The v2 time/map contract is all-or-none: once one of `published_at`, `first_seen_at`, `radar_published_at`, `time_provenance`, or `map_delta` appears, the complete explicit-legacy or native-v2 bundle is required. Native-v2 accepted records use three distinct strict-UTC times ordered `published_at <= first_seen_at <= radar_published_at`, plus `time_provenance=native_v2`, `map_delta`, and `provenance.full_text_checked=true`. The fixed compatibility set alone uses honest `published_at=published`, null discovery/Radar times, and `legacy_unknown`; never manufacture legacy Radar acceptance times.
 
-Do not claim experimental superiority from an abstract alone. Preserve negative results and the strongest alternative explanation.
+A native-v2 record cited by a rolling direction also carries `direction_keys`, a non-empty list of unique lowercase stable tokens containing the exact block key. This field itself requires the complete native-v2 bundle. Unsupported native records may omit it; explicit and implicit legacy records never carry it, so do not fabricate current support or bulk-migrate legacy records.
 
-## Causal + novelty attribution checklist
+Every accepted record receives one map status:
 
-A result should be interpreted along the **information path**, not only by the method name:
+`none | early_signal | reinforces | revises | splits | retires`
 
-`substrate/evidence coverage × pre-retrieval corpus observability × corpus boundary/interface resolution × environment retrieval state × harness/delivery × agent state × policy × realized resources × base model × training distribution/protocol × historical baseline`
+One paper can be `early_signal`; it cannot create a trend or silently rewrite a stable map. `reinforces` requires independent evidence. `revises`, `splits`, and `retires` name the old claim, new evidence, and smallest reversible edit.
 
-This is a causal checklist, not a request to create more taxonomy axes.
+## Reader projection
 
-Useful checks include:
+The root order is Timeline, exact 7-day/30-day changes, Field Map, Reading Paths, then Library. Timeline has no fixed cap: include every native-v2 acceptance in the current 30-day window whose `radar_published_at` is no later than the exact public synthesis cutoff shared by Timeline and both rolling periods, ordered by full timestamp, then the fixed legacy compatibility set. Its closed summaries are the complete current scan layer; each open body is a 60–90 second evidence-and-caveat layer; deep notes remain the audit layer.
 
-- **Evidence validity first:** can the external corpus/environment actually support the target answer? Positive final-answer reward can be spurious when evidence is absent and the model answers parametrically.
-- **Adaptivity placement:** compare what can be compiled before retrieval from corpus-visible signals with what genuinely requires result-conditioned interaction.
-- **Same information surface:** hold backend tuning, surfaced depth, candidate admissibility, inspection/read affordances, environment state, and harness/delivery fixed before crediting policy.
-- **Matched realized resources:** report calls, inspected/retrieved tokens, latency, controller/probe cost, offline construction/update cost, and query-time cost—not nominal caps alone.
-- **Learning validity:** vary reward/credit assignment separately from corpus coverage, tool format, rollout freshness/off-policy degree, task-generation distribution, teacher/verifier information, and search budget.
-- **Strong alternatives:** include lexical/sparse as well as dense baselines, adaptive-vs-adaptive controllers, historical retrieve→verify→reformulate precedents, and matched one-search versus multi-round controls when relevant.
+Each period has exactly one visible inclusive window and the exact UTC synthesis timestamp shared with the Timeline cutoff. Every direction binds one metadata block to exactly one visible state, ordered canonical supports field, confidence enum, Radar timing basis, exact synthesis field, implication witness, and prior-map field. Every support under key `K` must include `K` in canonical `direction_keys`; same prose placement is not a shared direction. It re-reads canonical records and notes inside the exact window. Monthly claims are never produced by summarizing weekly prose.
 
-A headline gain is not evidence for `policy` if the system also changed what evidence existed, what the controller could observe, how results were delivered, or how much offline/online computation was spent.
+Rolling support is determined only by `radar_published_at` and the exact synthesis cutoff. Legacy paper dates may inform the Field Map but are **not rolling support** when Radar acceptance time is unknown.
 
-## GPT-image visual standard
+Chinese and English share identity, date/order, evidence scope, result, caveat, map status, and primary/local links. A correction updates both in one transaction.
 
-Every accepted paper must have a `visual_explainer` contract and grounding brief under `assets/visuals/prompts/`.
+## Visual and scoring policy
 
-Prefer **GPT-image-gen**. Follow [`VISUALS.md`](VISUALS.md): one named paper per generation call, one research question, minimal image text, original conceptual explanation, no paper-figure copying, no repo dashboards or multi-paper status graphics.
+Visuals follow `VISUALS.md`. They teach one grounded mechanism and remain isolated from the main transaction until QC passes. Pending or invalid rendering state is internal and never appears on the public reader surface.
 
-Status meanings:
+`relevance ∈ [0,1]` measures topical fit. `importance ∈ {1,...,5}` measures expected research significance:
 
-- `pending` — record + grounding brief exist; a QC-passing binary asset has not yet been committed;
-- `needs_regeneration` — an existing visual is invalid/outdated;
-- `generated` — verified PNG master + same-resolution WebP exist and all required embeds/explanations are synchronized.
+- **5 — Field-shaping:** unusually strong evidence changes an abstraction, benchmark, or durable direction.
+- **4 — Important:** a reusable idea or evidence base likely to shape follow-up work.
+- **3 — Solid:** a meaningful but narrower delta or evidence contribution.
+- **2 — Incremental:** valid with limited novelty, evidence, or scope.
+- **1 — Peripheral:** retained only when useful for completeness.
 
-Existing pending/invalid visuals remain the priority queue before decorative or synthesis graphics.
+Do not reward recency, author reputation, or fashionable naming.
 
-## Scoring
+## Atomic update
 
-`relevance ∈ [0,1]` measures topical fit. `importance ∈ {1,...,5}` measures expected research significance.
+For a material run, update canonical JSON, paired notes, relationships, safe visual state, Timeline/period projections, due closed digests, and gated map edits; validate; then publish one commit. Commit history is the operational provenance. Never create a public daily-run or operational-log file; private run evidence stays under ignored `.radar-private/`. On no material change, validate and exit silently.
 
-- **5 — Field-shaping:** changes an abstraction, benchmark, or dominant direction with unusually strong evidence.
-- **4 — Important:** clear reusable idea or strong evidence likely to influence follow-up work.
-- **3 — Solid:** meaningful contribution but narrower delta or evidence.
-- **2 — Incremental:** valid but limited novelty/evidence/scope.
-- **1 — Peripheral:** included for completeness.
-
-Do not reward recency or fashionable naming.
-
-## Update policy
-
-For every accepted paper:
-
-1. create/update canonical JSON and researcher-facing paper note;
-2. create/update the grounded visual brief and exact asset status/path;
-3. refresh README Latest and the relevant research-problem page when the field view changes;
-4. propagate meaningful corrections upward into weekly/monthly/yearly compactions;
-5. write one compact archival run log under `runs/daily/YYYY/MM/DD.md`.
-
-Never fabricate links, benchmark results, full-text analysis, or visual components. See [`COMPACTION.md`](COMPACTION.md), [`VISUALS.md`](VISUALS.md), and [`runs/README.md`](runs/README.md).
+See [`COMPACTION.md`](COMPACTION.md), [`VISUALS.md`](VISUALS.md), and [`runs/README.md`](runs/README.md).

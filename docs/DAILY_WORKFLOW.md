@@ -1,116 +1,112 @@
-# Daily Research-Maintenance Workflow
+# Agentic RAG Daily Agent Adapter
 
-This is the authoritative orchestration contract for Agentic RAG Radar. The recurring scheduler should stay short and point here.
+[`RADAR_AGENT_PROTOCOL.md`](RADAR_AGENT_PROTOCOL.md) is the authoritative family contract. This file supplies the Agentic RAG source lanes, acceptance questions, evidence decomposition, canonical paths, and validation commands. The recurring scheduler is a thin launcher. The Daily Agent orchestrator is the only writer.
 
-## Transaction
+## Frozen run and source lanes
 
-One run is one idempotent transaction:
+At preflight freeze the protocol version, run ID, repository head, Asia/Shanghai local time, rolling 7-day and 30-day windows, last closed ISO week/calendar month, and enabled lanes. Use overlapping discovery windows, wider after weekends or source outages.
 
-`preflight → discover → independent judgment → canonical update → evidence note → relationship update → derive Chinese/English reader surfaces → editorial review → conditional synthesis/visual work → validate → log → notify only if material`
+Assign independent, read-only scouts to:
 
-An empty discovery day is successful when the repository remains correct.
+- arXiv `cs.IR`, `cs.CL`, `cs.AI`, and adjacent recent/cross-list feeds;
+- proceedings and scholarly indexes for retrieval, search, and information-seeking systems;
+- author/project repositories and release notes for protocol, artifact, or version changes;
+- backward/forward citation and sibling-Radar leads when they identify a primary source.
 
-## 1. Preflight
+Search concepts, not only the phrase “agentic RAG”: adaptive/active retrieval, query planning, direct corpus interaction, evidence localization/materialization, retrieval budgeting/stopping, deep research, verifier-guided retrieval, stateful search, GraphRAG agents, retrieval-policy learning, cross-source tools, and adjacent memory/search work.
 
-Read `CURATION.md`, `COMPACTION.md`, `VISUALS.md`, `docs/EDITORIAL_STANDARD.md`, the current README pair, Research Library pair, taxonomy/schema, relevant categories/paper notes, and recent run logs.
+Lane failure is private run evidence. Other lanes continue, but a candidate never becomes public merely because another lane was unavailable. Ephemeral candidate state is written only under the git-ignored `.radar-private/runs/<run_id>.json` path or kept in agent memory.
 
-Repair deterministic drift before adding work. Reader-surface drift is a correctness problem, but do not create changes merely because a scheduled run occurred.
+## Identity and scope gates
 
-## 2. Discovery and independent judgment
+The Identity Resolver canonicalizes arXiv, DOI, venue, title/version changes, code/project repository, dataset, and protocol release before any importance judgment. Never merge by title similarity alone.
 
-Use overlapping windows rather than strict day boundaries. Search beyond the literal phrase `agentic RAG`: adaptive/active retrieval, query formulation, direct corpus interaction, evidence localization, retrieval planning, search agents, deep research, verifier-guided retrieval, stateful search, GraphRAG agents, retrieval policy/RL, and adjacent information-seeking work.
+The Domain Judge answers four questions in order:
 
-When independent roles/subtasks are supported, separate:
+1. Is external retrieval, search, or context acquisition substantive?
+2. Does an agent/controller/policy materially control whether, what, where, how, or how much information is acquired?
+3. Is that control part of the research contribution rather than implementation glue?
+4. Against the closest static, adaptive, and historical design point, is the smallest claimed delta identifiable?
 
-- broad discovery;
-- inclusion/taxonomy judgment;
-- full-paper research analysis;
-- skeptical evidence/baseline/resource review;
-- reader-surface/editorial judgment.
+If questions 1–3 are not clearly yes, reject or keep the candidate private. Relevance and importance remain separate.
 
-Do not accept a paper to keep the feed busy. Relevance and importance are separate.
+## Full-text evidence contract
 
-## 3. Canonical-first publication
+No Timeline item is accepted from an abstract. A Full-Text Reader records primary-source locations for:
 
-For accepted work:
+- mechanism and the external-information loop: `search → inspect → continue/redirect/stop`;
+- closest meaningful comparison and what was actually held fixed;
+- decisive and negative evidence, including evidence coverage/validity;
+- offline and online costs: construction/update work, calls, inspected/retrieved tokens, latency, controller/probe compute, and model calls;
+- strongest limitation and alternative explanation.
 
-`canonical JSON → evidence note → category/research-line relationship → reader projections`
+For every strong gain, decompose:
 
-`data/papers/*.json` remains canonical. `papers/README.md` remains a compact generated chronology, not a prose surface.
+`evidence coverage × corpus observability × retrieval interface × harness/delivery × environment state × agent state × policy × realized resources × model × training protocol`
 
-Preserve negative results, matched-baseline weaknesses, resource mismatches, historical predecessors, and the strongest alternative explanation.
+A gain is not assigned to policy when interface, harness, available evidence, state, model, or realized budget changed without a matched control. Author claims remain labeled as claims.
 
-## 4. Research Explainer Standard
+The Skeptical Reviewer independently states the strongest control mismatch, missing evidence, negative boundary, historical alternative, and publication ceiling. It may lower the ceiling but may not invent facts.
 
-Current/high-visibility notes must resolve:
+## Canonical-first transaction
 
-`Research delta → Problem → Mechanism → Closest comparison → Decisive evidence → What remains unproven → Field-map consequence → Related reading`
+Accepted work is written in this order:
 
-Use the information/control-placement lens where it helps: what is precomputed, what becomes observable after evidence arrives, what state persists, and where offline/online cost is paid.
+1. `data/papers/<identity>.json` with canonical identity, provenance, full-text status, and v2 time/map fields for post-cutover records;
+2. paired deep notes `papers/<identity>.md` and `papers/<identity>.zh.md`;
+3. category and research-line relationships;
+4. grounded visual contract, with incomplete render state isolated from public pages;
+5. Chinese/English Timeline and period projections;
+6. closed digest if a boundary is due;
+7. Field Map only if the map gate passes;
+8. atomic commit history; never create a public operational or daily-run file.
 
-## 5. Bilingual publication
+Discovery, identity resolution, scope judgment, full-text reading, skeptical audit, canonical update, and Timeline projection form one validated transaction. Candidate state that has not crossed the publication gate remains in `.radar-private/runs/<run_id>.json` or agent memory; it is not public inventory.
 
-Chinese is primary.
+The v2 canonical adapter is all-or-none. Once any of `published_at`, `first_seen_at`, `radar_published_at`, `time_provenance`, or `map_delta` is present, the record carries the complete explicit-legacy or native-v2 bundle. Native timestamps are strict UTC and ordered `published_at <= first_seen_at <= radar_published_at`; explicit legacy preserves `published_at=published`, null discovery/Radar times, and `time_provenance=legacy_unknown`. A native-v2 record used as rolling-period support also declares `direction_keys`, a non-empty list of unique lowercase stable tokens. `direction_keys` itself requires the complete native-v2 bundle; explicit and implicit legacy records never carry it.
 
-- `README.md` is Simplified Chinese default; `README.en.md` is the complete English counterpart.
-- Research Library and current high-value public narrative should have both languages.
-- A material interpretation correction updates both language variants in the same transaction.
-- English is rewritten naturally from the same semantic judgment; it is not a shortened translation.
-- Keep paper titles, benchmarks, metrics, model names, tool/protocol names, and canonical technical terms in English when useful for precision/search.
+## Timeline, periods, and map
 
-During migration, bilingual backfill priority is: current Latest/Reading Path papers → current category/field-map anchors → older high-importance notes. Do not rewrite the full archive for cosmetic uniformity.
+The root projection order is:
 
-## 6. README projection
+`Latest Timeline → 7-day / 30-day Changes → Field Map → Reading Paths → Research Library`
 
-Public order:
+Place one Last updated / Last synthesized status directly after depth navigation and immediately before Timeline, which remains the first substantive feed. Timeline has no fixed count cap. Include every native-v2 acceptance whose `radar_published_at` is in the current 30-day window and no later than the exact public synthesis cutoff shared with both rolling periods, ordered by the full timestamp; legacy compatibility entries with unknown Radar acceptance time stay under the migration notice and retain honest paper-date order. Each `entry-*` has one compact `<details>` summary with date, short canonical label, exact canonical Field Map axis prefix (use `axis → subproblem` only when needed), and delta. Its expanded Links field uses the complete canonical title for the primary-paper link. Both README languages keep those surfaces paired and link both local deep notes.
 
-`Latest Papers → What’s Changing → Field Map → Reading Paths → Research Library → Scope / Maintenance`
+Keep navigation and list surfaces direct and compact. Do not add a methodology manifesto, prose that merely restates an adjacent table, or redundant wrappers around the required Timeline fields. Let the collapsed summary name the mechanism or limitation directly; the expanded body carries the audit detail.
 
-Keep roughly 6–8 high-signal Latest entries. Importance >=4/5 or field-map-changing work may receive a causal evidence fold. The fold is a causal compression, not copied note prose.
+Each rolling period states exactly one visible inclusive window and the exact UTC synthesis timestamp shared with the Timeline cutoff. The synthesizer re-reads canonical JSON and deep notes inside each window; weekly prose is never summarized into monthly prose. Each direction block owns exactly one stable metadata comment and exactly one visible state, ordered canonical supports field, `low | medium | high` confidence, `radar_published_at` timing basis, exact UTC synthesis field, research-design implication witness, and prior-map field. Every cited support under direction key `K` must carry exact `K` in canonical `direction_keys`; prose grouping alone is not binding. A one-record direction can only be an `early_signal`-backed `new_signal`; `reinforced` needs two distinct in-window native supports bound to the block key plus independent prior Field Map evidence; `no_material_change` has zero support and `prior=none`. A single work is never a trend.
 
-Keep entry and navigation surfaces direct and list-like. Do not add reading-time promises, methodology manifestos, prose that merely restates an adjacent table, or identical label wrappers around every item. Name a fold by the mechanism, evidence, or limitation it contains.
+Use `radar_published_at` alone for rolling support and reject records accepted after the exact synthesis cutoff. Legacy records remain useful Field Map context but are **not rolling support** when their Radar acceptance time is unknown.
 
-Field Map changes only when a real design axis changes. Reading Paths change only when a better conceptual route becomes available.
+Every accepted v2 record receives one `map_delta`:
 
-## 7. Historical discoverability
+`none | early_signal | reinforces | revises | splits | retires`
 
-Time is one view, not the archive key. Every durable/high-importance work should be reachable through at least one non-temporal route: research problem, research line/design tension, controlled tag, or curated index.
+`early_signal` may change Timeline/period synthesis but not a durable map node. Durable changes require independent evidence and the smallest reversible edit with the prior claim named.
 
-Weekly/monthly/yearly synthesis answers what changed; it must never be the only way to find old work.
+On the first successful run after Monday 00:00 local time, ensure an immutable digest for the previous complete ISO week. On the first successful run of a new month, ensure one for the previous complete calendar month. Boundary identities are idempotent. Separate weekly/monthly writers remain disabled.
 
-## 8. Editorial review
+## Bilingual and visual atomicity
 
-Apply `docs/EDITORIAL_STANDARD.md` after the research judgment is stable. Review recent neighboring notes together so repeated sentence skeletons are visible. In Chinese, keep canonical names and standard acronyms where useful, but use Chinese sentence structure and watch especially for machine-translated English syntax and empty transitions.
+Chinese and English are projections of one judgment. Identity, date/order, evidence scope, decisive result, caveat, map token, period windows, and primary/local links must remain paired. Semantic contract comments carry shared judgment keys; visible witness phrases keep decisive evidence and caveats load-bearing.
 
-Editorial lint should target pattern density, not ban individual words.
+Visual generation remains isolated per paper and follows `VISUALS.md`. A pending or invalid visual never leaks its internal status to Timeline. A visual cannot raise a paper's publication ceiling.
 
-## 9. Visual isolation
+## Publication and validation
 
-Per-paper visuals remain isolated from the long maintenance context. A visual is research compression, not decoration. Follow `VISUALS.md`; do not expose incomplete rendering state on public pages.
+Immediately before publication, recheck remote head. If it moved, abort the write transaction, re-read affected canonical state, re-render, revalidate, and retry once; never force-push. Commit all material canonical, bilingual, digest, and map changes atomically. Do not create a file under `runs/daily/` or any other public operational-run path; validator-enforced absence replaces natural-language leakage checks.
 
-## 10. Compaction gate
+Run:
 
-Update weekly/monthly/yearly synthesis only when a new paper/correction changes a field thesis, tension, evidence bar, or a period boundary requires a new artifact. Re-ground load-bearing claims in canonical records/full-text notes rather than recursively summarizing old digests.
+```bash
+python -m unittest discover -s tests -v
+python scripts/build_paper_index.py
+python scripts/build_paper_index.py --check
+python scripts/validate.py
+python scripts/validate_reading.py
+python scripts/validate_public.py
+git diff --check
+```
 
-## 11. Validation and log
-
-Validate canonical/schema/visual state plus public reader contracts:
-
-- Chinese default + English counterpart exist and cross-link;
-- same Latest paper identities, importance, and primary links across languages;
-- section order and Latest bounds are preserved;
-- all current Latest items resolve to canonical records and notes;
-- historical high-value work remains reachable outside weekly digests;
-- no scheduler/schema/upload internals leak to public surfaces;
-- bilingual high-visibility facts do not drift;
-- generated paper index, taxonomy, links, and visual references remain consistent.
-
-Write one compact provenance log at `runs/daily/YYYY/MM/DD.md`.
-
-## Notification gate
-
-Notify only for a newly accepted paper, meaningful correction/reclassification, field-level synthesis change, meaningful visual repair/backfill, or an exact blocker requiring attention. Otherwise finish silently.
-
-## Scheduled cadence
-
-The current recurring task runs Monday–Friday. Monday should use a wider discovery window to absorb weekend releases and indexing lag. Keep a single writer responsible for the transaction unless the repository architecture is deliberately redesigned for transactional concurrency.
+Any identity ambiguity, unavailable full text, bilingual drift, unresolved local link, stale generated index, invalid time/map semantics, or validator failure aborts publication. If no material research change exists, validate and exit silently without a content commit or notification.

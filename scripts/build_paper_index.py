@@ -121,7 +121,7 @@ def render() -> str:
         "",
         "A compact chronology of papers **accepted by Agentic RAG Radar**. This is a selective research index, not a claim of exhaustive field coverage.",
         "",
-        "[Latest Papers](../README.md#latest-papers) · [What's Changing](../README.md#whats-changing) · [Reading Paths](../README.md#reading-paths) · [Research Map](../categories/README.md)",
+        "[Timeline](../README.md#timeline) · [7/30-day Changes](../README.md#periods) · [Reading Paths](../README.md#reading-paths) · [Field Map](../README.md#field-map)",
         "",
         f"**Browse by canonical area:** {category_links}",
         "",

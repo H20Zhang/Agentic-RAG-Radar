@@ -5,6 +5,11 @@
   "authors": ["Ruizhe Li", "Licheng Zhang", "Benfeng Xu", "Mingxuan Du", "Zheren Fu", "Weidong Chen"],
   "first_seen": "2026-08-17",
   "published": "2026-08-13",
+  "published_at": "2026-08-13",
+  "first_seen_at": null,
+  "radar_published_at": null,
+  "time_provenance": "legacy_unknown",
+  "map_delta": "early_signal",
   "updated": null,
   "venue": null,
   "urls": {

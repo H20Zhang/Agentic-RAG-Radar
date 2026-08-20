@@ -8,8 +8,13 @@ import sys
 from pathlib import Path
 from urllib.parse import unquote
 
+from build_paper_index import render as render_paper_index
+from timefirst_contract import strip_html_comments, validate_pair
+from validate_reading import validate_rag_timeline
+
 ROOT = Path(__file__).resolve().parents[1]
-README = ROOT / "README.md"
+README_ZH = ROOT / "README.md"
+README_EN = ROOT / "README.en.md"
 PAPERS_DIR = ROOT / "papers"
 RECORDS_DIR = ROOT / "data" / "papers"
 CATEGORIES_DIR = ROOT / "categories"
@@ -22,20 +27,20 @@ CATEGORY_FILES = {
     "learning_optimization": "learning-optimization.md",
     "evaluation_analysis": "evaluation-analysis.md",
 }
-
-EXPECTED_README_H2 = ["Latest Papers", "What's Changing", "Reading Paths", "Research Map"]
-LATEST_CARD_RE = re.compile(r"^### \[(?P<title>.+?)\]\((?P<path>papers/[^)]+\.md)\)\s*$", re.MULTILINE)
+ENTRY_ANCHOR_RE = re.compile(r'<a\s+id=["\']entry-([^"\']+)["\']\s*></a>', re.I)
 MD_LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 
 
 def normalize_heading(text: str) -> str:
     text = text.strip().replace("’", "'")
-    text = re.sub(r"^[^\wA-Za-z]+", "", text).strip()
-    return text
+    return re.sub(r"^[^\wA-Za-z]+", "", text).strip()
 
 
 def load_records() -> list[dict[str, object]]:
-    return [json.loads(path.read_text(encoding="utf-8")) for path in sorted(RECORDS_DIR.glob("*.json"))]
+    return [
+        json.loads(path.read_text(encoding="utf-8"))
+        for path in sorted(RECORDS_DIR.glob("*.json"))
+    ]
 
 
 def note_path(record: dict[str, object]) -> str:
@@ -58,96 +63,126 @@ def read(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
-def latest_records(text: str, records: list[dict[str, object]]) -> tuple[list[re.Match[str]], dict[str, dict[str, object]], str]:
-    record_by_note = {note_path(record): record for record in records}
-    latest_start = re.search(r"^##\s+Latest Papers\s*$", text, re.MULTILINE)
-    changes_start = re.search(r"^##\s+What[’']s Changing\s*$", text, re.MULTILINE)
-    if not latest_start or not changes_start or changes_start.start() <= latest_start.start():
-        return [], record_by_note, ""
-    latest = text[latest_start.end():changes_start.start()]
-    return list(LATEST_CARD_RE.finditer(latest)), record_by_note, latest
+def timeline_records(
+    text: str,
+    records: list[dict[str, object]],
+    language: str,
+    errors: list[str],
+) -> tuple[list[str], set[str]]:
+    start = text.find('<a id="timeline"></a>')
+    end = text.find('<a id="periods"></a>')
+    if start < 0 or end <= start:
+        add_error(errors, f"{language}: cannot locate Timeline boundaries")
+        return [], set()
 
-
-def check_readme(records: list[dict[str, object]], errors: list[str]) -> set[str]:
-    text = read(README)
-    headings = [normalize_heading(m.group(1)) for m in re.finditer(r"^##\s+(.+?)\s*$", text, re.MULTILINE)]
-    if len(headings) < 4 or headings[:4] != EXPECTED_README_H2:
-        add_error(errors, "README.md: first four H2 sections must be " + " -> ".join(EXPECTED_README_H2) + f"; found {headings[:4]!r}")
-
-    nav_needles = [
-        "[Latest Papers](#latest-papers)",
-        "[What's Changing](#whats-changing)",
-        "[Reading Paths](#reading-paths)",
-        "[Research Map](#research-map)",
-        "[Paper Index](papers/README.md)",
-    ]
-    for needle in nav_needles:
-        if needle not in text:
-            add_error(errors, f"README.md: top navigation is missing {needle}")
-
-    if "assets/editorial/field-overview.svg" not in text:
-        add_error(errors, "README.md: missing field-overview research visual")
-    if "assets/editorial/research-question-map.svg" not in text:
-        add_error(errors, "README.md: missing Research Map visual")
-
-    matches, record_by_note, latest = latest_records(text, records)
-    if not matches:
-        add_error(errors, "README.md: Latest Papers has no recognizable paper cards")
-        return set()
-
-    dates: list[str] = []
-    latest_note_paths: set[str] = set()
-    for i, match in enumerate(matches):
-        rel = match.group("path")
-        latest_note_paths.add(rel)
-        record = record_by_note.get(rel)
+    timeline = text[start:end]
+    anchors = list(ENTRY_ANCHOR_RE.finditer(timeline))
+    record_by_arxiv = {
+        str(record.get("arxiv_id")): record
+        for record in records
+        if isinstance(record.get("arxiv_id"), str)
+    }
+    identities: list[str] = []
+    note_paths: set[str] = set()
+    for index, anchor in enumerate(anchors):
+        identity = anchor.group(1)
+        identities.append(identity)
+        chunk_end = anchors[index + 1].start() if index + 1 < len(anchors) else len(timeline)
+        chunk = timeline[anchor.end():chunk_end]
+        record = record_by_arxiv.get(identity)
         if record is None:
-            add_error(errors, f"README.md: Latest paper {rel} has no canonical record")
+            add_error(errors, f"{language}: Timeline identity {identity} has no canonical record")
             continue
-        if not (ROOT / rel).exists():
-            add_error(errors, f"README.md: Latest paper note does not exist: {rel}")
-        dates.append(str(record["published"]))
-
-        card_end = matches[i + 1].start() if i + 1 < len(matches) else len(latest)
-        card = latest[match.start():card_end]
-        for label in ["**Why it matters.**", "**Key result.**", "**The catch.**"]:
-            if label not in card:
-                add_error(errors, f"README.md:{rel}: latest card missing {label}")
-        if card.count("Research snapshot") != 1:
-            add_error(errors, f"README.md:{rel}: expected exactly one Research snapshot fold")
-        for label in ["**Research question.**", "**Mechanism.**", "**Nearest design point.**", "**Evidence & attribution.**", "**Open question.**"]:
-            if label not in card:
-                add_error(errors, f"README.md:{rel}: Research snapshot missing {label}")
-
-        visual = record.get("visual_explainer")
-        if isinstance(visual, dict) and visual.get("status") == "generated":
-            image_path = visual.get("image_path")
-            if not isinstance(image_path, str) or image_path not in card:
-                add_error(errors, f"README.md:{rel}: canonical generated visual is not embedded in Latest card/fold")
-            for label in ["**How to read this figure.**", "**Do not over-read.**"]:
-                if label not in card:
-                    add_error(errors, f"README.md:{rel}: canonical generated visual lacks {label}")
-
-    if dates != sorted(dates, reverse=True):
-        add_error(errors, f"README.md: Latest Papers are not in non-increasing publication order: {dates}")
-
-    if "AI take" in text:
-        add_error(errors, "README.md: use researcher-facing verdict language instead of 'AI take'")
-    if "★" in text or "☆" in text:
-        add_error(errors, "README.md: star-glyph importance ratings are not allowed on the primary research surface")
-
-    forbidden = ["needs_regeneration", "status=pending", "backfill queue", "renderer failure", "scheduler mechanics"]
-    lower = text.lower()
-    for phrase in forbidden:
-        if phrase.lower() in lower:
-            add_error(errors, f"README.md: public surface exposes internal phrase {phrase!r}")
-
-    return latest_note_paths
+        title = str(record.get("title", ""))
+        summary_end = chunk.find("</summary>")
+        expanded = chunk[summary_end + len("</summary>"):] if summary_end >= 0 else ""
+        urls = record.get("urls")
+        primary = urls.get("paper") if isinstance(urls, dict) else None
+        canonical_title_link = (
+            f"[{title}]({primary})" if isinstance(primary, str) and primary else None
+        )
+        if (
+            canonical_title_link is None
+            or strip_html_comments(expanded).count(canonical_title_link) != 1
+        ):
+            add_error(
+                errors,
+                f"{language}: Timeline identity {identity} is missing its canonical title link",
+            )
+        path = note_path(record)
+        note_paths.add(path)
+        if f"]({path})" not in chunk or f"](papers/{identity}.zh.md)" not in chunk:
+            add_error(errors, f"{language}: Timeline identity {identity} is missing its paired deep-note links")
+    return identities, note_paths
 
 
-def check_paper_notes(records: list[dict[str, object]], latest_notes: set[str], errors: list[str]) -> None:
-    legacy_required = ["Problem", "Core idea", "Compared to what", "Evidence", "Why it matters"]
-    editorial_required = ["Research question", "Research delta", "Mechanism", "Evidence & attribution", "Where it fits", "Open question"]
+def check_readmes(
+    records: list[dict[str, object]],
+    errors: list[str],
+) -> set[str]:
+    zh = read(README_ZH)
+    en = read(README_EN)
+    errors.extend(validate_pair(zh, en))
+    errors.extend(validate_rag_timeline(zh, en, records))
+
+    zh_ids, zh_notes = timeline_records(zh, records, "README.md", errors)
+    en_ids, en_notes = timeline_records(en, records, "README.en.md", errors)
+    if zh_ids != en_ids or zh_notes != en_notes:
+        add_error(errors, "Chinese/English Timeline canonical identity or note-set drift")
+
+    nav_targets = ("#timeline", "#periods", "#field-map", "#reading-paths", "#library")
+    for path, text in ((README_ZH, zh), (README_EN, en)):
+        for target in nav_targets:
+            if f"]({target})" not in text:
+                add_error(errors, f"{path.name}: top navigation is missing {target}")
+        for asset in (
+            "assets/editorial/field-overview.svg",
+            "assets/editorial/research-question-map.svg",
+        ):
+            if asset not in text:
+                add_error(errors, f"{path.name}: missing research visual {asset}")
+
+        lower = text.lower()
+        for phrase in (
+            "needs_regeneration",
+            "status=pending",
+            "backfill queue",
+            "renderer failure",
+            "scheduler mechanics",
+            "abstract_only",
+        ):
+            if phrase in lower:
+                add_error(errors, f"{path.name}: public surface exposes internal phrase {phrase!r}")
+        if "AI take" in text:
+            add_error(errors, f"{path.name}: use researcher-facing verdict language instead of 'AI take'")
+        if "★" in text or "☆" in text:
+            add_error(errors, f"{path.name}: star-glyph ratings are not allowed on the primary surface")
+    return zh_notes
+
+
+def check_paper_notes(
+    records: list[dict[str, object]],
+    timeline_notes: set[str],
+    errors: list[str],
+) -> None:
+    legacy_required = ("Problem", "Core idea", "Compared to what", "Evidence", "Why it matters")
+    editorial_required = (
+        "Research question",
+        "Research delta",
+        "Mechanism",
+        "Evidence & attribution",
+        "Where it fits",
+        "Open question",
+    )
+    chinese_required = (
+        "Problem",
+        "Mechanism",
+        "Closest comparison",
+        "Decisive evidence",
+        "What remains unproven",
+        "Field-map consequence",
+        "Related reading",
+    )
 
     for record in records:
         rel = note_path(record)
@@ -159,52 +194,92 @@ def check_paper_notes(records: list[dict[str, object]], latest_notes: set[str], 
         if "**TL;DR." not in text:
             add_error(errors, f"{rel}: missing TL;DR")
 
-        headings = [normalize_heading(m.group(1)).lower() for m in re.finditer(r"^##\s+(.+?)\s*$", text, re.MULTILINE)]
-        if rel in latest_notes:
+        headings = [
+            normalize_heading(match.group(1)).lower()
+            for match in re.finditer(r"^##\s+(.+?)\s*$", text, re.MULTILINE)
+        ]
+        if rel in timeline_notes:
             for section in editorial_required:
                 if section.lower() not in headings:
-                    add_error(errors, f"{rel}: current Latest note missing ## {section}")
-            for label in ["**Why this paper matters**", "**Strongest evidence**", "**Biggest caveat**"]:
+                    add_error(errors, f"{rel}: Timeline deep note missing ## {section}")
+            for label in (
+                "**Why this paper matters**",
+                "**Strongest evidence**",
+                "**Biggest caveat**",
+            ):
                 if label not in text:
-                    add_error(errors, f"{rel}: current Latest note missing 30-second verdict field {label}")
-        else:
-            # Older notes can keep the legacy deep structure while they are progressively migrated.
-            if not any(section.lower() in headings for section in editorial_required):
-                for section in legacy_required:
-                    if section.lower() not in headings:
-                        add_error(errors, f"{rel}: legacy note missing ## {section}")
+                    add_error(errors, f"{rel}: Timeline deep note missing verdict field {label}")
+
+            identity = str(record.get("arxiv_id"))
+            zh_rel = f"papers/{identity}.zh.md"
+            zh_path = ROOT / zh_rel
+            if not zh_path.exists():
+                add_error(errors, f"{zh_rel}: paired Chinese deep note is missing")
+            else:
+                zh_text = read(zh_path)
+                zh_headings = [
+                    normalize_heading(match.group(1)).lower()
+                    for match in re.finditer(r"^##\s+(.+?)\s*$", zh_text, re.MULTILINE)
+                ]
+                for section in chinese_required:
+                    if section == "Mechanism":
+                        present = any("mechanism" in heading for heading in zh_headings)
+                    else:
+                        present = any(heading.startswith(section.lower()) for heading in zh_headings)
+                    if not present:
+                        add_error(errors, f"{zh_rel}: paired deep note missing ## {section}")
+        elif not any(section.lower() in headings for section in editorial_required):
+            for section in legacy_required:
+                if section.lower() not in headings:
+                    add_error(errors, f"{rel}: legacy note missing ## {section}")
 
         visual = record.get("visual_explainer")
-        if isinstance(visual, dict):
-            status = visual.get("status")
-            if status != "generated" and re.search(r"^##\s+Visual explainer\s*$", text, re.MULTILINE):
-                add_error(errors, f"{rel}: incomplete visual state must not appear as a public Visual explainer section")
-            if status == "generated":
-                image_path = visual.get("image_path")
-                if isinstance(image_path, str) and image_path not in text:
-                    add_error(errors, f"{rel}: canonical generated visual is not embedded")
-                for label in ["**How to read this figure.**", "**Do not over-read.**"]:
-                    if label not in text:
-                        add_error(errors, f"{rel}: canonical generated visual lacks {label}")
+        if not isinstance(visual, dict):
+            continue
+        status = visual.get("status")
+        if status != "generated" and re.search(r"^##\s+Visual explainer\s*$", text, re.MULTILINE):
+            add_error(errors, f"{rel}: incomplete visual state appears as a public Visual explainer")
+        if status == "generated":
+            image_path = visual.get("image_path")
+            if isinstance(image_path, str) and image_path not in text:
+                add_error(errors, f"{rel}: canonical generated visual is not embedded")
+            for label in ("**How to read this figure.**", "**Do not over-read.**"):
+                if label not in text:
+                    add_error(errors, f"{rel}: canonical generated visual lacks {label}")
 
 
 def check_research_map(records: list[dict[str, object]], errors: list[str]) -> None:
-    map_path = CATEGORIES_DIR / "README.md"
-    text = read(map_path)
-    if "## Live Research Questions" not in text:
-        add_error(errors, "categories/README.md: Research Map must be research-question-first")
-    for question in [
+    zh_path = CATEGORIES_DIR / "README.md"
+    en_path = CATEGORIES_DIR / "README.en.md"
+    for path in (zh_path, en_path):
+        if not path.exists():
+            add_error(errors, f"{path.relative_to(ROOT)}: Research Map is missing")
+            return
+    zh = read(zh_path)
+    en = read(en_path)
+
+    zh_questions = (
+        "Adaptivity 应该放在哪里",
+        "Evidence 什么时候 materialize",
+        "什么 state 值得持久化",
+        "Retrieval 应如何暴露 corpus",
+        "到底应该 learn 什么",
+        "什么样的 evaluation 才 causal",
+    )
+    en_questions = (
         "Where should adaptivity live?",
         "When should evidence be materialized?",
         "What state should persist?",
         "How should retrieval expose the corpus?",
         "What should be learned?",
         "What makes an evaluation causal?",
-    ]:
-        if question not in text:
+    )
+    for question in zh_questions:
+        if question not in zh:
             add_error(errors, f"categories/README.md: missing live research question {question!r}")
-    if "../assets/editorial/research-question-map.svg" not in text:
-        add_error(errors, "categories/README.md: missing research-question map visual")
+    for question in en_questions:
+        if question not in en:
+            add_error(errors, f"categories/README.en.md: missing live research question {question!r}")
 
     for record in records:
         category = str(record["primary_category"])
@@ -216,9 +291,8 @@ def check_research_map(records: list[dict[str, object]], errors: list[str]) -> N
         if not path.exists():
             add_error(errors, f"categories/{filename}: missing primary category page")
             continue
-        category_text = read(path)
         rel_note = "../" + note_path(record)
-        if rel_note not in category_text:
+        if rel_note not in read(path):
             add_error(errors, f"categories/{filename}: missing link to {rel_note}")
 
     for filename in CATEGORY_FILES.values():
@@ -238,10 +312,15 @@ def check_paper_index(errors: list[str]) -> None:
         add_error(errors, "papers/README.md: generated index is missing")
         return
     text = read(path)
+    if text != render_paper_index():
+        add_error(errors, "papers/README.md: generated index is stale")
     if "| Date | Paper | Area | Importance | Review |" not in text:
         add_error(errors, "papers/README.md: index is not using the compact chronology table")
+    for target in ("#timeline", "#periods", "#reading-paths", "#field-map"):
+        if f"../README.md{target}" not in text:
+            add_error(errors, f"papers/README.md: navigation is missing {target}")
     if "**Research delta.**" in text:
-        add_error(errors, "papers/README.md: lookup index should not repeat research-delta prose")
+        add_error(errors, "papers/README.md: lookup index repeats research-delta prose")
     if "★" in text or "☆" in text:
         add_error(errors, "papers/README.md: use textual importance rather than star glyphs")
 
@@ -262,20 +341,28 @@ def local_link_target(source: Path, raw_target: str) -> Path | None:
 
 
 def check_links(errors: list[str]) -> None:
-    paths: set[Path] = {README, ROOT / "CONTRIBUTING.md", PAPERS_DIR / "README.md", CATEGORIES_DIR / "README.md", ROOT / "digests" / "README.md"}
+    paths: set[Path] = {
+        README_ZH,
+        README_EN,
+        ROOT / "CONTRIBUTING.md",
+        ROOT / "library" / "README.md",
+        ROOT / "library" / "README.en.md",
+        PAPERS_DIR / "README.md",
+        CATEGORIES_DIR / "README.md",
+        CATEGORIES_DIR / "README.en.md",
+        ROOT / "digests" / "README.md",
+    }
     paths.update(PAPERS_DIR.glob("*.md"))
     paths.update(CATEGORIES_DIR.glob("*.md"))
-    for rel in ["digests/weekly/2026-W34.md", "digests/monthly/2026-08.md", "digests/yearly/2026.md"]:
-        path = ROOT / rel
-        if path.exists():
-            paths.add(path)
+    paths.update((ROOT / "digests" / "weekly").glob("*.md"))
+    paths.update((ROOT / "digests" / "monthly").glob("*.md"))
+    paths.update((ROOT / "digests" / "yearly").glob("*.md"))
 
     root_resolved = ROOT.resolve()
     for source in sorted(paths):
         if not source.exists():
             continue
-        text = read(source)
-        for raw in MD_LINK_RE.findall(text):
+        for raw in MD_LINK_RE.findall(read(source)):
             target = local_link_target(source, raw)
             if target is None:
                 continue
@@ -290,23 +377,38 @@ def check_links(errors: list[str]) -> None:
 
 def check_contract_drift(errors: list[str]) -> None:
     template = read(ROOT / "templates" / "paper.md")
-    for needle in ["## Research question", "## Research delta", "## Evidence & attribution", "## Where it fits", "## Open question", "How to read this figure", "Do not over-read"]:
+    for needle in (
+        "## Research question",
+        "## Research delta",
+        "## Evidence & attribution",
+        "## Where it fits",
+        "## Open question",
+        "How to read this figure",
+        "Do not over-read",
+    ):
         if needle not in template:
             add_error(errors, f"templates/paper.md: missing editorial contract marker {needle!r}")
-    if "pending or needs regeneration" in template.lower() or "pointing to the grounded brief" in template.lower():
-        add_error(errors, "templates/paper.md: must not teach public visual-placeholder behavior")
+    if (
+        "pending or needs regeneration" in template.lower()
+        or "pointing to the grounded brief" in template.lower()
+    ):
+        add_error(errors, "templates/paper.md: teaches public visual-placeholder behavior")
 
     visual_readme = read(ROOT / "assets" / "visuals" / "README.md")
-    for needle in ["assets/visuals/masters/<paper-id>.png", "assets/visuals/<paper-id>.webp", "How to read this figure"]:
+    for needle in (
+        "assets/visuals/masters/<paper-id>.png",
+        "assets/visuals/<paper-id>.webp",
+        "How to read this figure",
+    ):
         if needle not in visual_readme:
-            add_error(errors, f"assets/visuals/README.md: missing active visual contract marker {needle!r}")
+            add_error(errors, f"assets/visuals/README.md: missing active visual marker {needle!r}")
 
 
 def main() -> int:
     errors: list[str] = []
     records = load_records()
-    latest_notes = check_readme(records, errors)
-    check_paper_notes(records, latest_notes, errors)
+    timeline_notes = check_readmes(records, errors)
+    check_paper_notes(records, timeline_notes, errors)
     check_research_map(records, errors)
     check_paper_index(errors)
     check_links(errors)
@@ -318,7 +420,10 @@ def main() -> int:
         print(f"Public-surface validation failed with {len(errors)} error(s).")
         return 1
 
-    print(f"Validated polished public research surfaces for {len(records)} accepted paper record(s).")
+    print(
+        f"Validated time-first bilingual research surfaces for {len(records)} "
+        "accepted paper record(s)."
+    )
     return 0
 
 

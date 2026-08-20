@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 try:
@@ -20,6 +22,103 @@ ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_PATH = ROOT / "data" / "paper.schema.json"
 PAPERS_DIR = ROOT / "data" / "papers"
 MIN_VISUAL_WIDTH = 1536
+CUTOVER = datetime(2026, 8, 20, tzinfo=timezone.utc)
+TIME_FIELDS = ("published_at", "first_seen_at", "radar_published_at")
+V2_BUNDLE_FIELDS = (*TIME_FIELDS, "time_provenance", "map_delta")
+MAP_DELTAS = {"none", "early_signal", "reinforces", "revises", "splits", "retires"}
+STRICT_UTC_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
+STABLE_TOKEN_RE = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
+
+
+def parse_timestamp(value: object) -> datetime | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        parsed = datetime.strptime(value, STRICT_UTC_FORMAT).replace(tzinfo=timezone.utc)
+    except ValueError:
+        return None
+    return parsed
+
+
+def canonical_direction_keys(value: object) -> tuple[str, ...] | None:
+    if not isinstance(value, list) or not value:
+        return None
+    if any(
+        not isinstance(key, str) or STABLE_TOKEN_RE.fullmatch(key) is None
+        for key in value
+    ):
+        return None
+    keys = tuple(value)
+    if len(keys) != len(set(keys)):
+        return None
+    return keys
+
+
+def time_contract_errors(record: dict[str, object]) -> list[str]:
+    """Validate v2 time/map semantics while preserving untouched legacy records."""
+
+    errors: list[str] = []
+    direction_keys_present = "direction_keys" in record
+    if direction_keys_present and canonical_direction_keys(
+        record.get("direction_keys")
+    ) is None:
+        errors.append(
+            "direction_keys must be a non-empty list of unique lowercase stable tokens"
+        )
+    present = [field for field in V2_BUNDLE_FIELDS if field in record]
+    if present and len(present) != len(V2_BUNDLE_FIELDS):
+        for field in V2_BUNDLE_FIELDS:
+            if field not in record:
+                errors.append(f"partial v2 time/map migration is missing {field}")
+        return errors
+
+    if not present:
+        if direction_keys_present:
+            errors.append("direction_keys requires the complete native_v2 time contract")
+        return errors
+
+    provenance = record.get("time_provenance")
+    if record.get("map_delta") not in MAP_DELTAS:
+        errors.append("complete time/map bundle requires a valid map_delta")
+
+    if provenance == "legacy_unknown":
+        if direction_keys_present:
+            errors.append(
+                "direction_keys is native-v2 support metadata and is forbidden on "
+                "explicit legacy records"
+            )
+        published_at = record.get("published_at")
+        published = record.get("published")
+        if published_at != published:
+            errors.append("legacy_unknown published_at must equal published")
+        for field in ("first_seen_at", "radar_published_at"):
+            if record.get(field) is not None:
+                errors.append(f"legacy_unknown {field} must be null")
+        return errors
+
+    if provenance != "native_v2":
+        errors.append("complete time/map bundle requires time_provenance=native_v2 or legacy_unknown")
+        return errors
+
+    parsed = {field: parse_timestamp(record.get(field)) for field in TIME_FIELDS}
+    radar = parsed["radar_published_at"]
+    for field in TIME_FIELDS:
+        if parsed[field] is None:
+            errors.append(f"native_v2 {field} must be a full UTC timestamp ending in Z")
+    if radar is not None and radar < CUTOVER:
+        errors.append("native_v2 radar_published_at cannot predate v2 cutover")
+    source_provenance = record.get("provenance")
+    if not isinstance(source_provenance, dict) or source_provenance.get("full_text_checked") is not True:
+        errors.append("native_v2 record requires provenance.full_text_checked=true")
+
+    if all(parsed[field] is not None for field in TIME_FIELDS):
+        published = parsed["published_at"]
+        first_seen = parsed["first_seen_at"]
+        radar = parsed["radar_published_at"]
+        assert published is not None and first_seen is not None and radar is not None
+        if not published <= first_seen <= radar:
+            errors.append("v2 timestamps must satisfy published_at <= first_seen_at <= radar_published_at")
+    return errors
 
 
 def check_repo_path(record_path: Path, value: object, label: str, *, required: bool = True) -> int:
@@ -137,6 +236,11 @@ def main() -> int:
 
         if record_errors:
             continue
+
+        contract_errors = time_contract_errors(record)
+        for error in contract_errors:
+            print(f"ERROR {path}:time-contract: {error}")
+            errors += 1
 
         visual = record["visual_explainer"]
         errors += check_repo_path(path, visual.get("prompt_path"), "visual_explainer.prompt_path")
