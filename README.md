@@ -2,168 +2,158 @@
 
 **中文** | [English](README.en.md)
 
-*追踪 Agent 如何主动获取、检查、控制和保存外部信息。*
+追踪 Agent 如何主动获取、检查、控制和保存外部信息。
 
-这个 Radar 主要回答：**retrieval intelligence 应该放在哪里？Evidence 什么时候 materialize？哪些 state 值得保留？Adaptivity 到底换来了什么？**
+[Agent Benchmark Radar](https://github.com/H20Zhang/Agent-Benchmark-Radar) · [Agent Memory](https://github.com/H20Zhang/Agent-Memory-Radar) · **Agentic RAG** · [Data Agent](https://github.com/H20Zhang/Data-Agent-Radar)
 
-**Radar Family：** [Agent Benchmark Radar](https://github.com/H20Zhang/Agent-Benchmark-Radar) · [Agent Memory](https://github.com/H20Zhang/Agent-Memory-Radar) · **Agentic RAG** · [Data Agent](https://github.com/H20Zhang/Data-Agent-Radar)
-
-[30 秒：最新工作](#latest) · [5 分钟：领域地图](#field-map) · [15 分钟：阅读路径](#reading-paths) · [浏览全部](#library)
-
-> **先建立一个简单模型：** `need information → search/access evidence → inspect → decide where/if to search again → answer or act`
->
-> **当前判断：** “retriever 还是 agent”“一次 search 还是多次 search”都太粗。更稳定的设计轴是：**adaptivity 放在哪、evidence 何时 materialize、哪些 state 跨 action 保留、offline + online 到底花了多少资源。**
+[最新论文](#latest) · [领域地图](#field-map) · [阅读路径](#reading-paths) · [浏览全部](#library)
 
 最后更新：**2026-08-20**
 
 <a id="latest"></a>
+<a id="latest-papers"></a>
+<a id="-latest-papers"></a>
 ## 最新论文
 
 ### [LENS: In-Context Search via Latent Evidence Exploration over Dynamic Raw Documents](papers/2608.16185.md)
 `Retrieval & Tool Use` · `documents` `iterative search` `budget allocation` · **4/5** · 2026-08-17
 
-**Research delta.** LENS 把 **evidence materialization 本身**推迟到 query time：raw document region 在真正看到 query 之前不必先固定成 chunk。
+LENS 把**证据单元的形成**推迟到查询时：在收到查询之前，不必把原始文档区域预先固定为 chunk。
 
-[Paper](https://arxiv.org/abs/2608.16185) · [英文研究笔记](papers/2608.16185.md)
+[论文](https://arxiv.org/abs/2608.16185) · [英文研究笔记](papers/2608.16185.md)
 
-<details><summary><strong>约 60 秒理解 LENS</strong></summary>
+<details><summary><strong>LENS 如何按查询定位证据</strong></summary>
 
-固定 chunk/index 会在 query 之前就决定 evidence boundary，而且 raw file 更新后可能变 stale。LENS 从多个廉价 cue 提议 raw-document regions，用 relevance oracle 检查，更新 per-fact belief 和 proposal weights，并在预算内停止。
+固定的 chunk 和索引会在查询到来前预先划定证据边界；原始文件更新后，索引还可能过期。LENS 先根据多种低成本信号找出候选原始文档区域，再由 relevance oracle 检查，更新 per-fact belief 和 proposal weight，并在预算范围内停止。
 
-最有信息量的结果是 evidence localization，而不是 answer EM。D500 controlled setting 上，LENS 为 **62.4% EM / 84.8% evidence recall**，ReAct-style search 为 **65.2% / 50.4%**；fixed fullwiki 上 EM 基本打平，但 grounded answer 更偏向 LENS。代价是更多 online token 与 latency。真正决定它是不是更好的 systems point，需要把 fresh-index maintenance cost 与 query-time localization cost 放在同一 lifecycle budget 下比较。
+最有信息量的结果来自证据定位，而不是答案 EM。在 D500 受控设置中，LENS 达到 **62.4% EM / 84.8% 证据召回率**，ReAct-style search 为 **65.2% / 50.4%**；在 fixed fullwiki 设置中，两者的 EM 基本持平，但 LENS 的有依据答案表现更好。它为此付出了更多在线 token 和延迟。要判断这是否是更好的系统取舍，还需要在同一个生命周期预算下比较最新索引的维护成本与查询时定位成本。
 
 </details>
 
 ### [What Does Context Compression Cost an Agent? Interaction Costs Unrevealed by Task-Completion Metrics](papers/2608.16370.md)
 `Evaluation & Analysis` · `memory` `iterative search` · **4/5** · 2026-08-17
 
-**Research delta.** Context 变短不一定更便宜：被压掉的 state 可能在之后通过大量 **reacquisition retrieval** 重新买回来，而 task completion 看起来几乎没变。
+缩短上下文不一定会降低成本：被压缩掉的状态之后可能需要通过大量**重新获取式检索（reacquisition retrieval）**找回，而任务完成情况几乎不变。
 
-[Paper](https://arxiv.org/abs/2608.16370) · [英文研究笔记](papers/2608.16370.md)
+[论文](https://arxiv.org/abs/2608.16370) · [英文研究笔记](papers/2608.16370.md)
 
-<details><summary><strong>约 60 秒理解这个结果</strong></summary>
+<details><summary><strong>上下文压缩如何转移成本</strong></summary>
 
-论文把 tool calls 分成真正执行任务的 calls 与“因为 context 丢失而重新获取 state”的 calls。在固定 24-turn horizon 下，sliding compression 越激进，retrieval 越多；oracle 把被丢掉且可查询的 state 恢复后，大部分额外交互消失。
+论文把工具调用分为执行任务的调用，以及因上下文丢失而重新获取状态的调用。在固定的 24 轮交互范围内，sliding compression 越激进，检索越多；oracle 恢复被丢弃但仍可查询的状态后，大部分额外交互都会消失。
 
-一个代表 cell 中 retrieval calls 从 **21.0 增到 63.9**，completion 却没有显著变化。负面边界同样重要：ALFWorld 没出现同样的 surge。因此“省了多少 context token”本身不是 cost metric，应该比较保留 state 的成本与以后通过 tool/retrieval 重取它的 latency/money。
+在一个代表性实验单元中，检索调用从 **21.0 增至 63.9**，任务完成情况却没有显著变化。负面边界同样重要：ALFWorld 没有出现同样的激增。因此，“节省了多少上下文 token”本身不能作为成本指标；还应比较保留状态的成本，以及以后通过工具或检索重新获取它所需的延迟和费用。
 
 </details>
 
 ### [When Deep Research Agents Stagnate: Enhancing Reasoning with Retrieval-Aware Agent Control](papers/2608.15191.md)
 `Iterative Reasoning & Verification` · `adaptive stopping` `query rewrite` · **4/5** · 2026-08-15
 
-**Research delta.** RAAC 把 **search progress** 显式化，用 coverage、novelty、query diversity 与 drift 共同决定 continue / redirect / stop。
+RAAC 显式记录**搜索进度**，并根据 coverage、novelty、query diversity 和 drift 决定继续、转向还是停止。
 
-[Paper](https://arxiv.org/abs/2608.15191) · [英文研究笔记](papers/2608.15191.md)
+[论文](https://arxiv.org/abs/2608.15191) · [英文研究笔记](papers/2608.15191.md)
 
-<details><summary><strong>约 60 秒理解 RAAC</strong></summary>
+<details><summary><strong>RAAC 如何决定继续、转向或停止</strong></summary>
 
-Deep-research agent 常见的问题不是不会继续搜，而是 evidence 已经饱和后还在搜。RAAC 在原 agent 外面加 progress signals，并根据它们继续 search、停止，或调用 critical re-thinker 生成真正不同的新 query。
+深度研究 Agent 的常见问题不是无法继续搜索，而是在证据已经饱和后仍继续搜索。RAAC 在原 Agent 外增加进度信号，据此继续搜索、停止，或调用 critical re-thinker 生成实质不同的新查询。
 
-BrowseComp-Plus 上，论文报告平均减少约 **14 次 search calls**，同时平均准确率提升约 **3 points**。但 controller 和 re-thinker 自己也要额外 LLM calls，所以“search 次数更少”还不能等价成 total cost 更低。下一步应该匹配 controller + retrieval 的 token、latency 和 monetary cost。
+在 BrowseComp-Plus 上，论文报告平均减少约 **14 次搜索调用**，同时平均准确率提升约 **3 个百分点**。但 controller 和 re-thinker 本身也需要额外的 LLM 调用，所以搜索次数减少并不等于总成本更低。下一步应对齐 controller 与检索所消耗的 token、延迟和金钱成本。
 
 </details>
 
 ### [When Your Agent Opens the Chat App: Agent-Controlled Search over Raw Chat Logs Rivals Structured Memory](papers/2608.12888.md)
 `Retrieval & Tool Use` · `memory` `iterative search` · **4/5** · 2026-08-13
 
-**Research delta.** 当 raw archive 暴露 session/time/local-context controls，并允许 agent 根据结果继续搜索时，question-time access 可以替代一部分预先构建的 semantic memory structure。
+如果原始归档提供会话、时间和局部上下文控制，并允许 Agent 根据结果继续搜索，那么查询时访问可以替代一部分预先构建的语义记忆结构。
 
-[Paper](https://arxiv.org/abs/2608.12888) · [英文研究笔记](papers/2608.12888.md)
+[论文](https://arxiv.org/abs/2608.12888) · [英文研究笔记](papers/2608.12888.md)
 
-<details><summary><strong>约 60 秒理解 ReFind</strong></summary>
+<details><summary><strong>ReFind 如何搜索原始聊天记录</strong></summary>
 
-ReFind 保留原始 timestamped turns，并提供 lexical search、neighboring context、session fusion、temporal filters 和 seen-session state。它因此是一个比 one-shot BM25 更强的 control，用来判断 semantic memory structure 是否真的必要。
+ReFind 保留带时间戳的原始对话轮次，并提供词法搜索、相邻上下文、会话融合、时间过滤器和已查看会话的状态。因此，在判断语义记忆结构是否必要时，它比 one-shot BM25 更适合作为对照。
 
-六个任务上，论文报告 **58.2 mean accuracy**，HippoRAG 2 为 **53.2**，BM25-RAG 为 **48.8**。LongMemEval-S/M 上，完整 interface 为 **93.2/89.3**，也高于 matched generic multi-round BM25 与 one-search control。尚未解决的是 lifecycle-matched cost，尤其在 semantic 与 acting-agent workload 上。
+在六个任务上，论文报告的平均准确率为 **58.2**，HippoRAG 2 为 **53.2**，BM25-RAG 为 **48.8**。在 LongMemEval-S/M 上，完整接口达到 **93.2/89.3**，也高于条件对齐的通用多轮 BM25 和单次搜索对照。尚未解决的问题是生命周期对齐的成本，尤其是在语义任务和行动型 Agent 任务上。
 
 </details>
 
 ### [LoongReflect: Boosting Long-Horizon Reflection in Search Agents via Global Perspective Distillation](papers/2608.11967.md)
 `Learning & Optimization` · `backtracking` `RL` · **4/5** · 2026-08-12
 
-**Research delta.** LoongReflect 让 active search state **可回滚**：发现被污染的 branch 后回到可信 prefix，保留 corrective lesson，再继续执行。
+LoongReflect 使**搜索状态可以回滚**：发现受污染的分支后，Agent 回到可信前缀，保留纠错经验，再继续执行。
 
-[Paper](https://arxiv.org/abs/2608.11967) · [英文研究笔记](papers/2608.11967.md)
+[论文](https://arxiv.org/abs/2608.11967) · [英文研究笔记](papers/2608.11967.md)
 
-<details><summary><strong>约 60 秒理解 LoongReflect</strong></summary>
+<details><summary><strong>LoongReflect 如何回滚受污染的搜索状态</strong></summary>
 
-一个错误 entity association 或错误 evidence 可能污染后续很多 search action。LoongReflect 训练 agent 做 reflect、backtrack 到可信 state、保留 corrective lesson，再从那里继续，而不是把错误 suffix 一直带下去。
+错误的实体关联或证据可能污染后续许多搜索动作。LoongReflect 训练 Agent 进行反思，回退到可信状态，保留纠错经验，再从那里继续执行，而不是一直携带错误后缀。
 
-Qwen2.5-3B 上，论文报告七个 RAG benchmark 平均 **46.15 F1**，AgenticRAG-R1 为 **33.55**。但 teacher 拥有 privileged global trajectory information，因此当前实验更支持“recovery-learning package”，还不能把全部增益归给 rollback semantics 本身。
+在 Qwen2.5-3B 上，论文报告七个 RAG 基准的平均成绩为 **46.15 F1**，AgenticRAG-R1 为 **33.55**。但教师模型拥有特权全局轨迹信息，因此当前实验更能支持整套恢复学习方案，尚不能把全部增益归因于回滚语义本身。
 
 </details>
 
 ### [VAKRA: Evaluating Multi-Hop Reasoning Across APIs and Retrieval Under Tool-Use Policies](papers/2608.12282.md)
 `Evaluation & Analysis` · `APIs` `documents` `cross-source grounding` · **4/5** · 2026-08-12
 
-**Research delta.** VAKRA 不再单独测 API use 或 document QA，而是测它们和 multi-hop reasoning、policy constraint 是否能在**同一条 executable trajectory**里保持一致。
+VAKRA 不再分别测试 API 使用或文档 QA，而是检查它们能否与多跳推理、策略约束在**同一条可执行轨迹**中保持一致。
 
-[Paper](https://arxiv.org/abs/2608.12282) · [Code](https://github.com/IBM/vakra) · [英文研究笔记](papers/2608.12282.md)
+[论文](https://arxiv.org/abs/2608.12282) · [代码](https://github.com/IBM/vakra) · [英文研究笔记](papers/2608.12282.md)
 
-<details><summary><strong>约 60 秒理解 VAKRA</strong></summary>
+<details><summary><strong>VAKRA 如何测试跨来源执行</strong></summary>
 
-一个 agent 可以分别在 API benchmark 和 document QA 上表现很好，却在真正跨 source 时因为 identity resolution、grounding 或 policy constraint 失败。VAKRA 在固定 harness 中重新执行预测 tool calls，评估完整 trajectory，而不只是 final answer。
+一个 Agent 可以分别在 API 基准和文档 QA 上表现良好，却在跨来源执行时因身份解析、grounding 或策略约束而失败。VAKRA 在固定评测框架中重新执行预测的工具调用，评估完整轨迹，而不只评估最终答案。
 
-最佳模型在 single-hop endpoint-style tasks 上达到 **70.4%**，但 compositional APIs 只有约 **50–51%**；一些 policy-constrained unanswerable setting 低到 **2.4%**。这是 evaluation result，不是对某个 controller 的 component evidence。下一步应该固定 model/tools/budget，再隔离究竟哪种 control change 能修复 cross-source grounding。
+最佳模型在单跳端点式任务上达到 **70.4%**，但在组合式 API 上只有约 **50–51%**；一些受策略约束的不可回答设置低至 **2.4%**。这是评测结果，并非某个 controller 的组件层面证据。下一步应固定模型、工具和预算，再隔离究竟哪种控制变化能修复跨来源 grounding。
 
 </details>
 
 <a id="changes"></a>
-## 最近真正发生了什么变化
+<a id="whats-changing"></a>
+<a id="-whats-changing"></a>
+## 最近的研究变化
 
 | 变化 | 新证据 | 对研究设计的含义 |
 |---|---|---|
-| **Evidence materialization 变成一等设计变量。** | Indexed RAG 预先 materialize chunk；DCI 保留 raw files；LENS 把 query-conditioned evidence localization 推到线上。 | 比较 freshness、evidence fidelity 与 offline+online cost，而不是只看 answer score。 |
-| **Progress 与 retained state 开始变成显式 control state。** | RAAC 暴露 search progress；LoongReflect 让 reasoning state 可回滚；context-compression work 给 dropped state 的 re-query tax 定价。 | State policy 应进入 retrieval-cost attribution，而不是当作 runtime plumbing。 |
-| **强 retrieval baseline 必须包含 interface 与 harness。** | ReFind、Pi-Serini 与 harness 分析都说明 search primitive、surfaced depth、interaction protocol 能显著改变结论。 | 在归因给“agentic retrieval policy”之前，先匹配 interface/harness。 |
+| **证据的形成时机成为一等设计变量。** | Indexed RAG 预先生成 chunk；DCI 保留原始文件；LENS 在线完成随查询变化的证据定位。 | 应比较时效性、证据保真度与离线和在线总成本，而不只看答案分数。 |
+| **搜索进度与保留状态成为显式控制状态。** | RAAC 暴露搜索进度；LoongReflect 让推理状态可以回滚；上下文压缩研究衡量丢弃状态带来的重新查询成本。 | 归因检索成本时应计入状态策略，而不能把它当作运行时基础设施。 |
+| **强检索基线必须包含接口与评测框架。** | ReFind、Pi-Serini 与评测框架分析都表明，搜索原语、展示给 Agent 的结果深度和交互协议能显著改变结论。 | 在把增益归因于“Agent 检索策略”之前，应先对齐接口和评测框架。 |
 
-时间视角：[weekly](digests/README.md) · [monthly](digests/monthly/2026-08.md) · [yearly](digests/yearly/2026.md)
+按时间浏览：[周报](digests/README.md) · [月报](digests/monthly/2026-08.md) · [年报](digests/yearly/2026.md)
 
 <a id="field-map"></a>
 ## 领域地图
 
-`information need → query/planning → retrieval interface → evidence materialization → inspection/reasoning → continue/redirect/stop → persistent state → answer/action`
+`信息需求 → 查询/规划 → 检索接口 → 证据形成 → 检查/推理 → 继续/转向/停止 → 持久状态 → 回答/行动`
 
-| Axis | 核心问题 | 当前张力 |
+| 设计轴 | 核心问题 | 当前张力 |
 |---|---|---|
-| **Adaptivity placement** | 哪些行为可以在 evidence 到来前 compile，哪些必须 result-conditioned？ | `pre-query compilation ↔ query-time adaptation` |
-| **Evidence materialization** | chunk/region/workspace 什么时候才应该变成 concrete object？ | `pre-materialized index ↔ raw/query-conditioned evidence` |
-| **Interface resolution** | agent 到底能观察和控制哪些 retrieval operation / source state？ | `opaque top-k ↔ explicit search/read/filter/navigation` |
-| **State persistence** | 哪些 evidence、progress、reasoning state 值得跨 action 保留？ | `stateless loop ↔ persistent/recoverable state` |
-| **Resource accounting** | 什么方案真的更便宜？ | `local retrieval metric ↔ lifecycle cost + task outcome` |
+| **Adaptivity placement** | 哪些操作可以在看到证据前预先编排，哪些必须根据返回结果调整？ | `pre-query compilation ↔ query-time adaptation` |
+| **Evidence materialization** | 何时应把文本块、区域或工作区固化为可操作对象？ | `pre-materialized index ↔ raw/query-conditioned evidence` |
+| **Interface resolution** | Agent 能观察和控制哪些检索操作与来源状态？ | `opaque top-k ↔ explicit search/read/filter/navigation` |
+| **State persistence** | 哪些证据、进度和推理状态应跨动作保留？ | `stateless loop ↔ persistent/recoverable state` |
+| **Resource accounting** | 哪种方案的总成本更低？ | `local retrieval metric ↔ lifecycle cost + task outcome` |
 
-[进入完整 research-question map →](categories/README.md) · [看这个方向如何被评价 →](https://github.com/H20Zhang/Agent-Benchmark-Radar#rag-agentic-retrieval)
+[浏览完整研究问题地图 →](categories/README.md) · [查看这个方向的评测 →](https://github.com/H20Zhang/Agent-Benchmark-Radar#rag-agentic-retrieval)
 
 <a id="reading-paths"></a>
+<a id="-reading-paths"></a>
 ## 阅读路径
 
 | 你想回答的问题 | 建议顺序 | 应该学到什么 |
 |---|---|---|
-| **Retrieval control 和 materialization 应放在哪里？** | [SIRA](papers/2605.06647.md) → [DCI](papers/2605.05242.md) → [ReFind](papers/2608.12888.md) → [LENS](papers/2608.16185.md) | 有些 intelligence 能在 retrieval 前 compile；有些信息只有读到 evidence 后才可见；连 evidence granularity 本身都可能推迟到 query time。 |
-| **哪些 state 值得保留？** | [SGR-Bench](papers/2605.22219.md) → [RAAC](papers/2608.15191.md) → [LoongReflect](papers/2608.11967.md) → [Context Compression Cost](papers/2608.16370.md) | Environment state、progress state、reversible reasoning state、retained context 的 failure cost 不同。 |
-| **怎样让 retrieval claim 更 causal？** | [Training Protocols](papers/2605.27881.md) → [Pi-Serini](papers/2605.10848.md) → [Is Grep All You Need?](papers/2605.15184.md) → [VAKRA](papers/2608.12282.md) | Backend、interface、harness、model、budget、cross-source execution 要分开，才能谈 retrieval policy 的贡献。 |
+| **检索控制和证据形成应放在哪个环节？** | [SIRA](papers/2605.06647.md) → [DCI](papers/2605.05242.md) → [ReFind](papers/2608.12888.md) → [LENS](papers/2608.16185.md) | 有些检索决策可以预先编排；有些信息只有读到证据后才可见；连证据粒度本身也可以推迟到查询时再决定。 |
+| **哪些状态值得保留？** | [SGR-Bench](papers/2605.22219.md) → [RAAC](papers/2608.15191.md) → [LoongReflect](papers/2608.11967.md) → [Context Compression Cost](papers/2608.16370.md) | 环境状态、进度状态、可回滚推理状态和保留上下文的失败成本各不相同。 |
+| **怎样对检索结论做因果归因？** | [Training Protocols](papers/2605.27881.md) → [Pi-Serini](papers/2605.10848.md) → [Is Grep All You Need?](papers/2605.15184.md) → [VAKRA](papers/2608.12282.md) | 只有把后端、接口、评测框架、模型、预算和跨来源执行分开，才能判断检索策略的贡献。 |
 
 <a id="library"></a>
-## Research Library
+## 研究资料库
 
-历史工作应该按问题和 design tension 找，而不是只按周找。
+历史工作可以按问题与设计张力浏览，也可以按论文或时间查找。
 
-- **[按 problem / research line / year 浏览](library/README.md)**
-- **[Research-question map](categories/README.md)**
-- **[Chronological paper index](papers/README.md)**
-- **[时间维度 synthesis](digests/README.md)**
+[按问题、研究路线与年份浏览](library/README.md) · [研究问题地图](categories/README.md) · [论文时间索引](papers/README.md) · [时间维度综述](digests/README.md)
 
-## 怎么用这个 Radar
+## 收录范围
 
-**先扫**一句 Research delta；**再展开**重要论文的 60–90 秒 causal explanation；真正要判断 claim，再进入 paper note 检查 mechanism、closest comparison、negative result、cost 与 attribution。只有问题、没有 paper 名时，从 Field Map 或 Library 进入。
+纳入的工作需要让 Agent 对**是否、检索什么、去哪里检索、如何检索、检索多少**拥有实质控制，或者改变支持这种控制的持久信息状态。普通固定式 RAG 如果没有真正的控制、接口或状态贡献，通常不纳入。
 
-## Scope
+## 维护
 
-纳入的工作需要让 Agent 对**是否、检索什么、去哪里检索、如何检索、检索多少**拥有实质控制，或者改变支持这种控制的 persistent information state。普通 fixed RAG 如果没有真正的 control/interface/state contribution，通常不纳入。
-
-## About / Contributing
-
-这是一个研究判断地图，不是 exhaust feed。证据标准是：**改了什么？相比什么？实际 hold fixed 了什么？还有什么 confounded？**
-
-[Contributing](CONTRIBUTING.md) · [Curation](CURATION.md) · [Daily workflow](docs/DAILY_WORKFLOW.md)
+[参与贡献](CONTRIBUTING.md) · [收录标准](CURATION.md) · [日常流程](docs/DAILY_WORKFLOW.md)

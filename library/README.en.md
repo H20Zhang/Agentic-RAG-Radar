@@ -2,7 +2,7 @@
 
 [中文](README.md) | **English** · [Home](../README.en.md)
 
-This library organizes old work by **research problem and design tension**. Weekly/monthly/yearly reports explain temporal movement; they are not the archive index.
+Browse earlier work by **research problem, design tension, and research line**; weekly, monthly, and yearly pages record changes over time.
 
 ## Browse by Research Problem
 
@@ -17,23 +17,23 @@ This library organizes old work by **research problem and design tension**. Week
 
 ## Browse by Research Line
 
-### 1. Fixed retrieval → direct interaction → query-time evidence materialization
+### Fixed retrieval → direct interaction → query-time evidence materialization
 
 [SIRA](../papers/2605.06647.md) → [DCI](../papers/2605.05242.md) → [ReFind](../papers/2608.12888.md) → [LENS](../papers/2608.16185.md)
 
-**Takeaway:** adaptivity placement and evidence-materialization time are separate design decisions. SIRA compiles some intelligence before retrieval; DCI/ReFind preserve raw substrates; LENS delays the evidence boundary itself until query time.
+Adaptivity placement and evidence-materialization time are separate design decisions. SIRA compiles some retrieval decisions before retrieval; DCI and ReFind preserve raw substrates; LENS delays the evidence boundary itself until query time.
 
-### 2. Search loop → progress-aware control → reversible state
+### Search loop → progress-aware control → reversible state
 
 [S2G-RAG](../papers/2604.23783.md) → [RAAC](../papers/2608.15191.md) → [LoongReflect](../papers/2608.11967.md) → [Context Compression Cost](../papers/2608.16370.md)
 
-**Takeaway:** “more rounds” is not a primitive. What matters is how sufficiency/progress is observed, whether bad state can be reversed, and whether dropped state reappears later as reacquisition cost.
+“More rounds” is not a primitive. What matters is how the agent observes sufficiency and progress, whether bad state can be reversed, and whether dropped state reappears later as reacquisition cost.
 
-### 3. Retriever quality → interface/harness attribution → cross-source execution
+### Retriever quality → interface/harness attribution → cross-source execution
 
 [Pi-Serini](../papers/2605.10848.md) → [Is Grep All You Need?](../papers/2605.15184.md) → [Training Protocols](../papers/2605.27881.md) → [VAKRA](../papers/2608.12282.md)
 
-**Takeaway:** backend score, surfaced evidence, agent harness, model, and tool budget are tightly coupled. Leaderboard gains are usually system-level evidence before they are component evidence.
+Backend score, surfaced evidence, agent harness, model, and tool budget are tightly coupled. Leaderboard gains are usually system-level evidence before they are component evidence.
 
 ## Browse by Year
 

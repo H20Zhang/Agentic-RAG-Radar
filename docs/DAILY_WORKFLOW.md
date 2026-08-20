@@ -64,9 +64,11 @@ During migration, bilingual backfill priority is: current Latest/Reading Path pa
 
 Public order:
 
-`Latest Papers → What’s Changing → Field Map → Reading Paths → Research Library → How to Use / Scope / About`
+`Latest Papers → What’s Changing → Field Map → Reading Paths → Research Library → Scope / Maintenance`
 
-Keep roughly 6–8 high-signal Latest entries. Importance >=4/5 or field-map-changing work may receive a 60–90 second fold. The fold is a causal compression, not copied note prose.
+Keep roughly 6–8 high-signal Latest entries. Importance >=4/5 or field-map-changing work may receive a causal evidence fold. The fold is a causal compression, not copied note prose.
+
+Keep entry and navigation surfaces direct and list-like. Do not add reading-time promises, methodology manifestos, prose that merely restates an adjacent table, or identical label wrappers around every item. Name a fold by the mechanism, evidence, or limitation it contains.
 
 Field Map changes only when a real design axis changes. Reading Paths change only when a better conceptual route becomes available.
 
@@ -78,7 +80,7 @@ Weekly/monthly/yearly synthesis answers what changed; it must never be the only 
 
 ## 8. Editorial review
 
-Apply `docs/EDITORIAL_STANDARD.md` after the research judgment is stable. Review recent neighboring notes together so repeated sentence skeletons are visible. In Chinese, watch especially for machine-translated English syntax and empty transitions.
+Apply `docs/EDITORIAL_STANDARD.md` after the research judgment is stable. Review recent neighboring notes together so repeated sentence skeletons are visible. In Chinese, keep canonical names and standard acronyms where useful, but use Chinese sentence structure and watch especially for machine-translated English syntax and empty transitions.
 
 Editorial lint should target pattern density, not ban individual words.
 

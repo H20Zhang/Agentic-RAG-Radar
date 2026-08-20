@@ -22,6 +22,17 @@ For Agentic RAG, explicitly ask when useful: **what is precomputed, what becomes
 
 Keep canonical paper titles, benchmarks, model names, metrics, protocol/tool names, and established technical terms in English when that improves precision and literature search.
 
+Chinese entry prose must still use Chinese sentence structure. Preserve canonical names and standard acronyms, but write connective grammar and ordinary process descriptions in Chinese when a precise Chinese expression exists; do not place English clause skeletons inside Chinese particles.
+
+## Public entry surfaces
+
+Root and Research Library READMEs should work like direct, curated lists: give a brief scope statement, then expose the papers, maps, and routes.
+
+- Do not add estimated reading times, a methodology manifesto, or copy that explains how the page packaging works.
+- Do not summarize an adjacent table before and after it unless the prose adds a distinct research judgment.
+- Do not force every card, fold, or research line into the same label sequence. Use a wrapper only when it helps readers identify the content.
+- Preserve substantive causal folds, but title them by mechanism, evidence, or limitation rather than by reading time.
+
 ## Preferred prose
 
 - Start paragraphs with the claim, not scene-setting.
@@ -48,7 +59,7 @@ Do not ban isolated words. The target is **pattern density and loss of specifici
 
 ## README fold contract
 
-A 60–90 second fold is not a mini paper note. It should naturally explain the surviving problem, actual change, control/data flow, closest comparison, decisive evidence, and strongest caveat in 2–4 short paragraphs.
+A high-value fold is not a mini paper note. It should naturally explain the surviving problem, actual change, control/data flow, closest comparison, decisive evidence, and strongest caveat in 2–4 short paragraphs.
 
 ## Epistemic language
 

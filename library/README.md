@@ -2,45 +2,45 @@
 
 **中文** | [English](README.en.md) · [返回首页](../README.md)
 
-这里按**研究问题与 design tension**组织历史工作。Weekly / monthly / yearly 只回答“最近发生了什么”，不承担长期检索。
+按**研究问题、设计张力与研究路线**浏览历史工作；周报、月报和年报只记录时间线上的变化。
 
-## 按 Research Problem 浏览
+## 按研究问题浏览
 
 | 问题 | 入口 | 当前核心张力 |
 |---|---|---|
-| **Adaptivity placement** | [进入](../categories/zh/adaptivity-placement.md) | 哪些 search behavior 可以在 evidence 到来前 compile，哪些必须 result-conditioned？ |
-| **Evidence materialization** | [进入](../categories/zh/evidence-materialization.md) | evidence unit 应在 indexing time 固定，还是 query 到来后再定位？ |
-| **State persistence** | [进入](../categories/zh/state-persistence.md) | 哪些 state 值得保留，哪些丢掉后会以 reacquisition cost 回来？ |
-| **Interface resolution** | [进入](../categories/zh/interface-resolution.md) | opaque top-k 够不够，还是需要 search/read/filter/navigation 等显式 interface？ |
-| **Learning targets** | [进入](../categories/zh/learning-targets.md) | retriever、control、recovery、budget、task distribution 中到底应该 learn 什么？ |
-| **Causal evaluation** | [进入](../categories/zh/causal-evaluation.md) | backend、interface、harness、state、model、budget 怎么分开，才能做 causal attribution？ |
+| **Adaptivity placement** | [进入](../categories/zh/adaptivity-placement.md) | 哪些搜索行为可以在证据到来前预先编排，哪些必须根据返回结果调整？ |
+| **Evidence materialization** | [进入](../categories/zh/evidence-materialization.md) | 应在索引阶段固定证据单元，还是等查询到来后再定位？ |
+| **State persistence** | [进入](../categories/zh/state-persistence.md) | 哪些状态值得保留，哪些状态丢弃后会产生重新获取成本？ |
+| **Interface resolution** | [进入](../categories/zh/interface-resolution.md) | 不透明的 top-k 是否足够，还是需要搜索、读取、过滤、导航等显式接口？ |
+| **Learning targets** | [进入](../categories/zh/learning-targets.md) | 检索器、控制、恢复、预算和任务分布中，哪些部分应该成为学习目标？ |
+| **Causal evaluation** | [进入](../categories/zh/causal-evaluation.md) | 如何分离后端、接口、评测框架、状态、模型和预算，才能进行因果归因？ |
 
-## 按 Research Line 浏览
+## 按研究路线浏览
 
-### 1. Fixed retrieval → direct interaction → query-time evidence materialization
+### 固定式检索 → 直接交互 → 查询时证据形成
 
 [SIRA](../papers/2605.06647.md) → [DCI](../papers/2605.05242.md) → [ReFind](../papers/2608.12888.zh.md) → [LENS](../papers/2608.16185.zh.md)
 
-**带走的结论：** adaptivity 与 evidence materialization 是两个不同 placement decision。SIRA 把一部分 intelligence compile 到 retrieval 前；DCI/ReFind 保留 raw substrate；LENS 进一步让 evidence boundary 本身到 query time 才 materialize。
+自适应位置与证据形成时机是两个不同的设计决策。SIRA 在执行检索前预先编排一部分决策；DCI 和 ReFind 保留原始载体；LENS 则把证据边界的确定进一步推迟到查询时。
 
-### 2. Search loop → progress-aware control → reversible / recoverable state
+### 搜索循环 → 进度感知控制 → 可回滚 / 可恢复状态
 
 [S2G-RAG](../papers/2604.23783.md) → [RAAC](../papers/2608.15191.zh.md) → [LoongReflect](../papers/2608.11967.zh.md) → [Context Compression Cost](../papers/2608.16370.zh.md)
 
-**带走的结论：** “多搜几轮”不是 primitive。更重要的是 sufficiency/progress 如何被观察、错误 state 能否回退、被丢掉的 state 是否会以 re-query cost 的形式回来。
+“多搜几轮”本身不是一个原语。更重要的是 Agent 如何观察充分性和进度、错误状态能否回退，以及被丢弃的状态是否会产生重新查询成本。
 
-### 3. Retriever quality → interface/harness attribution → cross-source execution
+### 检索器质量 → 接口 / 评测框架归因 → 跨来源执行
 
 [Pi-Serini](../papers/2605.10848.md) → [Is Grep All You Need?](../papers/2605.15184.md) → [Training Protocols](../papers/2605.27881.md) → [VAKRA](../papers/2608.12282.zh.md)
 
-**带走的结论：** backend score、surfaced evidence、agent harness、model 与 tool budget 会强烈耦合；最终 leaderboard gain 通常首先是 system-level evidence。
+后端分数、呈现给 Agent 的证据、Agent 框架、模型与工具预算会紧密耦合；排行榜增益通常只能先作为系统层面证据。
 
 ## 按年份浏览
 
-[Curated Paper Index](../papers/README.md) 提供简洁 chronology。若目标是理解领域，不建议从年份顺序开始。
+[Curated Paper Index](../papers/README.md) 提供简洁的时间顺序。若要理解领域脉络，建议先从研究路线开始，而不是按年份顺序阅读。
 
-## Cross-Radar
+## 相关 Radar
 
-- [Agent Benchmark Radar](https://github.com/H20Zhang/Agent-Benchmark-Radar)：看 RAG / Search 的 evaluation target 如何从 retrieval quality 演化到 stateful、cross-source、executable evaluation。
-- [Agent Memory Radar](https://github.com/H20Zhang/Agent-Memory-Radar)：当问题核心变成跨 interaction 持久化的 memory lifecycle。
-- [Data Agent Radar](https://github.com/H20Zhang/Data-Agent-Radar)：当 retrieval 是 end-to-end data work 的一个阶段，而不是终点。
+- [Agent Benchmark Radar](https://github.com/H20Zhang/Agent-Benchmark-Radar)：追踪 RAG / 搜索的评测目标如何从检索质量演化为有状态、跨来源、可执行的评测。
+- [Agent Memory Radar](https://github.com/H20Zhang/Agent-Memory-Radar)：适合关注跨交互持久化的记忆生命周期。
+- [Data Agent Radar](https://github.com/H20Zhang/Data-Agent-Radar)：适合研究检索如何成为端到端数据工作的一个阶段，而不是终点。
