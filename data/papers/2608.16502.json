@@ -1,0 +1,84 @@
+{
+  "id": "arxiv:2608.16502",
+  "arxiv_id": "2608.16502",
+  "title": "When Tool-Backed Skill Retrieval Fails: Source-Style Collapse in Executable Capability Retrieval",
+  "authors": [
+    "Yiqi Liu",
+    "Joseph James",
+    "Yang Wang",
+    "Chenghao Xiao",
+    "Chenghua Lin"
+  ],
+  "first_seen": "2026-08-21",
+  "published": "2026-08-17",
+  "published_at": "2026-08-17T12:39:29Z",
+  "first_seen_at": "2026-08-21T01:31:20Z",
+  "radar_published_at": "2026-08-21T01:31:22Z",
+  "time_provenance": "native_v2",
+  "map_delta": "early_signal",
+  "direction_keys": ["source-conditioned-capability-routing"],
+  "updated": "2026-08-21",
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.16502",
+    "pdf": "https://arxiv.org/pdf/2608.16502",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "evaluation_analysis",
+  "tags": [
+    "capability_retrieval",
+    "distribution_shift",
+    "retriever_routing",
+    "tool_retrieval",
+    "source_style"
+  ],
+  "benchmarks": ["ToolRet", "StableToolBench"],
+  "relevance": 0.86,
+  "importance": 3,
+  "visual_explainer": {
+    "type": "evidence_failure_map",
+    "question": "How can a fixed tool corpus still lose gold-capability coverage when a dense retriever is adapted to one source style?",
+    "takeaway": "Source-specific adaptation can collapse on independently generated query-tool slices; ToolScout uses a query-side compatibility guard to route away from an unsafe specialist and optionally repair it with matched supervision.",
+    "compared_with": "A fixed source-specialist checkpoint, an aggregate-trained retriever, lexical controls, and matched-source few-shot continuation.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2608.16502.png",
+    "image_path": "assets/visuals/2608.16502.webp",
+    "prompt_path": "assets/visuals/prompts/2608.16502.md",
+    "artifact_path": "papers/2608.16502.md"
+  },
+  "analysis": {
+    "tldr": "ToolScout diagnoses source-style collapse in executable capability retrieval: a dense retriever adapted to one ToolRet slice can preserve matched-source coverage yet lose almost all gold-tool coverage on other source slices over the same registry. A TF-IDF compatibility guard can route mismatched traffic to a broader checkpoint, but the evidence is upstream retrieval coverage rather than end-to-end agent execution.",
+    "problem": "Tool-using agents often retrieve a small set of tool or skill cards before planning. If the gold capability never enters that set, later reranking and reasoning cannot recover it. A fixed capability corpus does not eliminate distribution shift when query-tool pairs come from different generators or annotation conventions.",
+    "core_idea": "Measure compatibility between incoming query traffic and the source slice used to adapt a specialist retriever using a TF-IDF centroid distance. Keep the specialist in a calibrated safe band; switch unsafe traffic to an aggregate-trained checkpoint; when matched supervision accumulates, continue fine-tuning the specialist on that source.",
+    "agent_loop": "observe query batch/window → estimate source compatibility → use specialist if safe or broad retriever if unsafe → retrieve top-k capability cards → rerank → optionally repair specialist with matched examples",
+    "retrieval_design": "The main pipeline is dense top-20 candidate generation followed by lightweight reranking. The paper also tests lexical fusion, staged query decomposition, hierarchy, skill-card rerendering, depth sweeps, and matched-source continuation to separate candidate coverage from covered-query ranking.",
+    "compared_to": [
+      "off-the-shelf BGE-M3 and BM25 controls",
+      "a ToolRet-1100 source-specialist checkpoint",
+      "an aggregate-trained mixed-source checkpoint",
+      "query-only rewrites and a second-corpus task-family boundary",
+      "few-shot matched-source repair"
+    ],
+    "evidence": "The ToolRet-1100 specialist retains 91.8% matched-source depth-20 coverage but falls to 22.3% on the 4,996-query mixture, including 0.7% on APIGen and 0% on ToolACE. Routing to the aggregate checkpoint raises mixed coverage to 86.1%, close to the fixed aggregate retriever's 85.2%. Skill-card rerendering preserves the failure and switch. Across five collapsed sources, 20 matched examples raise the coverage-weighted global top-1 proxy from 1.3% to 53.9%.",
+    "why_it_matters": "Capability retrieval is an upstream admissibility gate: missing a tool removes an action, not merely a passage. The paper is an early warning that source-specific retriever tuning can make this gate brittle even when the registry is unchanged, and that deployment-time routing needs distribution evidence rather than semantic intuition alone.",
+    "limitations": [
+      "The main headline is candidate coverage/top-1 proxy, not downstream tool-use success or task completion.",
+      "The fallback is a broadly supervised aggregate retriever; fixed aggregate retrieval nearly matches the routed result, limiting the demonstrated marginal value of routing.",
+      "Source style is not query wording alone: query-side and target-tool-side shifts are coupled, and the detector has only 19 source configurations.",
+      "Routing/training/maintenance and live end-to-end latency/cost are incomplete; few-shot repair assumes matched labels become available."
+    ],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": [
+      "overlapping arXiv cs.IR/cs.LG primary-source search",
+      "full arXiv v1 PDF"
+    ],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-21"
+  }
+}

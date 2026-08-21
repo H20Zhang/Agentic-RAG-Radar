@@ -14,8 +14,12 @@ The index is deliberately terse: use a paper title for the deep research note, o
 
 | Date | Paper | Area | Importance | Review |
 |---|---|---|---:|---|
+| 2026-08-19 | **[CTIFoundry: An Agent-Native Corpus Scaffold for Cyber Threat Intelligence](2608.18613.md)**<br><sub>[paper](https://arxiv.org/abs/2608.18613)</sub> | Retrieval & Tool Use | 4/5 | Full text |
+| 2026-08-18 | **[VisDocAgentBench: Benchmarking Agents for Visually Rich Document Retrieval](2608.17889.md)**<br><sub>[paper](https://arxiv.org/abs/2608.17889) · [code](https://github.com/hulx2002/VisDocAgentBench)</sub> | Evaluation & Analysis | 3/5 | Full text |
+| 2026-08-17 | **[When Tool-Backed Skill Retrieval Fails: Source-Style Collapse in Executable Capability Retrieval](2608.16502.md)**<br><sub>[paper](https://arxiv.org/abs/2608.16502)</sub> | Evaluation & Analysis | 3/5 | Full text |
 | 2026-08-17 | **[What Does Context Compression Cost an Agent? Interaction Costs Unrevealed by Task-Completion Metrics](2608.16370.md)**<br><sub>[paper](https://arxiv.org/abs/2608.16370)</sub> | Evaluation & Analysis | 4/5 | Full text |
 | 2026-08-17 | **[LENS: In-Context Search via Latent Evidence Exploration over Dynamic Raw Documents](2608.16185.md)**<br><sub>[paper](https://arxiv.org/abs/2608.16185)</sub> | Retrieval & Tool Use | 4/5 | Full text |
+| 2026-08-17 | **[D2-ScaleAgent: Dual-Dimensional Scaling for Long Document Understanding](2608.16417.md)**<br><sub>[paper](https://arxiv.org/abs/2608.16417)</sub> | Iterative Reasoning & Verification | 3/5 | Full text |
 | 2026-08-15 | **[When Deep Research Agents Stagnate: Enhancing Reasoning with Retrieval-Aware Agent Control](2608.15191.md)**<br><sub>[paper](https://arxiv.org/abs/2608.15191)</sub> | Iterative Reasoning & Verification | 4/5 | Full text |
 | 2026-08-13 | **[When Your Agent Opens the Chat App: Agent-Controlled Search over Raw Chat Logs Rivals Structured Memory](2608.12888.md)**<br><sub>[paper](https://arxiv.org/abs/2608.12888)</sub> | Retrieval & Tool Use | 4/5 | Full text |
 | 2026-08-12 | **[VAKRA: Evaluating Multi-Hop Reasoning Across APIs and Retrieval Under Tool-Use Policies](2608.12282.md)**<br><sub>[paper](https://arxiv.org/abs/2608.12282) · [code](https://github.com/IBM/vakra)</sub> | Evaluation & Analysis | 4/5 | Full text |

@@ -10,7 +10,7 @@ The field is more useful to reason about as a set of **live research questions**
 
 **Current view.** Some control can be compiled before evidence is read when useful corpus-visible statistics or structure are observable. Other control is irreducibly result-conditioned because the next query depends on names, constraints, or relationships discovered only after retrieval.
 
-**Key design points.** [SIRA](../papers/2605.06647.md) ↔ [ReFind](../papers/2608.12888.md), with [PlanRAG](../papers/2406.12430.md) as an explicit-planning predecessor.
+**Key design points.** [SIRA](../papers/2605.06647.md) ↔ [ReFind](../papers/2608.12888.md), with [D2-ScaleAgent](../papers/2608.16417.md) separating breadth from depth through evidence-sufficiency routing.
 
 **Boundary.** SIRA pays offline corpus-side intelligence and does not dominate multi-round search at every model/budget; ReFind has a task where single-shot BM25 slightly wins.
 
@@ -40,11 +40,11 @@ The field is more useful to reason about as a set of **live research questions**
 
 **Current view.** “Retriever quality” is too coarse. Candidate admissibility, ranking, surfaced depth, local operations, structural navigation, result inspection, and reading granularity can independently determine what the agent can find and verify.
 
-**Key design points.** [A-RAG](../papers/2602.03442.md) → [DCI](../papers/2605.05242.md) → [RISE](../papers/2606.06880.md) → [RARG](../papers/2607.24223.md), with [Pi-Serini](../papers/2605.10848.md) and [SIEVE](../papers/2608.02751.md) providing factorization evidence.
+**Key design points.** [A-RAG](../papers/2602.03442.md) → [DCI](../papers/2605.05242.md) → [RISE](../papers/2606.06880.md) → [RARG](../papers/2607.24223.md), with [VisDocAgentBench](../papers/2608.17889.md) and [CTIFoundry](../papers/2608.18613.md) exposing search / resolve / traverse / inspect / read as evidence-path operations under bounded output contracts.
 
-**Boundary.** Richer interfaces can cost more; lexical/direct interaction remains brittle to semantic mismatch; a weak harness can make the same primitive appear worse.
+**Boundary.** Richer interfaces can cost more; VisDocAgentBench changes backend strength and accumulated history across important comparisons, while CTIFoundry bundles corpus materialization, typed tools, output descriptions, and skills.
 
-**Decisive next evidence.** Factorial backend × surfaced-depth × operation-set × read-resolution under the same model, evidence pool, and realized budget.
+**Decisive next evidence.** Factorial backend × surfaced-depth × operation-set × read-resolution under the same model, output contract, evidence pool, accumulated history, and realized budget.
 
 ### What should be learned?
 
@@ -60,7 +60,7 @@ The field is more useful to reason about as a set of **live research questions**
 
 **Current view.** Attribution can fail before the controller acts. Evidence must exist; the backend must expose it; the agent must inspect it; source/internal state must be correct; the harness must preserve it; and realized resources must be matched before a policy receives credit.
 
-**Key design points.** [Training Protocols](../papers/2605.27881.md) → [Pi-Serini](../papers/2605.10848.md) → [SGR-Bench](../papers/2605.22219.md) → [Is Grep All You Need?](../papers/2605.15184.md) → [VAKRA](../papers/2608.12282.md).
+**Key design points.** [Training Protocols](../papers/2605.27881.md) → [Pi-Serini](../papers/2605.10848.md) → [SGR-Bench](../papers/2605.22219.md) → [ToolScout](../papers/2608.16502.md) → [VisDocAgentBench](../papers/2608.17889.md).
 
 **Boundary.** Final-answer success can hide upstream failure or extra work; even “same retriever” is not the same experiment when surfaced depth, delivery path, retained state, or controller cost differs.
 

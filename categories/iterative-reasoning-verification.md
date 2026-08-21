@@ -7,6 +7,12 @@ This category is about the closed loop after retrieval begins. The important obj
 
 ## Current papers
 
+### [D2-ScaleAgent](../papers/2608.16417.md) — ★★★☆☆
+
+**Design point:** use an Evidence Bank and verifier to route between breadth (“find another page”) and depth (“inspect a found page more closely”) rather than treating iteration count as the control variable.
+
+**Boundary:** verifier removal is informative, but the full package's 21.4K tokens, latency, and routing calls are not matched in the key controls; direct Gemini VQA remains stronger on both main benchmarks.
+
 ### [S2G-RAG](../papers/2604.23783.md) — ★★★★☆
 
 **Design point:** predict whether current evidence is sufficient and, if not, represent missing information as structured gap items that become the next query.

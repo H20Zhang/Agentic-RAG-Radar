@@ -7,6 +7,12 @@ This category covers the agent-facing retrieval environment: corpus observabilit
 
 ## Current papers
 
+### [CTIFoundry](../papers/2608.18613.md) — ★★★★☆
+
+**Design point:** materialize documents as entities, relations, chunks, and resolvable identifiers, then expose `resolve / traverse / collect / read` operations to the same stock agent.
+
+**Boundary:** the full treatment bundles the scaffold, seven typed tools, output descriptions, prompt placement, and task skills; only offline build cost is reported comprehensively.
+
 ### [A-RAG](../papers/2602.03442.md) — ★★★★☆
 
 **Design point:** expose keyword search, semantic search, and chunk reads as a model-controlled retrieval-operation hierarchy rather than a fixed pipeline.

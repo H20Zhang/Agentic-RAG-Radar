@@ -1,0 +1,90 @@
+{
+  "id": "arxiv:2608.16417",
+  "arxiv_id": "2608.16417",
+  "title": "D2-ScaleAgent: Dual-Dimensional Scaling for Long Document Understanding",
+  "authors": [
+    "Hao Zhang",
+    "Longrong Yang",
+    "Lunhao Duan",
+    "Ziyang Wang",
+    "Qing-Guo Chen",
+    "Shanshan Zhao"
+  ],
+  "first_seen": "2026-08-21",
+  "published": "2026-08-17",
+  "published_at": "2026-08-17T11:15:27Z",
+  "first_seen_at": "2026-08-21T01:31:20Z",
+  "radar_published_at": "2026-08-21T01:31:21Z",
+  "time_provenance": "native_v2",
+  "map_delta": "early_signal",
+  "direction_keys": ["evidence-sufficiency-routing"],
+  "updated": "2026-08-21",
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.16417",
+    "pdf": "https://arxiv.org/pdf/2608.16417",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "iterative_reasoning_verification",
+  "tags": [
+    "adaptive_retrieval",
+    "evidence_state",
+    "multi_agent",
+    "multimodal_rag",
+    "verification"
+  ],
+  "benchmarks": [
+    "MMLongBench-Doc",
+    "LongDocURL",
+    "ViDoSeek",
+    "PaperTab",
+    "UniDoc-Bench"
+  ],
+  "relevance": 0.82,
+  "importance": 3,
+  "visual_explainer": {
+    "type": "agent_loop",
+    "question": "How does D2-ScaleAgent decide whether missing evidence requires another page or deeper inspection of an already retrieved page?",
+    "takeaway": "A Verifier reads a multi-granularity Evidence Bank, routes breadth gaps to page retrieval and depth gaps to Surveyor/Locator/Extractor, then rechecks evidence closure.",
+    "compared_with": "Fixed long-document RAG workflows and iterative pipelines that do not expose breadth-versus-depth evidence gaps as an explicit routing decision.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "generated",
+    "master_image_path": "assets/visuals/masters/2608.16417.png",
+    "image_path": "assets/visuals/2608.16417.webp",
+    "prompt_path": "assets/visuals/prompts/2608.16417.md",
+    "artifact_path": "papers/2608.16417.md"
+  },
+  "analysis": {
+    "tldr": "D2-ScaleAgent makes one useful control distinction explicit: a verifier-maintained Evidence Bank routes an unresolved long-document question either outward to retrieve more pages or inward to inspect already found pages at finer resolution. The package performs well and its ablations are directionally supportive, but the paper does not match adaptive compute or interface/state delivery against the closest iterative baselines.",
+    "problem": "Long-document multimodal RAG can fail for two different reasons: the relevant page has not been found, or the right page is present but has not been inspected at sufficient granularity. Fixed pipelines often spend the same retrieval and reasoning pattern regardless of which gap remains.",
+    "core_idea": "Maintain page-, region-, and atomic-evidence entries plus explicit completeness/gap state in an Evidence Bank. A Verifier classifies the unresolved need as breadth or depth: breadth triggers weighted parallel page retrieval and pruning; depth selects Surveyor, Locator, or Extractor. The loop stops only after declared evidence closure or a budget limit.",
+    "agent_loop": "retrieve initial pages → update multi-granularity Evidence Bank → Verifier identifies breadth/depth gap → retrieve another page or inspect found pages deeper → update state → verify closure → answer",
+    "retrieval_design": "Retrieval scaling decomposes a gap into up to six weighted attributes, retrieves pages in parallel, fuses rankings, prunes low-yield pages, and uses candidate-set stability to stop expansion. Reasoning scaling allocates different visual-reading agents to page, region, and atomic extraction levels.",
+    "compared_to": [
+      "full-document-image VQA",
+      "fixed-workflow multimodal RAG systems including MoLoRAG and MDocAgent",
+      "iterative seeker-inspector systems including ViDoRAG",
+      "internal ablations that remove retrieval scaling, each inspection agent, or the Verifier loop"
+    ],
+    "evidence": "Across four base-model blocks, D2-ScaleAgent has the highest mean in Table 1, but individual tasks have reversals. On MMLongBench-Doc with GPT-4o, the full system scores 52.0; removing retrieval scaling gives 46.8 and removing the Verifier loop gives 44.1, while a gold-evidence oracle gives 54.9. Its own effort on that task is 1.33 retrieval rounds, 5.02 routing-agent calls, 21.4K tokens, and 16.22 seconds; baseline resource tables are not matched.",
+    "why_it_matters": "It turns a vague instruction to 'search more' into a state-conditioned choice between evidence breadth and reading depth. That is a useful early design point for sufficiency-driven routing, provided the contribution is attributed to the combined Evidence Bank, operations, and adaptive compute rather than the Verifier alone.",
+    "limitations": [
+      "The main ablations change policy, evidence state, available operations, and realized compute together; they do not isolate the breadth-versus-depth classifier under a matched budget.",
+      "External baselines are not matched on retrieved pages, context delivery, calls, tokens, latency, or offline index cost.",
+      "Gemini direct VQA beats D2-ScaleAgent on MMLongBench-Doc and LongDocURL, so the iterative package is not uniformly superior.",
+      "The authors identify added latency/compute as a deployment limitation; no lifecycle construction/update or state-size accounting is reported."
+    ],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": [
+      "overlapping arXiv cs.CL/cs.AI primary-source search",
+      "full arXiv v1 PDF"
+    ],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-21"
+  }
+}

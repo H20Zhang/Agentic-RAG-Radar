@@ -7,6 +7,18 @@ This category covers benchmarks, controlled studies, failure analysis, historica
 
 ## Current design anchors
 
+### [VisDocAgentBench](../papers/2608.17889.md) — ★★★☆☆
+
+**Design point:** hold the top-10 opaque page-output contract fixed while separating direct, bridge, and path acquisition and ablating iterative search versus page inspection.
+
+**Boundary:** agent history/input tokens and retrieval backend strength are not matched across the strongest comparisons; only six targets are cross-document.
+
+### [ToolScout](../papers/2608.16502.md) — ★★★☆☆
+
+**Design point:** audit candidate capability coverage before agent planning and diagnose cross-source transfer with matched-source, mixed-source, and routed retrieval.
+
+**Boundary:** the study stops at retrieval coverage and a generation proxy; it does not execute tools to measure end-task success.
+
 ### [Retrieval, Reward, and Training Protocols](../papers/2605.27881.md) — ★★★★☆
 
 **Design point:** treat the retrieval/training environment itself as part of the algorithmic claim. Corpus coverage, tool format, reward, rollout freshness, and search budget are varied under a common setup.

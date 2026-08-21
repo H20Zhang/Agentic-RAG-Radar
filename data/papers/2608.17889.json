@@ -1,0 +1,88 @@
+{
+  "id": "arxiv:2608.17889",
+  "arxiv_id": "2608.17889",
+  "title": "VisDocAgentBench: Benchmarking Agents for Visually Rich Document Retrieval",
+  "authors": [
+    "Lexiang Hu",
+    "Yanzhao Zhang",
+    "Mingxin Li",
+    "Dingkun Long",
+    "Yikang Li",
+    "Fuwei Zhang",
+    "Yisen Wang",
+    "Zhouchen Lin"
+  ],
+  "first_seen": "2026-08-21",
+  "published": "2026-08-18",
+  "published_at": "2026-08-18T15:23:06Z",
+  "first_seen_at": "2026-08-21T01:31:20Z",
+  "radar_published_at": "2026-08-21T01:31:23Z",
+  "time_provenance": "native_v2",
+  "map_delta": "reinforces",
+  "direction_keys": ["evidence-path-operation-surfaces"],
+  "updated": "2026-08-21",
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.17889",
+    "pdf": "https://arxiv.org/pdf/2608.17889",
+    "code": "https://github.com/hulx2002/VisDocAgentBench",
+    "project": "https://hulx2002.github.io/VisDocAgentBench/"
+  },
+  "primary_category": "evaluation_analysis",
+  "tags": [
+    "agentic_retrieval",
+    "benchmark",
+    "document_retrieval",
+    "iterative_search",
+    "multimodal"
+  ],
+  "benchmarks": ["VisDocAgentBench"],
+  "relevance": 0.94,
+  "importance": 3,
+  "visual_explainer": {
+    "type": "evidence_failure_map",
+    "question": "Where do visually rich document retrieval agents fail between target discovery, page examination, evidence-role integration, and final ranking?",
+    "takeaway": "A shared ranked-page contract separates static matching from iterative acquisition; bridge paths expose failures that direct one-shot matching hides.",
+    "compared_with": "Static single-vector and late-interaction visual/OCR rankers plus GPT-5.6-sol controls that remove iterative search, inspection, cropping, or route-specific text.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2608.17889.png",
+    "image_path": "assets/visuals/2608.17889.webp",
+    "prompt_path": "assets/visuals/prompts/2608.17889.md",
+    "artifact_path": "papers/2608.17889.md"
+  },
+  "analysis": {
+    "tldr": "VisDocAgentBench evaluates static and agentic visual-document retrieval under the same top-10 ranked-page endpoint. Its strongest contribution is diagnostic: direct visual matching nearly saturates easy targets but collapses on hidden bridge paths; within the Qwen retrieval surface, iterative re-search and page inspection help, yet more input context and backend mismatch prevent a universal agent-policy claim.",
+    "problem": "Most visual-document retrieval benchmarks measure one-shot query-page matching, while agentic benchmarks usually score downstream QA. Neither cleanly locates failures in iterative page acquisition, inspection, and ranked target discovery.",
+    "core_idea": "Construct relation-preserving direct, one-bridge, and two-bridge queries over visually rich scientific documents, hide bridge concepts and document identifiers, and require every system to return ten opaque page IDs. Agents can search, inspect pages, use OCR/crops, and rank only discovered pages under a fixed step cap.",
+    "agent_loop": "issue visual/OCR search → receive opaque page handles → inspect/OCR/crop candidates → reformulate search from observed evidence → integrate bridge roles → return ranked top-10 pages",
+    "retrieval_design": "The benchmark contains 2,375 pages from 100 documents and 120 unique-target queries balanced across L1/L2/L3. Static systems and agents share the ranked-output contract. The main internal controls remove iterative search, page inspection, cropping, route-specific text, or supply annotated support pages.",
+    "compared_to": [
+      "static Qwen visual/OCR single-vector retrieval",
+      "BM25/RRF OCR retrieval",
+      "Nemotron-ColEmbed late-interaction visual retrieval",
+      "GPT-5.6-sol fixed top-30 candidate inspection",
+      "tool/inspection/support-page ablations"
+    ],
+    "evidence": "Nemotron-ColEmbed reaches 97.5% R@1 on direct items but 2.5% on two-bridge items. For GPT-5.6-sol, removing iterative search lowers visual R@1 from 61.67 to 53.33 and OCR R@1 from 36.67 to 27.50; removing page inspection lowers them further. The visual route discovers 83.3% of gold targets versus 58.3% for OCR. However, the full visual agent uses 177K input tokens versus 101K for the fixed-candidate control.",
+    "why_it_matters": "It strengthens the view that retrieval is an evidence-acquisition path—not just a score function. Representation determines discovery, inspection changes what becomes observable, and bridge-role integration determines whether discovered evidence is ranked correctly.",
+    "limitations": [
+      "Agents use a Qwen single-vector frontend while the strongest static baseline uses Nemotron late interaction, so the broad static-versus-agent comparison is not backend matched.",
+      "The no-iterative control has independent batches and much less accumulated input context; policy and state delivery are not fully isolated.",
+      "Only six queries are cross-document, and the corpus is fixed English scientific pages, limiting generality.",
+      "Cropping/text ablations reverse by route or depth; no closed-model latency/dollar cost or offline OCR/index accounting is reported."
+    ],
+    "confidence": "high"
+  },
+  "provenance": {
+    "discovered_via": [
+      "overlapping arXiv cs.IR primary-source search",
+      "full arXiv v1 PDF",
+      "author-linked project and repository"
+    ],
+    "full_text_checked": true,
+    "code_link_verified": true,
+    "last_reviewed": "2026-08-21"
+  }
+}

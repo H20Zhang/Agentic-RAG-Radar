@@ -10,12 +10,72 @@ Use this radar to answer: **where should retrieval intelligence live, when shoul
 
 [30 sec: Timeline](#timeline) · [3 min: 7/30-day changes](#periods) · [5 min: Field Map](#field-map) · [15 min: Reading Paths](#reading-paths) · [Browse all](#library)
 
-**Status:** Last updated: **2026-08-20** · Last synthesized: **2026-08-20T00:00:00Z (UTC)**
+**Status:** Last updated: **2026-08-21** · Last synthesized: **2026-08-21T01:31:24Z (UTC)**
 
 <a id="timeline"></a><a id="latest"></a><a id="latest-papers"></a>
 ## Latest Timeline
 
 > **Migration notice:** Historic Radar acceptance timestamps were not stored for these six legacy records. They are ordered by original paper date and are not presented as newly accepted by the Radar. Post-v2 entries use `radar_published_at` while preserving `published_at`.
+
+<a id="entry-2608.18613"></a>
+<details><summary>2026-08-21 · CTIFoundry · Interface resolution → agent-native corpus scaffold <!-- timefirst:area=agent-native-corpus-scaffold --> — Turns a flat corpus into named entities, relations, and typed evidence-path operations for the same underlying agent. <!-- timefirst:delta=typed-evidence-path-operations --></summary>
+
+**Question.** Can a corpus scaffold and operation surface, without changing the agent, improve cross-document evidence navigation? <!-- timefirst:question=corpus-scaffold-operation-surface -->
+
+**Evidence.** The four-model panel improves by 0.190–0.275 F1; GPT-5.4 rises from 0.610 flat base to 0.829 with tools+skills, with tools-only at 0.746 versus skills-only at 0.672. <!-- timefirst:evidence=ctifoundry-package~four-model-panel -->
+
+**Caveat.** Tools skills bundled: the full treatment jointly changes graph/entity indexing, seven typed tools, tool outputs/descriptions, the system prompt, and user-turn skills; per-arm online cost and update lifecycle are unmatched. <!-- timefirst:caveat=ctifoundry-attribution~tools-skills-bundled -->
+
+**Map.** `reinforces`: with VisDocAgentBench, strengthens explicit evidence-path operations under a shared output contract, without attributing the package gain to retrieval or planning alone.
+
+**Links.** [CTIFoundry: An Agent-Native Corpus Scaffold for Cyber Threat Intelligence](https://arxiv.org/abs/2608.18613) · [English deep note](papers/2608.18613.md) · [Chinese deep note](papers/2608.18613.zh.md)
+
+</details>
+
+<a id="entry-2608.17889"></a>
+<details><summary>2026-08-21 · VisDocAgentBench · Interface resolution → ranked visual retrieval <!-- timefirst:area=ranked-visual-retrieval --> — Uses the same top-10 opaque-page output to test static versus iterative visual target discovery. <!-- timefirst:delta=bridge-path-acquisition-benchmark --></summary>
+
+**Question.** In page-level visual retrieval, can iterative visual target discovery repair the collapse from direct to complex targets? <!-- timefirst:question=iterative-visual-target-discovery -->
+
+**Evidence.** In the iterative search ablation, GPT-5.6-sol visual R@1 rises from 53.33 without iteration to 61.67, while OCR rises from 27.50 to 36.67; the strongest static Nemotron reaches only 2.5% on L3. <!-- timefirst:evidence=visdoc-iteration~iterative-search-ablation -->
+
+**Caveat.** Input token history is unmatched: the full visual agent uses about 177K input tokens versus 101K for the control; agents use a Qwen single-vector backend while the strongest static control uses Nemotron late interaction. <!-- timefirst:caveat=visdoc-attribution~input-token-history -->
+
+**Map.** `reinforces`: with CTIFoundry, strengthens explicit evidence-path operations, while current evidence cannot isolate policy, retriever, and accumulated history.
+
+**Links.** [VisDocAgentBench: Benchmarking Agents for Visually Rich Document Retrieval](https://arxiv.org/abs/2608.17889) · [Project](https://hulx2002.github.io/VisDocAgentBench/) · [Code](https://github.com/hulx2002/VisDocAgentBench) · [English deep note](papers/2608.17889.md) · [Chinese deep note](papers/2608.17889.zh.md)
+
+</details>
+
+<a id="entry-2608.16502"></a>
+<details><summary>2026-08-21 · ToolScout · Interface resolution → capability retrieval <!-- timefirst:area=capability-retrieval --> — Shows how a tool retriever can mistake source style for capability match. <!-- timefirst:delta=source-style-capability-routing --></summary>
+
+**Question.** When capability retrieval transfers to mixed tool sources, does failure come from agent planning or from missing candidate-tool recall upstream? <!-- timefirst:question=capability-retrieval-transfer -->
+
+**Evidence.** Source-style collapse: a specialist retriever has 91.8% matched-source depth-20 coverage but only 22.3% mixed-source coverage; routing to source aggregators reaches 86.1%. <!-- timefirst:evidence=toolscout-transfer~source-style-collapse -->
+
+**Caveat.** End-to-end execution missing: the study measures candidate coverage and proxy generation rather than executing tools to finish tasks; “source style” also mixes query–tool pairing with target-side distribution. <!-- timefirst:caveat=toolscout-scope~end-to-end-execution-missing -->
+
+**Map.** `early_signal`: places a capability-coverage audit before agent planning; one transfer diagnosis does not establish a stable direction.
+
+**Links.** [When Tool-Backed Skill Retrieval Fails: Source-Style Collapse in Executable Capability Retrieval](https://arxiv.org/abs/2608.16502) · [English deep note](papers/2608.16502.md) · [Chinese deep note](papers/2608.16502.zh.md)
+
+</details>
+
+<a id="entry-2608.16417"></a>
+<details><summary>2026-08-21 · D2-ScaleAgent · Adaptivity placement → evidence-sufficiency routing <!-- timefirst:area=evidence-sufficiency-routing --> — Lets a verifier route between finding another page and reading a found page more deeply from an Evidence Bank. <!-- timefirst:delta=breadth-depth-evidence-routing --></summary>
+
+**Question.** Can breadth versus depth allocation be controlled by current evidence sufficiency rather than by adding a fixed number of retrieval rounds? <!-- timefirst:question=breadth-versus-depth-allocation -->
+
+**Evidence.** In the verifier loop ablation, GPT-4o scores 52.0 on MMLongBench with the full system, 44.1 without the verifier, 46.8 without retrieval scale, and 54.9 with the oracle. <!-- timefirst:evidence=d2-verifier~verifier-loop-ablation -->
+
+**Caveat.** Unmatched adaptive compute: the full system itself uses 21.4K tokens, 16.22 seconds, and 5.02 routing-agent calls, but key controls lack matched costs; Gemini direct VQA is stronger on both main benchmarks. <!-- timefirst:caveat=d2-attribution~unmatched-adaptive-compute -->
+
+**Map.** `early_signal`: adds controlled evidence for evidence-sufficiency routing without assigning a packaged visual-document-agent gain to the verifier alone.
+
+**Links.** [D2-ScaleAgent: Dual-Dimensional Scaling for Long Document Understanding](https://arxiv.org/abs/2608.16417) · [English deep note](papers/2608.16417.md) · [Chinese deep note](papers/2608.16417.zh.md)
+
+</details>
 
 <a id="entry-2608.16185"></a>
 <details><summary>2026-08-17 · LENS · Evidence materialization <!-- timefirst:area=evidence-materialization --> — Moves evidence boundaries from pre-indexing to budgeted query-time localization over raw documents. <!-- timefirst:delta=query-time-raw-region-localization --></summary>
@@ -113,16 +173,28 @@ Use this radar to answer: **where should retrieval intelligence live, when shoul
 Directions use Radar acceptance time only. Legacy papers remain Field Map context but cannot masquerade as rolling-window support.
 
 <a id="last-7-days"></a>
-### Last 7 days · 2026-08-14—2026-08-20
+### Last 7 days · 2026-08-15—2026-08-21
 
-- **`no_material_change` · RAG Radar acceptance time has no reportable change.** <!-- timefirst:direction key="rag-radar-acceptance-time" state="no_material_change" supports="none" confidence="high" implication="require-native-v2-times-for-period-claims" timing="radar_published_at" synthesized="2026-08-20T00:00:00Z" prior="none" -->
-  Supports: **none**; confidence: **high**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-20T00:00:00Z` (UTC); Research-design implication (require native v2 times for period claims): only native Radar acceptance times can support a window claim; prior map evidence: `none`.
+- **`reinforced` · Evidence path operation surfaces · Explicit evidence-path operations gain cross-task support.** <!-- timefirst:direction key="evidence-path-operation-surfaces" state="reinforced" supports="2608.17889,2608.18613" confidence="medium" implication="make-evidence-path-operations-explicit" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="field-map" -->
+  Supports: [VisDocAgentBench](#entry-2608.17889) · [CTIFoundry](#entry-2608.18613); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-21T01:31:24Z` (UTC); Research-design implication (make evidence path operations explicit): expose search / resolve / traverse / inspect / read under a shared output contract, then test against static controls with matched backend, harness, and budget; prior map evidence: [Interface resolution](#field-map).
+
+- **`new_signal` · Evidence sufficiency routing · Evidence sufficiency can route breadth versus depth.** <!-- timefirst:direction key="evidence-sufficiency-routing" state="new_signal" supports="2608.16417" confidence="medium" implication="separate-page-coverage-from-reading-depth" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="none" -->
+  Supports: [D2-ScaleAgent](#entry-2608.16417); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-21T01:31:24Z` (UTC); Research-design implication (separate page coverage from reading depth): measure new-page coverage separately from deep inspection of found pages and charge verifier tokens, calls, and latency; prior map evidence: `none`.
+
+- **`new_signal` · Source conditioned capability routing · Tool-capability recall is constrained by source distribution.** <!-- timefirst:direction key="source-conditioned-capability-routing" state="new_signal" supports="2608.16502" confidence="medium" implication="audit-capability-coverage-before-agent-planning" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="none" -->
+  Supports: [ToolScout](#entry-2608.16502); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-21T01:31:24Z` (UTC); Research-design implication (audit capability coverage before agent planning): verify candidate-tool coverage and cross-source transfer before assigning final failure to agent planning; prior map evidence: `none`.
 
 <a id="last-30-days"></a>
-### Last 30 days · 2026-07-22—2026-08-20
+### Last 30 days · 2026-07-23—2026-08-21
 
-- **`no_material_change` · RAG Radar acceptance time has no reportable change.** <!-- timefirst:direction key="rag-radar-acceptance-time" state="no_material_change" supports="none" confidence="high" implication="require-native-v2-times-for-period-claims" timing="radar_published_at" synthesized="2026-08-20T00:00:00Z" prior="none" -->
-  Supports: **none**; confidence: **high**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-20T00:00:00Z` (UTC); Research-design implication (require native v2 times for period claims): only native Radar acceptance times can support a window claim; prior map evidence: `none`.
+- **`reinforced` · Evidence path operation surfaces · Explicit evidence-path operations gain cross-task support.** <!-- timefirst:direction key="evidence-path-operation-surfaces" state="reinforced" supports="2608.17889,2608.18613" confidence="medium" implication="make-evidence-path-operations-explicit" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="field-map" -->
+  Supports: [VisDocAgentBench](#entry-2608.17889) · [CTIFoundry](#entry-2608.18613); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-21T01:31:24Z` (UTC); Research-design implication (make evidence path operations explicit): expose search / resolve / traverse / inspect / read under a shared output contract, then test against static controls with matched backend, harness, and budget; prior map evidence: [Interface resolution](#field-map).
+
+- **`new_signal` · Evidence sufficiency routing · Evidence sufficiency can route breadth versus depth.** <!-- timefirst:direction key="evidence-sufficiency-routing" state="new_signal" supports="2608.16417" confidence="medium" implication="separate-page-coverage-from-reading-depth" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="none" -->
+  Supports: [D2-ScaleAgent](#entry-2608.16417); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-21T01:31:24Z` (UTC); Research-design implication (separate page coverage from reading depth): measure new-page coverage separately from deep inspection of found pages and charge verifier tokens, calls, and latency; prior map evidence: `none`.
+
+- **`new_signal` · Source conditioned capability routing · Tool-capability recall is constrained by source distribution.** <!-- timefirst:direction key="source-conditioned-capability-routing" state="new_signal" supports="2608.16502" confidence="medium" implication="audit-capability-coverage-before-agent-planning" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="none" -->
+  Supports: [ToolScout](#entry-2608.16502); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-21T01:31:24Z` (UTC); Research-design implication (audit capability coverage before agent planning): verify candidate-tool coverage and cross-source transfer before assigning final failure to agent planning; prior map evidence: `none`.
 
 Closed periods and longer compaction: [weekly](digests/README.md) · [monthly](digests/monthly/2026-08.md) · [yearly](digests/yearly/2026.md)
 
@@ -141,7 +213,7 @@ Closed periods and longer compaction: [weekly](digests/README.md) · [monthly](d
 |---|---|---|
 | **Adaptivity placement** | What can be compiled before evidence arrives, and what requires result-conditioned control? | `pre-query compilation ↔ query-time adaptation` |
 | **Evidence materialization** | When should chunks/regions/workspaces become concrete? | `pre-materialized index ↔ raw/query-conditioned evidence` |
-| **Interface resolution** | What operations and source state can the agent observe/control? | `opaque top-k ↔ explicit search/read/filter/navigation` |
+| **Interface resolution** | What operations and source state can the agent observe/control? | `opaque top-k ↔ explicit search/resolve/traverse/inspect/read under shared output contract` |
 | **State persistence** | Which evidence, progress, or reasoning state should survive? | `stateless loop ↔ persistent/recoverable state` |
 | **Resource accounting** | What is actually cheaper? | `local retrieval metric ↔ lifecycle cost + task outcome` |
 

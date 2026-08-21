@@ -56,9 +56,9 @@ def english_direction(
         f'- **`{state}` · {heading}.** '
         f'<!-- timefirst:direction key="{map_key}" state="{state}" supports="{support_value}" '
         'confidence="high" implication="require-native-v2-times-for-period-claims" '
-        f'timing="radar_published_at" synthesized="2026-08-20T00:00:00Z" prior="{prior}" -->\n'
+        f'timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="{prior}" -->\n'
         f'  Supports: {visible}; confidence: **high**; timing basis: `radar_published_at`; '
-        'Exact synthesis time: `2026-08-20T00:00:00Z` (UTC); Research-design implication '
+        'Exact synthesis time: `2026-08-21T01:31:24Z` (UTC); Research-design implication '
         '(require native v2 times for period claims): native acceptance controls the window; '
         f'prior map evidence: {"[Field Map](#field-map)" if prior == "field-map" else "`none`"}.'
     )
@@ -112,26 +112,29 @@ class RagTimelineAdapterTest(unittest.TestCase):
         validate_reading.family_routes(duplicated, "README.md", errors)
         self.assertTrue(any("exactly one canonical Agentic RAG evaluation" in error for error in errors), errors)
 
-    def test_repository_periods_are_structured_no_material_change_by_radar_acceptance(self):
+    def test_repository_periods_are_structured_by_radar_acceptance(self):
         zh, en, records = repository_inputs()
         errors = validate_reading.validate_rag_timeline(zh, en, records)
         self.assertEqual([], errors)
         for text in (zh, en):
             periods = text[text.index('<a id="periods"></a>'):text.index('<a id="field-map"></a>')]
-            self.assertEqual(2, periods.count('state="no_material_change"'))
-            self.assertEqual(2, periods.count('supports="none"'))
-            self.assertNotRegex(periods, r"\(#entry-2608\.")
+            self.assertEqual(2, periods.count('state="reinforced"'))
+            self.assertEqual(4, periods.count('state="new_signal"'))
+            self.assertEqual(2, periods.count('supports="2608.17889,2608.18613"'))
+            self.assertRegex(periods, r"\(#entry-2608\.")
 
     def test_legacy_record_cannot_support_a_rolling_direction(self):
         zh, en, records = repository_inputs()
         for language, text in (("zh", zh), ("en", en)):
             if language == "zh":
-                old = "支撑：**none**；"
+                old = "支撑：[D2-ScaleAgent](#entry-2608.16417)；"
                 new = "支撑：[LENS](#entry-2608.16185)；"
             else:
-                old = "Supports: **none**;"
+                old = "Supports: [D2-ScaleAgent](#entry-2608.16417);"
                 new = "Supports: [LENS](#entry-2608.16185);"
-            mutated = text.replace(old, new, 1).replace('supports="none"', 'supports="2608.16185"', 1).replace('state="no_material_change"', 'state="new_signal"', 1).replace("`no_material_change`", "`new_signal`", 1)
+            mutated = text.replace(old, new, 1).replace(
+                'supports="2608.16417"', 'supports="2608.16185"', 1
+            )
             errors = validate_reading.validate_rag_timeline(
                 mutated if language == "zh" else zh,
                 mutated if language == "en" else en,
@@ -175,7 +178,7 @@ class RagTimelineAdapterTest(unittest.TestCase):
 
     def test_duplicate_visible_direction_field_is_rejected(self):
         zh, en, records = repository_inputs()
-        mutated = en.replace("Supports: **none**;", "Supports: **none**; Aside Supports: **none**;", 1)
+        mutated = en.replace("Supports:", "Supports: Aside Supports:", 1)
         errors = validate_reading.validate_rag_timeline(zh, mutated, records)
         self.assertTrue(any("exactly one visible supports" in error for error in errors), errors)
 
@@ -183,13 +186,13 @@ class RagTimelineAdapterTest(unittest.TestCase):
         zh, en, records = repository_inputs()
         cases = (
             ("README.en.md", en.replace(
-                "confidence: **high**;",
-                "confidence: **high**; Aside confi**dence**: **low**;",
+                "confidence: **medium**;",
+                "confidence: **medium**; Aside confi**dence**: **low**;",
                 1,
             )),
             ("README.md", zh.replace(
-                "置信度：**high**；",
-                "置信度：**high**；旁注：置信**度**：**low**；",
+                "置信度：**medium**；",
+                "置信度：**medium**；旁注：置信**度**：**low**；",
                 1,
             )),
         )
@@ -468,10 +471,8 @@ class RagTimelineAdapterTest(unittest.TestCase):
 
     def test_direction_support_regrouping_between_languages_is_rejected(self):
         zh, en, records = repository_inputs()
-        en = en.replace('state="no_material_change"', 'state="new_signal"', 1)
-        en = en.replace('supports="none"', 'supports="2608.16185"', 1)
-        en = en.replace("`no_material_change`", "`new_signal`", 1)
-        en = en.replace("Supports: **none**;", "Supports: [LENS](#entry-2608.16185);", 1)
+        en = en.replace('state="reinforced"', 'state="revised"', 1)
+        en = en.replace("`reinforced`", "`revised`", 1)
         errors = validate_reading.validate_rag_timeline(zh, en, records)
         self.assertTrue(any("direction parity" in error.lower() for error in errors), errors)
 
@@ -504,7 +505,7 @@ class RagTimelineAdapterTest(unittest.TestCase):
         self.assertTrue(any("support order" in error for error in errors), errors)
 
     def test_support_after_synthesis_cutoff_is_rejected(self):
-        records = [native_record("2608.90001", "2026-08-20T00:00:01Z")]
+        records = [native_record("2608.90001", "2026-08-21T01:31:25Z")]
         errors: list[str] = []
         validate_reading._parse_direction_items(
             "README.en.md", "last-7-days", english_direction(),
@@ -683,20 +684,20 @@ class RagTimelineAdapterTest(unittest.TestCase):
                     ],
                     (identity,),
                     "field-map",
-                    "falls outside 2026-07-22—2026-08-20",
+                        "falls outside 2026-07-23—2026-08-21",
                 ),
                 "post-cutoff": (
                     [
                         native_record(
                             identity,
-                            "2026-08-20T00:00:01Z",
+                            "2026-08-21T01:31:25Z",
                             state,
                             direction_keys=(direction_key,),
                         )
                     ],
                     (identity,),
                     "field-map",
-                    "accepted after direction synthesized=2026-08-20T00:00:00Z",
+                    "accepted after direction synthesized=2026-08-21T01:31:24Z",
                 ),
                 "incompatible-map-delta": (
                     [
@@ -735,11 +736,11 @@ class RagTimelineAdapterTest(unittest.TestCase):
     def test_split_retirement_state_drift_is_rejected_as_bilingual_parity(self):
         zh, en, records = repository_inputs()
         zh = zh.replace(
-            'state="no_material_change"', 'state="splits"', 1
-        ).replace("`no_material_change`", "`splits`", 1)
+            'state="reinforced"', 'state="splits"', 1
+        ).replace("`reinforced`", "`splits`", 1)
         en = en.replace(
-            'state="no_material_change"', 'state="retires"', 1
-        ).replace("`no_material_change`", "`retires`", 1)
+            'state="reinforced"', 'state="retires"', 1
+        ).replace("`reinforced`", "`retires`", 1)
 
         errors = validate_reading.validate_rag_timeline(zh, en, records)
 
@@ -756,7 +757,7 @@ class RagTimelineAdapterTest(unittest.TestCase):
 
     def test_direction_requires_confidence_and_design_implication_contracts(self):
         zh, en, records = repository_inputs()
-        zh = zh.replace('confidence="high"', '', 1).replace('implication="require-native-v2-times-for-period-claims"', '', 1)
+        zh = zh.replace('confidence="medium"', '', 1).replace('implication="make-evidence-path-operations-explicit"', '', 1)
         errors = validate_reading.validate_rag_timeline(zh, en, records)
         self.assertTrue(any("confidence" in error.lower() for error in errors))
         self.assertTrue(any("implication" in error.lower() for error in errors))
@@ -764,6 +765,10 @@ class RagTimelineAdapterTest(unittest.TestCase):
 
 class ReaderAttentionTest(unittest.TestCase):
     SHORT_LABELS = {
+        "2608.18613": "CTIFoundry",
+        "2608.17889": "VisDocAgentBench",
+        "2608.16502": "ToolScout",
+        "2608.16417": "D2-ScaleAgent",
         "2608.16185": "LENS",
         "2608.16370": "Context Compression Cost",
         "2608.15191": "RAAC",
@@ -811,7 +816,7 @@ class ReaderAttentionTest(unittest.TestCase):
         zh, en, records = repository_inputs()
         errors = validate_reading.validate_rag_timeline(
             zh,
-            en.replace("Last updated: **2026-08-20**", "Last updated: **2026-08-19**", 1),
+            en.replace("Last updated: **2026-08-21**", "Last updated: **2026-08-20**", 1),
             records,
         )
         self.assertTrue(any("reader status parity" in error.lower() for error in errors), errors)

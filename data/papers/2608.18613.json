@@ -1,0 +1,85 @@
+{
+  "id": "arxiv:2608.18613",
+  "arxiv_id": "2608.18613",
+  "title": "CTIFoundry: An Agent-Native Corpus Scaffold for Cyber Threat Intelligence",
+  "authors": [
+    "Yutong Cheng",
+    "Changze Li",
+    "Qian Cui",
+    "Wei Ding",
+    "Lingzhi Wang",
+    "Yan Chen",
+    "Peng Gao"
+  ],
+  "first_seen": "2026-08-21",
+  "published": "2026-08-19",
+  "published_at": "2026-08-19T07:00:29Z",
+  "first_seen_at": "2026-08-21T01:31:20Z",
+  "radar_published_at": "2026-08-21T01:31:24Z",
+  "time_provenance": "native_v2",
+  "map_delta": "reinforces",
+  "direction_keys": ["evidence-path-operation-surfaces"],
+  "updated": "2026-08-21",
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.18613",
+    "pdf": "https://arxiv.org/pdf/2608.18613",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "retrieval_tool_use",
+  "tags": [
+    "agent_interface",
+    "corpus_scaffold",
+    "hybrid_retrieval",
+    "knowledge_graph",
+    "provenance"
+  ],
+  "benchmarks": ["CTIConnect"],
+  "relevance": 0.94,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "retrieval_interface",
+    "question": "What changes when the same stock agent sees a flat corpus through bash versus a validated corpus scaffold through typed operations and procedural skills?",
+    "takeaway": "CTIFoundry materializes official relations, canonical entities, provenance, and hybrid retrieval offline, then exposes resolve/traverse/collect/read operations to the unchanged agent loop.",
+    "compared_with": "The same stock mini-swe-agent over the same frozen CTI corpus exposed as flat files through a generic bash surface.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "generated",
+    "master_image_path": "assets/visuals/masters/2608.18613.png",
+    "image_path": "assets/visuals/2608.18613.webp",
+    "prompt_path": "assets/visuals/prompts/2608.18613.md",
+    "artifact_path": "papers/2608.18613.md"
+  },
+  "analysis": {
+    "tldr": "CTIFoundry shows that corpus representation and operation surface can dominate a fixed agent harness in one CTI setting. It materializes validated official relations, canonical entities, provenance-linked chunks, and hybrid retrieval, then exposes typed resolve/traverse/collect/read tools plus procedural skills. The strongest claim belongs to this coupled scaffold-and-interface package—not to graph structure or controller quality alone.",
+    "problem": "Flat chunk stores hide official cross-references, aliases, provenance, and multi-document collection behind generic search. An agent may locate a plausible source yet lack an operable path to traverse the authoritative relation or collect all reports that mention an entity.",
+    "core_idea": "Build a deterministic ontology graph over four authoritative knowledge bases, a span-grounded report layer with canonical cross-vendor entities, entity-to-chunk provenance indices, and dense+lexical retrieval. Expose the scaffold through seven typed tools and task-specific procedural skills mounted on a stock agent harness.",
+    "agent_loop": "select static task playbook → resolve entity or search source → traverse official edges / collect mentioning chunks / read reports → verify provenance → answer",
+    "retrieval_design": "The offline scaffold contains 6,044 nodes, 7,097 typed edges, 688 report chunks, and 4,868 canonical entities. Online operations include resolve entity, get entity, ontology neighbors, search KB, search chunks, chunks mentioning, and read report; three user-turn skills specialize entity linking, attribution, and multi-document synthesis.",
+    "compared_to": [
+      "the same stock mini-swe-agent over flat files through bash",
+      "tools-only and skills-only 2×2 ablations",
+      "four model/provider pairs under the same 20-step harness",
+      "tasks with and without materialized authoritative relations"
+    ],
+    "evidence": "Across four models, full CTIFoundry raises overall CTIConnect F1 by 0.190–0.275. With gpt-5.4, base/tools-only/skills-only/full score 0.610/0.746/0.672/0.829, showing both the action surface and procedural delivery matter. Forward entity-link tasks with official edges improve sharply, while MLA—where the needed relation is not materialized—stays flat or becomes worse. The one-time 321-report build reports 1.42M tokens and $1.86, but no update lifecycle.",
+    "why_it_matters": "Together with VisDocAgentBench, CTIFoundry provides independent evidence that an agent's operation surface determines whether an evidence path is expressible and inspectable. It also sharpens the causal warning: a richer scaffold, typed outputs, tool descriptions, and procedural instructions are a package that must be separated before crediting policy.",
+    "limitations": [
+      "The full comparison bundles offline materialization, seven typed operations, structured outputs/descriptions, a different system prompt, and user-turn procedural skills.",
+      "The 2×2 establishes tool/skill complementarity but does not isolate graph, alias index, hybrid retrieval, API ergonomics, or output schema inside the tools arm.",
+      "The corpus is one frozen 321-report CTI setting; no incremental update, staleness, maintenance, index storage, or full per-arm latency/cost table is reported.",
+      "MLA and some attribution cells regress, showing that the scaffold helps most where authoritative structure exists rather than uniformly across CTI reasoning."
+    ],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": [
+      "overlapping arXiv cs.AI/cs.CR primary-source search",
+      "full arXiv v1 PDF"
+    ],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-21"
+  }
+}

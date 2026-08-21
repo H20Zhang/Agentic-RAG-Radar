@@ -10,12 +10,72 @@
 
 [30 秒：最新时间线](#timeline) · [3 分钟：7/30 天变化](#periods) · [5 分钟：领域地图](#field-map) · [15 分钟：阅读路径](#reading-paths) · [浏览全部](#library)
 
-**状态：** 最后更新：**2026-08-20** · 最后合成：**2026-08-20T00:00:00Z（UTC）**
+**状态：** 最后更新：**2026-08-21** · 最后合成：**2026-08-21T01:31:24Z（UTC）**
 
 <a id="timeline"></a><a id="latest"></a><a id="latest-papers"></a>
 ## 最新时间线
 
 > **迁移说明：** 这六条 legacy 记录没有保存历史 Radar 接纳时间，因此按论文公开日期排序，不把它们冒充为“最近被 Radar 接纳”。v2 切换后新增记录按 `radar_published_at` 排序，同时保留原始 `published_at`。
+
+<a id="entry-2608.18613"></a>
+<details><summary>2026-08-21 · CTIFoundry · Interface resolution → agent-native corpus scaffold <!-- timefirst:area=agent-native-corpus-scaffold --> — 在同一底层 agent 上，把平面语料改造成具名实体、关系与 typed operations 的证据路径。 <!-- timefirst:delta=typed-evidence-path-operations --></summary>
+
+**问题。** 语料 scaffold 与可操作接口，而非更换 agent，能否改善跨文档证据导航？ <!-- timefirst:question=corpus-scaffold-operation-surface -->
+
+**证据。** four-model panel 全部提升 0.190–0.275 F1；GPT-5.4 从 flat base 0.610 提升到 tools+skills full 0.829，且 tools-only 0.746 高于 skills-only 0.672。 <!-- timefirst:evidence=ctifoundry-package~four-model-panel -->
+
+**限制。** tools skills bundled：完整处理同时改变图/实体索引、七种 typed tools、工具输出与描述、system prompt 及用户轮次 skills；没有对齐每个分支的 online 成本和更新生命周期。 <!-- timefirst:caveat=ctifoundry-attribution~tools-skills-bundled -->
+
+**地图。** `reinforces`：与 VisDocAgentBench 共同加强“在共享输出契约下显式暴露证据路径操作”这一接口轴，不把整套增益归给检索或规划。
+
+**链接。** [CTIFoundry: An Agent-Native Corpus Scaffold for Cyber Threat Intelligence](https://arxiv.org/abs/2608.18613) · [英文深读](papers/2608.18613.md) · [中文深读](papers/2608.18613.zh.md)
+
+</details>
+
+<a id="entry-2608.17889"></a>
+<details><summary>2026-08-21 · VisDocAgentBench · Interface resolution → ranked visual retrieval <!-- timefirst:area=ranked-visual-retrieval --> — 用统一 top-10 opaque page 输出测试静态与 iterative visual target discovery。 <!-- timefirst:delta=bridge-path-acquisition-benchmark --></summary>
+
+**问题。** 在页面级视觉检索中，iterative visual target discovery 能否弥补静态检索从直接目标到复杂目标的崩塌？ <!-- timefirst:question=iterative-visual-target-discovery -->
+
+**证据。** iterative search ablation 中，GPT-5.6-sol 视觉路径 R@1 从无迭代的 53.33 提升到 61.67，OCR 路径从 27.50 提升到 36.67；但最强静态 Nemotron 在 L3 仅 2.5%。 <!-- timefirst:evidence=visdoc-iteration~iterative-search-ablation -->
+
+**限制。** input token history 未匹配：完整视觉 agent 约 177K input tokens，对照约 101K；agent 后端是 Qwen single-vector，而最强静态对照是 Nemotron late-interaction。 <!-- timefirst:caveat=visdoc-attribution~input-token-history -->
+
+**地图。** `reinforces`：与 CTIFoundry 一起强化显式证据路径操作，但当前证据不能分离 policy、retriever 与累积历史。
+
+**链接。** [VisDocAgentBench: Benchmarking Agents for Visually Rich Document Retrieval](https://arxiv.org/abs/2608.17889) · [项目](https://hulx2002.github.io/VisDocAgentBench/) · [代码](https://github.com/hulx2002/VisDocAgentBench) · [英文深读](papers/2608.17889.md) · [中文深读](papers/2608.17889.zh.md)
+
+</details>
+
+<a id="entry-2608.16502"></a>
+<details><summary>2026-08-21 · ToolScout · Interface resolution → capability retrieval <!-- timefirst:area=capability-retrieval --> — 揭示工具检索器可能把来源风格误当成能力匹配信号。 <!-- timefirst:delta=source-style-capability-routing --></summary>
+
+**问题。** capability retrieval transfer 到混合工具源时，失败来自 agent planning，还是上游候选工具没有被召回？ <!-- timefirst:question=capability-retrieval-transfer -->
+
+**证据。** source-style collapse：专用检索器在匹配来源 depth-20 coverage 为 91.8%，混合来源仅 22.3%；路由到来源聚合器后为 86.1%。 <!-- timefirst:evidence=toolscout-transfer~source-style-collapse -->
+
+**限制。** end-to-end execution missing：工作测量候选覆盖与 proxy generation，并未执行工具完成任务；“来源风格”还混合 query–tool pairing 与目标侧分布。 <!-- timefirst:caveat=toolscout-scope~end-to-end-execution-missing -->
+
+**地图。** `early_signal`：把 capability coverage audit 放到 agent planning 之前；单篇迁移诊断不足以建立稳定方向。
+
+**链接。** [When Tool-Backed Skill Retrieval Fails: Source-Style Collapse in Executable Capability Retrieval](https://arxiv.org/abs/2608.16502) · [英文深读](papers/2608.16502.md) · [中文深读](papers/2608.16502.zh.md)
+
+</details>
+
+<a id="entry-2608.16417"></a>
+<details><summary>2026-08-21 · D2-ScaleAgent · Adaptivity placement → evidence-sufficiency routing <!-- timefirst:area=evidence-sufficiency-routing --> — 让 verifier 根据 Evidence Bank 在继续找新页与深入已找到页面之间路由。 <!-- timefirst:delta=breadth-depth-evidence-routing --></summary>
+
+**问题。** breadth versus depth allocation 是否能由当前证据充分性显式控制，而不是固定增加检索轮数？ <!-- timefirst:question=breadth-versus-depth-allocation -->
+
+**证据。** verifier loop ablation：GPT-4o 在 MMLongBench 上完整系统为 52.0，移除 verifier 为 44.1，移除 retrieval scale 为 46.8；oracle 为 54.9。 <!-- timefirst:evidence=d2-verifier~verifier-loop-ablation -->
+
+**限制。** unmatched adaptive compute：完整系统自身为 21.4K tokens、16.22 秒与 5.02 次 routing-agent calls，但未给关键对照的匹配成本；Gemini direct VQA 在两项主 benchmark 上更强。 <!-- timefirst:caveat=d2-attribution~unmatched-adaptive-compute -->
+
+**地图。** `early_signal`：为 evidence-sufficiency routing 增加一个受控信号，不把整套视觉文档 agent 的收益单独归给 verifier。
+
+**链接。** [D2-ScaleAgent: Dual-Dimensional Scaling for Long Document Understanding](https://arxiv.org/abs/2608.16417) · [英文深读](papers/2608.16417.md) · [中文深读](papers/2608.16417.zh.md)
+
+</details>
 
 <a id="entry-2608.16185"></a>
 <details><summary>2026-08-17 · LENS · Evidence materialization <!-- timefirst:area=evidence-materialization --> — 把证据边界从索引时预先固定，改为查询时在原始文档上按预算定位。 <!-- timefirst:delta=query-time-raw-region-localization --></summary>
@@ -113,16 +173,28 @@
 方向条目只按 Radar 接纳时间判断；legacy 论文仍可提供领域背景，但不能冒充滚动窗口支撑。
 
 <a id="last-7-days"></a>
-### 过去 7 天 · 2026-08-14—2026-08-20
+### 过去 7 天 · 2026-08-15—2026-08-21
 
-- **`no_material_change` · RAG Radar acceptance time 暂无可报告变化。** <!-- timefirst:direction key="rag-radar-acceptance-time" state="no_material_change" supports="none" confidence="high" implication="require-native-v2-times-for-period-claims" timing="radar_published_at" synthesized="2026-08-20T00:00:00Z" prior="none" -->
-  支撑：**none**；置信度：**high**；时间依据：`radar_published_at`；精确合成时间：`2026-08-20T00:00:00Z`（UTC）；研究设计含义（require native v2 times for period claims）：只有带原生 Radar 接纳时间的记录才能支持窗口判断；先验地图证据：`none`。
+- **`reinforced` · Evidence path operation surfaces · 显式证据路径操作获得跨任务证据。** <!-- timefirst:direction key="evidence-path-operation-surfaces" state="reinforced" supports="2608.17889,2608.18613" confidence="medium" implication="make-evidence-path-operations-explicit" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="field-map" -->
+  支撑：[VisDocAgentBench](#entry-2608.17889) · [CTIFoundry](#entry-2608.18613)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-21T01:31:24Z`（UTC）；研究设计含义（make evidence path operations explicit）：在共享输出契约下显式暴露 search / resolve / traverse / inspect / read，并以匹配后端、harness 与预算的静态对照检验；先验地图证据：[Interface resolution](#field-map)。
+
+- **`new_signal` · Evidence sufficiency routing · 证据充分性可路由广度与深度。** <!-- timefirst:direction key="evidence-sufficiency-routing" state="new_signal" supports="2608.16417" confidence="medium" implication="separate-page-coverage-from-reading-depth" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="none" -->
+  支撑：[D2-ScaleAgent](#entry-2608.16417)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-21T01:31:24Z`（UTC）；研究设计含义（separate page coverage from reading depth）：分别测量新页面覆盖和已命中页面的深读，并对齐 verifier 的 token、调用与延迟；先验地图证据：`none`。
+
+- **`new_signal` · Source conditioned capability routing · 工具能力召回受来源分布制约。** <!-- timefirst:direction key="source-conditioned-capability-routing" state="new_signal" supports="2608.16502" confidence="medium" implication="audit-capability-coverage-before-agent-planning" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="none" -->
+  支撑：[ToolScout](#entry-2608.16502)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-21T01:31:24Z`（UTC）；研究设计含义（audit capability coverage before agent planning）：先核验候选工具覆盖与跨来源迁移，再把最终失败归因给 agent planning；先验地图证据：`none`。
 
 <a id="last-30-days"></a>
-### 过去 30 天 · 2026-07-22—2026-08-20
+### 过去 30 天 · 2026-07-23—2026-08-21
 
-- **`no_material_change` · RAG Radar acceptance time 暂无可报告变化。** <!-- timefirst:direction key="rag-radar-acceptance-time" state="no_material_change" supports="none" confidence="high" implication="require-native-v2-times-for-period-claims" timing="radar_published_at" synthesized="2026-08-20T00:00:00Z" prior="none" -->
-  支撑：**none**；置信度：**high**；时间依据：`radar_published_at`；精确合成时间：`2026-08-20T00:00:00Z`（UTC）；研究设计含义（require native v2 times for period claims）：只有带原生 Radar 接纳时间的记录才能支持窗口判断；先验地图证据：`none`。
+- **`reinforced` · Evidence path operation surfaces · 显式证据路径操作获得跨任务证据。** <!-- timefirst:direction key="evidence-path-operation-surfaces" state="reinforced" supports="2608.17889,2608.18613" confidence="medium" implication="make-evidence-path-operations-explicit" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="field-map" -->
+  支撑：[VisDocAgentBench](#entry-2608.17889) · [CTIFoundry](#entry-2608.18613)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-21T01:31:24Z`（UTC）；研究设计含义（make evidence path operations explicit）：在共享输出契约下显式暴露 search / resolve / traverse / inspect / read，并以匹配后端、harness 与预算的静态对照检验；先验地图证据：[Interface resolution](#field-map)。
+
+- **`new_signal` · Evidence sufficiency routing · 证据充分性可路由广度与深度。** <!-- timefirst:direction key="evidence-sufficiency-routing" state="new_signal" supports="2608.16417" confidence="medium" implication="separate-page-coverage-from-reading-depth" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="none" -->
+  支撑：[D2-ScaleAgent](#entry-2608.16417)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-21T01:31:24Z`（UTC）；研究设计含义（separate page coverage from reading depth）：分别测量新页面覆盖和已命中页面的深读，并对齐 verifier 的 token、调用与延迟；先验地图证据：`none`。
+
+- **`new_signal` · Source conditioned capability routing · 工具能力召回受来源分布制约。** <!-- timefirst:direction key="source-conditioned-capability-routing" state="new_signal" supports="2608.16502" confidence="medium" implication="audit-capability-coverage-before-agent-planning" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="none" -->
+  支撑：[ToolScout](#entry-2608.16502)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-21T01:31:24Z`（UTC）；研究设计含义（audit capability coverage before agent planning）：先核验候选工具覆盖与跨来源迁移，再把最终失败归因给 agent planning；先验地图证据：`none`。
 
 封闭周期与长期压缩：[weekly](digests/README.md) · [monthly](digests/monthly/2026-08.md) · [yearly](digests/yearly/2026.md)
 
@@ -141,7 +213,7 @@
 |---|---|---|
 | **Adaptivity placement** | 哪些操作可以在看到证据前预先编排，哪些必须根据返回结果调整？ | `pre-query compilation ↔ query-time adaptation` |
 | **Evidence materialization** | 何时应把文本块、区域或工作区固化为可操作对象？ | `pre-materialized index ↔ raw/query-conditioned evidence` |
-| **Interface resolution** | Agent 能观察和控制哪些检索操作与来源状态？ | `opaque top-k ↔ explicit search/read/filter/navigation` |
+| **Interface resolution** | Agent 能观察和控制哪些检索操作与来源状态？ | `opaque top-k ↔ explicit search/resolve/traverse/inspect/read under shared output contract` |
 | **State persistence** | 哪些证据、进度和推理状态应跨动作保留？ | `stateless loop ↔ persistent/recoverable state` |
 | **Resource accounting** | 哪种方案的生命周期总成本更低？ | `local retrieval metric ↔ lifecycle cost + task outcome` |
 

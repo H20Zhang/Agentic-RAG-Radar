@@ -6,17 +6,17 @@ This archive tracks **how the field interpretation changes**, not just which pap
 
 | Horizon | Role | Current synthesis |
 |---|---|---|
-| **Weekly** | What changed locally, and what is still only an early signal? | [2026-W34 — Materialization, progress observability, and the hidden re-query tax](weekly/2026-W34.md) |
-| **Monthly** | What design space is emerging after re-grounding against older anchors? | [2026-08 — Placement of work across materialization, control, and state](monthly/2026-08.md) |
+| **Weekly** | What changed locally, and what is still only an early signal? | [2026-W34 — Evidence-path operations, breadth/depth routing, and capability coverage](weekly/2026-W34.md) |
+| **Monthly** | What design space is emerging after re-grounding against older anchors? | [2026-08 — Placement of work and evidence-path operations](monthly/2026-08.md) |
 | **Yearly** | Which shifts look durable enough to change how the field should be modeled? | [2026 YTD — Information-environment design and lifecycle accounting](yearly/2026.md) |
 
 ## Weekly
 
-**[2026-W34 · Materialization, progress observability, and the hidden re-query tax](weekly/2026-W34.md)**  
-Moving work out of an index, search loop, or prompt is only a systems improvement if the displaced work does not reappear as query-time localization, controller compute, or state reacquisition.
+**[2026-W34 · Evidence-path operations, breadth/depth routing, and capability coverage](weekly/2026-W34.md)**
+Explicit evidence-path operations gain cross-task support, while breadth/depth and source-conditioned routing remain bounded single-paper signals.
 
-**[2026-W33 · Where should retrieval intelligence live?](weekly/2026-W33.md)**  
-Runtime interaction is valuable when it exposes information that could not have been compiled before retrieval; ReFind, LoongReflect, and VAKRA sharpen different runtime boundaries.
+**[2026-W33 · Four distinct control and evaluation signals](weekly/2026-W33.md)**
+Finalized by paper publication date: ReFind, RAAC, LoongReflect, and VAKRA expose different interfaces and state boundaries without forming one controller trend.
 
 **[2026-W32 · Convergence, factorization, and a stricter novelty baseline](weekly/2026-W32.md)**  
 Interface and learning factorization matter more than “agentic” naming; SIEVE separates access stages while SearchMaster makes the training distribution causal.
@@ -26,7 +26,10 @@ Older weekly files remain in the repository for provenance even after they age o
 ## Monthly
 
 **[2026-08 · Rolling research map](monthly/2026-08.md)**  
-August is a placement-of-work story: what evidence is materialized before the query, what control is deferred until after evidence arrives, and what state is retained versus reacquired.
+August separates evidence/capability coverage, materialization, operation surfaces, retained state, and lifecycle resources.
+
+**[2026-07 · Finalized retrieval-control synthesis](monthly/2026-07.md)**
+July separates retrieve/skip operating points from relevance-guided execution; both remain bounded early signals.
 
 Monthly synthesis is rewritten when new evidence changes the map; it is not a concatenation of weekly reports.
 
