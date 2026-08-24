@@ -10,12 +10,27 @@
 
 [30 秒：最新时间线](#timeline) · [3 分钟：7/30 天变化](#periods) · [5 分钟：领域地图](#field-map) · [15 分钟：阅读路径](#reading-paths) · [浏览全部](#library)
 
-**状态：** 最后更新：**2026-08-21** · 最后合成：**2026-08-21T01:31:24Z（UTC）**
+**状态：** 最后更新：**2026-08-24** · 最后合成：**2026-08-24T01:33:36Z（UTC）**
 
 <a id="timeline"></a><a id="latest"></a><a id="latest-papers"></a>
 ## 最新时间线
 
 > **迁移说明：** 这六条 legacy 记录没有保存历史 Radar 接纳时间，因此按论文公开日期排序，不把它们冒充为“最近被 Radar 接纳”。v2 切换后新增记录按 `radar_published_at` 排序，同时保留原始 `published_at`。
+
+<a id="entry-2608.19652"></a>
+<details><summary>2026-08-24 · StateMem · State persistence → supersession-aware state <!-- timefirst:area=supersession-aware-state --> — 把“取回历史”和“判断哪些事实及依赖仍然有效”拆成两个问题。 <!-- timefirst:delta=supersession-aware-state-assembly --></summary>
+
+**问题。** 当检索历史同时包含已作废和仍有效的事实时，agent 能否组装出当前状态？ <!-- timefirst:question=evolving-state-assembly -->
+
+**证据。** StateMem value chain structure：六个 backend 上，StateMemWrapper 在相同 full transcript、chunks、call 与长度预算之外贡献 15.0–31.7 个点。 <!-- timefirst:evidence=statemem-control~statemem-value-chain-structure -->
+
+**限制。** Synthetic benchmark upper bound：benchmark 针对的正是方法所编码的 lazy-reader failure family；完整 StateMem 约用 165–600 次 ingest LLM calls，dependency propagation 有时有害，DeepSeek/LongMemEval 的结构增量仅 −5 到 +5 个点。 <!-- timefirst:caveat=statemem-boundary~synthetic-benchmark-upper-bound -->
+
+**地图。** `early_signal`：为 State persistence 加入 supersession-aware state assembly；单个 benchmark/method package 不构成 durable direction。
+
+**链接。** [Can Agent Memory Systems Track Evolving State?](https://arxiv.org/abs/2608.19652) · [英文深读](papers/2608.19652.md) · [中文深读](papers/2608.19652.zh.md)
+
+</details>
 
 <a id="entry-2608.18613"></a>
 <details><summary>2026-08-21 · CTIFoundry · Interface resolution → agent-native corpus scaffold <!-- timefirst:area=agent-native-corpus-scaffold --> — 在同一底层 agent 上，把平面语料改造成具名实体、关系与 typed operations 的证据路径。 <!-- timefirst:delta=typed-evidence-path-operations --></summary>
@@ -173,28 +188,34 @@
 方向条目只按 Radar 接纳时间判断；legacy 论文仍可提供领域背景，但不能冒充滚动窗口支撑。
 
 <a id="last-7-days"></a>
-### 过去 7 天 · 2026-08-15—2026-08-21
+### 过去 7 天 · 2026-08-18—2026-08-24
 
-- **`reinforced` · Evidence path operation surfaces · 显式证据路径操作获得跨任务证据。** <!-- timefirst:direction key="evidence-path-operation-surfaces" state="reinforced" supports="2608.17889,2608.18613" confidence="medium" implication="make-evidence-path-operations-explicit" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="field-map" -->
-  支撑：[VisDocAgentBench](#entry-2608.17889) · [CTIFoundry](#entry-2608.18613)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-21T01:31:24Z`（UTC）；研究设计含义（make evidence path operations explicit）：在共享输出契约下显式暴露 search / resolve / traverse / inspect / read，并以匹配后端、harness 与预算的静态对照检验；先验地图证据：[Interface resolution](#field-map)。
+- **`reinforced` · Evidence path operation surfaces · 显式证据路径操作获得跨任务证据。** <!-- timefirst:direction key="evidence-path-operation-surfaces" state="reinforced" supports="2608.17889,2608.18613" confidence="medium" implication="make-evidence-path-operations-explicit" timing="radar_published_at" synthesized="2026-08-24T01:33:36Z" prior="field-map" -->
+  支撑：[VisDocAgentBench](#entry-2608.17889) · [CTIFoundry](#entry-2608.18613)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-24T01:33:36Z`（UTC）；研究设计含义（make evidence path operations explicit）：在共享输出契约下显式暴露 search / resolve / traverse / inspect / read，并以匹配后端、harness 与预算的静态对照检验；先验地图证据：[Interface resolution](#field-map)。
 
-- **`new_signal` · Evidence sufficiency routing · 证据充分性可路由广度与深度。** <!-- timefirst:direction key="evidence-sufficiency-routing" state="new_signal" supports="2608.16417" confidence="medium" implication="separate-page-coverage-from-reading-depth" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="none" -->
-  支撑：[D2-ScaleAgent](#entry-2608.16417)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-21T01:31:24Z`（UTC）；研究设计含义（separate page coverage from reading depth）：分别测量新页面覆盖和已命中页面的深读，并对齐 verifier 的 token、调用与延迟；先验地图证据：`none`。
+- **`new_signal` · Evidence sufficiency routing · 证据充分性可路由广度与深度。** <!-- timefirst:direction key="evidence-sufficiency-routing" state="new_signal" supports="2608.16417" confidence="medium" implication="separate-page-coverage-from-reading-depth" timing="radar_published_at" synthesized="2026-08-24T01:33:36Z" prior="none" -->
+  支撑：[D2-ScaleAgent](#entry-2608.16417)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-24T01:33:36Z`（UTC）；研究设计含义（separate page coverage from reading depth）：分别测量新页面覆盖和已命中页面的深读，并对齐 verifier 的 token、调用与延迟；先验地图证据：`none`。
 
-- **`new_signal` · Source conditioned capability routing · 工具能力召回受来源分布制约。** <!-- timefirst:direction key="source-conditioned-capability-routing" state="new_signal" supports="2608.16502" confidence="medium" implication="audit-capability-coverage-before-agent-planning" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="none" -->
-  支撑：[ToolScout](#entry-2608.16502)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-21T01:31:24Z`（UTC）；研究设计含义（audit capability coverage before agent planning）：先核验候选工具覆盖与跨来源迁移，再把最终失败归因给 agent planning；先验地图证据：`none`。
+- **`new_signal` · Source conditioned capability routing · 工具能力召回受来源分布制约。** <!-- timefirst:direction key="source-conditioned-capability-routing" state="new_signal" supports="2608.16502" confidence="medium" implication="audit-capability-coverage-before-agent-planning" timing="radar_published_at" synthesized="2026-08-24T01:33:36Z" prior="none" -->
+  支撑：[ToolScout](#entry-2608.16502)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-24T01:33:36Z`（UTC）；研究设计含义（audit capability coverage before agent planning）：先核验候选工具覆盖与跨来源迁移，再把最终失败归因给 agent planning；先验地图证据：`none`。
+
+- **`new_signal` · Supersession aware state assembly · 历史召回与当前有效状态组装可以分开。** <!-- timefirst:direction key="supersession-aware-state-assembly" state="new_signal" supports="2608.19652" confidence="medium" implication="separate-recall-from-state-validity" timing="radar_published_at" synthesized="2026-08-24T01:33:36Z" prior="none" -->
+  支撑：[StateMem](#entry-2608.19652)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-24T01:33:36Z`（UTC）；研究设计含义（separate recall from state validity）：匹配 transcript access 与 answer cost，并独立改变 supersession、dependency propagation 与 recomputation；先验地图证据：`none`。
 
 <a id="last-30-days"></a>
-### 过去 30 天 · 2026-07-23—2026-08-21
+### 过去 30 天 · 2026-07-26—2026-08-24
 
-- **`reinforced` · Evidence path operation surfaces · 显式证据路径操作获得跨任务证据。** <!-- timefirst:direction key="evidence-path-operation-surfaces" state="reinforced" supports="2608.17889,2608.18613" confidence="medium" implication="make-evidence-path-operations-explicit" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="field-map" -->
-  支撑：[VisDocAgentBench](#entry-2608.17889) · [CTIFoundry](#entry-2608.18613)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-21T01:31:24Z`（UTC）；研究设计含义（make evidence path operations explicit）：在共享输出契约下显式暴露 search / resolve / traverse / inspect / read，并以匹配后端、harness 与预算的静态对照检验；先验地图证据：[Interface resolution](#field-map)。
+- **`reinforced` · Evidence path operation surfaces · 显式证据路径操作获得跨任务证据。** <!-- timefirst:direction key="evidence-path-operation-surfaces" state="reinforced" supports="2608.17889,2608.18613" confidence="medium" implication="make-evidence-path-operations-explicit" timing="radar_published_at" synthesized="2026-08-24T01:33:36Z" prior="field-map" -->
+  支撑：[VisDocAgentBench](#entry-2608.17889) · [CTIFoundry](#entry-2608.18613)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-24T01:33:36Z`（UTC）；研究设计含义（make evidence path operations explicit）：在共享输出契约下显式暴露 search / resolve / traverse / inspect / read，并以匹配后端、harness 与预算的静态对照检验；先验地图证据：[Interface resolution](#field-map)。
 
-- **`new_signal` · Evidence sufficiency routing · 证据充分性可路由广度与深度。** <!-- timefirst:direction key="evidence-sufficiency-routing" state="new_signal" supports="2608.16417" confidence="medium" implication="separate-page-coverage-from-reading-depth" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="none" -->
-  支撑：[D2-ScaleAgent](#entry-2608.16417)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-21T01:31:24Z`（UTC）；研究设计含义（separate page coverage from reading depth）：分别测量新页面覆盖和已命中页面的深读，并对齐 verifier 的 token、调用与延迟；先验地图证据：`none`。
+- **`new_signal` · Evidence sufficiency routing · 证据充分性可路由广度与深度。** <!-- timefirst:direction key="evidence-sufficiency-routing" state="new_signal" supports="2608.16417" confidence="medium" implication="separate-page-coverage-from-reading-depth" timing="radar_published_at" synthesized="2026-08-24T01:33:36Z" prior="none" -->
+  支撑：[D2-ScaleAgent](#entry-2608.16417)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-24T01:33:36Z`（UTC）；研究设计含义（separate page coverage from reading depth）：分别测量新页面覆盖和已命中页面的深读，并对齐 verifier 的 token、调用与延迟；先验地图证据：`none`。
 
-- **`new_signal` · Source conditioned capability routing · 工具能力召回受来源分布制约。** <!-- timefirst:direction key="source-conditioned-capability-routing" state="new_signal" supports="2608.16502" confidence="medium" implication="audit-capability-coverage-before-agent-planning" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="none" -->
-  支撑：[ToolScout](#entry-2608.16502)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-21T01:31:24Z`（UTC）；研究设计含义（audit capability coverage before agent planning）：先核验候选工具覆盖与跨来源迁移，再把最终失败归因给 agent planning；先验地图证据：`none`。
+- **`new_signal` · Source conditioned capability routing · 工具能力召回受来源分布制约。** <!-- timefirst:direction key="source-conditioned-capability-routing" state="new_signal" supports="2608.16502" confidence="medium" implication="audit-capability-coverage-before-agent-planning" timing="radar_published_at" synthesized="2026-08-24T01:33:36Z" prior="none" -->
+  支撑：[ToolScout](#entry-2608.16502)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-24T01:33:36Z`（UTC）；研究设计含义（audit capability coverage before agent planning）：先核验候选工具覆盖与跨来源迁移，再把最终失败归因给 agent planning；先验地图证据：`none`。
+
+- **`new_signal` · Supersession aware state assembly · 历史召回与当前有效状态组装可以分开。** <!-- timefirst:direction key="supersession-aware-state-assembly" state="new_signal" supports="2608.19652" confidence="medium" implication="separate-recall-from-state-validity" timing="radar_published_at" synthesized="2026-08-24T01:33:36Z" prior="none" -->
+  支撑：[StateMem](#entry-2608.19652)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-24T01:33:36Z`（UTC）；研究设计含义（separate recall from state validity）：匹配 transcript access 与 answer cost，并独立改变 supersession、dependency propagation 与 recomputation；先验地图证据：`none`。
 
 封闭周期与长期压缩：[weekly](digests/README.md) · [monthly](digests/monthly/2026-08.md) · [yearly](digests/yearly/2026.md)
 

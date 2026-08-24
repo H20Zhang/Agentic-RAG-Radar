@@ -10,12 +10,27 @@ Use this radar to answer: **where should retrieval intelligence live, when shoul
 
 [30 sec: Timeline](#timeline) · [3 min: 7/30-day changes](#periods) · [5 min: Field Map](#field-map) · [15 min: Reading Paths](#reading-paths) · [Browse all](#library)
 
-**Status:** Last updated: **2026-08-21** · Last synthesized: **2026-08-21T01:31:24Z (UTC)**
+**Status:** Last updated: **2026-08-24** · Last synthesized: **2026-08-24T01:33:36Z (UTC)**
 
 <a id="timeline"></a><a id="latest"></a><a id="latest-papers"></a>
 ## Latest Timeline
 
 > **Migration notice:** Historic Radar acceptance timestamps were not stored for these six legacy records. They are ordered by original paper date and are not presented as newly accepted by the Radar. Post-v2 entries use `radar_published_at` while preserving `published_at`.
+
+<a id="entry-2608.19652"></a>
+<details><summary>2026-08-24 · StateMem · State persistence → supersession-aware state <!-- timefirst:area=supersession-aware-state --> — Separates retrieving history from deciding which facts and dependencies remain operative. <!-- timefirst:delta=supersession-aware-state-assembly --></summary>
+
+**Question.** Can an agent assemble current state when retrieved history contains both superseded and operative facts? <!-- timefirst:question=evolving-state-assembly -->
+
+**Evidence.** StateMem value chain structure: across six backends, StateMemWrapper attributes 15.0–31.7 points on StateMemBench beyond the same full transcript, chunks, call, and length budget. <!-- timefirst:evidence=statemem-control~statemem-value-chain-structure -->
+
+**Caveat.** Synthetic benchmark upper bound: the benchmark targets the same lazy-reader failure family encoded by the method; full StateMem uses roughly 165–600 ingest LLM calls, dependency propagation can hurt, and LongMemEval structure gains are only −5 to +5 points with DeepSeek. <!-- timefirst:caveat=statemem-boundary~synthetic-benchmark-upper-bound -->
+
+**Map.** `early_signal`: adds supersession-aware state assembly to State persistence; one benchmark/method package does not create a durable direction.
+
+**Links.** [Can Agent Memory Systems Track Evolving State?](https://arxiv.org/abs/2608.19652) · [English deep note](papers/2608.19652.md) · [Chinese deep note](papers/2608.19652.zh.md)
+
+</details>
 
 <a id="entry-2608.18613"></a>
 <details><summary>2026-08-21 · CTIFoundry · Interface resolution → agent-native corpus scaffold <!-- timefirst:area=agent-native-corpus-scaffold --> — Turns a flat corpus into named entities, relations, and typed evidence-path operations for the same underlying agent. <!-- timefirst:delta=typed-evidence-path-operations --></summary>
@@ -173,28 +188,34 @@ Use this radar to answer: **where should retrieval intelligence live, when shoul
 Directions use Radar acceptance time only. Legacy papers remain Field Map context but cannot masquerade as rolling-window support.
 
 <a id="last-7-days"></a>
-### Last 7 days · 2026-08-15—2026-08-21
+### Last 7 days · 2026-08-18—2026-08-24
 
-- **`reinforced` · Evidence path operation surfaces · Explicit evidence-path operations gain cross-task support.** <!-- timefirst:direction key="evidence-path-operation-surfaces" state="reinforced" supports="2608.17889,2608.18613" confidence="medium" implication="make-evidence-path-operations-explicit" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="field-map" -->
-  Supports: [VisDocAgentBench](#entry-2608.17889) · [CTIFoundry](#entry-2608.18613); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-21T01:31:24Z` (UTC); Research-design implication (make evidence path operations explicit): expose search / resolve / traverse / inspect / read under a shared output contract, then test against static controls with matched backend, harness, and budget; prior map evidence: [Interface resolution](#field-map).
+- **`reinforced` · Evidence path operation surfaces · Explicit evidence-path operations gain cross-task support.** <!-- timefirst:direction key="evidence-path-operation-surfaces" state="reinforced" supports="2608.17889,2608.18613" confidence="medium" implication="make-evidence-path-operations-explicit" timing="radar_published_at" synthesized="2026-08-24T01:33:36Z" prior="field-map" -->
+  Supports: [VisDocAgentBench](#entry-2608.17889) · [CTIFoundry](#entry-2608.18613); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-24T01:33:36Z` (UTC); Research-design implication (make evidence path operations explicit): expose search / resolve / traverse / inspect / read under a shared output contract, then test against static controls with matched backend, harness, and budget; prior map evidence: [Interface resolution](#field-map).
 
-- **`new_signal` · Evidence sufficiency routing · Evidence sufficiency can route breadth versus depth.** <!-- timefirst:direction key="evidence-sufficiency-routing" state="new_signal" supports="2608.16417" confidence="medium" implication="separate-page-coverage-from-reading-depth" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="none" -->
-  Supports: [D2-ScaleAgent](#entry-2608.16417); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-21T01:31:24Z` (UTC); Research-design implication (separate page coverage from reading depth): measure new-page coverage separately from deep inspection of found pages and charge verifier tokens, calls, and latency; prior map evidence: `none`.
+- **`new_signal` · Evidence sufficiency routing · Evidence sufficiency can route breadth versus depth.** <!-- timefirst:direction key="evidence-sufficiency-routing" state="new_signal" supports="2608.16417" confidence="medium" implication="separate-page-coverage-from-reading-depth" timing="radar_published_at" synthesized="2026-08-24T01:33:36Z" prior="none" -->
+  Supports: [D2-ScaleAgent](#entry-2608.16417); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-24T01:33:36Z` (UTC); Research-design implication (separate page coverage from reading depth): measure new-page coverage separately from deep inspection of found pages and charge verifier tokens, calls, and latency; prior map evidence: `none`.
 
-- **`new_signal` · Source conditioned capability routing · Tool-capability recall is constrained by source distribution.** <!-- timefirst:direction key="source-conditioned-capability-routing" state="new_signal" supports="2608.16502" confidence="medium" implication="audit-capability-coverage-before-agent-planning" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="none" -->
-  Supports: [ToolScout](#entry-2608.16502); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-21T01:31:24Z` (UTC); Research-design implication (audit capability coverage before agent planning): verify candidate-tool coverage and cross-source transfer before assigning final failure to agent planning; prior map evidence: `none`.
+- **`new_signal` · Source conditioned capability routing · Tool-capability recall is constrained by source distribution.** <!-- timefirst:direction key="source-conditioned-capability-routing" state="new_signal" supports="2608.16502" confidence="medium" implication="audit-capability-coverage-before-agent-planning" timing="radar_published_at" synthesized="2026-08-24T01:33:36Z" prior="none" -->
+  Supports: [ToolScout](#entry-2608.16502); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-24T01:33:36Z` (UTC); Research-design implication (audit capability coverage before agent planning): verify candidate-tool coverage and cross-source transfer before assigning final failure to agent planning; prior map evidence: `none`.
+
+- **`new_signal` · Supersession aware state assembly · Historical recall and operative-state assembly are separable.** <!-- timefirst:direction key="supersession-aware-state-assembly" state="new_signal" supports="2608.19652" confidence="medium" implication="separate-recall-from-state-validity" timing="radar_published_at" synthesized="2026-08-24T01:33:36Z" prior="none" -->
+  Supports: [StateMem](#entry-2608.19652); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-24T01:33:36Z` (UTC); Research-design implication (separate recall from state validity): match transcript access and answer cost while independently varying supersession, dependency propagation, and recomputation; prior map evidence: `none`.
 
 <a id="last-30-days"></a>
-### Last 30 days · 2026-07-23—2026-08-21
+### Last 30 days · 2026-07-26—2026-08-24
 
-- **`reinforced` · Evidence path operation surfaces · Explicit evidence-path operations gain cross-task support.** <!-- timefirst:direction key="evidence-path-operation-surfaces" state="reinforced" supports="2608.17889,2608.18613" confidence="medium" implication="make-evidence-path-operations-explicit" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="field-map" -->
-  Supports: [VisDocAgentBench](#entry-2608.17889) · [CTIFoundry](#entry-2608.18613); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-21T01:31:24Z` (UTC); Research-design implication (make evidence path operations explicit): expose search / resolve / traverse / inspect / read under a shared output contract, then test against static controls with matched backend, harness, and budget; prior map evidence: [Interface resolution](#field-map).
+- **`reinforced` · Evidence path operation surfaces · Explicit evidence-path operations gain cross-task support.** <!-- timefirst:direction key="evidence-path-operation-surfaces" state="reinforced" supports="2608.17889,2608.18613" confidence="medium" implication="make-evidence-path-operations-explicit" timing="radar_published_at" synthesized="2026-08-24T01:33:36Z" prior="field-map" -->
+  Supports: [VisDocAgentBench](#entry-2608.17889) · [CTIFoundry](#entry-2608.18613); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-24T01:33:36Z` (UTC); Research-design implication (make evidence path operations explicit): expose search / resolve / traverse / inspect / read under a shared output contract, then test against static controls with matched backend, harness, and budget; prior map evidence: [Interface resolution](#field-map).
 
-- **`new_signal` · Evidence sufficiency routing · Evidence sufficiency can route breadth versus depth.** <!-- timefirst:direction key="evidence-sufficiency-routing" state="new_signal" supports="2608.16417" confidence="medium" implication="separate-page-coverage-from-reading-depth" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="none" -->
-  Supports: [D2-ScaleAgent](#entry-2608.16417); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-21T01:31:24Z` (UTC); Research-design implication (separate page coverage from reading depth): measure new-page coverage separately from deep inspection of found pages and charge verifier tokens, calls, and latency; prior map evidence: `none`.
+- **`new_signal` · Evidence sufficiency routing · Evidence sufficiency can route breadth versus depth.** <!-- timefirst:direction key="evidence-sufficiency-routing" state="new_signal" supports="2608.16417" confidence="medium" implication="separate-page-coverage-from-reading-depth" timing="radar_published_at" synthesized="2026-08-24T01:33:36Z" prior="none" -->
+  Supports: [D2-ScaleAgent](#entry-2608.16417); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-24T01:33:36Z` (UTC); Research-design implication (separate page coverage from reading depth): measure new-page coverage separately from deep inspection of found pages and charge verifier tokens, calls, and latency; prior map evidence: `none`.
 
-- **`new_signal` · Source conditioned capability routing · Tool-capability recall is constrained by source distribution.** <!-- timefirst:direction key="source-conditioned-capability-routing" state="new_signal" supports="2608.16502" confidence="medium" implication="audit-capability-coverage-before-agent-planning" timing="radar_published_at" synthesized="2026-08-21T01:31:24Z" prior="none" -->
-  Supports: [ToolScout](#entry-2608.16502); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-21T01:31:24Z` (UTC); Research-design implication (audit capability coverage before agent planning): verify candidate-tool coverage and cross-source transfer before assigning final failure to agent planning; prior map evidence: `none`.
+- **`new_signal` · Source conditioned capability routing · Tool-capability recall is constrained by source distribution.** <!-- timefirst:direction key="source-conditioned-capability-routing" state="new_signal" supports="2608.16502" confidence="medium" implication="audit-capability-coverage-before-agent-planning" timing="radar_published_at" synthesized="2026-08-24T01:33:36Z" prior="none" -->
+  Supports: [ToolScout](#entry-2608.16502); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-24T01:33:36Z` (UTC); Research-design implication (audit capability coverage before agent planning): verify candidate-tool coverage and cross-source transfer before assigning final failure to agent planning; prior map evidence: `none`.
+
+- **`new_signal` · Supersession aware state assembly · Historical recall and operative-state assembly are separable.** <!-- timefirst:direction key="supersession-aware-state-assembly" state="new_signal" supports="2608.19652" confidence="medium" implication="separate-recall-from-state-validity" timing="radar_published_at" synthesized="2026-08-24T01:33:36Z" prior="none" -->
+  Supports: [StateMem](#entry-2608.19652); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-24T01:33:36Z` (UTC); Research-design implication (separate recall from state validity): match transcript access and answer cost while independently varying supersession, dependency propagation, and recomputation; prior map evidence: `none`.
 
 Closed periods and longer compaction: [weekly](digests/README.md) · [monthly](digests/monthly/2026-08.md) · [yearly](digests/yearly/2026.md)
 

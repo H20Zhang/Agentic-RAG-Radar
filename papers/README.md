@@ -14,6 +14,7 @@ The index is deliberately terse: use a paper title for the deep research note, o
 
 | Date | Paper | Area | Importance | Review |
 |---|---|---|---:|---|
+| 2026-08-20 | **[Can Agent Memory Systems Track Evolving State?](2608.19652.md)**<br><sub>[paper](https://arxiv.org/abs/2608.19652)</sub> | Evaluation & Analysis | 4/5 | Full text |
 | 2026-08-19 | **[CTIFoundry: An Agent-Native Corpus Scaffold for Cyber Threat Intelligence](2608.18613.md)**<br><sub>[paper](https://arxiv.org/abs/2608.18613)</sub> | Retrieval & Tool Use | 4/5 | Full text |
 | 2026-08-18 | **[VisDocAgentBench: Benchmarking Agents for Visually Rich Document Retrieval](2608.17889.md)**<br><sub>[paper](https://arxiv.org/abs/2608.17889) · [code](https://github.com/hulx2002/VisDocAgentBench)</sub> | Evaluation & Analysis | 3/5 | Full text |
 | 2026-08-17 | **[When Tool-Backed Skill Retrieval Fails: Source-Style Collapse in Executable Capability Retrieval](2608.16502.md)**<br><sub>[paper](https://arxiv.org/abs/2608.16502)</sub> | Evaluation & Analysis | 3/5 | Full text |

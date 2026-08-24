@@ -7,6 +7,12 @@ This category covers benchmarks, controlled studies, failure analysis, historica
 
 ## Current design anchors
 
+### [StateMem / StateMemBench](../papers/2608.19652.md) — ★★★★☆
+
+**Design point:** separate historical recall from operative-state assembly; a matched full-transcript wrapper control isolates value-chain structure and precedence from added context and call count.
+
+**Boundary:** the synthetic benchmark targets the method's own lazy-reader failure family, persistent ingestion costs hundreds of LLM calls, dependency propagation can hurt, and external LongMemEval structure gains are small/mixed.
+
 ### [VisDocAgentBench](../papers/2608.17889.md) — ★★★☆☆
 
 **Design point:** hold the top-10 opaque page-output contract fixed while separating direct, bridge, and path acquisition and ablating iterative search versus page inspection.

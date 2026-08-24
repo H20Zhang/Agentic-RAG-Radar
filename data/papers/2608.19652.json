@@ -1,0 +1,84 @@
+{
+  "id": "arxiv:2608.19652",
+  "arxiv_id": "2608.19652",
+  "title": "Can Agent Memory Systems Track Evolving State?",
+  "authors": [
+    "Xinyi Fan",
+    "Miri Liu",
+    "Ruozhen Yang",
+    "Siru Ouyang",
+    "Jiawei Han"
+  ],
+  "first_seen": "2026-08-24",
+  "published": "2026-08-20",
+  "published_at": "2026-08-20T05:41:23Z",
+  "first_seen_at": "2026-08-24T01:17:08Z",
+  "radar_published_at": "2026-08-24T01:33:35Z",
+  "time_provenance": "native_v2",
+  "map_delta": "early_signal",
+  "direction_keys": ["supersession-aware-state-assembly"],
+  "updated": "2026-08-24",
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.19652",
+    "pdf": "https://arxiv.org/pdf/2608.19652",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "evaluation_analysis",
+  "tags": [
+    "agent_memory",
+    "dependency_tracking",
+    "state_assembly",
+    "supersession",
+    "temporal_evaluation"
+  ],
+  "benchmarks": ["StateMemBench", "LongMemEval"],
+  "relevance": 0.88,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "state_progression",
+    "question": "How can an agent assemble current state without replaying superseded facts as if they were still active?",
+    "takeaway": "StateMem represents supersession and dependencies explicitly, while its matched answer-time wrapper tests question-conditioned value chains against generic full-context summarization.",
+    "compared_with": "Recall-oriented memory backends and a matched one-call, full-transcript generic summarization control.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2608.19652.png",
+    "image_path": "assets/visuals/2608.19652.webp",
+    "prompt_path": "assets/visuals/prompts/2608.19652.md",
+    "artifact_path": "papers/2608.19652.md"
+  },
+  "analysis": {
+    "tldr": "StateMemBench makes stale-state failure executable, and StateMem explicitly tracks supersession and dependencies before assembling answer context. The strongest causal result comes from StateMemWrapper versus a closely matched generic full-context control: chronology and precedence add 15–32 points on the authors' benchmark. The persistent system is far more expensive, dependency propagation can hurt, and external LongMemEval gains are much smaller.",
+    "problem": "Recall-oriented memory can retrieve both an old value and its replacement yet still answer from the stale value. The missing operation is not another top-k retrieval but deciding which historical facts remain operative and which derived state must be recomputed.",
+    "core_idea": "Represent conversational facts as state units with explicit supersession and dependency relations, deterministically withhold inactive units and flag stale derivations, then render the current state. A single-call wrapper applies the same chronology/precedence discipline to existing memory backends plus the full transcript.",
+    "agent_loop": "conversation turn → extract state units → update supersession → recheck dependencies → render active/stale state → answer or recompute",
+    "retrieval_design": "StateMem separates memory ingestion and current-state assembly from answer generation. Its wrapper reuses a populated backend, retrieved chunks, full transcript, one answer call, 250-word intermediate budget, and final format; the matched control substitutes generic relevant-information summarization for structured value chains and precedence rules.",
+    "compared_to": [
+      "long-context, BM25/dense, GraphRAG, Mem0, A-Mem, and other memory baselines",
+      "the same populated backends with no wrapper, a matched generic wrapper, and StateMemWrapper",
+      "component ablations over extraction, supersession, dependency propagation, and recompute guidance",
+      "external LongMemEval as a generalization check"
+    ],
+    "evidence": "DeepSeek StateMem reaches 0.363 current-state accuracy versus 0.205 for dense retrieval and 0.149 for long context; Qwen reaches 0.233 versus 0.149 for Mem0, but is statistically tied with GraphRAG at 0.224. Across six backends, the matched wrapper comparison attributes 15.0–31.7 points on StateMemBench to state structure. On LongMemEval with DeepSeek, structure adds only −5 to +5 points.",
+    "why_it_matters": "It separates evidence recall from operative-state assembly and provides a rare matched control over context length, call count, answer format, and transcript access. The result supports supersession-aware state as an early design signal, not universal superiority of persistent structured memory.",
+    "limitations": [
+      "StateMemBench is synthetic and selected around the lazy-reader failure family the method targets; the authors call own-benchmark margins an upper bound.",
+      "Full StateMem uses roughly 165–600 ingestion LLM calls per scenario, with incomplete token, latency, storage, and dollar accounting.",
+      "Removing dependency propagation slightly improves overall DeepSeek performance and improves anti-trap cells, so propagation is not uniformly beneficial.",
+      "The wrapper's gain over backend-alone also includes full-transcript access; only wrapper versus matched generic control isolates structure.",
+      "On external LongMemEval with DeepSeek, generic full-context summarization explains most of the lift and structure can hurt individual backends."
+    ],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": [
+      "overlapping arXiv cs.AI/cs.CL primary-source search",
+      "full arXiv v1 HTML/PDF"
+    ],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-24"
+  }
+}
