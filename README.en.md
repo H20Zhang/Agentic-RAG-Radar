@@ -116,7 +116,7 @@ Use this radar to answer: **where should retrieval intelligence live, when shoul
 
 **Caveat.** Scheduler rotation statistical tie: full ASCP is 0.309 versus 0.303 for deep rotation (`q=0.343`), with no matched resource delta. The 17.5s-versus-1.7s contrast is sequential `(2,12)` versus one-shot `(24,1)`. <!-- timefirst:caveat=ascp-attribution~scheduler-rotation-statistical-tie -->
 
-**Map.** `early_signal`: adds feedback-conditioned context allocation; the strongest current result belongs to freshness, not scheduler complexity.
+**Map.** `early_signal`: adds fresh-evidence context allocation; the incremental value of feedback control is not established.
 
 **Links.** [The Laws of Context Allocation: Causal Measurement and Closed-Loop Orchestration in Generative Search](https://arxiv.org/abs/2608.23252) · [Code](https://github.com/PeiYangLiu/ascp) · [English deep note](papers/2608.23252.md) · [中文深读](papers/2608.23252.zh.md)
 

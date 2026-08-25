@@ -116,7 +116,7 @@
 
 **限制。** scheduler rotation statistical tie：full ASCP 0.309 vs deep rotation 0.303（q=0.343），且没有 matched resource delta。17.5s 对 1.7s 来自顺序 `(2,12)` 对 one-shot `(24,1)`。 <!-- timefirst:caveat=ascp-attribution~scheduler-rotation-statistical-tie -->
 
-**地图。** `early_signal`：加入 feedback-conditioned context allocation；当前最强结论属于 freshness，不属于复杂 scheduler。
+**地图。** `early_signal`：加入 fresh-evidence context allocation；feedback control 的增量价值尚未建立。
 
 **链接。** [The Laws of Context Allocation: Causal Measurement and Closed-Loop Orchestration in Generative Search](https://arxiv.org/abs/2608.23252) · [代码](https://github.com/PeiYangLiu/ascp) · [英文深读](papers/2608.23252.md) · [中文深读](papers/2608.23252.zh.md)
 
