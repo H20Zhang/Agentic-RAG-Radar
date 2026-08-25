@@ -7,6 +7,12 @@ This category covers the agent-facing retrieval environment: corpus observabilit
 
 ## Current papers
 
+### [Scroll](../papers/2608.21690.md) — ★★★★☆
+
+**Design point:** retain lossless history in an event log and persistent Python namespace, then materialize selected state at query time.
+
+**Boundary:** the closest CodeAct increment is small and lifecycle resources are not matched.
+
 ### [CTIFoundry](../papers/2608.18613.md) — ★★★★☆
 
 **Design point:** materialize documents as entities, relations, chunks, and resolvable identifiers, then expose `resolve / traverse / collect / read` operations to the same stock agent.

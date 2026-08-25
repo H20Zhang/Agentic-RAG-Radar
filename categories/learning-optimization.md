@@ -7,6 +7,18 @@ This category covers policy learning, retriever learning for agentic usage, rein
 
 ## Current papers
 
+### [GTA-RAG](../papers/2608.22479.md) — ★★★★☆
+
+**Design point:** supervise retriever-validated target-document chains before natural-QA reward. **Boundary:** graph construction, hybrid retrieval, synthetic targets, and training remain a package.
+
+### [MCite-RL](../papers/2608.21808.md) — ★★★☆☆
+
+**Design point:** add final visual-localization rewards to an iterative retrieve/crop/answer policy. **Boundary:** the process term uses only the terminal crop, and bbox overlap is not semantic support.
+
+### [CAS](../papers/2608.20771.md) — ★★★☆☆
+
+**Design point:** adapt evidence-set size from calibrated retrieval mass and weight rollout updates from answer NLL. **Boundary:** marginal set coverage and NLL control do not guarantee answer correctness.
+
 ### [LoongReflect](../papers/2608.11967.md) — ★★★★☆
 
 **Design point:** learn reversible memory control for long-horizon search: reflect on branch quality, roll back a contaminated suffix, preserve a corrective lesson, then resume.

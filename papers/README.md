@@ -14,6 +14,13 @@ The index is deliberately terse: use a paper title for the deep research note, o
 
 | Date | Paper | Area | Importance | Review |
 |---|---|---|---:|---|
+| 2026-08-24 | **[The Laws of Context Allocation: Causal Measurement and Closed-Loop Orchestration in Generative Search](2608.23252.md)**<br><sub>[paper](https://arxiv.org/abs/2608.23252) · [code](https://github.com/PeiYangLiu/ascp)</sub> | Iterative Reasoning & Verification | 4/5 | Full text |
+| 2026-08-23 | **[GTA-RAG: Graph-Trajectory-Augmented Reinforcement Learning for Multi-Turn Retrieval-Augmented Reasoning](2608.22479.md)**<br><sub>[paper](https://arxiv.org/abs/2608.22479) · [code](https://github.com/cjcj46262/GTA-RAG)</sub> | Learning & Optimization | 4/5 | Full text |
+| 2026-08-22 | **[SSE-Bio: A Structured Self-Evolving Agent with Agentic Retrieval Policy for Multi-Hop Biomedical Reasoning](2608.22132.md)**<br><sub>[paper](https://arxiv.org/abs/2608.22132) · [code](https://github.com/ZhaohanM/SSE-Bio)</sub> | Iterative Reasoning & Verification | 4/5 | Full text |
+| 2026-08-22 | **[MCite-RL: Towards Reliable Multimodal RAG via Citation-enhanced Agentic Reinforcement Learning](2608.21808.md)**<br><sub>[paper](https://arxiv.org/abs/2608.21808)</sub> | Learning & Optimization | 3/5 | Full text |
+| 2026-08-21 | **[Context as an Environment: Programmatic Context Management for Long-Horizon Agents](2608.21690.md)**<br><sub>[paper](https://arxiv.org/abs/2608.21690) · [code](https://github.com/niceIrene/QwenPaw/tree/scroll-research)</sub> | Retrieval & Tool Use | 4/5 | Full text |
+| 2026-08-21 | **[CAS: Conformalized Agentic Search via Adaptive Retrieval and Policy Weighting](2608.20771.md)**<br><sub>[paper](https://arxiv.org/abs/2608.20771) · [code](https://github.com/S1llyBird/CAS)</sub> | Learning & Optimization | 3/5 | Full text |
+| 2026-08-20 | **[When Failures Propagate: Causal Failure Attribution in Agentic Retrieval-Augmented Generation](2608.20627.md)**<br><sub>[paper](https://arxiv.org/abs/2608.20627) · [code](https://github.com/anote-ai/Research-AgenticRAG)</sub> | Evaluation & Analysis | 4/5 | Full text |
 | 2026-08-20 | **[Can Agent Memory Systems Track Evolving State?](2608.19652.md)**<br><sub>[paper](https://arxiv.org/abs/2608.19652)</sub> | Evaluation & Analysis | 4/5 | Full text |
 | 2026-08-19 | **[CTIFoundry: An Agent-Native Corpus Scaffold for Cyber Threat Intelligence](2608.18613.md)**<br><sub>[paper](https://arxiv.org/abs/2608.18613)</sub> | Retrieval & Tool Use | 4/5 | Full text |
 | 2026-08-18 | **[VisDocAgentBench: Benchmarking Agents for Visually Rich Document Retrieval](2608.17889.md)**<br><sub>[paper](https://arxiv.org/abs/2608.17889) · [code](https://github.com/hulx2002/VisDocAgentBench)</sub> | Evaluation & Analysis | 3/5 | Full text |

@@ -7,6 +7,12 @@ This category covers benchmarks, controlled studies, failure analysis, historica
 
 ## Current design anchors
 
+### [AgenticRAG-FP](../papers/2608.20627.md) — ★★★★☆
+
+**Design point:** inject a certified fault at a known retrieval hop, then compare post-hoc trace labels with frozen-hop and suffix-regeneration interventions.
+
+**Boundary:** only still-failed traces are diagnosed; depth denominators and active-probe compute are unmatched.
+
 ### [StateMem / StateMemBench](../papers/2608.19652.md) — ★★★★☆
 
 **Design point:** separate historical recall from operative-state assembly; a matched full-transcript wrapper control isolates value-chain structure and precedence from added context and call count.

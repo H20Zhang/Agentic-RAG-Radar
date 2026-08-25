@@ -7,6 +7,14 @@ This category is about the closed loop after retrieval begins. The important obj
 
 ## Current papers
 
+### [ASCP](../papers/2608.23252.md) — ★★★★☆
+
+**Design point:** factorially compare fixed evidence reuse, fresh rotation, and feedback-conditioned context allocation. **Boundary:** the full scheduler is statistically tied with deep rotation, and their matched resource delta is unreported.
+
+### [SSE-Bio](../papers/2608.22132.md) — ★★★★☆
+
+**Design point:** route among no retrieval, KG, reusable templates, or both from explicit reasoning-gap state. **Boundary:** absolute joint correctness is low and most audited failures occur after routing.
+
 ### [D2-ScaleAgent](../papers/2608.16417.md) — ★★★☆☆
 
 **Design point:** use an Evidence Bank and verifier to route between breadth (“find another page”) and depth (“inspect a found page more closely”) rather than treating iteration count as the control variable.
