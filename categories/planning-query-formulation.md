@@ -7,6 +7,10 @@ This category is about **control before the retrieval call**. A paper belongs he
 
 ## Current design anchors
 
+### [SkillAlchemy](../papers/2608.23417.md) — ★★★★☆
+
+**Design point:** probe one candidate operational factor through matched substitution, boundary, and neighboring task contexts, then admit source-derived procedures as General, Scoped, or Exclude. **Boundary:** acquisition sources, tokens, calls, and artifact length are unmatched, so the packaged gain is not attributable to admission alone.
+
 ### [PlanRAG](../papers/2406.12430.md) — ★★★☆☆
 
 **Design point:** generate an explicit decision/information-acquisition plan first, then derive iterative data queries from that plan.

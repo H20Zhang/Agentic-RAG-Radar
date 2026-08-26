@@ -23,11 +23,11 @@ Browse earlier work by **research problem, design tension, and research line**; 
 
 Adaptivity placement and evidence-materialization time are separate design decisions. SIRA compiles some retrieval decisions before retrieval; DCI and ReFind preserve raw substrates; LENS delays the evidence boundary itself until query time.
 
-### Search loop → progress-aware control → reversible state
+### Search loop → validity-aware state → recovery and reacquisition
 
-[S2G-RAG](../papers/2604.23783.md) → [RAAC](../papers/2608.15191.md) → [LoongReflect](../papers/2608.11967.md) → [Context Compression Cost](../papers/2608.16370.md)
+[RAAC](../papers/2608.15191.md) → [StateMem](../papers/2608.19652.md) → [EvoWiki](../papers/2608.23265.md) → [Context Compression Cost](../papers/2608.16370.md)
 
-“More rounds” is not a primitive. What matters is how the agent observes sufficiency and progress, whether bad state can be reversed, and whether dropped state reappears later as reacquisition cost.
+“More rounds” is not a primitive. What matters is how the agent observes progress, whether operative validity is resolved at answer time or write time, and whether dropped state reappears later as reacquisition cost.
 
 ### Retriever quality → interface/harness attribution → cross-source execution
 

@@ -7,6 +7,18 @@ This category is about the closed loop after retrieval begins. The important obj
 
 ## Current papers
 
+### [NIS-Agent](../papers/2608.23045.md) — ★★★★☆
+
+**Design point:** separate search ownership, evidence validation, and synthesis. Its fixed-results Observer Mode isolates a 15–30 point judgment effect; the end-to-end package still changes roles, stopping, prompts, and tool flow together.
+
+### [EvoWiki](../papers/2608.23265.md) — ★★★★☆
+
+**Design point:** resolve supersession while writing incremental state and preserve closed validity intervals for audit. The matched no-overwrite control reinforces StateMem's separation between historical recall and operative-state assembly.
+
+### [Compaction Cliff](../papers/2608.22752.md) — ★★★★☆
+
+**Design point:** protect hard constraints as a distinct state type under compaction. **Boundary:** typed metadata is privileged relative to type-blind controls and downstream context budgets are not matched.
+
 ### [ASCP](../papers/2608.23252.md) — ★★★★☆
 
 **Design point:** factorially compare fixed evidence reuse, fresh rotation, and feedback-conditioned context allocation. **Boundary:** the full scheduler is statistically tied with deep rotation, and their matched resource delta is unreported.

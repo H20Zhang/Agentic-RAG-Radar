@@ -23,11 +23,11 @@
 
 自适应位置与证据形成时机是两个不同的设计决策。SIRA 在执行检索前预先编排一部分决策；DCI 和 ReFind 保留原始载体；LENS 则把证据边界的确定进一步推迟到查询时。
 
-### 搜索循环 → 进度感知控制 → 可回滚 / 可恢复状态
+### 搜索循环 → 有效状态解析 → 恢复与重新获取
 
-[S2G-RAG](../papers/2604.23783.md) → [RAAC](../papers/2608.15191.zh.md) → [LoongReflect](../papers/2608.11967.zh.md) → [Context Compression Cost](../papers/2608.16370.zh.md)
+[RAAC](../papers/2608.15191.zh.md) → [StateMem](../papers/2608.19652.zh.md) → [EvoWiki](../papers/2608.23265.zh.md) → [Context Compression Cost](../papers/2608.16370.zh.md)
 
-“多搜几轮”本身不是一个原语。更重要的是 Agent 如何观察充分性和进度、错误状态能否回退，以及被丢弃的状态是否会产生重新查询成本。
+“多搜几轮”本身不是一个原语。更重要的是 Agent 如何观察进度、operative validity 在 answer time 还是 write time 解析，以及被丢弃的状态是否会产生重新查询成本。
 
 ### 检索器质量 → 接口 / 评测框架归因 → 跨来源执行
 

@@ -10,7 +10,7 @@
 |---|---|---|
 | **Adaptivity 应该放在哪里？** | 能从 corpus-visible signal 预先决定的 control 可以 compile；依赖新 evidence 的 decision 必须 result-conditioned；D2 新增了 evidence sufficiency 驱动 breadth/depth routing 的受控信号。 | [进入](zh/adaptivity-placement.md) |
 | **Evidence 什么时候 materialize？** | 稳定 corpus/固定 evidence unit 倾向预处理；dynamic corpus / query-dependent granularity 可能值得保留 raw，query 到来后再定位。 | [进入](zh/evidence-materialization.md) |
-| **什么 state 值得持久化？** | State 的价值取决于 future reuse × recoverability × reacquisition cost，而不是 size 本身。 | [进入](zh/state-persistence.md) |
+| **什么 state 值得持久化？** | State 的价值取决于 future reuse × recoverability × reacquisition cost，而不是 size 本身；StateMem 与 EvoWiki 共同表明，保留历史和解析 operative state 可以分开，validity 可在 answer time 组装或 write time 物化。 | [进入](zh/state-persistence.md) |
 | **Retrieval 应如何暴露 corpus？** | “Retriever quality”太粗；VisDocAgentBench 与 CTIFoundry 进一步把 search / resolve / traverse / inspect / read 变成显式 evidence-path operation，但必须匹配 backend、harness 与预算。 | [进入](zh/interface-resolution.md) |
 | **到底应该 learn 什么？** | Retrievers、query policy、operation policy、recovery、budget allocation、training distribution 是不同 learning target。 | [进入](zh/learning-targets.md) |
 | **什么样的 evaluation 才 causal？** | Evidence availability、capability coverage、backend、interface、state、harness、resources 都匹配后，才能给 policy/component 归因；ToolScout 说明失败可能在 planning 前已经发生。 | [进入](zh/causal-evaluation.md) |

@@ -10,12 +10,102 @@ Use this radar to answer: **where should retrieval intelligence live, when shoul
 
 [30 sec: Timeline](#timeline) · [3 min: 7/30-day changes](#periods) · [5 min: Field Map](#field-map) · [15 min: Reading Paths](#reading-paths) · [Browse all](#library)
 
-**Status:** Last updated: **2026-08-25** · Last synthesized: **2026-08-25T02:53:28Z (UTC)**
+**Status:** Last updated: **2026-08-26** · Last synthesized: **2026-08-26T01:35:00Z (UTC)**
 
 <a id="timeline"></a><a id="latest"></a><a id="latest-papers"></a>
 ## Latest Timeline
 
 > **Migration notice:** Historic Radar acceptance timestamps were not stored for these six legacy records. They are ordered by original paper date and are not presented as newly accepted by the Radar. Post-v2 entries use `radar_published_at` while preserving `published_at`.
+
+<a id="entry-2608.22767"></a>
+<details><summary>2026-08-26 · EARM · State persistence → experience-amortized reranking <!-- timefirst:area=experience-amortized-memory-reranking --> — Reuses prior judged retrieval episodes to rerank a fixed memory store. <!-- timefirst:delta=experience-amortized-memory-reranking --></summary>
+
+**Question.** Can retrieval experience be retained as reusable ranking state instead of reacquired on every query? <!-- timefirst:question=experience-amortized-retrieval -->
+
+**Evidence.** Fixed-pool completion ablation: adding completion to the same reranker improves LoCoMo F1 by 0.78–2.79 points; the full system cuts direct LLM calls by 74.43%. <!-- timefirst:evidence=earm-ablation~fixed-pool-completion -->
+
+**Caveat.** Single-store accounting: results cover LoCoMo with a fixed memory store and query order; complete token, latency, and dollar accounting is absent. <!-- timefirst:caveat=earm-boundary~single-store-accounting -->
+
+**Map.** `early_signal`: one benchmark suggests retrieval experience can amortize later ranking work; it is not yet a direction.
+
+**Links.** [The Retriever Should Remember: Experience-Amortized Reranking for Long-Term Agent Memory](https://arxiv.org/abs/2608.22767) · [Artifact](https://github.com/FengQi-HITSZ/earm) · [English deep note](papers/2608.22767.md) · [中文深读](papers/2608.22767.zh.md)
+
+</details>
+
+<a id="entry-2608.23045"></a>
+<details><summary>2026-08-26 · NIS-Agent · Interface resolution → ownership-isolated validation <!-- timefirst:area=ownership-isolated-search-validation --> — Separates search, evidence inspection, and answer ownership before synthesis. <!-- timefirst:delta=ownership-isolated-search-validation --></summary>
+
+**Question.** Does isolating search and validation ownership improve result use when retrieved evidence is held fixed? <!-- timefirst:question=search-validation-ownership -->
+
+**Evidence.** Observer Mode holds tasks and search results fixed and improves re-search judgment by 15–30 points; the full GPT-4o GAIA package moves 54.88→61.82 while tokens fall 219.8K→147.3K. <!-- timefirst:evidence=nis-observer~observer-mode-holds-tasks-and-search-results-fixed -->
+
+**Caveat.** Packaged interface change: the end-to-end system changes roles, stopping, prompts, and tool flow together, with incomplete call and dollar accounting. <!-- timefirst:caveat=nis-boundary~packaged-interface-change -->
+
+**Map.** `early_signal`: the fixed-results control isolates an interface effect, but the packaged trajectory gain is not attributable to retrieval alone.
+
+**Links.** [From Inertia to Objectivity: Improving Deep Research Agents with Noise Isolation](https://arxiv.org/abs/2608.23045) · [English deep note](papers/2608.23045.md) · [中文深读](papers/2608.23045.zh.md)
+
+</details>
+
+<a id="entry-2608.23417"></a>
+<details><summary>2026-08-26 · SkillAlchemy · Adaptivity placement → contrastive acquisition <!-- timefirst:area=contrastive-requirement-guided-acquisition --> — Probes one candidate operational factor with matched task contexts, then admits source-derived procedures as General, Scoped, or Exclude. <!-- timefirst:delta=contrastive-requirement-guided-acquisition --></summary>
+
+**Question.** Can matched task-context probes identify what procedure to acquire and how narrowly it should be admitted? <!-- timefirst:question=contrastive-skill-acquisition -->
+
+**Evidence.** On the reported suite, SkillAlchemy scores 55.8% versus MUSE 47.2%, OpenSkill 46.0%, and no-skill 35.9%; component removals cost 5.0–15.7 points. <!-- timefirst:evidence=skillalchemy-suite~skillalchemy-scores-55.8-versus-muse -->
+
+**Caveat.** Unmatched acquisition budget: sources, tokens, calls, and artifact length are not controlled across systems, so the package gain cannot be assigned to contrastive admission alone. <!-- timefirst:caveat=skillalchemy-boundary~unmatched-acquisition-budget -->
+
+**Map.** `early_signal`: a promising acquisition controller, still missing a matched interface-and-budget comparison.
+
+**Links.** [SkillAlchemy: Open-World Agent Skill Creation](https://arxiv.org/abs/2608.23417) · [English deep note](papers/2608.23417.md) · [中文深读](papers/2608.23417.zh.md)
+
+</details>
+
+<a id="entry-2608.23265"></a>
+<details><summary>2026-08-26 · EvoWiki · State persistence → write-time supersession <!-- timefirst:area=supersession-aware-state-assembly --> — Resolves current-valid state during incremental writes while preserving a version ledger. <!-- timefirst:delta=write-time-supersession-resolution --></summary>
+
+**Question.** Should supersession be reconstructed at answer time or materialized when state is written? <!-- timefirst:question=write-time-supersession -->
+
+**Evidence.** Matched no-overwrite control keeps extraction, coreference, entity Wiki, and reader fixed; macro accuracy falls 60.09→51.46 when lifecycle invalidation is removed. <!-- timefirst:evidence=evowiki-overwrite~matched-no-overwrite-control -->
+
+**Caveat.** Complete-state exposure: read uses 17,143 tokens/query and build 114,016 tokens/project; traceability itself is not directly evaluated. <!-- timefirst:caveat=evowiki-boundary~complete-state-exposure -->
+
+**Map.** `reinforces`: with StateMem, separates retained history from operative-state resolution at answer time versus write time.
+
+**Links.** [EvoWiki: Incremental State Overwriting and Traceable Question Answering for Cross-Meeting Knowledge Evolution](https://arxiv.org/abs/2608.23265) · [English deep note](papers/2608.23265.md) · [中文深读](papers/2608.23265.zh.md)
+
+</details>
+
+<a id="entry-2608.22752"></a>
+<details><summary>2026-08-26 · Compaction Cliff · State persistence → typed constraint retention <!-- timefirst:area=typed-constraint-retention --> — Protects hard constraints as a distinct state type under severe compaction. <!-- timefirst:delta=typed-constraint-retention --></summary>
+
+**Question.** Which information types must survive when an agent compresses state to 10–50% of its original budget? <!-- timefirst:question=constraint-preserving-compaction -->
+
+**Evidence.** Typed vs type-blind constraint recall is 1.00/0.95/0.80 versus 0.53/0.39/0.24 at matched 50/25/10% budgets; five-round recall remains 0.96. <!-- timefirst:evidence=compaction-budget~typed-vs-type-blind -->
+
+**Caveat.** Typed retrieval metadata advantage: it receives task-specific labels unavailable to type-blind controls, and downstream retail-token budgets are not matched. <!-- timefirst:caveat=compaction-boundary~typed-retrieval-metadata-advantage -->
+
+**Map.** `early_signal`: typed retention exposes a useful state coordinate; one synthetic failure family does not establish a trend.
+
+**Links.** [The Compaction Cliff in Long-Running AI Agent Memory](https://arxiv.org/abs/2608.22752) · [Artifact](https://github.com/searchsim-org/cikm26-knowledge-triage) · [English deep note](papers/2608.22752.md) · [中文深读](papers/2608.22752.zh.md)
+
+</details>
+
+<a id="entry-2608.22751"></a>
+<details><summary>2026-08-26 · Risk-Aware Reranking · Interface resolution → tool exposure <!-- timefirst:area=risk-aware-tool-exposure --> — Treats the pre-execution tool shortlist as an explicit risk surface. <!-- timefirst:delta=risk-aware-tool-exposure --></summary>
+
+**Question.** Can relevance and operational risk be traded before executable tools reach the agent? <!-- timefirst:question=pre-execution-tool-exposure -->
+
+**Evidence.** UltraTool risk-head relevance control: on the same frozen representations and relevance head, adding risk changes NDCG/RVR/SRR from 0.558/0.188/0.097 to 0.551/0.138/0.063. <!-- timefirst:evidence=risk-head~ultratool-risk-head-relevance-control -->
+
+**Caveat.** Exposure is not execution: no tool runs, labels and evaluation are coupled, main candidate sets differ, and strict filtering lowers NeedRisk-Hit 0.660→0.397. <!-- timefirst:caveat=risk-boundary~exposure-is-not-execution -->
+
+**Map.** `early_signal`: candidate exposure becomes measurable, but downstream safety and matched-cost utility remain unproven.
+
+**Links.** [Risk-Aware Reranking for Agentic Tool Retrieval](https://arxiv.org/abs/2608.22751) · [Artifact](https://github.com/qli447/risk-aware-tool-retrieval-release) · [English deep note](papers/2608.22751.md) · [中文深读](papers/2608.22751.zh.md)
+
+</details>
 
 <a id="entry-2608.20627"></a>
 <details><summary>2026-08-25 · AgenticRAG-FP · Resource accounting → causal failure attribution <!-- timefirst:area=causal-failure-attribution --> — Uses certified hop faults and counterfactual reruns to localize propagated retrieval failure. <!-- timefirst:delta=propagation-conditioned-failure-attribution --></summary>
@@ -293,76 +383,106 @@ Use this radar to answer: **where should retrieval intelligence live, when shoul
 Directions use Radar acceptance time only. Legacy papers remain Field Map context but cannot masquerade as rolling-window support.
 
 <a id="last-7-days"></a>
-### Last 7 days · 2026-08-19—2026-08-25
+### Last 7 days · 2026-08-20—2026-08-26
 
-- **`reinforced` · Evidence path operation surfaces · Explicit evidence-path operations gain cross-task support.** <!-- timefirst:direction key="evidence-path-operation-surfaces" state="reinforced" supports="2608.17889,2608.18613" confidence="medium" implication="make-evidence-path-operations-explicit" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="field-map" -->
-  Supports: [VisDocAgentBench](#entry-2608.17889) · [CTIFoundry](#entry-2608.18613); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (make evidence path operations explicit): expose search / resolve / traverse / inspect / read under a shared output contract, then test against static controls with matched backend, harness, and budget; prior map evidence: [Interface resolution](#field-map).
+- **`new_signal` · Experience amortized memory reranking · Prior judged retrieval episodes can become reusable ranking state.** <!-- timefirst:direction key="experience-amortized-memory-reranking" state="new_signal" supports="2608.22767" confidence="medium" implication="measure-amortization-across-stores-and-query-orders" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [EARM](#entry-2608.22767); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (measure amortization across stores and query orders): compare retained experience with reacquisition under matched retrieval pools, ordering, calls, tokens, and latency; prior map evidence: `none`.
 
-- **`new_signal` · Evidence sufficiency routing · Evidence sufficiency can route breadth versus depth.** <!-- timefirst:direction key="evidence-sufficiency-routing" state="new_signal" supports="2608.16417" confidence="medium" implication="separate-page-coverage-from-reading-depth" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="none" -->
-  Supports: [D2-ScaleAgent](#entry-2608.16417); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (separate page coverage from reading depth): measure new-page coverage separately from deep inspection of found pages and charge verifier tokens, calls, and latency; prior map evidence: `none`.
+- **`new_signal` · Ownership isolated search validation · Search-result ownership and evidence validation can be separated from answer synthesis.** <!-- timefirst:direction key="ownership-isolated-search-validation" state="new_signal" supports="2608.23045" confidence="medium" implication="hold-results-fixed-before-crediting-search" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [NIS-Agent](#entry-2608.23045); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (hold results fixed before crediting search): isolate ownership, stopping, and validation while keeping search results and budgets fixed; prior map evidence: `none`.
 
-- **`new_signal` · Source conditioned capability routing · Tool-capability recall is constrained by source distribution.** <!-- timefirst:direction key="source-conditioned-capability-routing" state="new_signal" supports="2608.16502" confidence="medium" implication="audit-capability-coverage-before-agent-planning" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="none" -->
-  Supports: [ToolScout](#entry-2608.16502); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (audit capability coverage before agent planning): verify candidate-tool coverage and cross-source transfer before assigning final failure to agent planning; prior map evidence: `none`.
+- **`new_signal` · Contrastive requirement guided acquisition · Matched task-context probes can scope source-derived procedure admission.** <!-- timefirst:direction key="contrastive-requirement-guided-acquisition" state="new_signal" supports="2608.23417" confidence="medium" implication="match-acquisition-sources-and-budgets" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [SkillAlchemy](#entry-2608.23417); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (match acquisition sources and budgets): hold source inventory, tokens, calls, skill length, and downstream harness fixed before assigning gain to admission logic; prior map evidence: `none`.
 
-- **`new_signal` · Supersession aware state assembly · Historical recall and operative-state assembly are separable.** <!-- timefirst:direction key="supersession-aware-state-assembly" state="new_signal" supports="2608.19652" confidence="medium" implication="separate-recall-from-state-validity" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="none" -->
-  Supports: [StateMem](#entry-2608.19652); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (separate recall from state validity): match transcript access and answer cost while independently varying supersession, dependency propagation, and recomputation; prior map evidence: `none`.
+- **`new_signal` · Typed constraint retention · Hard constraints may need a separately protected state channel under compaction.** <!-- timefirst:direction key="typed-constraint-retention" state="new_signal" supports="2608.22752" confidence="medium" implication="match-metadata-and-downstream-context" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [Compaction Cliff](#entry-2608.22752); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (match metadata and downstream context): compare typed and type-blind compaction with equivalent labels, retained tokens, and downstream context budgets; prior map evidence: `none`.
 
-- **`new_signal` · Fresh evidence context allocation · Fresh evidence, not scheduler complexity, is the current result.** <!-- timefirst:direction key="fresh-evidence-context-allocation" state="new_signal" supports="2608.23252" confidence="medium" implication="compare-freshness-with-feedback-under-matched-cost" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="none" -->
-  Supports: [ASCP](#entry-2608.23252); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (compare freshness with feedback under matched cost): match evidence, context, rounds, tokens, and latency; test rotation before the scheduler increment; prior map evidence: `none`.
+- **`new_signal` · Risk aware tool exposure · The shortlist before execution is an independently measurable risk surface.** <!-- timefirst:direction key="risk-aware-tool-exposure" state="new_signal" supports="2608.22751" confidence="medium" implication="separate-exposure-from-execution-safety" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [Risk-Aware Reranking](#entry-2608.22751); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (separate exposure from execution safety): match candidate pools and score risk exposure, tool selection, execution outcomes, and cost separately; prior map evidence: `none`.
 
-- **`new_signal` · Retriever validated evidence chain supervision · Complete evidence chains become explicit learning targets.** <!-- timefirst:direction key="retriever-validated-evidence-chain-supervision" state="new_signal" supports="2608.22479" confidence="medium" implication="separate-chain-reward-from-retrieval-substrate" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="none" -->
-  Supports: [GTA-RAG](#entry-2608.22479); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (separate chain reward from retrieval substrate): fix graph, retriever, interface, data, and compute before varying trajectory reward; prior map evidence: `none`.
+- **`reinforced` · Evidence path operation surfaces · Explicit evidence-path operations gain cross-task support.** <!-- timefirst:direction key="evidence-path-operation-surfaces" state="reinforced" supports="2608.17889,2608.18613" confidence="medium" implication="make-evidence-path-operations-explicit" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="field-map" -->
+  Supports: [VisDocAgentBench](#entry-2608.17889) · [CTIFoundry](#entry-2608.18613); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (make evidence path operations explicit): expose search / resolve / traverse / inspect / read under a shared output contract, then test against static controls with matched backend, harness, and budget; prior map evidence: [Interface resolution](#field-map).
 
-- **`new_signal` · Structured gap dual source routing · Explicit reasoning gaps can choose an evidence source.** <!-- timefirst:direction key="structured-gap-dual-source-routing" state="new_signal" supports="2608.22132" confidence="medium" implication="intervene-on-routing-separately-from-reasoning" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="none" -->
-  Supports: [SSE-Bio](#entry-2608.22132); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (intervene on routing separately from reasoning): match source inventory and orchestration, then intervene separately on routing, retrieval, and downstream reasoning; prior map evidence: `none`.
+- **`new_signal` · Evidence sufficiency routing · Evidence sufficiency can route breadth versus depth.** <!-- timefirst:direction key="evidence-sufficiency-routing" state="new_signal" supports="2608.16417" confidence="medium" implication="separate-page-coverage-from-reading-depth" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [D2-ScaleAgent](#entry-2608.16417); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (separate page coverage from reading depth): measure new-page coverage separately from deep inspection of found pages and charge verifier tokens, calls, and latency; prior map evidence: `none`.
 
-- **`new_signal` · Visual evidence localization rewards · Visual evidence regions enter the reward and output contract.** <!-- timefirst:direction key="visual-evidence-localization-rewards" state="new_signal" supports="2608.21808" confidence="medium" implication="validate-semantic-support-beyond-box-overlap" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="none" -->
-  Supports: [MCite-RL](#entry-2608.21808); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (validate semantic support beyond box overlap): match crop/search budgets and audit whether the box is grounded in answer evidence; prior map evidence: `none`.
+- **`new_signal` · Source conditioned capability routing · Tool-capability recall is constrained by source distribution.** <!-- timefirst:direction key="source-conditioned-capability-routing" state="new_signal" supports="2608.16502" confidence="medium" implication="audit-capability-coverage-before-agent-planning" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [ToolScout](#entry-2608.16502); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (audit capability coverage before agent planning): verify candidate-tool coverage and cross-source transfer before assigning final failure to agent planning; prior map evidence: `none`.
 
-- **`new_signal` · Query time programmatic context materialization · Lossless history can enter the prompt selectively at query time.** <!-- timefirst:direction key="query-time-programmatic-context-materialization" state="new_signal" supports="2608.21690" confidence="medium" implication="price-retention-querying-and-materialization-together" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="none" -->
-  Supports: [Scroll](#entry-2608.21690); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (price retention querying and materialization together): jointly charge retention, query programs, environment execution, and materialized prompts; prior map evidence: `none`.
+- **`reinforced` · Supersession aware state assembly · Historical retention and operative-state resolution are separable at answer time and write time.** <!-- timefirst:direction key="supersession-aware-state-assembly" state="reinforced" supports="2608.19652,2608.23265" confidence="medium" implication="compare-answer-time-and-write-time-validity" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="field-map" -->
+  Supports: [StateMem](#entry-2608.19652) · [EvoWiki](#entry-2608.23265); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (compare answer-time and write-time validity): match history access, extraction, answer context, update cost, and dependency handling while moving supersession resolution across the lifecycle; prior map evidence: [State persistence](#field-map).
 
-- **`new_signal` · Conformal evidence set sizing · Calibrated score mass can adapt retrieval width.** <!-- timefirst:direction key="conformal-evidence-set-sizing" state="new_signal" supports="2608.20771" confidence="medium" implication="test-calibration-under-shift-and-realized-budgets" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="none" -->
-  Supports: [CAS](#entry-2608.20771); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (test calibration under shift and realized budgets): audit evidence validity under dataset shift and match realized documents, calls, tokens, and latency; prior map evidence: `none`.
+- **`new_signal` · Fresh evidence context allocation · Fresh evidence, not scheduler complexity, is the current result.** <!-- timefirst:direction key="fresh-evidence-context-allocation" state="new_signal" supports="2608.23252" confidence="medium" implication="compare-freshness-with-feedback-under-matched-cost" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [ASCP](#entry-2608.23252); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (compare freshness with feedback under matched cost): match evidence, context, rounds, tokens, and latency; test rotation before the scheduler increment; prior map evidence: `none`.
 
-- **`new_signal` · Propagation conditioned failure attribution · Retrieval failure needs live intervention for localization.** <!-- timefirst:direction key="propagation-conditioned-failure-attribution" state="new_signal" supports="2608.20627" confidence="medium" implication="report-healing-survivors-and-probe-costs" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="none" -->
-  Supports: [AgenticRAG-FP](#entry-2608.20627); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (report healing survivors and probe costs): report healed/failed trajectories, each depth denominator, and token/tool/latency cost for active probes; prior map evidence: `none`.
+- **`new_signal` · Retriever validated evidence chain supervision · Complete evidence chains become explicit learning targets.** <!-- timefirst:direction key="retriever-validated-evidence-chain-supervision" state="new_signal" supports="2608.22479" confidence="medium" implication="separate-chain-reward-from-retrieval-substrate" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [GTA-RAG](#entry-2608.22479); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (separate chain reward from retrieval substrate): fix graph, retriever, interface, data, and compute before varying trajectory reward; prior map evidence: `none`.
+
+- **`new_signal` · Structured gap dual source routing · Explicit reasoning gaps can choose an evidence source.** <!-- timefirst:direction key="structured-gap-dual-source-routing" state="new_signal" supports="2608.22132" confidence="medium" implication="intervene-on-routing-separately-from-reasoning" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [SSE-Bio](#entry-2608.22132); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (intervene on routing separately from reasoning): match source inventory and orchestration, then intervene separately on routing, retrieval, and downstream reasoning; prior map evidence: `none`.
+
+- **`new_signal` · Visual evidence localization rewards · Visual evidence regions enter the reward and output contract.** <!-- timefirst:direction key="visual-evidence-localization-rewards" state="new_signal" supports="2608.21808" confidence="medium" implication="validate-semantic-support-beyond-box-overlap" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [MCite-RL](#entry-2608.21808); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (validate semantic support beyond box overlap): match crop/search budgets and audit whether the box is grounded in answer evidence; prior map evidence: `none`.
+
+- **`new_signal` · Query time programmatic context materialization · Lossless history can enter the prompt selectively at query time.** <!-- timefirst:direction key="query-time-programmatic-context-materialization" state="new_signal" supports="2608.21690" confidence="medium" implication="price-retention-querying-and-materialization-together" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [Scroll](#entry-2608.21690); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (price retention querying and materialization together): jointly charge retention, query programs, environment execution, and materialized prompts; prior map evidence: `none`.
+
+- **`new_signal` · Conformal evidence set sizing · Calibrated score mass can adapt retrieval width.** <!-- timefirst:direction key="conformal-evidence-set-sizing" state="new_signal" supports="2608.20771" confidence="medium" implication="test-calibration-under-shift-and-realized-budgets" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [CAS](#entry-2608.20771); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (test calibration under shift and realized budgets): audit evidence validity under dataset shift and match realized documents, calls, tokens, and latency; prior map evidence: `none`.
+
+- **`new_signal` · Propagation conditioned failure attribution · Retrieval failure needs live intervention for localization.** <!-- timefirst:direction key="propagation-conditioned-failure-attribution" state="new_signal" supports="2608.20627" confidence="medium" implication="report-healing-survivors-and-probe-costs" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [AgenticRAG-FP](#entry-2608.20627); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (report healing survivors and probe costs): report healed/failed trajectories, each depth denominator, and token/tool/latency cost for active probes; prior map evidence: `none`.
 
 <a id="last-30-days"></a>
-### Last 30 days · 2026-07-27—2026-08-25
+### Last 30 days · 2026-07-28—2026-08-26
 
-- **`reinforced` · Evidence path operation surfaces · Explicit evidence-path operations gain cross-task support.** <!-- timefirst:direction key="evidence-path-operation-surfaces" state="reinforced" supports="2608.17889,2608.18613" confidence="medium" implication="make-evidence-path-operations-explicit" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="field-map" -->
-  Supports: [VisDocAgentBench](#entry-2608.17889) · [CTIFoundry](#entry-2608.18613); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (make evidence path operations explicit): expose search / resolve / traverse / inspect / read under a shared output contract, then test against static controls with matched backend, harness, and budget; prior map evidence: [Interface resolution](#field-map).
+- **`new_signal` · Experience amortized memory reranking · Prior judged retrieval episodes can become reusable ranking state.** <!-- timefirst:direction key="experience-amortized-memory-reranking" state="new_signal" supports="2608.22767" confidence="medium" implication="measure-amortization-across-stores-and-query-orders" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [EARM](#entry-2608.22767); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (measure amortization across stores and query orders): compare retained experience with reacquisition under matched retrieval pools, ordering, calls, tokens, and latency; prior map evidence: `none`.
 
-- **`new_signal` · Evidence sufficiency routing · Evidence sufficiency can route breadth versus depth.** <!-- timefirst:direction key="evidence-sufficiency-routing" state="new_signal" supports="2608.16417" confidence="medium" implication="separate-page-coverage-from-reading-depth" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="none" -->
-  Supports: [D2-ScaleAgent](#entry-2608.16417); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (separate page coverage from reading depth): measure new-page coverage separately from deep inspection of found pages and charge verifier tokens, calls, and latency; prior map evidence: `none`.
+- **`new_signal` · Ownership isolated search validation · Search-result ownership and evidence validation can be separated from answer synthesis.** <!-- timefirst:direction key="ownership-isolated-search-validation" state="new_signal" supports="2608.23045" confidence="medium" implication="hold-results-fixed-before-crediting-search" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [NIS-Agent](#entry-2608.23045); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (hold results fixed before crediting search): isolate ownership, stopping, and validation while keeping search results and budgets fixed; prior map evidence: `none`.
 
-- **`new_signal` · Source conditioned capability routing · Tool-capability recall is constrained by source distribution.** <!-- timefirst:direction key="source-conditioned-capability-routing" state="new_signal" supports="2608.16502" confidence="medium" implication="audit-capability-coverage-before-agent-planning" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="none" -->
-  Supports: [ToolScout](#entry-2608.16502); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (audit capability coverage before agent planning): verify candidate-tool coverage and cross-source transfer before assigning final failure to agent planning; prior map evidence: `none`.
+- **`new_signal` · Contrastive requirement guided acquisition · Matched task-context probes can scope source-derived procedure admission.** <!-- timefirst:direction key="contrastive-requirement-guided-acquisition" state="new_signal" supports="2608.23417" confidence="medium" implication="match-acquisition-sources-and-budgets" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [SkillAlchemy](#entry-2608.23417); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (match acquisition sources and budgets): hold source inventory, tokens, calls, skill length, and downstream harness fixed before assigning gain to admission logic; prior map evidence: `none`.
 
-- **`new_signal` · Supersession aware state assembly · Historical recall and operative-state assembly are separable.** <!-- timefirst:direction key="supersession-aware-state-assembly" state="new_signal" supports="2608.19652" confidence="medium" implication="separate-recall-from-state-validity" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="none" -->
-  Supports: [StateMem](#entry-2608.19652); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (separate recall from state validity): match transcript access and answer cost while independently varying supersession, dependency propagation, and recomputation; prior map evidence: `none`.
+- **`new_signal` · Typed constraint retention · Hard constraints may need a separately protected state channel under compaction.** <!-- timefirst:direction key="typed-constraint-retention" state="new_signal" supports="2608.22752" confidence="medium" implication="match-metadata-and-downstream-context" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [Compaction Cliff](#entry-2608.22752); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (match metadata and downstream context): compare typed and type-blind compaction with equivalent labels, retained tokens, and downstream context budgets; prior map evidence: `none`.
 
-- **`new_signal` · Fresh evidence context allocation · Fresh evidence, not scheduler complexity, is the current result.** <!-- timefirst:direction key="fresh-evidence-context-allocation" state="new_signal" supports="2608.23252" confidence="medium" implication="compare-freshness-with-feedback-under-matched-cost" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="none" -->
-  Supports: [ASCP](#entry-2608.23252); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (compare freshness with feedback under matched cost): match evidence, context, rounds, tokens, and latency; test rotation before the scheduler increment; prior map evidence: `none`.
+- **`new_signal` · Risk aware tool exposure · The shortlist before execution is an independently measurable risk surface.** <!-- timefirst:direction key="risk-aware-tool-exposure" state="new_signal" supports="2608.22751" confidence="medium" implication="separate-exposure-from-execution-safety" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [Risk-Aware Reranking](#entry-2608.22751); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (separate exposure from execution safety): match candidate pools and score risk exposure, tool selection, execution outcomes, and cost separately; prior map evidence: `none`.
 
-- **`new_signal` · Retriever validated evidence chain supervision · Complete evidence chains become explicit learning targets.** <!-- timefirst:direction key="retriever-validated-evidence-chain-supervision" state="new_signal" supports="2608.22479" confidence="medium" implication="separate-chain-reward-from-retrieval-substrate" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="none" -->
-  Supports: [GTA-RAG](#entry-2608.22479); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (separate chain reward from retrieval substrate): fix graph, retriever, interface, data, and compute before varying trajectory reward; prior map evidence: `none`.
+- **`reinforced` · Evidence path operation surfaces · Explicit evidence-path operations gain cross-task support.** <!-- timefirst:direction key="evidence-path-operation-surfaces" state="reinforced" supports="2608.17889,2608.18613" confidence="medium" implication="make-evidence-path-operations-explicit" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="field-map" -->
+  Supports: [VisDocAgentBench](#entry-2608.17889) · [CTIFoundry](#entry-2608.18613); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (make evidence path operations explicit): expose search / resolve / traverse / inspect / read under a shared output contract, then test against static controls with matched backend, harness, and budget; prior map evidence: [Interface resolution](#field-map).
 
-- **`new_signal` · Structured gap dual source routing · Explicit reasoning gaps can choose an evidence source.** <!-- timefirst:direction key="structured-gap-dual-source-routing" state="new_signal" supports="2608.22132" confidence="medium" implication="intervene-on-routing-separately-from-reasoning" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="none" -->
-  Supports: [SSE-Bio](#entry-2608.22132); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (intervene on routing separately from reasoning): match source inventory and orchestration, then intervene separately on routing, retrieval, and downstream reasoning; prior map evidence: `none`.
+- **`new_signal` · Evidence sufficiency routing · Evidence sufficiency can route breadth versus depth.** <!-- timefirst:direction key="evidence-sufficiency-routing" state="new_signal" supports="2608.16417" confidence="medium" implication="separate-page-coverage-from-reading-depth" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [D2-ScaleAgent](#entry-2608.16417); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (separate page coverage from reading depth): measure new-page coverage separately from deep inspection of found pages and charge verifier tokens, calls, and latency; prior map evidence: `none`.
 
-- **`new_signal` · Visual evidence localization rewards · Visual evidence regions enter the reward and output contract.** <!-- timefirst:direction key="visual-evidence-localization-rewards" state="new_signal" supports="2608.21808" confidence="medium" implication="validate-semantic-support-beyond-box-overlap" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="none" -->
-  Supports: [MCite-RL](#entry-2608.21808); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (validate semantic support beyond box overlap): match crop/search budgets and audit whether the box is grounded in answer evidence; prior map evidence: `none`.
+- **`new_signal` · Source conditioned capability routing · Tool-capability recall is constrained by source distribution.** <!-- timefirst:direction key="source-conditioned-capability-routing" state="new_signal" supports="2608.16502" confidence="medium" implication="audit-capability-coverage-before-agent-planning" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [ToolScout](#entry-2608.16502); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (audit capability coverage before agent planning): verify candidate-tool coverage and cross-source transfer before assigning final failure to agent planning; prior map evidence: `none`.
 
-- **`new_signal` · Query time programmatic context materialization · Lossless history can enter the prompt selectively at query time.** <!-- timefirst:direction key="query-time-programmatic-context-materialization" state="new_signal" supports="2608.21690" confidence="medium" implication="price-retention-querying-and-materialization-together" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="none" -->
-  Supports: [Scroll](#entry-2608.21690); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (price retention querying and materialization together): jointly charge retention, query programs, environment execution, and materialized prompts; prior map evidence: `none`.
+- **`reinforced` · Supersession aware state assembly · Historical retention and operative-state resolution are separable at answer time and write time.** <!-- timefirst:direction key="supersession-aware-state-assembly" state="reinforced" supports="2608.19652,2608.23265" confidence="medium" implication="compare-answer-time-and-write-time-validity" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="field-map" -->
+  Supports: [StateMem](#entry-2608.19652) · [EvoWiki](#entry-2608.23265); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (compare answer-time and write-time validity): match history access, extraction, answer context, update cost, and dependency handling while moving supersession resolution across the lifecycle; prior map evidence: [State persistence](#field-map).
 
-- **`new_signal` · Conformal evidence set sizing · Calibrated score mass can adapt retrieval width.** <!-- timefirst:direction key="conformal-evidence-set-sizing" state="new_signal" supports="2608.20771" confidence="medium" implication="test-calibration-under-shift-and-realized-budgets" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="none" -->
-  Supports: [CAS](#entry-2608.20771); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (test calibration under shift and realized budgets): audit evidence validity under dataset shift and match realized documents, calls, tokens, and latency; prior map evidence: `none`.
+- **`new_signal` · Fresh evidence context allocation · Fresh evidence, not scheduler complexity, is the current result.** <!-- timefirst:direction key="fresh-evidence-context-allocation" state="new_signal" supports="2608.23252" confidence="medium" implication="compare-freshness-with-feedback-under-matched-cost" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [ASCP](#entry-2608.23252); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (compare freshness with feedback under matched cost): match evidence, context, rounds, tokens, and latency; test rotation before the scheduler increment; prior map evidence: `none`.
 
-- **`new_signal` · Propagation conditioned failure attribution · Retrieval failure needs live intervention for localization.** <!-- timefirst:direction key="propagation-conditioned-failure-attribution" state="new_signal" supports="2608.20627" confidence="medium" implication="report-healing-survivors-and-probe-costs" timing="radar_published_at" synthesized="2026-08-25T02:53:28Z" prior="none" -->
-  Supports: [AgenticRAG-FP](#entry-2608.20627); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-25T02:53:28Z` (UTC); Research-design implication (report healing survivors and probe costs): report healed/failed trajectories, each depth denominator, and token/tool/latency cost for active probes; prior map evidence: `none`.
+- **`new_signal` · Retriever validated evidence chain supervision · Complete evidence chains become explicit learning targets.** <!-- timefirst:direction key="retriever-validated-evidence-chain-supervision" state="new_signal" supports="2608.22479" confidence="medium" implication="separate-chain-reward-from-retrieval-substrate" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [GTA-RAG](#entry-2608.22479); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (separate chain reward from retrieval substrate): fix graph, retriever, interface, data, and compute before varying trajectory reward; prior map evidence: `none`.
+
+- **`new_signal` · Structured gap dual source routing · Explicit reasoning gaps can choose an evidence source.** <!-- timefirst:direction key="structured-gap-dual-source-routing" state="new_signal" supports="2608.22132" confidence="medium" implication="intervene-on-routing-separately-from-reasoning" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [SSE-Bio](#entry-2608.22132); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (intervene on routing separately from reasoning): match source inventory and orchestration, then intervene separately on routing, retrieval, and downstream reasoning; prior map evidence: `none`.
+
+- **`new_signal` · Visual evidence localization rewards · Visual evidence regions enter the reward and output contract.** <!-- timefirst:direction key="visual-evidence-localization-rewards" state="new_signal" supports="2608.21808" confidence="medium" implication="validate-semantic-support-beyond-box-overlap" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [MCite-RL](#entry-2608.21808); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (validate semantic support beyond box overlap): match crop/search budgets and audit whether the box is grounded in answer evidence; prior map evidence: `none`.
+
+- **`new_signal` · Query time programmatic context materialization · Lossless history can enter the prompt selectively at query time.** <!-- timefirst:direction key="query-time-programmatic-context-materialization" state="new_signal" supports="2608.21690" confidence="medium" implication="price-retention-querying-and-materialization-together" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [Scroll](#entry-2608.21690); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (price retention querying and materialization together): jointly charge retention, query programs, environment execution, and materialized prompts; prior map evidence: `none`.
+
+- **`new_signal` · Conformal evidence set sizing · Calibrated score mass can adapt retrieval width.** <!-- timefirst:direction key="conformal-evidence-set-sizing" state="new_signal" supports="2608.20771" confidence="medium" implication="test-calibration-under-shift-and-realized-budgets" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [CAS](#entry-2608.20771); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (test calibration under shift and realized budgets): audit evidence validity under dataset shift and match realized documents, calls, tokens, and latency; prior map evidence: `none`.
+
+- **`new_signal` · Propagation conditioned failure attribution · Retrieval failure needs live intervention for localization.** <!-- timefirst:direction key="propagation-conditioned-failure-attribution" state="new_signal" supports="2608.20627" confidence="medium" implication="report-healing-survivors-and-probe-costs" timing="radar_published_at" synthesized="2026-08-26T01:35:00Z" prior="none" -->
+  Supports: [AgenticRAG-FP](#entry-2608.20627); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-08-26T01:35:00Z` (UTC); Research-design implication (report healing survivors and probe costs): report healed/failed trajectories, each depth denominator, and token/tool/latency cost for active probes; prior map evidence: `none`.
 
 Closed periods and longer compaction: [weekly](digests/README.md) · [monthly](digests/monthly/2026-08.md) · [yearly](digests/yearly/2026.md)
 
@@ -382,7 +502,7 @@ Closed periods and longer compaction: [weekly](digests/README.md) · [monthly](d
 | **Adaptivity placement** | What can be compiled before evidence arrives, and what requires result-conditioned control? | `pre-query compilation ↔ query-time adaptation` |
 | **Evidence materialization** | When should chunks/regions/workspaces become concrete? | `pre-materialized index ↔ raw/query-conditioned evidence` |
 | **Interface resolution** | What operations and source state can the agent observe/control? | `opaque top-k ↔ explicit search/resolve/traverse/inspect/read under shared output contract` |
-| **State persistence** | Which evidence, progress, or reasoning state should survive? | `stateless loop ↔ persistent/recoverable state` |
+| **State persistence** | Which evidence, progress, or reasoning state should survive? | `stateless loop ↔ persistent/recoverable state`; current design point: `answer-time ↔ write-time supersession resolution` |
 | **Resource accounting** | What is actually cheaper? | `local retrieval metric ↔ lifecycle cost + task outcome` |
 
 [Explore the research-question map →](categories/README.en.md) · [Research-question visual](assets/editorial/research-question-map.svg) · [Evaluation view →](https://github.com/H20Zhang/Agent-Benchmark-Radar#benchmark-rag)
@@ -393,7 +513,7 @@ Closed periods and longer compaction: [weekly](digests/README.md) · [monthly](d
 | Question | Suggested path | What to learn |
 |---|---|---|
 | **Where should retrieval control and materialization live?** | [SIRA](papers/2605.06647.md) → [ReFind](papers/2608.12888.md) → [LENS](papers/2608.16185.md) → [ASCP](papers/2608.23252.md) | Move from pre-query compilation through result-conditioned access and query-time localization to fresh evidence allocation across rounds; ask where the work moved each time. |
-| **What state should persist?** | [SGR-Bench](papers/2605.22219.md) → [StateMem](papers/2608.19652.md) → [Context Compression Cost](papers/2608.16370.md) → [Scroll](papers/2608.21690.md) | External source state, operative validity, reacquisition cost, and lossless programmatic state are different retained-state problems. |
+| **What state should persist?** | [StateMem](papers/2608.19652.md) → [EvoWiki](papers/2608.23265.md) → [Context Compression Cost](papers/2608.16370.md) → [Scroll](papers/2608.21690.md) | Operative validity can be resolved at answer time or write time; reacquisition cost and lossless programmatic state remain separate retained-state problems. |
 | **How do we make retrieval claims causal?** | [Training Protocols](papers/2605.27881.md) → [Pi-Serini](papers/2605.10848.md) → [VAKRA](papers/2608.12282.md) → [AgenticRAG-FP](papers/2608.20627.md) | Trace the causal path from evidence coverage and matched interface/harness through cross-source execution to live fault intervention. |
 
 <a id="library"></a>

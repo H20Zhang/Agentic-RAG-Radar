@@ -28,13 +28,13 @@ The field is more useful to reason about as a set of **live research questions**
 
 ### What state should persist?
 
-**Current view.** Agent state has several owners: external source configuration, accumulated evidence/gaps, trajectory progress, active reasoning state, and retained context. Its value depends on **future reuse × recoverability × reacquisition cost**, not size alone.
+**Current view.** Agent state has several owners: external source configuration, accumulated evidence/gaps, trajectory progress, active reasoning state, and retained context. Its value depends on **future reuse × recoverability × reacquisition cost**, not size alone. StateMem and EvoWiki now jointly show that retaining history and resolving which state is operative are separable; validity can be assembled at answer time or materialized during writes.
 
-**Key design points.** [SGR-Bench](../papers/2605.22219.md) → [S2G-RAG](../papers/2604.23783.md) → [RAAC](../papers/2608.15191.md) → [LoongReflect](../papers/2608.11967.md) → [Context Compression Cost](../papers/2608.16370.md).
+**Key design points.** [SGR-Bench](../papers/2605.22219.md) → [StateMem](../papers/2608.19652.md) → [EvoWiki](../papers/2608.23265.md) → [Context Compression Cost](../papers/2608.16370.md), with [RAAC](../papers/2608.15191.md) and [LoongReflect](../papers/2608.11967.md) covering progress and reversible trajectory state.
 
 **Boundary.** More explicit state can merely add controller capacity or privileged supervision; compression does not create a retrieval tax in every environment.
 
-**Decisive next evidence.** Counterfactual restore/delete individual state classes under matched context, tool, controller, latency, and answer-quality budgets.
+**Decisive next evidence.** Move supersession resolution between write time and answer time while matching extraction, history access, answer context, update cost, dependency handling, and answer quality; then counterfactually restore/delete individual state classes.
 
 ### How should retrieval expose the corpus?
 

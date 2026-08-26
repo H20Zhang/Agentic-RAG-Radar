@@ -14,7 +14,13 @@ The index is deliberately terse: use a paper title for the deep research note, o
 
 | Date | Paper | Area | Importance | Review |
 |---|---|---|---:|---|
+| 2026-08-24 | **[The Retriever Should Remember: Experience-Amortized Reranking for Long-Term Agent Memory](2608.22767.md)**<br><sub>[paper](https://arxiv.org/abs/2608.22767) · [code](https://github.com/FengQi-HITSZ/earm)</sub> | Retrieval & Tool Use | 3/5 | Full text |
 | 2026-08-24 | **[The Laws of Context Allocation: Causal Measurement and Closed-Loop Orchestration in Generative Search](2608.23252.md)**<br><sub>[paper](https://arxiv.org/abs/2608.23252) · [code](https://github.com/PeiYangLiu/ascp)</sub> | Iterative Reasoning & Verification | 4/5 | Full text |
+| 2026-08-24 | **[The Compaction Cliff in Long-Running AI Agent Memory](2608.22752.md)**<br><sub>[paper](https://arxiv.org/abs/2608.22752) · [code](https://github.com/searchsim-org/cikm26-knowledge-triage)</sub> | Iterative Reasoning & Verification | 4/5 | Full text |
+| 2026-08-24 | **[SkillAlchemy: Open-World Agent Skill Creation](2608.23417.md)**<br><sub>[paper](https://arxiv.org/abs/2608.23417)</sub> | Planning & Query Formulation | 4/5 | Full text |
+| 2026-08-24 | **[Risk-Aware Reranking for Agentic Tool Retrieval](2608.22751.md)**<br><sub>[paper](https://arxiv.org/abs/2608.22751) · [code](https://github.com/qli447/risk-aware-tool-retrieval-release)</sub> | Retrieval & Tool Use | 4/5 | Full text |
+| 2026-08-24 | **[From Inertia to Objectivity: Improving Deep Research Agents with Noise Isolation](2608.23045.md)**<br><sub>[paper](https://arxiv.org/abs/2608.23045)</sub> | Iterative Reasoning & Verification | 4/5 | Full text |
+| 2026-08-24 | **[EvoWiki: Incremental State Overwriting and Traceable Question Answering for Cross-Meeting Knowledge Evolution](2608.23265.md)**<br><sub>[paper](https://arxiv.org/abs/2608.23265)</sub> | Iterative Reasoning & Verification | 4/5 | Full text |
 | 2026-08-23 | **[GTA-RAG: Graph-Trajectory-Augmented Reinforcement Learning for Multi-Turn Retrieval-Augmented Reasoning](2608.22479.md)**<br><sub>[paper](https://arxiv.org/abs/2608.22479) · [code](https://github.com/cjcj46262/GTA-RAG)</sub> | Learning & Optimization | 4/5 | Full text |
 | 2026-08-22 | **[SSE-Bio: A Structured Self-Evolving Agent with Agentic Retrieval Policy for Multi-Hop Biomedical Reasoning](2608.22132.md)**<br><sub>[paper](https://arxiv.org/abs/2608.22132) · [code](https://github.com/ZhaohanM/SSE-Bio)</sub> | Iterative Reasoning & Verification | 4/5 | Full text |
 | 2026-08-22 | **[MCite-RL: Towards Reliable Multimodal RAG via Citation-enhanced Agentic Reinforcement Learning](2608.21808.md)**<br><sub>[paper](https://arxiv.org/abs/2608.21808)</sub> | Learning & Optimization | 3/5 | Full text |

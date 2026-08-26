@@ -1,0 +1,53 @@
+{
+  "id": "arxiv:2608.22751",
+  "arxiv_id": "2608.22751",
+  "title": "Risk-Aware Reranking for Agentic Tool Retrieval",
+  "authors": ["Qinfei Li", "Xiaoxuan Dong", "Jin Zhang", "Dexu Yu", "Wenhao Deng", "Junchen Fu", "Youhua Li", "Hanwen Du", "Chunxiao Li"],
+  "first_seen": "2026-08-26",
+  "published": "2026-08-24",
+  "published_at": "2026-08-24T03:20:54Z",
+  "first_seen_at": "2026-08-26T01:19:58Z",
+  "radar_published_at": "2026-08-26T01:34:10Z",
+  "time_provenance": "native_v2",
+  "map_delta": "early_signal",
+  "direction_keys": ["risk-aware-tool-exposure"],
+  "updated": "2026-08-26",
+  "venue": "CIKM 2026",
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.22751",
+    "pdf": "https://arxiv.org/pdf/2608.22751",
+    "code": "https://github.com/qli447/risk-aware-tool-retrieval-release",
+    "project": "https://doi.org/10.1145/3799682.3840706"
+  },
+  "primary_category": "retrieval_tool_use",
+  "tags": ["agent_safety", "candidate_exposure", "risk_aware_reranking", "tool_retrieval"],
+  "benchmarks": ["UltraTool", "Seal-Tools"],
+  "relevance": 0.91,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "retrieval_interface",
+    "question": "How does a tool shortlist become a pre-execution risk surface rather than a relevance-only ranking?",
+    "takeaway": "A query-conditioned relevance head and tool-level risk head expose a tunable tradeoff before execution; audited rules can reduce labeled exposure further but can also remove genuinely needed risky tools.",
+    "compared_with": "The same frozen ToolRet-BGE representations and relevance head without the learned risk penalty.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2608.22751.png",
+    "image_path": "assets/visuals/2608.22751.webp",
+    "prompt_path": "assets/visuals/prompts/2608.22751.md",
+    "artifact_path": "papers/2608.22751.md"
+  },
+  "analysis": {
+    "tldr": "Risk-aware reranking makes the top-k tool list an explicit pre-execution exposure surface. The cleanest UltraTool ablation adds only a learned tool-risk head to the same frozen representations, reducing RVR@5 from 0.188 to 0.138 while NDCG@5 changes from 0.558 to 0.551. No tools are executed, labels and evaluation are coupled, and stricter filtering sharply lowers recall of genuinely needed risky tools.",
+    "problem": "Relevance-only tool retrieval can expose executable actions whose operational consequences are unnecessary for the current task, yet ordinary ranking metrics do not measure that exposure.",
+    "core_idea": "Separate query-conditioned relevance from tool-level risk, combine them with an inference-time tradeoff parameter, optionally smooth scores over a ToolGraph, and apply audited registry constraints when deployment requires a conservative shortlist.",
+    "agent_loop": "query → retrieve/score tool pool → trade relevance against labeled risk → optional audited filter → expose shortlist → downstream agent chooses",
+    "retrieval_design": "The causal center is the same frozen ToolRet-BGE representation and trained relevance head with or without a learned risk head. Main-table comparisons are less clean because general rerankers see top-100 candidates while the end-to-end method scores the full pool.",
+    "compared_to": ["ToolRet-BGE and a trained relevance-only head", "eight general-purpose rerankers", "graph and audited rule-filter ablations"],
+    "evidence": "On UltraTool, adding the risk head changes NDCG@5/RVR@5/SRR@5 from 0.558/0.188/0.097 to 0.551/0.138/0.063. The rule filter lowers exposure further to 0.073/0.019, but NeedRisk-Hit@5 falls from 0.660 to 0.397 across the full control stack.",
+    "why_it_matters": "It places safety policy before tool execution and makes candidate exposure measurable, while showing that conservative retrieval controls trade away some task-critical actions.",
+    "limitations": ["No tool is executed, so the paper does not establish downstream agent safety or task success.", "Tool-level risk ignores query arguments, user permissions, and runtime environment.", "Risk labels supervise the model, construct metadata, and define evaluation; the 150-tool human audit has only 60% exact agreement and kappa 0.362.", "Main comparisons use unmatched candidate sets and full-pool scoring cost, latency, annotation cost, and dollars are not reported.", "Graph smoothing is not a safety win in the ablation, and hard filtering removes genuinely needed high-risk tools."],
+    "confidence": "medium"
+  },
+  "provenance": {"discovered_via": ["overlapping arXiv cs.IR/cs.AI primary-source search", "CIKM 2026 full-text front matter"], "full_text_checked": true, "code_link_verified": true, "last_reviewed": "2026-08-26"}
+}

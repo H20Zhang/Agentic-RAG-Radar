@@ -7,6 +7,14 @@ This category covers the agent-facing retrieval environment: corpus observabilit
 
 ## Current papers
 
+### [Risk-Aware Reranking](../papers/2608.22751.md) — ★★★★☆
+
+**Design point:** treat the pre-execution shortlist as a risk surface by trading relevance against labeled tool risk. **Boundary:** exposure is not execution safety, labels and evaluation are coupled, and strict filtering removes some genuinely needed risky tools.
+
+### [EARM](../papers/2608.22767.md) — ★★★☆☆
+
+**Design point:** retain judged retrieval episodes as reusable reranking state. **Boundary:** the evidence is one fixed LoCoMo store/query order with incomplete lifecycle cost accounting.
+
 ### [Scroll](../papers/2608.21690.md) — ★★★★☆
 
 **Design point:** retain lossless history in an event log and persistent Python namespace, then materialize selected state at query time.
