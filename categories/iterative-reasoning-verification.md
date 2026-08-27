@@ -7,6 +7,11 @@ This category is about the closed loop after retrieval begins. The important obj
 
 ## Current papers
 
+
+### [EviGraph](../papers/2608.24667.md) — ★★★★★
+
+**Design point:** materialize verified source spans into claim-level support/conflict state so retrieval failure, recording failure, and stopping failure are separately observable. **Boundary:** the frozen verifier supplies privileged semantic judgments; the clean result isolates RL inside the dual-role architecture, not the full graph package.
+
 ### [NIS-Agent](../papers/2608.23045.md) — ★★★★☆
 
 **Design point:** separate search ownership, evidence validation, and synthesis. Its fixed-results Observer Mode isolates a 15–30 point judgment effect; the end-to-end package still changes roles, stopping, prompts, and tool flow together.

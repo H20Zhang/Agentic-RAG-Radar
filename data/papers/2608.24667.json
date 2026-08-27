@@ -1,0 +1,89 @@
+{
+  "id": "arxiv:2608.24667",
+  "arxiv_id": "2608.24667",
+  "title": "EviGraph: Towards Verifiable Evidence Construction for Information-Seeking Agents",
+  "authors": [
+    "Jiashun Chen",
+    "Yirong Mao",
+    "Wenhui Que"
+  ],
+  "first_seen": "2026-08-27",
+  "published": "2026-08-25",
+  "published_at": "2026-08-25T15:06:54Z",
+  "first_seen_at": "2026-08-27T01:24:29Z",
+  "radar_published_at": "2026-08-27T01:30:04Z",
+  "time_provenance": "native_v2",
+  "map_delta": "early_signal",
+  "direction_keys": [
+    "span-grounded-evidence-construction"
+  ],
+  "updated": "2026-08-27",
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.24667",
+    "pdf": "https://arxiv.org/pdf/2608.24667",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "iterative_reasoning_verification",
+  "tags": [
+    "evidence_construction",
+    "evidence_graph",
+    "process_rewards",
+    "verification",
+    "stopping",
+    "deep_search"
+  ],
+  "benchmarks": [
+    "BrowseComp-Plus",
+    "BrowseComp",
+    "GAIA",
+    "XBench",
+    "LiveVQA"
+  ],
+  "relevance": 0.98,
+  "importance": 5,
+  "visual_explainer": {
+    "type": "evidence_failure_map",
+    "question": "How can an information-seeking agent turn retrieved pages into auditable claim-level state while separating retrieval, recording, and stopping failures?",
+    "takeaway": "A frozen verifier extracts span-grounded evidence, a shared policy proposes graph writes, and a structural validator commits only provenance-valid updates; the graph then drives search and process rewards.",
+    "compared_with": "The same dual-role architecture without RL, plus a monolithic search agent under the same BrowseComp-Plus interaction budget.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2608.24667.png",
+    "image_path": "assets/visuals/2608.24667.webp",
+    "prompt_path": "assets/visuals/prompts/2608.24667.md",
+    "artifact_path": "papers/2608.24667.md"
+  },
+  "analysis": {
+    "tldr": "EviGraph materializes search evidence as a span-grounded claim graph and trains search plus graph-writing roles with process rewards. On BrowseComp-Plus, the clean same-architecture comparison is 26.9% without RL versus 35.9% with RL. The much larger 2.7→26.9 jump also changes architecture, verifier access, search persistence, and stopping, so it is package evidence rather than a graph-memory effect.",
+    "problem": "A search trace can contain relevant pages without proving which source span supports which candidate constraint, making grounding, contradiction, and stopping difficult to supervise independently.",
+    "core_idea": "Separate executor search, frozen page verification, policy-proposed evidence recording, and deterministic structural validation around a persistent claim–evidence graph that exposes positive support, conflicts, and missing constraints.",
+    "agent_loop": "question/constraints → graph-conditioned search → frozen page verification → Add/Support proposal → structural commit → updated support/conflict/MISSING state → continue or answer",
+    "retrieval_design": "The executor never sees raw pages; a frozen verifier inspects results and returns source-anchored spans. The graph controls subsequent querying and stopping, while retrieval failure, recording failure, and decision failure become distinct transitions.",
+    "compared_to": [
+      "Qwen3-8B monolithic single-agent search",
+      "same dual-role architecture without RL",
+      "cross-benchmark BrowseComp, GAIA, XBench and LiveVQA transfer"
+    ],
+    "evidence": "BrowseComp-Plus accuracy is 35.9% for Qwen3-8B EviGraph with RL versus 26.9% for the same dual-role architecture without RL and 2.7% for the monolithic agent. The RL comparison keeps the architecture and interaction budget aligned and does not gain by simply increasing search volume.",
+    "why_it_matters": "It moves evidence materialization from an opaque trajectory into explicit mutable state and gives a sharper causal vocabulary for retrieval, recording, contradiction handling, and stopping.",
+    "limitations": [
+      "The 2.7→26.9 package gain changes role decomposition, raw-page access, verifier mediation, search persistence, and stopping together.",
+      "The frozen verifier supplies privileged semantic judgments; the deterministic validator guarantees structure and provenance, not truth or entailment.",
+      "Reported generated-token accounting excludes environment-supplied page text and does not provide complete wall-clock or dollar accounting.",
+      "The strongest controlled evidence isolates the RL objective only within the authors' dual-role architecture."
+    ],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": [
+      "fresh arXiv cs.IR primary-source search",
+      "full arXiv v1 HTML review"
+    ],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-27"
+  }
+}

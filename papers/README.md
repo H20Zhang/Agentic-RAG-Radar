@@ -14,6 +14,9 @@ The index is deliberately terse: use a paper title for the deep research note, o
 
 | Date | Paper | Area | Importance | Review |
 |---|---|---|---:|---|
+| 2026-08-25 | **[Structurally-bounded Agentic Graph Exploration for Evidence-Grounded Scholarly DeepSearch](2608.24809.md)**<br><sub>[paper](https://arxiv.org/abs/2608.24809) · [code](https://github.com/RadiantCrystal/CRASE)</sub> | Retrieval & Tool Use | 5/5 | Full text |
+| 2026-08-25 | **[EviGraph: Towards Verifiable Evidence Construction for Information-Seeking Agents](2608.24667.md)**<br><sub>[paper](https://arxiv.org/abs/2608.24667)</sub> | Iterative Reasoning & Verification | 5/5 | Full text |
+| 2026-08-25 | **[CAFE: Self-Improving Search Agents Need Co-Evolving Feedback](2608.24794.md)**<br><sub>[paper](https://arxiv.org/abs/2608.24794)</sub> | Learning & Optimization | 4/5 | Full text |
 | 2026-08-24 | **[The Retriever Should Remember: Experience-Amortized Reranking for Long-Term Agent Memory](2608.22767.md)**<br><sub>[paper](https://arxiv.org/abs/2608.22767) · [code](https://github.com/FengQi-HITSZ/earm)</sub> | Retrieval & Tool Use | 3/5 | Full text |
 | 2026-08-24 | **[The Laws of Context Allocation: Causal Measurement and Closed-Loop Orchestration in Generative Search](2608.23252.md)**<br><sub>[paper](https://arxiv.org/abs/2608.23252) · [code](https://github.com/PeiYangLiu/ascp)</sub> | Iterative Reasoning & Verification | 4/5 | Full text |
 | 2026-08-24 | **[The Compaction Cliff in Long-Running AI Agent Memory](2608.22752.md)**<br><sub>[paper](https://arxiv.org/abs/2608.22752) · [code](https://github.com/searchsim-org/cikm26-knowledge-triage)</sub> | Iterative Reasoning & Verification | 4/5 | Full text |

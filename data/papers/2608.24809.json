@@ -1,0 +1,92 @@
+{
+  "id": "arxiv:2608.24809",
+  "arxiv_id": "2608.24809",
+  "title": "Structurally-bounded Agentic Graph Exploration for Evidence-Grounded Scholarly DeepSearch",
+  "authors": [
+    "Rima Hazra",
+    "Sayan Layek",
+    "Somnath Banerjee",
+    "Soumen Chakrabarti",
+    "Animesh Mukherjee"
+  ],
+  "first_seen": "2026-08-27",
+  "published": "2026-08-25",
+  "published_at": "2026-08-25T16:51:26Z",
+  "first_seen_at": "2026-08-27T01:24:29Z",
+  "radar_published_at": "2026-08-27T01:30:04Z",
+  "time_provenance": "native_v2",
+  "map_delta": "early_signal",
+  "direction_keys": [
+    "structurally-bounded-exploration"
+  ],
+  "updated": "2026-08-27",
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.24809",
+    "pdf": "https://arxiv.org/pdf/2608.24809",
+    "code": "https://github.com/RadiantCrystal/CRASE",
+    "project": null
+  },
+  "primary_category": "retrieval_tool_use",
+  "tags": [
+    "bounded_search",
+    "citation_graph",
+    "evidence_grounding",
+    "stopping",
+    "resource_accounting",
+    "scholarly_search"
+  ],
+  "benchmarks": [
+    "LitSearch",
+    "ACL scholarly retrieval",
+    "ICLR scholarly retrieval",
+    "arXiv scholarly retrieval"
+  ],
+  "relevance": 0.98,
+  "importance": 5,
+  "visual_explainer": {
+    "type": "retrieval_interface",
+    "question": "When can open-ended agentic search be replaced by a structurally bounded evidence graph with a stopping condition known before inference?",
+    "takeaway": "Crase searches only for seeds, expands a fixed 1.5-hop citation neighborhood, prunes claim-unsupported edges, and ranks the remaining graph with a recency-aware random walk.",
+    "compared_with": "Open-ended DeepResearch-GPT and DeepResearch-Claude plus graph retrieval baselines, with per-query calls, tokens, time, dollars, and recall reported on ICLR.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2608.24809.png",
+    "image_path": "assets/visuals/2608.24809.webp",
+    "prompt_path": "assets/visuals/prompts/2608.24809.md",
+    "artifact_path": "papers/2608.24809.md"
+  },
+  "analysis": {
+    "tldr": "Crase replaces open-ended scholarly deep search with one seeded retrieval phase followed by fixed 1.5-hop citation-graph expansion, claim-level entailment pruning, and deterministic ranking/stopping. On ICLR it reports recall@50 0.3659 versus 0.1220 for both proprietary deep-research baselines while using 5 versus 17–18 external calls, 235K versus 560–620K tokens, 104 versus 249–272 seconds, and $0.37 versus $1.76–$2.06 per query. The comparison also changes objective, corpus access, models, and retrieval substrate, so it does not isolate boundedness alone.",
+    "problem": "Open-ended deep-research loops make candidate-set boundaries, stopping, provenance, and resource use dependent on intermediate model judgments.",
+    "core_idea": "Use an LLM only to plan seed queries and make local claim/entailment judgments; after seeds are fixed, bound exploration to their 1.5-hop citation neighborhood and let deterministic graph construction and ranking determine the remaining search extent and stop point.",
+    "agent_loop": "research plan → fixed seed searches → 1.5-hop citation expansion → claim extraction/entailment → prune unsupported edges → recency-aware PPR/SALSA → top-k",
+    "retrieval_design": "The external interaction surface is fixed after seed construction. The citation graph becomes the corpus interaction substrate, and the number of model invocations is structurally bounded by the constructed graph rather than by an agent-selected stopping rule.",
+    "compared_to": [
+      "DeepResearch-GPT",
+      "DeepResearch-Claude",
+      "SPECTER2-DeepWalk",
+      "PPR/SALSA and seed-selection variants"
+    ],
+    "evidence": "On ICLR, Crase-Llama-PPR reports recall@50 0.3659 versus 0.1220 for both DeepResearch baselines. Median calls/tokens/time/cost are 5/235K/104s/$0.37 versus 18/620K/272s/$1.76 and 17/560K/249s/$2.06. Human audit of 50 citation edges reports 84% Crase–human agreement and Fleiss' kappa 0.71.",
+    "why_it_matters": "It is a concrete counterexample to the assumption that more adaptive open-ended search is inherently better: domain structure can move stopping and exploration bounds out of the policy while improving predictability and measured cost.",
+    "limitations": [
+      "Crase changes the task from answer synthesis to ranked scholarly retrieval, so the strongest efficiency comparison is not an equal-output-contract test.",
+      "The deep-research baselines use proprietary models while Crase uses a citation corpus, local models, and a different retrieval substrate.",
+      "Performance depends strongly on seed quality, graph coverage, claim extraction, and entailment judgments; bounded exploration contains rather than necessarily recovers from bad seeds.",
+      "The fixed 1.5-hop design is specific to domains with a useful relational substrate and may not transfer to unstructured Web search."
+    ],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": [
+      "fresh arXiv cs.CL/cs.IR primary-source search",
+      "full arXiv v1 HTML review",
+      "official code link in paper"
+    ],
+    "full_text_checked": true,
+    "code_link_verified": true,
+    "last_reviewed": "2026-08-27"
+  }
+}

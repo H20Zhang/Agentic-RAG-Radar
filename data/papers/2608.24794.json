@@ -1,0 +1,107 @@
+{
+  "id": "arxiv:2608.24794",
+  "arxiv_id": "2608.24794",
+  "title": "CAFE: Self-Improving Search Agents Need Co-Evolving Feedback",
+  "authors": [
+    "Boyang Liu",
+    "Senjie Jin",
+    "Peixin Wang",
+    "Zhangyue Yin",
+    "Yibo Wang",
+    "Yuhao Zhou",
+    "Xinbing Liang",
+    "Shizheng Zhu",
+    "Yuhui Wang",
+    "Jingqi Tong",
+    "Zhiheng Xi",
+    "Jiazheng Zhang",
+    "Clive Bai",
+    "Clarenceai",
+    "Blaze Chen",
+    "Tao Gui",
+    "Qi Zhang",
+    "Xuanjing Huang"
+  ],
+  "first_seen": "2026-08-27",
+  "published": "2026-08-25",
+  "published_at": "2026-08-25T16:39:00Z",
+  "first_seen_at": "2026-08-27T01:24:29Z",
+  "radar_published_at": "2026-08-27T01:30:04Z",
+  "time_provenance": "native_v2",
+  "map_delta": "early_signal",
+  "direction_keys": [
+    "co-evolving-feedback-routing"
+  ],
+  "updated": "2026-08-27",
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.24794",
+    "pdf": "https://arxiv.org/pdf/2608.24794",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "learning_optimization",
+  "tags": [
+    "feedback_routing",
+    "in_trajectory_recovery",
+    "credit_assignment",
+    "co_evolution",
+    "search_agent_rl"
+  ],
+  "benchmarks": [
+    "2WikiMultihopQA",
+    "HotpotQA",
+    "MuSiQue",
+    "PopQA",
+    "TriviaQA",
+    "Bamboogle",
+    "Natural Questions",
+    "BrowseComp-Plus"
+  ],
+  "relevance": 0.95,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "trajectory_learning",
+    "question": "When should a search agent request corrective feedback, and how can the critic remain useful as the policy's failure distribution changes?",
+    "takeaway": "CAFE makes feedback request a learned action, shapes credit around recovery, and alternates agent RL with critic preference learning from on-policy trajectories.",
+    "compared_with": "The same Qwen2.5-7B feedback-SFT checkpoint trained with GRPO and other RL search baselines, plus component and schedule ablations.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2608.24794.png",
+    "image_path": "assets/visuals/2608.24794.webp",
+    "prompt_path": "assets/visuals/prompts/2608.24794.md",
+    "artifact_path": "papers/2608.24794.md"
+  },
+  "analysis": {
+    "tldr": "CAFE turns corrective feedback into a learned in-trajectory intervention: the search policy learns when to request it while a shared-parameter critic learns corrections from changing on-policy failures. Against the same SFT+GRPO backbone it reaches 52.5 EM / 60.7 F1 versus 49.7 / 58.0, but the package also bundles feedback-SFT, request shaping, advantage shaping, RDPO, and a consequential online/offline alternation schedule.",
+    "problem": "Terminal search rewards reveal whether a trajectory succeeded but do not localize an intermediate error or adapt the critic to the policy's evolving failure distribution.",
+    "core_idea": "Add a request-feedback action, estimate prompt-level call-versus-skip utility online, reshape pre/post-feedback credit, and alternate agent RL with preference optimization of critic feedback from matched on-policy prefixes.",
+    "agent_loop": "search trajectory → optional feedback request → critic correction → continued retrieval/reasoning → outcome; alternate agent RL and critic RDPO across iterations",
+    "retrieval_design": "Feedback affects the policy during the search trajectory rather than changing the retriever itself. The main causal question is whether better routing/recovery comes from the feedback mechanism or from extra calls, altered state, and the alternation schedule.",
+    "compared_to": [
+      "SFT+GRPO from the same feedback-SFT checkpoint",
+      "IGPO reproduced on the authors' checkpoint",
+      "CFE-only and advantage-shaping-only ablations",
+      "matched-total-step alternation schedules"
+    ],
+    "evidence": "Across seven search benchmarks, SFT+CAFE averages 52.5 EM / 60.7 F1 versus 49.7 / 58.0 for SFT+GRPO and 50.4 / 59.4 for the strongest reproduced RL baseline. Component ablations improve separately and together, while a matched 500-online-step schedule study shows 100×5 substantially outperforms 50×10 and 250×2.",
+    "why_it_matters": "It treats feedback availability and recovery as placement decisions inside the retrieval policy rather than as a static post-hoc critic, while exposing schedule as a first-class confound for self-improving search agents.",
+    "limitations": [
+      "The full method bundles feedback-conditioned SFT, request utility shaping, token advantage shaping, critic RDPO, and alternating optimization.",
+      "The 500-step schedule ablation shows update cadence itself materially changes final performance.",
+      "Comparative Feedback Estimate is a prompt-level call/skip gap, not a per-request randomized causal effect.",
+      "Feedback invokes additional model work and the paper does not provide complete matched token, tool, latency, or dollar accounting."
+    ],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": [
+      "fresh arXiv search-agent primary-source search",
+      "full arXiv v1 HTML/PDF review"
+    ],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-27"
+  }
+}

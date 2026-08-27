@@ -7,6 +7,11 @@ This category covers the agent-facing retrieval environment: corpus observabilit
 
 ## Current papers
 
+
+### [Crase](../papers/2608.24809.md) — ★★★★★
+
+**Design point:** after fixed seed searches, move exploration extent and stopping into a 1.5-hop citation substrate rather than a model-terminated search loop. **Boundary:** the strong recall/cost comparison changes output contract, corpus substrate, and models, so boundedness is not isolated.
+
 ### [Risk-Aware Reranking](../papers/2608.22751.md) — ★★★★☆
 
 **Design point:** treat the pre-execution shortlist as a risk surface by trading relevance against labeled tool risk. **Boundary:** exposure is not execution safety, labels and evaluation are coupled, and strict filtering removes some genuinely needed risky tools.

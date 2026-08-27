@@ -7,6 +7,11 @@ This category covers policy learning, retriever learning for agentic usage, rein
 
 ## Current papers
 
+
+### [CAFE](../papers/2608.24794.md) — ★★★★☆
+
+**Design point:** learn when to request corrective feedback while a critic is updated from the policy's changing on-policy failures. **Boundary:** request shaping, token credit, critic RDPO, extra feedback work, and online/offline schedule remain coupled; the matched-step study shows schedule is itself consequential.
+
 ### [GTA-RAG](../papers/2608.22479.md) — ★★★★☆
 
 **Design point:** supervise retriever-validated target-document chains before natural-QA reward. **Boundary:** graph construction, hybrid retrieval, synthetic targets, and training remain a package.
