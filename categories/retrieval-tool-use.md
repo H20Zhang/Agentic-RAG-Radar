@@ -7,6 +7,13 @@ This category covers the agent-facing retrieval environment: corpus observabilit
 
 ## Current papers
 
+### [PACE](../papers/2608.25115.md) — ★★★★☆
+
+**Design point:** reorder a fixed candidate pool for evidence density, then adapt reranking depth from live reranker-versus-LLM serving pressure. **Boundary:** it controls ranking compute inside an already retrieved pool; HotpotQA/2Wiki exclude initial top-100 retrieval failures and the online headline is evidence recall plus serving latency, not matched answer accuracy.
+
+### [Retrieve, Match, Escalate](../papers/2608.25037.md) — ★★★★☆
+
+**Design point:** route only the ambiguous product-linking tail to a multimodal VLM that can acquire external Web evidence. **Boundary:** the production +9pp coverage result uses a previous-generation cheap linker, and there is no same-VLM no-search control isolating Web acquisition.
 
 ### [Crase](../papers/2608.24809.md) — ★★★★★
 
@@ -39,7 +46,6 @@ This category covers the agent-facing retrieval environment: corpus observabilit
 ### [DocNavRAG](../papers/2608.01565.md) — ★★★★☆
 
 **Design point:** couple document-native navigation with explicit collected/missing evidence state so structure and retrieval control evolve together.
-
 
 ### [Direct Corpus Interaction](../papers/2605.05242.md) — ★★★★★
 
@@ -99,22 +105,24 @@ This category covers the agent-facing retrieval environment: corpus observabilit
 
 **Design point:** make retrieval amount explicit and distinguish calls, context volume, latency, and abstention rather than collapsing them into one “budget.”
 
-## Current tension: compile, materialize, or defer?
+## Current tension: compile, materialize, defer, or escalate?
 
-Two orthogonal placement decisions now matter.
+The new results expose three orthogonal placement decisions.
 
-**Where does adaptivity live?** SIRA shows some exploratory behavior can be compiled before retrieval when discriminative corpus signals are already observable. ReFind shows the opposite regime: when useful names/times/session context emerge only after retrieval, result-conditioned reformulation adds value.
+**Where does adaptivity live?** SIRA compiles some exploratory behavior before retrieval when discriminative corpus signals are observable. ReFind uses result-conditioned reformulation when names/times/session context emerge only after retrieval. PACE adds a different input altogether: serving pressure can adapt how much ranking compute to spend even when the evidence pool is fixed.
 
-**When does evidence become a retrieval unit?** Indexed RAG materializes chunks/vectors before the query. DCI preserves raw files but uses explicit operations over them. LENS goes further by treating evidence windows as query-conditioned latent objects that are localized online.
+**When does evidence become a retrieval unit?** Indexed RAG materializes chunks/vectors before the query. DCI preserves raw files but uses explicit operations over them. LENS treats evidence windows as query-conditioned latent objects localized online.
+
+**Which queries deserve a more expensive evidence environment?** Retrieve, Match, Escalate routes only uncertain product-linking cases into image inspection + Web search. That suggests a production decomposition distinct from “search more rounds”: cheap substrate first, then confidence-gated escalation to a richer substrate.
 
 So `number of rounds` remains an outcome, not a primitive. A more stable decomposition is:
 
-`pre-retrieval corpus observability × evidence-materialization time × action expressivity × result-conditioned information gain × state persistence × lifecycle cost`.
+`pre-retrieval corpus observability × evidence-materialization time × action expressivity × result-conditioned information gain × state persistence × escalation policy × lifecycle cost`.
 
 ## What would count as meaningful progress?
 
-The decisive experiment is the same changing corpus + same model + same answer budget while independently varying:
+The decisive experiment is the same changing corpus + same model + same output contract while independently varying:
 
-`offline index/materialization → compiled one-shot action → direct raw interaction → latent query-time localization → result-conditioned iteration`.
+`offline index/materialization → compiled one-shot action → direct raw interaction → latent query-time localization → result-conditioned iteration → confidence-gated richer substrate`.
 
-Cost must include construction/update, controller/oracle compute, retrieval calls, inspected tokens, latency, and freshness lag. Without that accounting, “index-free” can simply mean **offline work moved online**.
+For serving-aware systems, also cross evidence ordering with compute-budget control rather than crediting one package. Cost must include construction/update, candidate-pool generation, router/controller/oracle compute, retrieval/search calls, inspected tokens, reranked pairs, latency, storage, cache residency, and freshness lag. Without that accounting, “adaptive” can simply mean **work moved to a different stage or paid only by a hidden hard tail**.

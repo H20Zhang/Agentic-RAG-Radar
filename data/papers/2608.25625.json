@@ -1,0 +1,58 @@
+{
+  "id": "arxiv:2608.25625",
+  "arxiv_id": "2608.25625",
+  "title": "RetrievalRouter: Joint Modality and Architecture Selection for Document Retrieval",
+  "authors": ["Emre Kuru", "Mehmet Onur Keskin", "Reza Farahbakhsh", "Noel Crespi"],
+  "first_seen": "2026-08-28",
+  "published": "2026-08-26",
+  "published_at": "2026-08-26T10:50:28Z",
+  "first_seen_at": "2026-08-28T01:21:01Z",
+  "radar_published_at": "2026-08-28T01:27:27Z",
+  "time_provenance": "native_v2",
+  "map_delta": "early_signal",
+  "direction_keys": ["query-conditioned-pipeline-routing"],
+  "updated": "2026-08-28",
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.25625",
+    "pdf": "https://arxiv.org/pdf/2608.25625",
+    "code": "https://github.com/emrekuruu/retrieval-router",
+    "project": null
+  },
+  "primary_category": "learning_optimization",
+  "tags": ["retriever_routing", "query_aware_routing", "multimodal_retrieval", "latency_budget", "soft_targets"],
+  "benchmarks": ["REAL-MM-RAG", "T2-RAGBench", "MMDocRAG"],
+  "relevance": 0.96,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "retrieval_interface",
+    "question": "When should one query use sparse, dense, reranked, text, or multimodal retrieval?",
+    "takeaway": "A query-only router learns an accuracy-latency tradeoff over five retrieval pipelines, but its online frontier does not price maintaining every underlying index.",
+    "compared_with": "Seven static retrieval pipelines and an adapted hard-label query-level strategy selector over the same corpus.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2608.25625.png",
+    "image_path": "assets/visuals/2608.25625.webp",
+    "prompt_path": "assets/visuals/prompts/2608.25625.md",
+    "artifact_path": "papers/2608.25625.md"
+  },
+  "analysis": {
+    "tldr": "RetrievalRouter learns from query text alone which of five sparse/dense/reranked text-or-multimodal pipelines to run. It improves the online accuracy-latency frontier over static and adapted hard-label routing controls, but the deployment comparison excludes the lifecycle cost of keeping multiple neural indexes plus BM25 available.",
+    "problem": "No single retrieval architecture and modality dominates across queries, so a static choice either overspends on easy cases or misses evidence on queries needing a richer pipeline.",
+    "core_idea": "Train a Qwen3-0.6B query encoder plus linear head against soft targets built from each pipeline's per-query nDCG and normalized latency reward, then execute only the selected pipeline online.",
+    "agent_loop": "query → query-only routing policy → choose one of BM25/text-dense/text-rerank/multimodal-dense/multimodal-rerank → retrieve evidence",
+    "retrieval_design": "Adaptivity is placed before retrieval and selects both modality and retrieval architecture. The five-arm action space is learned from full per-query oracle reward vectors rather than one hard best-pipeline label.",
+    "compared_to": ["seven static pipelines on the same benchmark suite and H100 latency setup", "adapted Arabzadeh-style hard-label query-level strategy selection", "per-query seven-pipeline oracle upper bound"],
+    "evidence": "At lambda=0.1, RetrievalRouter reaches 0.755 nDCG@5 at 0.666 s versus the best static ML at 0.737 and 8.283 s; against the adapted router it reaches 0.755 versus 0.715 nDCG at 0.666 versus 0.476 s. At lambda=0.7 it is numerically better on both nDCG and latency, but neither difference meets the paper's corrected significance threshold.",
+    "why_it_matters": "It makes retrieval-pipeline choice itself a query-conditioned control surface and supplies a stronger matched baseline than comparing an adaptive system only with one static retriever.",
+    "limitations": ["The router keeps four neural vector indexes plus BM25 available; online latency does not include index build, update, storage, or cache pressure.", "Training labels require offline execution of all routing arms per training query.", "Only one training seed per lambda is reported.", "Latency-oriented lambda=0.7 differences against the adaptive baseline are not statistically significant under the paper's p<0.001 threshold."],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": ["arXiv cs.IR recent submissions", "official RetrievalRouter repository", "full arXiv v1 HTML/PDF"],
+    "full_text_checked": true,
+    "code_link_verified": true,
+    "last_reviewed": "2026-08-28"
+  }
+}

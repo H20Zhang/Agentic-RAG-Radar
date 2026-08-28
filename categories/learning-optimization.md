@@ -7,6 +7,9 @@ This category covers policy learning, retriever learning for agentic usage, rein
 
 ## Current papers
 
+### [RetrievalRouter](../papers/2608.25625.md) — ★★★★☆
+
+**Design point:** learn a query-only policy over sparse/dense/reranked text-or-multimodal retrieval pipelines using soft quality–latency targets. **Boundary:** the online frontier omits the build/update/storage/cache cost of keeping every underlying index available.
 
 ### [CAFE](../papers/2608.24794.md) — ★★★★☆
 
@@ -72,12 +75,14 @@ This category covers policy learning, retriever learning for agentic usage, rein
 
 `retriever objective ↔ query/refinement policy ↔ corpus-operation policy ↔ state recovery ↔ resource allocation ↔ training-task distribution`.
 
+RetrievalRouter adds another separable object: **retrieval-substrate selection**. Its strongest control is not a static retriever but another query-level router over the same action space; the remaining systems question is whether the multi-index lifecycle cost erases some online routing advantage.
+
 Agentic-R changes retriever utility; Critic-R uses natural-language process feedback to repair and train retrieval; GrepSeek learns shell interaction itself; LoongReflect learns when to discard active state; SearchMaster changes **which self-generated tasks and trajectories are allowed to supervise the learner**.
 
 That last distinction matters for self-improving agents. A policy can optimize perfectly against a bad self-generated curriculum. SearchMaster's strongest lesson is therefore not “self-play works,” but that evidence grounding, task difficulty, and tool-use regularization need their own objectives.
 
-The causal bar is **same environment + same state/action space + same answer model + matched realized resources**, while separately varying both the learned component and the supervision/curriculum that trained it. Otherwise a richer interface, privileged teacher/verifier, extra refinement attempts, or easier self-generated tasks can masquerade as better learning.
+The causal bar is **same environment + same state/action space + same answer model + matched realized resources**, while separately varying both the learned component and the supervision/curriculum that trained it. Otherwise a richer interface, privileged teacher/verifier, extra refinement attempts, easier self-generated tasks, or unpriced retrieval substrates can masquerade as better learning.
 
 ## What would count as meaningful progress?
 
-A strong experiment should compare prompted, supervised, RL, and self-play controllers on the same information environment while separately toggling retriever learning, query refinement, direct-corpus operations, recovery semantics, and **task-generation policy**. For self-play systems, report not only final QA but also shortcut/pseudo-task rate, realized search depth, verifier/rollout compute, tool-use drift, transfer under corpus/workload change, and whether task difficulty remains meaningful as the learner improves.
+A strong experiment should compare prompted, supervised, RL, self-play, and routing controllers on the same information environment while separately toggling retriever learning, query refinement, retrieval-substrate choice, direct-corpus operations, recovery semantics, and **task-generation policy**. For adaptive multi-pipeline systems, report index build/update/storage/cache cost in addition to router inference and retrieval latency. For self-play systems, report not only final QA but also shortcut/pseudo-task rate, realized search depth, verifier/rollout compute, tool-use drift, transfer under corpus/workload change, and whether task difficulty remains meaningful as the learner improves.

@@ -1,0 +1,58 @@
+{
+  "id": "arxiv:2608.25037",
+  "arxiv_id": "2608.25037",
+  "title": "Retrieve, Match, Escalate: Accurate and Scalable Product Linking with VLM-Distilled Cross-Encoders and Agentic VLMs",
+  "authors": ["Jian Wang", "Steven Xu", "Sanjyot Thete", "Maryam Barouti", "Tom Tang", "Elaine Wu", "Charu Sareen", "Kyle MacDonald"],
+  "first_seen": "2026-08-28",
+  "published": "2026-08-25",
+  "published_at": "2026-08-25T18:26:34Z",
+  "first_seen_at": "2026-08-28T01:21:01Z",
+  "radar_published_at": "2026-08-28T01:27:25Z",
+  "time_provenance": "native_v2",
+  "map_delta": "early_signal",
+  "direction_keys": ["cost-tiered-hard-tail-escalation"],
+  "updated": "2026-08-28",
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.25037",
+    "pdf": "https://arxiv.org/pdf/2608.25037",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "retrieval_tool_use",
+  "tags": ["selective_escalation", "confidence_routing", "web_search", "multimodal", "production_entity_resolution", "cost_routing"],
+  "benchmarks": ["production product linking"],
+  "relevance": 0.93,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "agent_loop",
+    "question": "When should a production cascade pay for an agentic multimodal web-search stage?",
+    "takeaway": "A cheap matcher resolves high-confidence traffic and escalates only the ambiguous tail to a VLM that can inspect images and search the web; selective escalation, not universal agent use, is the economic control point.",
+    "compared_with": "Cheap-stage-only production coverage, trained human review on the hard tail, and open versus closed agentic VLM stacks at equal precision.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2608.25037.png",
+    "image_path": "assets/visuals/2608.25037.webp",
+    "prompt_path": "assets/visuals/prompts/2608.25037.md",
+    "artifact_path": "papers/2608.25037.md"
+  },
+  "analysis": {
+    "tldr": "A production product-linking cascade spends expensive multimodal web-search reasoning only on the ambiguous tail. The evidence supports confidence-gated escalation as a cost/coverage control surface, but it does not isolate web search from the VLM, images, prompts, and other Stage-3 changes.",
+    "problem": "Billions of merchant records must be linked against large catalogs at high precision, while using a frontier multimodal agent on every candidate pair would be prohibitively expensive.",
+    "core_idea": "Retrieve candidates, let a distilled cross-encoder auto-resolve confident pairs, reject low-confidence pairs, and escalate only the medium-confidence residual to an agentic VLM with image inspection and web search.",
+    "agent_loop": "multimodal retrieval → cheap cross-encoder score → accept/reject or escalate → agentic VLM inspects record and image → optional web search → enough-evidence decision → final link judgment",
+    "retrieval_design": "Retrieval coverage is measured separately from downstream matching; the main adaptive retrieval decision is whether the hard tail receives external web evidence at all.",
+    "compared_to": ["cheap-stage-only production linking at the same operating precision bar", "trained human operators on the hardest medium-confidence cases", "open-weight versus closed frontier VLM hard-tail agents at equal 98% precision"],
+    "evidence": "On roughly two million production records, the previous-generation cheap stage links 68.1% at the operating precision bar and hard-tail escalation raises coverage to 77.1%. On a separate equal-precision audit, the open-weight agent reaches 88% recall versus 92% for the closed stack at about one-seventh the per-pair cost; on hardest medium cases a closed VLM reaches 96.7% accuracy versus 83.0% for trained operators.",
+    "why_it_matters": "It supplies production evidence that the dominant systems decision may be selective escalation into expensive evidence acquisition rather than making every query maximally agentic.",
+    "limitations": ["The 68.1% to 77.1% production uplift uses a previous-generation cheap linker, so it is a property of the escalated hard tail rather than a matched evaluation of the final Stage-2 model.", "There is no matched same-VLM no-web-search control, so the Stage-3 gain cannot be attributed specifically to external search.", "Retrieval recall remains an upstream ceiling; downstream reasoning cannot repair a missing candidate.", "Per-pair agent costs and coverage are reported, but a fully matched end-to-end latency/token accounting across all cascade variants is incomplete."],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": ["arXiv cs.IR recent submissions", "full arXiv v1 HTML/PDF"],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-28"
+  }
+}
