@@ -1,0 +1,58 @@
+{
+  "id": "arxiv:2608.25115",
+  "arxiv_id": "2608.25115",
+  "title": "Less can be More: Relieving RAG Bottlenecks via Evidence Frontloading and Pressure-Adaptive Budgeting",
+  "authors": ["Weibin Cai", "Reza Zafarani"],
+  "first_seen": "2026-08-28",
+  "published": "2026-08-25",
+  "published_at": "2026-08-25T20:10:06Z",
+  "first_seen_at": "2026-08-28T01:21:01Z",
+  "radar_published_at": "2026-08-28T01:27:26Z",
+  "time_provenance": "native_v2",
+  "map_delta": "early_signal",
+  "direction_keys": ["serving-pressure-retrieval-budgeting"],
+  "updated": "2026-08-28",
+  "venue": null,
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.25115",
+    "pdf": "https://arxiv.org/pdf/2608.25115",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "retrieval_tool_use",
+  "tags": ["budget_allocation", "adaptive_reranking", "evidence_frontloading", "serving_pressure", "multi_hop_qa"],
+  "benchmarks": ["HotpotQA", "2WikiMultiHopQA", "MuSiQue"],
+  "relevance": 0.92,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "retrieval_interface",
+    "question": "How should a RAG system change reranking depth when the reranker rather than the LLM becomes the serving bottleneck?",
+    "takeaway": "PACE separates evidence ordering from a pressure-controlled reranking budget; frontloading makes smaller budgets preserve more top-5 evidence under load.",
+    "compared_with": "Fixed D=100 reranking and training-free reordering methods under the same adaptive-budget policy.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2608.25115.png",
+    "image_path": "assets/visuals/2608.25115.webp",
+    "prompt_path": "assets/visuals/prompts/2608.25115.md",
+    "artifact_path": "papers/2608.25115.md"
+  },
+  "analysis": {
+    "tldr": "PACE couples evidence-frontloading within a fixed candidate pool with a serving-pressure controller that changes reranking depth as reranker and LLM queues shift. Its strongest result is not generic agentic reasoning but a two-factor systems decomposition: evidence ordering preserves recall at smaller D, while pressure-adaptive D relieves queueing.",
+    "problem": "Reranking can become the bottleneck at high arrival rates or large candidate budgets, yet reducing the reranking budget naively drops multi-hop supporting evidence.",
+    "core_idea": "Greedily reorder a fixed retrieved pool using a submodular marginal-evidence-coverage objective, then choose reranking depth from relative reranker-versus-LLM serving pressure.",
+    "agent_loop": "query → fixed retriever candidate pool → evidence-frontloading reorder → pressure-conditioned reranking budget D(q) → rerank → top-5 context → answer",
+    "retrieval_design": "The controller changes how many already-retrieved candidates enter reranking; it does not acquire new documents. Evidence-frontloading and runtime budget selection occupy separate control surfaces.",
+    "compared_to": ["fixed D=100 standard dense ordering", "MMR, PRF, Dartboard, and Adaptive-K reordering/budget baselines", "same pressure-adaptive budgeting policy applied across reordering methods"],
+    "evidence": "On HotpotQA, fixed D=100 standard dense gives complete evidence R@5 41.13, while PACE gives 62.38 at D=50 and 60.26 at D=20. In online serving at QPS=1.8, PACE uses roughly half the D=100 budget while achieving about 20% higher R@5; the same adaptive-budget policy is applied to all reordering methods, isolating the evidence-ordering advantage at comparable selected budgets.",
+    "why_it_matters": "It exposes system pressure as a legitimate adaptivity signal and shows why evidence density and compute allocation should be measured separately rather than collapsed into one retrieval-budget claim.",
+    "limitations": ["The main online outcome is evidence recall and simulated serving latency, not end-to-end answer correctness under a matched answer model budget.", "HotpotQA and 2Wiki evaluation retains only queries whose complete evidence is already in the top-100 candidate pool, so initial retrieval failure is excluded.", "The pressure controller depends on the chosen reranker, generator, hardware split, arrival process, and queueing regime.", "MuSiQue uses a closed candidate set and is not directly comparable to open-corpus acquisition."],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": ["arXiv cs.IR recent submissions", "full arXiv v1 HTML/PDF"],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-08-28"
+  }
+}

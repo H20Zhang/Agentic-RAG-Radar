@@ -14,6 +14,9 @@ The index is deliberately terse: use a paper title for the deep research note, o
 
 | Date | Paper | Area | Importance | Review |
 |---|---|---|---:|---|
+| 2026-08-26 | **[RetrievalRouter: Joint Modality and Architecture Selection for Document Retrieval](2608.25625.md)**<br><sub>[paper](https://arxiv.org/abs/2608.25625) · [code](https://github.com/emrekuruu/retrieval-router)</sub> | Learning & Optimization | 4/5 | Full text |
+| 2026-08-25 | **[Less can be More: Relieving RAG Bottlenecks via Evidence Frontloading and Pressure-Adaptive Budgeting](2608.25115.md)**<br><sub>[paper](https://arxiv.org/abs/2608.25115)</sub> | Retrieval & Tool Use | 4/5 | Full text |
+| 2026-08-25 | **[Retrieve, Match, Escalate: Accurate and Scalable Product Linking with VLM-Distilled Cross-Encoders and Agentic VLMs](2608.25037.md)**<br><sub>[paper](https://arxiv.org/abs/2608.25037)</sub> | Retrieval & Tool Use | 4/5 | Full text |
 | 2026-08-25 | **[Structurally-bounded Agentic Graph Exploration for Evidence-Grounded Scholarly DeepSearch](2608.24809.md)**<br><sub>[paper](https://arxiv.org/abs/2608.24809) · [code](https://github.com/RadiantCrystal/CRASE)</sub> | Retrieval & Tool Use | 5/5 | Full text |
 | 2026-08-25 | **[EviGraph: Towards Verifiable Evidence Construction for Information-Seeking Agents](2608.24667.md)**<br><sub>[paper](https://arxiv.org/abs/2608.24667)</sub> | Iterative Reasoning & Verification | 5/5 | Full text |
 | 2026-08-25 | **[CAFE: Self-Improving Search Agents Need Co-Evolving Feedback](2608.24794.md)**<br><sub>[paper](https://arxiv.org/abs/2608.24794)</sub> | Learning & Optimization | 4/5 | Full text |

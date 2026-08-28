@@ -10,12 +10,57 @@
 
 [30 秒：最新时间线](#timeline) · [3 分钟：7/30 天变化](#periods) · [5 分钟：领域地图](#field-map) · [15 分钟：阅读路径](#reading-paths) · [浏览全部](#library)
 
-**状态：** 最后更新：**2026-08-27** · 最后合成：**2026-08-27T01:30:04Z（UTC）**
+**状态：** 最后更新：**2026-08-28** · 最后合成：**2026-08-28T01:27:38Z（UTC）**
 
 <a id="timeline"></a><a id="latest"></a><a id="latest-papers"></a>
 ## 最新时间线
 
 > **迁移说明：** 这六条 legacy 记录没有保存历史 Radar 接纳时间，因此按论文公开日期排序，不把它们冒充为“最近被 Radar 接纳”。v2 切换后新增记录按 `radar_published_at` 排序，同时保留原始 `published_at`。
+
+<a id="entry-2608.25625"></a>
+<details><summary>2026-08-28 · RetrievalRouter · Adaptivity placement → query-conditioned pipeline routing <!-- timefirst:area=query-conditioned-pipeline-routing --> — 在看到证据前，根据 query 选择 retrieval modality 与 architecture。 <!-- timefirst:delta=query-conditioned-pipeline-routing --></summary>
+
+**问题。** retrieval modality 与 architecture 能否从部署时常量变成 query-conditioned policy decision？ <!-- timefirst:question=query-conditioned-retrieval-pipeline-selection -->
+
+**证据。** soft-target adaptive baseline：`λ=.1` 时 RetrievalRouter 为 **0.755 nDCG@5 / 0.666s**，adapted hard-label router 为 **0.715 / 0.476s**，best static ML 为 **0.737 / 8.283s**。 <!-- timefirst:evidence=retrievalrouter-controlled~soft-target-adaptive-baseline -->
+
+**限制。** multi-index lifecycle cost：在线 latency 没有包含同时维护四套 neural index + BM25 的 build、update、storage 与 cache pressure。 <!-- timefirst:caveat=retrievalrouter-boundary~multi-index-lifecycle-cost -->
+
+**地图。** `early_signal`：retrieval-substrate choice 是值得单独比较的控制面，但完整生命周期 economics 尚未定价。
+
+**链接。** [RetrievalRouter: Joint Modality and Architecture Selection for Document Retrieval](https://arxiv.org/abs/2608.25625) · [代码](https://github.com/emrekuruu/retrieval-router) · [英文深读](papers/2608.25625.md) · [中文深读](papers/2608.25625.zh.md)
+
+</details>
+
+<a id="entry-2608.25115"></a>
+<details><summary>2026-08-28 · PACE · Resource accounting → serving-pressure retrieval budgeting <!-- timefirst:area=serving-pressure-retrieval-budgeting --> — 先对固定 evidence pool 重排，再随 reranker 与 LLM 的压力变化调整 reranking depth。 <!-- timefirst:delta=serving-pressure-retrieval-budgeting --></summary>
+
+**问题。** RAG 能否在负载上升时少买 reranking compute，同时不丢掉下游需要的 evidence？ <!-- timefirst:question=serving-pressure-reranking-budget -->
+
+**证据。** same adaptive-budget policy：HotpotQA complete R@5 中，PACE `D=50` 为 **62.38**，standard dense `D=100` 为 **41.13**；QPS=1.8 时约用一半 full budget，R@5 仍高约 20%。 <!-- timefirst:evidence=pace-controlled~same-adaptive-budget-policy -->
+
+**限制。** candidate-pool conditioning：HotpotQA/2Wiki 只保留 top-100 已含完整 gold evidence 的 query，online headline 主要是 evidence recall + serving latency，而非 matched answer correctness。 <!-- timefirst:caveat=pace-boundary~candidate-pool-conditioning -->
+
+**地图。** `early_signal`：system pressure 可以进入 adaptivity surface，但 semantic ordering 与 queue control 仍需要 factorial end-to-end 对照。
+
+**链接。** [Less can be More: Relieving RAG Bottlenecks via Evidence Frontloading and Pressure-Adaptive Budgeting](https://arxiv.org/abs/2608.25115) · [英文深读](papers/2608.25115.md) · [中文深读](papers/2608.25115.zh.md)
+
+</details>
+
+<a id="entry-2608.25037"></a>
+<details><summary>2026-08-28 · Retrieve, Match, Escalate · Resource accounting → cost-tiered hard-tail escalation <!-- timefirst:area=cost-tiered-hard-tail-escalation --> — 只把 ambiguous product-linking cases 升级到 multimodal external-evidence acquisition。 <!-- timefirst:delta=cost-tiered-hard-tail-escalation --></summary>
+
+**问题。** 哪些 case 值得为昂贵的 multimodal Web-search stage 付费，而不是便宜地 accept/reject？ <!-- timefirst:question=confidence-gated-external-evidence-escalation -->
+
+**证据。** production hard-tail coverage：约 200 万 records 上，automatic coverage **68.1% → 77.1%**；另一组 equal-precision audit 中 open agent recall **88% vs 92%**，per-pair cost 约为 closed stack 的七分之一。 <!-- timefirst:evidence=rme-controlled~production-hard-tail-coverage -->
+
+**限制。** unmatched no-search control：production uplift 使用 previous-generation cheap linker，Stage 3 也没有 same-VLM no-Web-search ablation。 <!-- timefirst:caveat=rme-boundary~unmatched-no-search-control -->
+
+**地图。** `early_signal`：selective escalation 获得 production cost/coverage 证据，但 Web search 本身尚未被因果隔离。
+
+**链接。** [Retrieve, Match, Escalate: Accurate and Scalable Product Linking with VLM-Distilled Cross-Encoders and Agentic VLMs](https://arxiv.org/abs/2608.25037) · [英文深读](papers/2608.25037.md) · [中文深读](papers/2608.25037.zh.md)
+
+</details>
 
 <a id="entry-2608.24667"></a>
 <details><summary>2026-08-27 · EviGraph · Evidence materialization → span-grounded evidence construction <!-- timefirst:area=span-grounded-evidence-construction --> — 把 verified source spans 写成 claim-level support/conflict state，再用它控制下一次搜索与 stopping。 <!-- timefirst:delta=span-grounded-evidence-construction --></summary>
@@ -428,124 +473,46 @@
 方向条目只按 Radar 接纳时间判断；legacy 论文仍可提供领域背景，但不能冒充滚动窗口支撑。
 
 <a id="last-7-days"></a>
-### 过去 7 天 · 2026-08-21—2026-08-27
+### 过去 7 天 · 2026-08-22—2026-08-28
 
-- **`new_signal` · Span grounded evidence construction · verified spans 被物化为 claim-level support/conflict state。** <!-- timefirst:direction key="span-grounded-evidence-construction" state="new_signal" supports="2608.24667" confidence="medium" implication="separate-retrieval-recording-and-stopping-under-matched-budget" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[EviGraph](#entry-2608.24667)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（separate retrieval recording and stopping under matched budget）：固定 raw results、verifier、answer model 与预算，独立改变 evidence representation、recording 与 stopping；先验地图证据：`none`。
+- **`new_signal` · Query conditioned pipeline routing · retrieval modality 与 architecture 成为 query-level policy choice。** <!-- timefirst:direction key="query-conditioned-pipeline-routing" state="new_signal" supports="2608.25625" confidence="medium" implication="price-multi-index-lifecycle-before-routing-credit" timing="radar_published_at" synthesized="2026-08-28T01:27:38Z" prior="none" -->
+  支撑：[RetrievalRouter](#entry-2608.25625)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-28T01:27:38Z`（UTC）；研究设计含义（price multi index lifecycle before routing credit）：把 index build、update、storage、cache residency、training 与 online latency 全部计价后，再与 single-index 和 cascade 比较 routing；先验地图证据：`none`。
 
-- **`new_signal` · Co evolving feedback routing · corrective feedback 变成可学习的 trajectory intervention。** <!-- timefirst:direction key="co-evolving-feedback-routing" state="new_signal" supports="2608.24794" confidence="medium" implication="match-feedback-calls-schedule-and-search-budget-before-attribution" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[CAFE](#entry-2608.24794)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（match feedback calls schedule and search budget before attribution）：匹配 feedback/search calls、tokens 与 schedule 后，再独立切换 request policy 和 critic quality；先验地图证据：`none`。
+- **`new_signal` · Serving pressure retrieval budgeting · runtime serving pressure 控制本次购买多少 reranking compute。** <!-- timefirst:direction key="serving-pressure-retrieval-budgeting" state="new_signal" supports="2608.25115" confidence="medium" implication="separate-evidence-ordering-from-runtime-budget-control" timing="radar_published_at" synthesized="2026-08-28T01:27:38Z" prior="none" -->
+  支撑：[PACE](#entry-2608.25115)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-28T01:27:38Z`（UTC）；研究设计含义（separate evidence ordering from runtime budget control）：在同一 retriever、reranker、generator、hardware 与 arrival trace 下做 frontloading on/off × adaptive D on/off；先验地图证据：`none`。
 
-- **`new_signal` · Structurally bounded exploration · domain structure 可预先界定 candidate space 与 stopping。** <!-- timefirst:direction key="structurally-bounded-exploration" state="new_signal" supports="2608.24809" confidence="medium" implication="compare-bounded-and-open-search-under-one-output-contract" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[Crase](#entry-2608.24809)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（compare bounded and open search under one output contract）：固定 corpus、seed retriever、generator、output contract 与预算，比较 fixed bound、adaptive expansion 与 open-ended search；先验地图证据：`none`。
+- **`new_signal` · Cost tiered hard tail escalation · ambiguous case 可被路由到更丰富的 evidence environment。** <!-- timefirst:direction key="cost-tiered-hard-tail-escalation" state="new_signal" supports="2608.25037" confidence="medium" implication="match-hard-tail-model-and-search-before-crediting-web-acquisition" timing="radar_published_at" synthesized="2026-08-28T01:27:38Z" prior="none" -->
+  支撑：[Retrieve, Match, Escalate](#entry-2608.25037)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-28T01:27:38Z`（UTC）；研究设计含义（match hard tail model and search before crediting web acquisition）：固定 retrieval、confidence band、VLM、images 与 prompts，再比较 no-search、fixed-search 与 adaptive-search Stage 3；先验地图证据：`none`。
 
-- **`new_signal` · Experience amortized memory reranking · 经过判断的检索经验可成为复用的排序状态。** <!-- timefirst:direction key="experience-amortized-memory-reranking" state="new_signal" supports="2608.22767" confidence="medium" implication="measure-amortization-across-stores-and-query-orders" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[EARM](#entry-2608.22767)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（measure amortization across stores and query orders）：在固定 retrieval pool、顺序、calls、tokens 与 latency 下比较 retained experience 和 reacquisition；先验地图证据：`none`。
+- **`new_signal` · Span grounded evidence construction · verified spans 被物化为 claim-level support/conflict state。** <!-- timefirst:direction key="span-grounded-evidence-construction" state="new_signal" supports="2608.24667" confidence="medium" implication="separate-retrieval-recording-and-stopping-under-matched-budget" timing="radar_published_at" synthesized="2026-08-28T01:27:38Z" prior="none" -->
+  支撑：[EviGraph](#entry-2608.24667)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-28T01:27:38Z`（UTC）；研究设计含义（separate retrieval recording and stopping under matched budget）：固定 raw results、verifier、answer model 与预算，独立改变 evidence representation、recording 与 stopping；先验地图证据：`none`。
 
-- **`new_signal` · Ownership isolated search validation · 搜索结果职责与证据验证可和答案综合分开。** <!-- timefirst:direction key="ownership-isolated-search-validation" state="new_signal" supports="2608.23045" confidence="medium" implication="hold-results-fixed-before-crediting-search" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[NIS-Agent](#entry-2608.23045)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（hold results fixed before crediting search）：在固定 search results 与预算时，分别干预 ownership、stopping 与 validation；先验地图证据：`none`。
-
-- **`new_signal` · Contrastive requirement guided acquisition · 匹配任务上下文探针可限定源材料 procedure 的接纳范围。** <!-- timefirst:direction key="contrastive-requirement-guided-acquisition" state="new_signal" supports="2608.23417" confidence="medium" implication="match-acquisition-sources-and-budgets" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[SkillAlchemy](#entry-2608.23417)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（match acquisition sources and budgets）：固定 source inventory、tokens、calls、skill length 与下游 harness 后，再把增益归给 admission logic；先验地图证据：`none`。
-
-- **`new_signal` · Typed constraint retention · 严重 compaction 下，hard constraints 可能需要单独保护的状态通道。** <!-- timefirst:direction key="typed-constraint-retention" state="new_signal" supports="2608.22752" confidence="medium" implication="match-metadata-and-downstream-context" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[Compaction Cliff](#entry-2608.22752)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（match metadata and downstream context）：用等价 labels、retained tokens 与下游 context budgets 比较 typed 和 type-blind compaction；先验地图证据：`none`。
-
-- **`new_signal` · Risk aware tool exposure · 执行前 shortlist 是可独立测量的风险面。** <!-- timefirst:direction key="risk-aware-tool-exposure" state="new_signal" supports="2608.22751" confidence="medium" implication="separate-exposure-from-execution-safety" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[Risk-Aware Reranking](#entry-2608.22751)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（separate exposure from execution safety）：匹配 candidate pools，并分别报告 risk exposure、tool selection、execution outcomes 与 cost；先验地图证据：`none`。
-
-- **`reinforced` · Evidence path operation surfaces · 显式证据路径操作获得跨任务证据。** <!-- timefirst:direction key="evidence-path-operation-surfaces" state="reinforced" supports="2608.17889,2608.18613" confidence="medium" implication="make-evidence-path-operations-explicit" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="field-map" -->
-  支撑：[VisDocAgentBench](#entry-2608.17889) · [CTIFoundry](#entry-2608.18613)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（make evidence path operations explicit）：在共享输出契约下显式暴露 search / resolve / traverse / inspect / read，并以匹配后端、harness 与预算的静态对照检验；先验地图证据：[Interface resolution](#field-map)。
-
-- **`new_signal` · Evidence sufficiency routing · 证据充分性可路由广度与深度。** <!-- timefirst:direction key="evidence-sufficiency-routing" state="new_signal" supports="2608.16417" confidence="medium" implication="separate-page-coverage-from-reading-depth" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[D2-ScaleAgent](#entry-2608.16417)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（separate page coverage from reading depth）：分别测量新页面覆盖和已命中页面的深读，并对齐 verifier 的 token、调用与延迟；先验地图证据：`none`。
-
-- **`new_signal` · Source conditioned capability routing · 工具能力召回受来源分布制约。** <!-- timefirst:direction key="source-conditioned-capability-routing" state="new_signal" supports="2608.16502" confidence="medium" implication="audit-capability-coverage-before-agent-planning" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[ToolScout](#entry-2608.16502)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（audit capability coverage before agent planning）：先核验候选工具覆盖与跨来源迁移，再把最终失败归因给 agent planning；先验地图证据：`none`。
-
-- **`reinforced` · Supersession aware state assembly · 历史保留与 operative-state resolution 可分别放在回答时或写入时。** <!-- timefirst:direction key="supersession-aware-state-assembly" state="reinforced" supports="2608.19652,2608.23265" confidence="medium" implication="compare-answer-time-and-write-time-validity" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="field-map" -->
-  支撑：[StateMem](#entry-2608.19652) · [EvoWiki](#entry-2608.23265)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（compare answer time and write time validity）：在 history access、extraction、answer context、update cost 与 dependency handling 匹配时移动 supersession resolution；先验地图证据：[State persistence](#field-map)。
-
-- **`new_signal` · Fresh evidence context allocation · Fresh evidence, not scheduler complexity, is the current result.** <!-- timefirst:direction key="fresh-evidence-context-allocation" state="new_signal" supports="2608.23252" confidence="medium" implication="compare-freshness-with-feedback-under-matched-cost" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[ASCP](#entry-2608.23252)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（compare freshness with feedback under matched cost）：匹配 evidence、context、rounds、tokens 与 latency 后，先检验 rotation，再检验 feedback scheduler 的增量；先验地图证据：`none`。
-
-- **`new_signal` · Retriever validated evidence chain supervision · 完整证据链可成为显式训练目标。** <!-- timefirst:direction key="retriever-validated-evidence-chain-supervision" state="new_signal" supports="2608.22479" confidence="medium" implication="separate-chain-reward-from-retrieval-substrate" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[GTA-RAG](#entry-2608.22479)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（separate chain reward from retrieval substrate）：固定 graph、retriever、interface、data 与 compute，再独立改变 trajectory reward；先验地图证据：`none`。
-
-- **`new_signal` · Structured gap dual source routing · 显式 reasoning gap 可决定使用哪类来源。** <!-- timefirst:direction key="structured-gap-dual-source-routing" state="new_signal" supports="2608.22132" confidence="medium" implication="intervene-on-routing-separately-from-reasoning" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[SSE-Bio](#entry-2608.22132)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（intervene on routing separately from reasoning）：匹配 source inventory 与 orchestration，分别干预 routing、retrieval 与 downstream reasoning；先验地图证据：`none`。
-
-- **`new_signal` · Visual evidence localization rewards · 视觉证据区域可进入奖励与输出契约。** <!-- timefirst:direction key="visual-evidence-localization-rewards" state="new_signal" supports="2608.21808" confidence="medium" implication="validate-semantic-support-beyond-box-overlap" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[MCite-RL](#entry-2608.21808)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（validate semantic support beyond box overlap）：匹配 crop/search budget，并用人工或可审计证据验证 bbox 是否真正支持答案；先验地图证据：`none`。
-
-- **`new_signal` · Query time programmatic context materialization · Lossless history 可在查询时选择性进入 prompt。** <!-- timefirst:direction key="query-time-programmatic-context-materialization" state="new_signal" supports="2608.21690" confidence="medium" implication="price-retention-querying-and-materialization-together" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[Scroll](#entry-2608.21690)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（price retention querying and materialization together）：共同核算 retention、query program、environment execution 与 materialized prompt 的成本；先验地图证据：`none`。
-
-- **`new_signal` · Conformal evidence set sizing · Retrieval width 可由 calibrated score mass 调整。** <!-- timefirst:direction key="conformal-evidence-set-sizing" state="new_signal" supports="2608.20771" confidence="medium" implication="test-calibration-under-shift-and-realized-budgets" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[CAS](#entry-2608.20771)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（test calibration under shift and realized budgets）：在 dataset shift 下核验 evidence validity，并对齐 realized documents、calls、tokens 与 latency；先验地图证据：`none`。
-
-- **`new_signal` · Propagation conditioned failure attribution · Retrieval failure 需要 live intervention 才能定位。** <!-- timefirst:direction key="propagation-conditioned-failure-attribution" state="new_signal" supports="2608.20627" confidence="medium" implication="report-healing-survivors-and-probe-costs" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[AgenticRAG-FP](#entry-2608.20627)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（report healing survivors and probe costs）：同时报告 healed/failed trajectories、各 depth denominator 与 active probe 的 token/tool/latency 成本；先验地图证据：`none`。
+- **`new_signal` · Structurally bounded exploration · domain structure 可预先界定 candidate space 与 stopping。** <!-- timefirst:direction key="structurally-bounded-exploration" state="new_signal" supports="2608.24809" confidence="medium" implication="compare-bounded-and-open-search-under-one-output-contract" timing="radar_published_at" synthesized="2026-08-28T01:27:38Z" prior="none" -->
+  支撑：[Crase](#entry-2608.24809)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-28T01:27:38Z`（UTC）；研究设计含义（compare bounded and open search under one output contract）：固定 corpus、seed retriever、generator、output contract 与预算，比较 fixed bound、adaptive expansion 与 open-ended search；先验地图证据：`none`。
 
 <a id="last-30-days"></a>
-### 过去 30 天 · 2026-07-29—2026-08-27
+### 过去 30 天 · 2026-07-30—2026-08-28
 
-- **`new_signal` · Span grounded evidence construction · verified spans 被物化为 claim-level support/conflict state。** <!-- timefirst:direction key="span-grounded-evidence-construction" state="new_signal" supports="2608.24667" confidence="medium" implication="separate-retrieval-recording-and-stopping-under-matched-budget" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[EviGraph](#entry-2608.24667)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（separate retrieval recording and stopping under matched budget）：固定 raw results、verifier、answer model 与预算，独立改变 evidence representation、recording 与 stopping；先验地图证据：`none`。
+- **`new_signal` · Query conditioned pipeline routing · retrieval modality 与 architecture 成为 query-level policy choice。** <!-- timefirst:direction key="query-conditioned-pipeline-routing" state="new_signal" supports="2608.25625" confidence="medium" implication="price-multi-index-lifecycle-before-routing-credit" timing="radar_published_at" synthesized="2026-08-28T01:27:38Z" prior="none" -->
+  支撑：[RetrievalRouter](#entry-2608.25625)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-28T01:27:38Z`（UTC）；研究设计含义（price multi index lifecycle before routing credit）：把 index build、update、storage、cache residency、training 与 online latency 全部计价后，再与 single-index 和 cascade 比较 routing；先验地图证据：`none`。
 
-- **`new_signal` · Co evolving feedback routing · corrective feedback 变成可学习的 trajectory intervention。** <!-- timefirst:direction key="co-evolving-feedback-routing" state="new_signal" supports="2608.24794" confidence="medium" implication="match-feedback-calls-schedule-and-search-budget-before-attribution" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[CAFE](#entry-2608.24794)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（match feedback calls schedule and search budget before attribution）：匹配 feedback/search calls、tokens 与 schedule 后，再独立切换 request policy 和 critic quality；先验地图证据：`none`。
+- **`new_signal` · Serving pressure retrieval budgeting · runtime serving pressure 控制本次购买多少 reranking compute。** <!-- timefirst:direction key="serving-pressure-retrieval-budgeting" state="new_signal" supports="2608.25115" confidence="medium" implication="separate-evidence-ordering-from-runtime-budget-control" timing="radar_published_at" synthesized="2026-08-28T01:27:38Z" prior="none" -->
+  支撑：[PACE](#entry-2608.25115)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-28T01:27:38Z`（UTC）；研究设计含义（separate evidence ordering from runtime budget control）：在同一 retriever、reranker、generator、hardware 与 arrival trace 下做 frontloading on/off × adaptive D on/off；先验地图证据：`none`。
 
-- **`new_signal` · Structurally bounded exploration · domain structure 可预先界定 candidate space 与 stopping。** <!-- timefirst:direction key="structurally-bounded-exploration" state="new_signal" supports="2608.24809" confidence="medium" implication="compare-bounded-and-open-search-under-one-output-contract" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[Crase](#entry-2608.24809)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（compare bounded and open search under one output contract）：固定 corpus、seed retriever、generator、output contract 与预算，比较 fixed bound、adaptive expansion 与 open-ended search；先验地图证据：`none`。
+- **`new_signal` · Cost tiered hard tail escalation · ambiguous case 可被路由到更丰富的 evidence environment。** <!-- timefirst:direction key="cost-tiered-hard-tail-escalation" state="new_signal" supports="2608.25037" confidence="medium" implication="match-hard-tail-model-and-search-before-crediting-web-acquisition" timing="radar_published_at" synthesized="2026-08-28T01:27:38Z" prior="none" -->
+  支撑：[Retrieve, Match, Escalate](#entry-2608.25037)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-28T01:27:38Z`（UTC）；研究设计含义（match hard tail model and search before crediting web acquisition）：固定 retrieval、confidence band、VLM、images 与 prompts，再比较 no-search、fixed-search 与 adaptive-search Stage 3；先验地图证据：`none`。
 
-- **`new_signal` · Experience amortized memory reranking · 经过判断的检索经验可成为复用的排序状态。** <!-- timefirst:direction key="experience-amortized-memory-reranking" state="new_signal" supports="2608.22767" confidence="medium" implication="measure-amortization-across-stores-and-query-orders" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[EARM](#entry-2608.22767)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（measure amortization across stores and query orders）：在固定 retrieval pool、顺序、calls、tokens 与 latency 下比较 retained experience 和 reacquisition；先验地图证据：`none`。
+- **`new_signal` · Span grounded evidence construction · verified spans 被物化为 claim-level support/conflict state。** <!-- timefirst:direction key="span-grounded-evidence-construction" state="new_signal" supports="2608.24667" confidence="medium" implication="separate-retrieval-recording-and-stopping-under-matched-budget" timing="radar_published_at" synthesized="2026-08-28T01:27:38Z" prior="none" -->
+  支撑：[EviGraph](#entry-2608.24667)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-28T01:27:38Z`（UTC）；研究设计含义（separate retrieval recording and stopping under matched budget）：固定 raw results、verifier、answer model 与预算，独立改变 evidence representation、recording 与 stopping；先验地图证据：`none`。
 
-- **`new_signal` · Ownership isolated search validation · 搜索结果职责与证据验证可和答案综合分开。** <!-- timefirst:direction key="ownership-isolated-search-validation" state="new_signal" supports="2608.23045" confidence="medium" implication="hold-results-fixed-before-crediting-search" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[NIS-Agent](#entry-2608.23045)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（hold results fixed before crediting search）：在固定 search results 与预算时，分别干预 ownership、stopping 与 validation；先验地图证据：`none`。
+- **`new_signal` · Structurally bounded exploration · domain structure 可预先界定 candidate space 与 stopping。** <!-- timefirst:direction key="structurally-bounded-exploration" state="new_signal" supports="2608.24809" confidence="medium" implication="compare-bounded-and-open-search-under-one-output-contract" timing="radar_published_at" synthesized="2026-08-28T01:27:38Z" prior="none" -->
+  支撑：[Crase](#entry-2608.24809)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-28T01:27:38Z`（UTC）；研究设计含义（compare bounded and open search under one output contract）：固定 corpus、seed retriever、generator、output contract 与预算，比较 fixed bound、adaptive expansion 与 open-ended search；先验地图证据：`none`。
 
-- **`new_signal` · Contrastive requirement guided acquisition · 匹配任务上下文探针可限定源材料 procedure 的接纳范围。** <!-- timefirst:direction key="contrastive-requirement-guided-acquisition" state="new_signal" supports="2608.23417" confidence="medium" implication="match-acquisition-sources-and-budgets" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[SkillAlchemy](#entry-2608.23417)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（match acquisition sources and budgets）：固定 source inventory、tokens、calls、skill length 与下游 harness 后，再把增益归给 admission logic；先验地图证据：`none`。
+- **`reinforced` · Evidence path operation surfaces · 显式 evidence-path operations 获得跨任务支撑。** <!-- timefirst:direction key="evidence-path-operation-surfaces" state="reinforced" supports="2608.17889,2608.18613" confidence="medium" implication="make-evidence-path-operations-explicit" timing="radar_published_at" synthesized="2026-08-28T01:27:38Z" prior="field-map" -->
+  支撑：[VisDocAgentBench](#entry-2608.17889) · [CTIFoundry](#entry-2608.18613)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-28T01:27:38Z`（UTC）；研究设计含义（make evidence path operations explicit）：在共享 output contract 下显式暴露 search / resolve / traverse / inspect / read，并以匹配 backend、harness 与预算的静态对照检验；先验地图证据：[Interface resolution](#field-map)。
 
-- **`new_signal` · Typed constraint retention · 严重 compaction 下，hard constraints 可能需要单独保护的状态通道。** <!-- timefirst:direction key="typed-constraint-retention" state="new_signal" supports="2608.22752" confidence="medium" implication="match-metadata-and-downstream-context" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[Compaction Cliff](#entry-2608.22752)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（match metadata and downstream context）：用等价 labels、retained tokens 与下游 context budgets 比较 typed 和 type-blind compaction；先验地图证据：`none`。
-
-- **`new_signal` · Risk aware tool exposure · 执行前 shortlist 是可独立测量的风险面。** <!-- timefirst:direction key="risk-aware-tool-exposure" state="new_signal" supports="2608.22751" confidence="medium" implication="separate-exposure-from-execution-safety" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[Risk-Aware Reranking](#entry-2608.22751)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（separate exposure from execution safety）：匹配 candidate pools，并分别报告 risk exposure、tool selection、execution outcomes 与 cost；先验地图证据：`none`。
-
-- **`reinforced` · Evidence path operation surfaces · 显式证据路径操作获得跨任务证据。** <!-- timefirst:direction key="evidence-path-operation-surfaces" state="reinforced" supports="2608.17889,2608.18613" confidence="medium" implication="make-evidence-path-operations-explicit" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="field-map" -->
-  支撑：[VisDocAgentBench](#entry-2608.17889) · [CTIFoundry](#entry-2608.18613)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（make evidence path operations explicit）：在共享输出契约下显式暴露 search / resolve / traverse / inspect / read，并以匹配后端、harness 与预算的静态对照检验；先验地图证据：[Interface resolution](#field-map)。
-
-- **`new_signal` · Evidence sufficiency routing · 证据充分性可路由广度与深度。** <!-- timefirst:direction key="evidence-sufficiency-routing" state="new_signal" supports="2608.16417" confidence="medium" implication="separate-page-coverage-from-reading-depth" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[D2-ScaleAgent](#entry-2608.16417)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（separate page coverage from reading depth）：分别测量新页面覆盖和已命中页面的深读，并对齐 verifier 的 token、调用与延迟；先验地图证据：`none`。
-
-- **`new_signal` · Source conditioned capability routing · 工具能力召回受来源分布制约。** <!-- timefirst:direction key="source-conditioned-capability-routing" state="new_signal" supports="2608.16502" confidence="medium" implication="audit-capability-coverage-before-agent-planning" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[ToolScout](#entry-2608.16502)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（audit capability coverage before agent planning）：先核验候选工具覆盖与跨来源迁移，再把最终失败归因给 agent planning；先验地图证据：`none`。
-
-- **`reinforced` · Supersession aware state assembly · 历史保留与 operative-state resolution 可分别放在回答时或写入时。** <!-- timefirst:direction key="supersession-aware-state-assembly" state="reinforced" supports="2608.19652,2608.23265" confidence="medium" implication="compare-answer-time-and-write-time-validity" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="field-map" -->
-  支撑：[StateMem](#entry-2608.19652) · [EvoWiki](#entry-2608.23265)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（compare answer time and write time validity）：在 history access、extraction、answer context、update cost 与 dependency handling 匹配时移动 supersession resolution；先验地图证据：[State persistence](#field-map)。
-
-- **`new_signal` · Fresh evidence context allocation · Fresh evidence, not scheduler complexity, is the current result.** <!-- timefirst:direction key="fresh-evidence-context-allocation" state="new_signal" supports="2608.23252" confidence="medium" implication="compare-freshness-with-feedback-under-matched-cost" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[ASCP](#entry-2608.23252)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（compare freshness with feedback under matched cost）：匹配 evidence、context、rounds、tokens 与 latency 后，先检验 rotation，再检验 feedback scheduler 的增量；先验地图证据：`none`。
-
-- **`new_signal` · Retriever validated evidence chain supervision · 完整证据链可成为显式训练目标。** <!-- timefirst:direction key="retriever-validated-evidence-chain-supervision" state="new_signal" supports="2608.22479" confidence="medium" implication="separate-chain-reward-from-retrieval-substrate" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[GTA-RAG](#entry-2608.22479)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（separate chain reward from retrieval substrate）：固定 graph、retriever、interface、data 与 compute，再独立改变 trajectory reward；先验地图证据：`none`。
-
-- **`new_signal` · Structured gap dual source routing · 显式 reasoning gap 可决定使用哪类来源。** <!-- timefirst:direction key="structured-gap-dual-source-routing" state="new_signal" supports="2608.22132" confidence="medium" implication="intervene-on-routing-separately-from-reasoning" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[SSE-Bio](#entry-2608.22132)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（intervene on routing separately from reasoning）：匹配 source inventory 与 orchestration，分别干预 routing、retrieval 与 downstream reasoning；先验地图证据：`none`。
-
-- **`new_signal` · Visual evidence localization rewards · 视觉证据区域可进入奖励与输出契约。** <!-- timefirst:direction key="visual-evidence-localization-rewards" state="new_signal" supports="2608.21808" confidence="medium" implication="validate-semantic-support-beyond-box-overlap" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[MCite-RL](#entry-2608.21808)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（validate semantic support beyond box overlap）：匹配 crop/search budget，并用人工或可审计证据验证 bbox 是否真正支持答案；先验地图证据：`none`。
-
-- **`new_signal` · Query time programmatic context materialization · Lossless history 可在查询时选择性进入 prompt。** <!-- timefirst:direction key="query-time-programmatic-context-materialization" state="new_signal" supports="2608.21690" confidence="medium" implication="price-retention-querying-and-materialization-together" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[Scroll](#entry-2608.21690)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（price retention querying and materialization together）：共同核算 retention、query program、environment execution 与 materialized prompt 的成本；先验地图证据：`none`。
-
-- **`new_signal` · Conformal evidence set sizing · Retrieval width 可由 calibrated score mass 调整。** <!-- timefirst:direction key="conformal-evidence-set-sizing" state="new_signal" supports="2608.20771" confidence="medium" implication="test-calibration-under-shift-and-realized-budgets" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[CAS](#entry-2608.20771)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（test calibration under shift and realized budgets）：在 dataset shift 下核验 evidence validity，并对齐 realized documents、calls、tokens 与 latency；先验地图证据：`none`。
-
-- **`new_signal` · Propagation conditioned failure attribution · Retrieval failure 需要 live intervention 才能定位。** <!-- timefirst:direction key="propagation-conditioned-failure-attribution" state="new_signal" supports="2608.20627" confidence="medium" implication="report-healing-survivors-and-probe-costs" timing="radar_published_at" synthesized="2026-08-27T01:30:04Z" prior="none" -->
-  支撑：[AgenticRAG-FP](#entry-2608.20627)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-27T01:30:04Z`（UTC）；研究设计含义（report healing survivors and probe costs）：同时报告 healed/failed trajectories、各 depth denominator 与 active probe 的 token/tool/latency 成本；先验地图证据：`none`。
+- **`reinforced` · Supersession aware state assembly · 历史保留与 operative-state resolution 可分别放在 answer time 和 write time。** <!-- timefirst:direction key="supersession-aware-state-assembly" state="reinforced" supports="2608.19652,2608.23265" confidence="medium" implication="compare-answer-time-and-write-time-validity" timing="radar_published_at" synthesized="2026-08-28T01:27:38Z" prior="field-map" -->
+  支撑：[StateMem](#entry-2608.19652) · [EvoWiki](#entry-2608.23265)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-08-28T01:27:38Z`（UTC）；研究设计含义（compare answer time and write time validity）：在 history access、extraction、answer context、update cost 与 dependency handling 匹配时移动 supersession resolution；先验地图证据：[State persistence](#field-map)。
 
 封闭周期与长期压缩：[weekly](digests/README.md) · [monthly](digests/monthly/2026-08.md) · [yearly](digests/yearly/2026.md)
 
