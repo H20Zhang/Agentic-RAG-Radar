@@ -14,6 +14,7 @@ The index is deliberately terse: use a paper title for the deep research note, o
 
 | Date | Paper | Area | Importance | Review |
 |---|---|---|---:|---|
+| 2026-08-26 | **[AWM: Answerable Working Memory for Long-Document VQA Agents](2608.25618.md)**<br><sub>[paper](https://arxiv.org/abs/2608.25618) · [code](https://github.com/DongzhuoranZhou/AWM)</sub> | Learning & Optimization | 4/5 | Full text |
 | 2026-08-25 | **[Structurally-bounded Agentic Graph Exploration for Evidence-Grounded Scholarly DeepSearch](2608.24809.md)**<br><sub>[paper](https://arxiv.org/abs/2608.24809) · [code](https://github.com/RadiantCrystal/CRASE)</sub> | Retrieval & Tool Use | 5/5 | Full text |
 | 2026-08-25 | **[EviGraph: Towards Verifiable Evidence Construction for Information-Seeking Agents](2608.24667.md)**<br><sub>[paper](https://arxiv.org/abs/2608.24667)</sub> | Iterative Reasoning & Verification | 5/5 | Full text |
 | 2026-08-25 | **[CAFE: Self-Improving Search Agents Need Co-Evolving Feedback](2608.24794.md)**<br><sub>[paper](https://arxiv.org/abs/2608.24794)</sub> | Learning & Optimization | 4/5 | Full text |

@@ -8,6 +8,10 @@ This category covers policy learning, retriever learning for agentic usage, rein
 ## Current papers
 
 
+### [AWM](../papers/2608.25618.md) — ★★★★☆
+
+**Design point:** train the agent to preserve answer-supporting evidence in source-linked terminal working memory, with an EP-given control that separates memory extraction from page access. **Boundary:** the reward adds two frozen Qwen3-14B passes per rollout and measures answerability rather than claim-level source grounding.
+
 ### [CAFE](../papers/2608.24794.md) — ★★★★☆
 
 **Design point:** learn when to request corrective feedback while a critic is updated from the policy's changing on-policy failures. **Boundary:** request shaping, token credit, critic RDPO, extra feedback work, and online/offline schedule remain coupled; the matched-step study shows schedule is itself consequential.

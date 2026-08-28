@@ -1,0 +1,93 @@
+{
+  "id": "arxiv:2608.25618",
+  "arxiv_id": "2608.25618",
+  "title": "AWM: Answerable Working Memory for Long-Document VQA Agents",
+  "authors": [
+    "Dongzhuoran Zhou",
+    "Yuqicheng Zhu",
+    "Yule Liu",
+    "Zhen Yang",
+    "Rui Lu",
+    "Yuxiao Dong",
+    "Jie Tang",
+    "Evgeny Kharlamov"
+  ],
+  "first_seen": "2026-08-28",
+  "published": "2026-08-26",
+  "published_at": "2026-08-26T10:35:25Z",
+  "first_seen_at": "2026-08-28T01:48:46Z",
+  "radar_published_at": "2026-08-28T01:56:45Z",
+  "time_provenance": "native_v2",
+  "map_delta": "early_signal",
+  "direction_keys": [
+    "answerable-working-memory"
+  ],
+  "updated": "2026-08-28",
+  "venue": "EMNLP 2026 Findings",
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.25618",
+    "pdf": "https://arxiv.org/pdf/2608.25618",
+    "code": "https://github.com/DongzhuoranZhou/AWM",
+    "project": null
+  },
+  "primary_category": "learning_optimization",
+  "tags": [
+    "working_memory",
+    "evidence_materialization",
+    "long_document_vqa",
+    "grpo",
+    "memory_answerability",
+    "retrieval_agents"
+  ],
+  "benchmarks": [
+    "MMLongBench-Doc",
+    "LongDocURL"
+  ],
+  "relevance": 0.97,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "evidence_failure_map",
+    "question": "After an agent reaches relevant pages, can terminal working memory still be a distinct evidence bottleneck that should be measured and optimized separately?",
+    "takeaway": "AWM measures whether the final source-linked working memory can answer the question after page images and trajectory context are removed, then adds that answerability signal to GRPO while keeping the retrieval/tool loop fixed.",
+    "compared_with": "The same Qwen3-VL-4B agent, RAG Top-3 harness, tools, memory schema, prompts, optimizer, and SFT checkpoint under answer-only GRPO; an EP-given setting additionally removes page-access differences.",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": "assets/visuals/masters/2608.25618.png",
+    "image_path": "assets/visuals/2608.25618.webp",
+    "prompt_path": "assets/visuals/prompts/2608.25618.md",
+    "artifact_path": "papers/2608.25618.md"
+  },
+  "analysis": {
+    "tldr": "AWM separates page access from evidence materialization by asking whether terminal working memory alone remains answerable. On MMLongBench-Doc, 42.5% of correct EP-given answers have unanswerable terminal memory. Against the same answer-only GRPO agent, AWM-GRPO improves final accuracy 51.6→53.9 on MMLongBench-Doc and 57.4→60.1 on LongDocURL; in the EP-given control it improves final/memory-only accuracy 45.4/41.2→48.0/43.5 and lowers memory-missing-correct 19.1%→16.4%.",
+    "problem": "Evidence-page access and final-answer correctness can hide a separate failure: the agent observed the right source but failed to preserve question-relevant evidence in state that survives later context loss.",
+    "core_idea": "Treat source-linked terminal working memory as an answer-supporting artifact. A frozen reader answers from only the question and terminal memory; a frozen scorer turns memory-only answerability plus final correctness into a GRPO reward that prefers answer-correct trajectories with usable memory.",
+    "agent_loop": "query → retrieve top-3 page images → inspect → mandatory source-linked memory update → repeat up to 15 steps → final answer + terminal working memory",
+    "retrieval_design": "The deployed agent keeps the same Jina-v4/Qdrant top-3 page retrieval interface across controlled AWM variants. The intervention changes how the policy is rewarded for what it commits after retrieval, not the retrieval backend or answer prompt.",
+    "compared_to": [
+      "same SFT checkpoint with answer-only GRPO",
+      "same agent under SFT only",
+      "VLM + RAG Top-3 without terminal working memory",
+      "EP-given answer-only GRPO with gold evidence pages"
+    ],
+    "evidence": "The strongest attribution is the same-family AWM-GRPO versus answer-only GRPO comparison: 51.6→53.9 and 57.4→60.1 final accuracy on the two benchmarks. With retrieval replaced by gold evidence pages, final accuracy 45.4→48.0, memory-only accuracy 41.2→43.5, and Pmmc 19.1%→16.4%, isolating memory extraction from page access.",
+    "why_it_matters": "It exposes evidence materialization as a causal control surface between retrieval and answering: reaching evidence, preserving it in agent state, and grounding that state are three separable properties and should not be collapsed into retrieval quality.",
+    "limitations": [
+      "Controlled results cover one 4B policy and two long-document VQA benchmarks; transfer to larger models and other document distributions is untested.",
+      "Memory-only answerability depends on one frozen Qwen3-14B reader and the benchmark judge; it is not claim-level source-grounding verification.",
+      "AWM-GRPO adds two short Qwen3-14B text passes per rollout during training, so its matched inference loop does not imply matched training compute.",
+      "Per-source analysis is uneven: table and layout questions show worse Pmmc under AWM even when aggregate Pmmc improves."
+    ],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": [
+      "fresh arXiv cs.CL/cs.IR primary-source search",
+      "full arXiv v1 PDF review",
+      "official code URL printed in paper"
+    ],
+    "full_text_checked": true,
+    "code_link_verified": true,
+    "last_reviewed": "2026-08-28"
+  }
+}
