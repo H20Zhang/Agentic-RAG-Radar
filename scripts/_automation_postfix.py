@@ -29,7 +29,33 @@ for name in ("README.md", "README.en.md"):
         s = s.replace("partial rollouts and credit together;", "partial-rollout credit assignment together;", 1)
     p.write_text(s, encoding="utf-8")
 
-p = ROOT / "tests/test_validate_reading.py"
+# The public deep-note contract uses editorial headings and exact verdict labels in English.
+for identity in ("2608.27912", "2608.28062", "2608.28476"):
+    p = ROOT / "papers" / f"{identity}.md"
+    s = p.read_text(encoding="utf-8")
+    replacements = {
+        "| **Why it matters** |": "| **Why this paper matters** |",
+        "| **Best evidence** |": "| **Strongest evidence** |",
+        "| **Main caveat** |": "| **Biggest caveat** |",
+        "## Problem": "## Research question",
+        "## Closest comparison": "## Research delta",
+        "## Decisive evidence": "## Evidence & attribution",
+        "## What remains unproven": "## Open question",
+        "## Field-map consequence": "## Where it fits",
+    }
+    for old, new in replacements.items():
+        if s.count(old) != 1:
+            raise SystemExit(f"{identity}: expected exactly one {old!r}, got {s.count(old)}")
+        s = s.replace(old, new, 1)
+    p.write_text(s, encoding="utf-8")
+
+# Close the August digest on the repository's UTC+8 calendar-month boundary.
+p = ROOT / "digests" / "monthly" / "2026-08.md"
+s = p.read_text(encoding="utf-8")
+s = s.replace("**Radar acceptance boundary:** 2026-08-31T23:59:59Z", "**Radar acceptance boundary:** 2026-08-31T16:00:00Z", 1)
+p.write_text(s, encoding="utf-8")
+
+p = ROOT / "tests" / "test_validate_reading.py"
 s = p.read_text(encoding="utf-8").replace(OLD, NEW)
 needle = "self.assertEqual(3, periods.count('state=\"reinforced\"'))"
 if s.count(needle) != 1:
