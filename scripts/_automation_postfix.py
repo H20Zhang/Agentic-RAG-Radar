@@ -35,4 +35,8 @@ needle = "self.assertEqual(3, periods.count('state=\"reinforced\"'))"
 if s.count(needle) != 1:
     raise SystemExit(f"expected one reinforced-count assertion, found {s.count(needle)}")
 s = s.replace(needle, "self.assertEqual(2, periods.count('state=\"reinforced\"'))", 1)
+needle = "self.assertEqual(34, periods.count('state=\"new_signal\"'))"
+if s.count(needle) != 1:
+    raise SystemExit(f"expected one new-signal-count assertion, found {s.count(needle)}")
+s = s.replace(needle, "self.assertEqual(33, periods.count('state=\"new_signal\"'))", 1)
 p.write_text(s, encoding="utf-8")
