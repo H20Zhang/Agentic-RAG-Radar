@@ -68,7 +68,17 @@ jobs:
           retention-days: 1
 
       - name: Validate public research surfaces
-        run: python scripts/validate_public.py
+        run: |
+          set -o pipefail
+          python scripts/validate_public.py 2>&1 | tee /tmp/public.log
+
+      - name: Upload public diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-diagnostics
+          path: /tmp/public.log
+          retention-days: 1
 
       - name: Check whitespace
         run: git diff --check
