@@ -28,9 +28,9 @@ jobs:
 
       - name: Apply staged research transaction
         run: |
-          set -o pipefail
           python scripts/_automation_fix.py
           python scripts/_automation_sep1.py
+          python scripts/_automation_postfix.py
 
       - name: Rebuild generated paper index
         run: python scripts/build_paper_index.py
@@ -65,7 +65,7 @@ jobs:
 
       - name: Commit validated staging tree
         run: |
-          rm scripts/_automation_sep1.py scripts/_automation_fix.py
+          rm scripts/_automation_sep1.py scripts/_automation_fix.py scripts/_automation_postfix.py
           git show origin/main:.github/workflows/validate.yml > .github/workflows/validate.yml
           git diff --check
           git config user.name "github-actions[bot]"
