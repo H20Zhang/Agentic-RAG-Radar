@@ -24,7 +24,19 @@ s = s.replace(old, new, 1)
 old = '[Paper](https://arxiv.org/abs/2608.27912) · [Code](https://github.com/ielab/ITER)'
 new = '[Paper](https://arxiv.org/abs/2608.27912)'
 if s.count(old) != 1:
-    raise SystemExit(f'expected one ITER note code link, found {s.count(old)}')
+    raise SystemExit(f'expected one ITER English note code link, found {s.count(old)}')
+s = s.replace(old, new, 1)
+
+old = '            links = f"[{r[\'title\']}]({r[\'urls\'][\'paper\']}) · [Code]({r[\'urls\'][\'code\']}) · [英文深读](papers/{identity}.md) · [中文深读](papers/{identity}.zh.md)"'
+new = '            links = f"[{r[\'title\']}]({r[\'urls\'][\'paper\']}) · [英文深读](papers/{identity}.md) · [中文深读](papers/{identity}.zh.md)"'
+if s.count(old) != 2:
+    raise SystemExit(f'expected two Chinese code-bearing timeline templates, found {s.count(old)}')
+s = s.replace(old, new, 1)
+
+old = '            links = f"[{r[\'title\']}]({r[\'urls\'][\'paper\']}) · [Code]({r[\'urls\'][\'code\']}) · [English deep note](papers/{identity}.md) · [Chinese deep note](papers/{identity}.zh.md)"'
+new = '            links = f"[{r[\'title\']}]({r[\'urls\'][\'paper\']}) · [English deep note](papers/{identity}.md) · [Chinese deep note](papers/{identity}.zh.md)"'
+if s.count(old) != 2:
+    raise SystemExit(f'expected two English code-bearing timeline templates, found {s.count(old)}')
 s = s.replace(old, new, 1)
 
 p.write_text(s, encoding='utf-8')
