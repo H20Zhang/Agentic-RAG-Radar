@@ -29,6 +29,7 @@ jobs:
       - name: Apply staged research transaction
         run: |
           set -o pipefail
+          python scripts/_automation_fix.py
           python scripts/_automation_sep1.py 2>&1 | tee /tmp/stage.log
 
       - name: Upload private diagnostics
@@ -62,7 +63,7 @@ jobs:
 
       - name: Commit validated staging tree
         run: |
-          rm scripts/_automation_sep1.py
+          rm scripts/_automation_sep1.py scripts/_automation_fix.py
           git show origin/main:.github/workflows/validate.yml > .github/workflows/validate.yml
           git diff --check
           git config user.name "github-actions[bot]"
