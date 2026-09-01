@@ -19,9 +19,9 @@ Browse earlier work by **research problem, design tension, and research line**; 
 
 ### Fixed retrieval → direct interaction → query-time evidence materialization
 
-[SIRA](../papers/2605.06647.md) → [DCI](../papers/2605.05242.md) → [ReFind](../papers/2608.12888.md) → [LENS](../papers/2608.16185.md)
+[SIRA](../papers/2605.06647.md) → [ITER](../papers/2608.27912.md) → [WeAgent-MMSearch](../papers/2608.28062.md) → [ContextPilot](../papers/2608.28476.md)
 
-Adaptivity placement and evidence-materialization time are separate design decisions. SIRA compiles some retrieval decisions before retrieval; DCI and ReFind preserve raw substrates; LENS delays the evidence boundary itself until query time.
+Adaptivity placement and evidence lifetime are separate design decisions. SIRA compiles retrieval intent before access; ITER moves trajectory state into retriever ranking; WeAgent-MMSearch keeps returned visual evidence available across turns; ContextPilot learns which working state to retain or offload.
 
 ### Search loop → validity-aware state → recovery and reacquisition
 

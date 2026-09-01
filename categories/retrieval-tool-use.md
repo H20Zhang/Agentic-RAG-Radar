@@ -8,6 +8,11 @@ This category covers the agent-facing retrieval environment: corpus observabilit
 ## Current papers
 
 
+### [WeAgent-MMSearch](../papers/2608.28062.md) — ★★★★☆
+
+**Design point:** preserve tool-returned images as model-visible evidence across later search/reasoning turns. **Boundary:** the clean image re-feed ablation isolates evidence lifetime, while the broader harness/post-training package also changes recovery, data, RL, and cache semantics.
+
+
 ### [Crase](../papers/2608.24809.md) — ★★★★★
 
 **Design point:** after fixed seed searches, move exploration extent and stopping into a 1.5-hop citation substrate rather than a model-terminated search loop. **Boundary:** the strong recall/cost comparison changes output contract, corpus substrate, and models, so boundedness is not isolated.

@@ -19,9 +19,9 @@
 
 ### 固定式检索 → 直接交互 → 查询时证据形成
 
-[SIRA](../papers/2605.06647.md) → [DCI](../papers/2605.05242.md) → [ReFind](../papers/2608.12888.zh.md) → [LENS](../papers/2608.16185.zh.md)
+[SIRA](../papers/2605.06647.md) → [ITER](../papers/2608.27912.zh.md) → [WeAgent-MMSearch](../papers/2608.28062.zh.md) → [ContextPilot](../papers/2608.28476.zh.md)
 
-自适应位置与证据形成时机是两个不同的设计决策。SIRA 在执行检索前预先编排一部分决策；DCI 和 ReFind 保留原始载体；LENS 则把证据边界的确定进一步推迟到查询时。
+自适应位置与 evidence lifetime 是两个不同的设计决策。SIRA 在访问前编排 retrieval intent；ITER 把 trajectory state 放进 retriever ranking；WeAgent-MMSearch 让返回的视觉证据跨 turn 保持可见；ContextPilot 再学习哪些 working state 应保留或 offload。
 
 ### 搜索循环 → 有效状态解析 → 恢复与重新获取
 

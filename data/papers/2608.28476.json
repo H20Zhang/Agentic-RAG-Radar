@@ -1,0 +1,93 @@
+{
+  "id": "arxiv:2608.28476",
+  "arxiv_id": "2608.28476",
+  "title": "ContextPilot: Teaching Agents for Proactive Context Management via Fine-grained RL",
+  "authors": [
+    "Zhuoshi Pan",
+    "Qizhi Pei",
+    "Junru Lu",
+    "Honglin Lin",
+    "H. Vicky Zhao",
+    "Di Yin",
+    "Xing Sun"
+  ],
+  "first_seen": "2026-09-01",
+  "published": "2026-08-28",
+  "published_at": "2026-08-28T16:01:08Z",
+  "first_seen_at": "2026-09-01T01:18:08Z",
+  "radar_published_at": "2026-09-01T01:24:01Z",
+  "time_provenance": "native_v2",
+  "map_delta": "early_signal",
+  "direction_keys": [
+    "proactive-context-management"
+  ],
+  "updated": "2026-09-01",
+  "venue": "EMNLP 2026 Main Track",
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.28476",
+    "code": "https://github.com/Tencent/ContextPilot",
+    "project": null
+  },
+  "primary_category": "learning_optimization",
+  "tags": [
+    "proactive_context_management",
+    "context_editing",
+    "fine_grained_rl",
+    "partial_rollout",
+    "long_term_memory",
+    "deep_search"
+  ],
+  "benchmarks": [
+    "NovelQA",
+    "InfiniteBench",
+    "LongMemEval-S",
+    "BrowseComp+",
+    "BrowseComp",
+    "BrowseComp-ZH",
+    "GAIA",
+    "xBench-DeepSearch"
+  ],
+  "relevance": 0.96,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "state_progression",
+    "question": "Can the agent learn when to plan, retain, compress, or offload working context instead of passively carrying the whole trajectory?",
+    "takeaway": "Fine-grained context-edit credit improves a fixed SFT policy family, but the headline system also changes tool semantics and training, so component credit stays local to matched ablations.",
+    "compared_with": "Qwen3-8B SFT/GRPO/context-aware partial rollout/fine-grained credit plus cumulative prompt-only tool-design controls",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": null,
+    "image_path": "assets/visuals/2608.28476.webp",
+    "prompt_path": "assets/visuals/prompts/2608.28476.md",
+    "artifact_path": "papers/2608.28476.md"
+  },
+  "analysis": {
+    "tldr": "ContextPilot makes context editing an explicit learned control loop over planning, retrieval, memory, and offloading; its cleanest evidence is the staged RL ablation, not the full-system leaderboard.",
+    "problem": "Long-horizon agents accumulate working context while context-management actions have heterogeneous downstream effects that trajectory-level reward credits too coarsely.",
+    "core_idea": "Extend the context tool surface with planning, long-term memory and soft offloading, then use context/entropy-sensitive partial rollouts and action-level credit assignment around editing decisions.",
+    "agent_loop": "The agent plans, searches/reads, writes memory, compresses or deletes context, checks budget, and continues until answer synthesis; context itself is an editable state surface.",
+    "retrieval_design": "Retrieval is one part of a broader context environment; the research delta is policy placement over which evidence/state remains materialized rather than a new retrieval backend.",
+    "compared_to": [
+      "same Qwen3-8B SFT and GRPO family",
+      "cumulative Qwen3.5-397B prompt-only tool-design variants",
+      "ReAct/ReSum/SUPO/OpenSeeker package baselines"
+    ],
+    "evidence": "Qwen3-8B SFT→GRPO→+context-aware rollout→+fine-grained credit ends at 83.88/75.25/64.27/54.18 on NovelQA/InfiniteBench/LongMemEval-S/BrowseComp+, with the final credit step improving all four cells.",
+    "why_it_matters": "It makes state-retention/offloading policy a first-class adaptive decision, but also demonstrates why context-management gains need tool-surface and training-policy controls separately.",
+    "limitations": [
+      "The full method bundles a larger tool surface, SFT data, partial-rollout RL and fine-grained credit.",
+      "Tool-design ablation is cumulative and uses a much larger prompt-only model, so it does not isolate each tool or match the trained policy.",
+      "Compact prompt growth is reported without complete training/inference calls, latency, dollars or FLOPs."
+    ],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": [
+      "arXiv cs.IR/cs.CL/cs.AI primary-source sweep"
+    ],
+    "full_text_checked": true,
+    "code_link_verified": true,
+    "last_reviewed": "2026-09-01"
+  }
+}

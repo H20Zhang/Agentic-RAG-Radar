@@ -1,0 +1,86 @@
+{
+  "id": "arxiv:2608.27912",
+  "arxiv_id": "2608.27912",
+  "title": "ITER: Interaction-Aware Retrieval for Agentic Search",
+  "authors": [
+    "Haodong Chen",
+    "Shuai Wang",
+    "Yu Yin",
+    "Shengyao Zhuang",
+    "Guido Zuccon",
+    "Teerapong Leelanupab"
+  ],
+  "first_seen": "2026-09-01",
+  "published": "2026-08-28",
+  "published_at": "2026-08-28T04:36:02Z",
+  "first_seen_at": "2026-09-01T01:18:08Z",
+  "radar_published_at": "2026-09-01T01:24:01Z",
+  "time_provenance": "native_v2",
+  "map_delta": "early_signal",
+  "direction_keys": [
+    "interaction-conditioned-retrieval"
+  ],
+  "updated": "2026-09-01",
+  "venue": "Preprint; under review",
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.27912",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "learning_optimization",
+  "tags": [
+    "interaction_aware_retrieval",
+    "dense_retrieval",
+    "trajectory_supervision",
+    "redundancy_negatives",
+    "deep_research_agents",
+    "cross_agent_transfer"
+  ],
+  "benchmarks": [
+    "InfoSeek-Eval",
+    "BrowseComp-Plus"
+  ],
+  "relevance": 0.98,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "trajectory_learning",
+    "question": "Should a retriever rank by current-query relevance or by marginal evidence utility given the search trajectory?",
+    "takeaway": "Conditioning on the main question and prior sub-queries, plus trajectory-relative negatives, improves same-agent and cross-agent search while keeping the ranked-retrieval interface fixed.",
+    "compared_with": "LRAT and current-sub-query-only ITER under matched retriever/agent configurations",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": null,
+    "image_path": "assets/visuals/2608.27912.webp",
+    "prompt_path": "assets/visuals/prompts/2608.27912.md",
+    "artifact_path": "papers/2608.27912.md"
+  },
+  "analysis": {
+    "tldr": "ITER moves part of search state into the retriever: document utility is defined relative to what the agent has already searched and visited, not only to the current sub-query.",
+    "problem": "Step-local retrievers can repeatedly surface already explored evidence and ignore what remains unresolved in a multi-step search trajectory.",
+    "core_idea": "Encode the main question, current sub-query, and previous sub-queries together, then train with trajectory-relative positives plus redundancy, hard, and weak negatives derived from agent interactions.",
+    "agent_loop": "The agent issues a sub-query, receives ranked results, visits documents, reasons, and searches again; ITER changes only the retriever behind this ranked interface.",
+    "retrieval_design": "A Qwen3-Embedding retriever receives history-conditioned query text. Previously visited relevant documents become redundancy negatives so relevance is discounted when its information has already been consumed.",
+    "compared_to": [
+      "LRAT with the same 0.6B retriever family",
+      "current-sub-query-only ITER",
+      "AgentIR cross-agent transfer"
+    ],
+    "evidence": "With Tongyi fixed, LRAT/current-query ITER/default ITER score 72.7/76.7/80.0 on InfoSeek-Eval and 43.4/43.7/46.6 on BrowseComp-Plus; across six agent backbones the default retriever beats LRAT in all 12 task cells, seven significantly.",
+    "why_it_matters": "It isolates an under-modeled placement decision: trajectory state can shape retrieval ranking itself, so relevance and marginal evidence utility are not the same target.",
+    "limitations": [
+      "Training labels are success-conditioned on collected trajectories and an LLM verifier.",
+      "Trajectory collection uses de-duplicated candidate exposure, which may encode an exploration prior not present in ordinary ranked retrieval.",
+      "History-conditioned encoder latency/token cost is not reported, so task gains are not yet a matched resource frontier."
+    ],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": [
+      "arXiv cs.IR/cs.CL/cs.AI primary-source sweep"
+    ],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-09-01"
+  }
+}

@@ -173,10 +173,10 @@ DIRECTION_ATTRIBUTES = (
 )
 DIRECTION_STATES = frozenset(DIRECTION_STATE_PATTERN.split("|"))
 CONFIDENCE_VALUES = frozenset(("low", "medium", "high"))
-SYNTHESIS_TIMESTAMP = "2026-08-28T01:56:45Z"
+SYNTHESIS_TIMESTAMP = "2026-09-01T01:24:01Z"
 EXPECTED_PERIOD_WINDOWS = {
-    "last-7-days": (date(2026, 8, 22), date(2026, 8, 28)),
-    "last-30-days": (date(2026, 7, 30), date(2026, 8, 28)),
+    "last-7-days": (date(2026, 8, 26), date(2026, 9, 1)),
+    "last-30-days": (date(2026, 8, 3), date(2026, 9, 1)),
 }
 FAMILY_ROUTES = {
     "Agent Benchmark": "https://github.com/H20Zhang/Agent-Benchmark-Radar",
