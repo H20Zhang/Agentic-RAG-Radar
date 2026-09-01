@@ -29,7 +29,6 @@ for name in ("README.md", "README.en.md"):
         s = s.replace("partial rollouts and credit together;", "partial-rollout credit assignment together;", 1)
     p.write_text(s, encoding="utf-8")
 
-# The public deep-note contract uses editorial headings and exact verdict labels in English.
 for identity in ("2608.27912", "2608.28062", "2608.28476"):
     p = ROOT / "papers" / f"{identity}.md"
     s = p.read_text(encoding="utf-8")
@@ -49,10 +48,15 @@ for identity in ("2608.27912", "2608.28062", "2608.28476"):
         s = s.replace(old, new, 1)
     p.write_text(s, encoding="utf-8")
 
-# Close the August digest on the repository's UTC+8 calendar-month boundary.
 p = ROOT / "digests" / "monthly" / "2026-08.md"
 s = p.read_text(encoding="utf-8")
 s = s.replace("**Radar acceptance boundary:** 2026-08-31T23:59:59Z", "**Radar acceptance boundary:** 2026-08-31T16:00:00Z", 1)
+p.write_text(s, encoding="utf-8")
+
+# Keep Markdown compact and validator-clean; do not use trailing-space hard breaks.
+p = ROOT / "digests" / "README.md"
+s = p.read_text(encoding="utf-8")
+s = s.replace("**[2026-08 · Finalized research map](monthly/2026-08.md)**  \n", "**[2026-08 · Finalized research map](monthly/2026-08.md)**\n", 1)
 p.write_text(s, encoding="utf-8")
 
 p = ROOT / "tests" / "test_validate_reading.py"
