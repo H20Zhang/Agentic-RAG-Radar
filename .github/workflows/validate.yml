@@ -55,7 +55,17 @@ jobs:
         run: python scripts/validate.py
 
       - name: Validate bilingual progressive reading surfaces
-        run: python scripts/validate_reading.py
+        run: |
+          set -o pipefail
+          python scripts/validate_reading.py 2>&1 | tee /tmp/reading.log
+
+      - name: Upload reading diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reading-diagnostics
+          path: /tmp/reading.log
+          retention-days: 1
 
       - name: Validate public research surfaces
         run: python scripts/validate_public.py
