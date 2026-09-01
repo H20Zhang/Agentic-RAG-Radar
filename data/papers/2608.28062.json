@@ -1,0 +1,96 @@
+{
+  "id": "arxiv:2608.28062",
+  "arxiv_id": "2608.28062",
+  "title": "WeAgent-MMSearch: Native Text-Vision Interaction for Multimodal Search Agents",
+  "authors": [
+    "Zongkai Liu",
+    "Hui Zhang",
+    "Liqiang Niu",
+    "Zhen Cao",
+    "Han Li",
+    "Juntao Liu",
+    "Wenchao Chen",
+    "Chengduo Zhao",
+    "Chao Yu",
+    "Fandong Meng"
+  ],
+  "first_seen": "2026-09-01",
+  "published": "2026-08-28",
+  "published_at": "2026-08-28T08:28:43Z",
+  "first_seen_at": "2026-09-01T01:18:08Z",
+  "radar_published_at": "2026-09-01T01:24:01Z",
+  "time_provenance": "native_v2",
+  "map_delta": "early_signal",
+  "direction_keys": [
+    "multimodal-evidence-persistence"
+  ],
+  "updated": "2026-09-01",
+  "venue": "Preprint",
+  "urls": {
+    "paper": "https://arxiv.org/abs/2608.28062",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "retrieval_tool_use",
+  "tags": [
+    "multimodal_search",
+    "image_refeed",
+    "evidence_persistence",
+    "search_harness",
+    "runtime_recovery",
+    "visual_grounding"
+  ],
+  "benchmarks": [
+    "MMBrowseComp",
+    "MMSearch",
+    "MMSearch-Plus",
+    "VisTarget-Bench",
+    "SimpleVQA",
+    "VDR-Bench",
+    "LiveVQA",
+    "FVQA"
+  ],
+  "relevance": 0.99,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "retrieval_interface",
+    "question": "Does an image returned by search remain available to later reasoning/search actions, or disappear after one tool turn?",
+    "takeaway": "Keeping retrieved images model-visible across turns is a causal interface variable: removing only image re-feed drops the eight-task average from 55.97 to 46.89.",
+    "compared_with": "WeAgent-MMSearch-RL with versus without image re-feed under the same WeAgent-Harness tool interface",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": null,
+    "image_path": "assets/visuals/2608.28062.webp",
+    "prompt_path": "assets/visuals/prompts/2608.28062.md",
+    "artifact_path": "papers/2608.28062.md"
+  },
+  "analysis": {
+    "tldr": "WeAgent-MMSearch exposes a clean multimodal harness result: evidence that is retrieved once but not re-fed to later turns behaves differently from persistent visual evidence.",
+    "problem": "Many search harnesses serialize multimodal results into text and drop returned images from later context, making visual acquisition non-persistent across a trajectory.",
+    "core_idea": "Give tool-returned images stable references and re-attach them to later model turns, alongside native web/image/reverse-image/extraction/code tools and bounded runtime recovery.",
+    "agent_loop": "The multimodal agent searches, opens web/image results, receives text plus images, revisits or reverse-searches visual evidence, and synthesizes after a bounded interaction budget.",
+    "retrieval_design": "The key ablation leaves the WeAgent-Harness tool interface intact but removes returned images from subsequent model turns, directly varying visual evidence persistence.",
+    "compared_to": [
+      "same WeAgent-MMSearch-RL without image re-feed",
+      "Hermes harness on frontier models",
+      "Base and SFT stages on VisTarget-Bench"
+    ],
+    "evidence": "Across eight tasks, no-image-re-feed versus image-re-feed averages 46.89 versus 55.97; MMBrowseComp moves 13.69→28.13 and VisTarget-Bench 10.44→30.22 under the same trained policy and tool interface.",
+    "why_it_matters": "It turns evidence lifetime into an interface variable: acquiring a source is not enough if later policy steps cannot inspect the original modality again.",
+    "limitations": [
+      "The larger post-training gain bundles harness, data construction, RL, recovery, and evidence persistence.",
+      "Caching mixes freshness and latency semantics, and runtime recovery changes which trajectories survive.",
+      "Budgets are caps rather than matched realized token/tool/latency/dollar accounting; VisTarget-Bench is author-created."
+    ],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": [
+      "arXiv cs.IR/cs.CL/cs.AI primary-source sweep"
+    ],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-09-01"
+  }
+}

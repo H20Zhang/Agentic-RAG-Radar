@@ -6,11 +6,14 @@ This archive tracks **how the field interpretation changes**, not just which pap
 
 | Horizon | Role | Current synthesis |
 |---|---|---|
-| **Weekly** | What changed locally, and what is still only an early signal? | [2026-W34 — Evidence-path operations, breadth/depth routing, and capability coverage](weekly/2026-W34.md) |
+| **Weekly** | What changed locally, and what is still only an early signal? | [2026-W35 — State validity, evidence materialization, and stronger controls](weekly/2026-W35.md) |
 | **Monthly** | What design space is emerging after re-grounding against older anchors? | [2026-08 — Placement of work and evidence-path operations](monthly/2026-08.md) |
 | **Yearly** | Which shifts look durable enough to change how the field should be modeled? | [2026 YTD — Information-environment design and lifecycle accounting](yearly/2026.md) |
 
 ## Weekly
+
+**[2026-W35 · State validity, evidence materialization, and stronger controls](weekly/2026-W35.md)**
+Supersession-aware state clears one durable gate while fresh allocation and bounded-search controls raise the attribution bar for adaptive search.
 
 **[2026-W34 · Evidence-path operations, breadth/depth routing, and capability coverage](weekly/2026-W34.md)**
 Explicit evidence-path operations gain cross-task support, while breadth/depth and source-conditioned routing remain bounded single-paper signals.
@@ -25,8 +28,8 @@ Older weekly files remain in the repository for provenance even after they age o
 
 ## Monthly
 
-**[2026-08 · Rolling research map](monthly/2026-08.md)**  
-August separates evidence/capability coverage, materialization, operation surfaces, retained state, and lifecycle resources.
+**[2026-08 · Finalized research map](monthly/2026-08.md)**
+August closes by separating evidence access, materialization, current-valid state, control placement, and lifecycle resources; only two directions clear durable support.
 
 **[2026-07 · Finalized retrieval-control synthesis](monthly/2026-07.md)**
 July separates retrieve/skip operating points from relevance-guided execution; both remain bounded early signals.

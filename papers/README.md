@@ -14,6 +14,9 @@ The index is deliberately terse: use a paper title for the deep research note, o
 
 | Date | Paper | Area | Importance | Review |
 |---|---|---|---:|---|
+| 2026-08-28 | **[WeAgent-MMSearch: Native Text-Vision Interaction for Multimodal Search Agents](2608.28062.md)**<br><sub>[paper](https://arxiv.org/abs/2608.28062)</sub> | Retrieval & Tool Use | 4/5 | Full text |
+| 2026-08-28 | **[ITER: Interaction-Aware Retrieval for Agentic Search](2608.27912.md)**<br><sub>[paper](https://arxiv.org/abs/2608.27912)</sub> | Learning & Optimization | 4/5 | Full text |
+| 2026-08-28 | **[ContextPilot: Teaching Agents for Proactive Context Management via Fine-grained RL](2608.28476.md)**<br><sub>[paper](https://arxiv.org/abs/2608.28476) · [code](https://github.com/Tencent/ContextPilot)</sub> | Learning & Optimization | 4/5 | Full text |
 | 2026-08-26 | **[AWM: Answerable Working Memory for Long-Document VQA Agents](2608.25618.md)**<br><sub>[paper](https://arxiv.org/abs/2608.25618) · [code](https://github.com/DongzhuoranZhou/AWM)</sub> | Learning & Optimization | 4/5 | Full text |
 | 2026-08-25 | **[Structurally-bounded Agentic Graph Exploration for Evidence-Grounded Scholarly DeepSearch](2608.24809.md)**<br><sub>[paper](https://arxiv.org/abs/2608.24809) · [code](https://github.com/RadiantCrystal/CRASE)</sub> | Retrieval & Tool Use | 5/5 | Full text |
 | 2026-08-25 | **[EviGraph: Towards Verifiable Evidence Construction for Information-Seeking Agents](2608.24667.md)**<br><sub>[paper](https://arxiv.org/abs/2608.24667)</sub> | Iterative Reasoning & Verification | 5/5 | Full text |

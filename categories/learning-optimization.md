@@ -8,6 +8,15 @@ This category covers policy learning, retriever learning for agentic usage, rein
 ## Current papers
 
 
+### [ContextPilot](../papers/2608.28476.md) — ★★★★☆
+
+**Design point:** learn proactive working-context edits across planning, retrieval, memory, and offloading, with context-sensitive partial rollouts and action-level credit. **Boundary:** the full result bundles the tool surface, SFT data, rollout policy, and credit assignment; complete lifecycle cost is unmatched.
+
+### [ITER](../papers/2608.27912.md) — ★★★★☆
+
+**Design point:** make retriever utility trajectory-relative by conditioning on prior searches and demoting already consumed relevant evidence. **Boundary:** supervision is success-conditioned, candidate exposure is de-duplicated during collection, and longer encoder-input cost is unreported.
+
+
 ### [AWM](../papers/2608.25618.md) — ★★★★☆
 
 **Design point:** train the agent to preserve answer-supporting evidence in source-linked terminal working memory, with an EP-given control that separates memory extraction from page access. **Boundary:** the reward adds two frozen Qwen3-14B passes per rollout and measures answerability rather than claim-level source grounding.
