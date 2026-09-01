@@ -81,7 +81,17 @@ jobs:
           retention-days: 1
 
       - name: Check whitespace
-        run: git diff --check
+        run: |
+          set -o pipefail
+          git diff --check 2>&1 | tee /tmp/whitespace.log
+
+      - name: Upload whitespace diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: whitespace-diagnostics
+          path: /tmp/whitespace.log
+          retention-days: 1
 
       - name: Commit validated staging tree
         run: |
