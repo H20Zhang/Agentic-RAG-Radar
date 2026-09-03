@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: agent/time-first-radar-v2
-          fetch-depth: 2
+          fetch-depth: 4
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -34,7 +34,7 @@ jobs:
           import subprocess
 
           path = '.github/workflows/radar-once-20260903.yml'
-          raw = subprocess.check_output(['git', 'show', f'HEAD^:{path}'], text=True)
+          raw = subprocess.check_output(['git', 'show', f'70320e455c52b34897c0224360349f44d83ec38a:{path}'], text=True)
           start_marker = "          python - <<'PY'\n"
           end_marker = "\n          PY\n"
           start = raw.index(start_marker) + len(start_marker)
@@ -46,6 +46,64 @@ jobs:
           Path('/tmp/apply_radar.py').write_text('\n'.join(fixed) + '\n', encoding='utf-8')
           PY
           python /tmp/apply_radar.py
+
+          python - <<'PY'
+          from pathlib import Path
+          import json
+
+          def replace_checked(text, old, new, label, expected=1):
+              count = text.count(old)
+              if count != expected:
+                  raise RuntimeError(f'{label}: expected {expected}, found {count}')
+              return text.replace(old, new)
+
+          for filename in ('README.en.md', 'README.md'):
+              p = Path(filename)
+              text = p.read_text(encoding='utf-8')
+              if filename.endswith('.en.md'):
+                  text = replace_checked(
+                      text,
+                      'Skill Following · Evaluation attribution → retrieval-invoked actual use <!--',
+                      'Skill Following · Interface resolution → retrieval-invoked actual use <!--',
+                      'English Timeline axis',
+                  )
+              else:
+                  text = replace_checked(
+                      text,
+                      'Skill Following · 评测归因 → 实际检索效用 <!--',
+                      'Skill Following · Interface resolution → 实际检索效用 <!--',
+                      'Chinese Timeline axis',
+                  )
+              text = replace_checked(
+                  text,
+                  '- **`new_signal` · Retrieval-invoked actual use ·',
+                  '- **`new_signal` · Retrieval invoked actual use ·',
+                  filename + ' direction heading',
+                  expected=2,
+              )
+              p.write_text(text, encoding='utf-8')
+
+          rp = Path('data/papers/2609.00549.json')
+          record = json.loads(rp.read_text(encoding='utf-8'))
+          record['urls'].pop('pdf', None)
+          rp.write_text(json.dumps(record, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+
+          tp = Path('tests/test_validate_reading.py')
+          text = tp.read_text(encoding='utf-8')
+          text = replace_checked(
+              text,
+              '    SHORT_LABELS = {\n        "2608.27912": "ITER",',
+              '    SHORT_LABELS = {\n        "2609.00549": "Skill Following",\n        "2608.27912": "ITER",',
+              'short label fixture',
+          )
+          text = text.replace('2026-09-01T01:24:02Z', '2026-09-03T01:27:39Z')
+          text = text.replace('falls outside 2026-08-03—2026-09-01', 'falls outside 2026-08-05—2026-09-03')
+          text = text.replace('Last updated: **2026-09-01**', 'Last updated: **2026-09-03**')
+          if '2026-09-01T01:24:02Z' in text or 'falls outside 2026-08-03—2026-09-01' in text:
+              raise RuntimeError('stale rollover fixture remains')
+          tp.write_text(text, encoding='utf-8')
+          PY
+
           python scripts/build_paper_index.py
           rm .github/workflows/radar-once-20260903.yml
 
