@@ -31,9 +31,9 @@ Adaptivity placement and evidence lifetime are separate design decisions. SIRA c
 
 ### Retriever quality → interface/harness attribution → cross-source execution
 
-[Pi-Serini](../papers/2605.10848.md) → [Is Grep All You Need?](../papers/2605.15184.md) → [Training Protocols](../papers/2605.27881.md) → [VAKRA](../papers/2608.12282.md)
+[Pi-Serini](../papers/2605.10848.md) → [Is Grep All You Need?](../papers/2605.15184.md) → [Training Protocols](../papers/2605.27881.md) → [Skill Following](../papers/2609.00549.md) → [VAKRA](../papers/2608.12282.md)
 
-Backend score, surfaced evidence, agent harness, model, and tool budget are tightly coupled. Leaderboard gains are usually system-level evidence before they are component evidence.
+Backend score, surfaced evidence, agent harness, model, and tool budget are tightly coupled. Skill Following adds another split: selective retrieval coverage is not realized same-task utility. Leaderboard gains remain system-level evidence until these paths are matched.
 
 ## Browse by Year
 

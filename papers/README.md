@@ -10,6 +10,12 @@ The index is deliberately terse: use a paper title for the deep research note, o
 
 ## 2026
 
+### September
+
+| Date | Paper | Area | Importance | Review |
+|---|---|---|---:|---|
+| 2026-09-01 | **[Skill Following: Evaluating Actual Skill Use in Retrieval-Enabled LLM Agents](2609.00549.md)**<br><sub>[paper](https://arxiv.org/abs/2609.00549)</sub> | Evaluation & Analysis | 4/5 | Full text |
+
 ### August
 
 | Date | Paper | Area | Importance | Review |

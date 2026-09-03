@@ -7,6 +7,12 @@ This category covers benchmarks, controlled studies, failure analysis, historica
 
 ## Current design anchors
 
+### [Skill Following](../papers/2609.00549.md) — ★★★★☆
+
+**Design point:** pair skill-enabled and skill-disabled outcomes on the same tasks where the enabled run actually invoked retrieval, separating selective call coverage from realized same-task utility.
+
+**Boundary:** the evaluated subset is selected by the skill-enabled policy after treatment, tool availability differs across the pair, and complete token/tool/latency cost is unreported.
+
 ### [AgenticRAG-FP](../papers/2608.20627.md) — ★★★★☆
 
 **Design point:** inject a certified fault at a known retrieval hop, then compare post-hoc trace labels with frozen-hop and suffix-regeneration interventions.
