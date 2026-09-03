@@ -31,9 +31,9 @@
 
 ### 检索器质量 → 接口 / 评测框架归因 → 跨来源执行
 
-[Pi-Serini](../papers/2605.10848.md) → [Is Grep All You Need?](../papers/2605.15184.md) → [Training Protocols](../papers/2605.27881.md) → [VAKRA](../papers/2608.12282.zh.md)
+[Pi-Serini](../papers/2605.10848.md) → [Is Grep All You Need?](../papers/2605.15184.md) → [Training Protocols](../papers/2605.27881.md) → [Skill Following](../papers/2609.00549.zh.md) → [VAKRA](../papers/2608.12282.zh.md)
 
-后端分数、呈现给 Agent 的证据、Agent 框架、模型与工具预算会紧密耦合；排行榜增益通常只能先作为系统层面证据。
+后端分数、呈现给 Agent 的证据、Agent 框架、模型与工具预算会紧密耦合；Skill Following 又拆出一层：选择在哪些任务上检索，不等于检索后对同一任务产生了实际效用。只有这些路径被配平，排行榜增益才可能从系统层证据收缩为组件证据。
 
 ## 按年份浏览
 

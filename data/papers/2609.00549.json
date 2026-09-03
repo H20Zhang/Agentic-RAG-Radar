@@ -1,0 +1,83 @@
+{
+  "id": "arxiv:2609.00549",
+  "arxiv_id": "2609.00549",
+  "title": "Skill Following: Evaluating Actual Skill Use in Retrieval-Enabled LLM Agents",
+  "authors": [
+    "Seonghyeon Cho",
+    "Chanjun Park"
+  ],
+  "first_seen": "2026-09-03",
+  "published": "2026-09-01",
+  "published_at": "2026-09-01T01:33:57Z",
+  "first_seen_at": "2026-09-03T01:20:07Z",
+  "radar_published_at": "2026-09-03T01:27:38Z",
+  "time_provenance": "native_v2",
+  "map_delta": "early_signal",
+  "direction_keys": [
+    "retrieval-invoked-actual-use"
+  ],
+  "updated": "2026-09-03",
+  "venue": "Findings of EMNLP 2026",
+  "urls": {
+    "paper": "https://arxiv.org/abs/2609.00549",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "evaluation_analysis",
+  "tags": [
+    "retrieval_evaluation",
+    "skill_following",
+    "selection_bias",
+    "paired_evaluation",
+    "tool_use",
+    "causal_attribution"
+  ],
+  "benchmarks": [
+    "MBPP+",
+    "HumanEval+",
+    "MATH500"
+  ],
+  "relevance": 0.97,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "evidence_failure_map",
+    "question": "When an agent invokes retrieval, does the retrieved skill improve that same task rather than merely select an easier task subset?",
+    "takeaway": "Aggregate retrieved-vs-skipped lift can reverse sign under same-task paired evaluation, so invocation selection and realized retrieval utility must be measured separately.",
+    "compared_with": "aggregate retrieved-vs-skipped lift and the all-task Overall Skill-Access Effect under the same skill-enabled/skill-disabled protocol",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": null,
+    "image_path": "assets/visuals/2609.00549.webp",
+    "prompt_path": "assets/visuals/prompts/2609.00549.md",
+    "artifact_path": "papers/2609.00549.md"
+  },
+  "analysis": {
+    "tldr": "Skill Following separates selective retrieval coverage from same-task realized utility: a model can look strong when retrieved tasks are compared with skipped tasks yet become worse when the same retrieval-invoked tasks are paired against skill-disabled execution.",
+    "problem": "Autonomous retrieval jointly decides which tasks invoke a tool and what evidence reaches the model, so aggregate retrieved-versus-skipped comparisons confound call selection with the downstream value of retrieved content.",
+    "core_idea": "Report an Overall Skill-Access Effect over paired tasks and a Retrieval-conditional Actual-use Effect that pairs skill-enabled versus skill-disabled outcomes on the subset where the skill-enabled run actually invoked retrieval.",
+    "agent_loop": "For each task, the skill-enabled agent may call search_skills, BM25 returns top-3 procedural skills whose full text is appended, and the agent answers; the paired skill-disabled run removes search_skills while matching task, model, decoding, and seed.",
+    "retrieval_design": "Small fixed coding or math skill pools are indexed with BM25 over skill descriptions and bodies; top-3 full skill texts are returned, with at most three retrieval calls per task.",
+    "compared_to": [
+      "aggregate retrieved-versus-skipped lift inside skill-enabled runs",
+      "Overall Skill-Access Effect over all paired tasks",
+      "schema-empty, filler, random-skill, and corrupted-skill controls"
+    ],
+    "evidence": "For Gemini-2.5-Flash-lite, aggregate lift versus RAE is +6.2/-15.6, +16.2/-15.9, and +4.4/-22.2 across three MBPP+ partitions; HumanEval+ is -0.1/-21.1. The sign reversal shows that selective invocation can dominate the conventional aggregate story.",
+    "why_it_matters": "Retrieval evaluation needs to separate whether an agent chooses to acquire evidence from whether the acquired evidence improves the same task after it enters the trajectory.",
+    "limitations": [
+      "RAE conditions on the skill-enabled run’s own post-treatment retrieval subset, so it is a protocol-conditional paired signal rather than an unbiased causal effect over a pre-treatment population.",
+      "Skill-enabled and skill-disabled runs differ in tool availability, and heterogeneous filler/random/corrupted controls do not isolate one content-use mechanism.",
+      "The study uses small fixed procedural-skill pools and single-pass coding/math tasks, while complete token, tool, latency, and dollar accounting is not reported."
+    ],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": [
+      "arXiv cs.CL/cs.AI primary-source sweep"
+    ],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-09-03"
+  }
+}
