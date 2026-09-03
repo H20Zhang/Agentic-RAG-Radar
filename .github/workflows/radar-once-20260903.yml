@@ -2,7 +2,8 @@ name: Agentic RAG Preflight 2026-09-03
 
 on:
   push:
-    branches: [agent/time-first-radar-v2]
+    branches:
+      - agent/time-first-radar-v2
 
 permissions:
   contents: write
@@ -15,7 +16,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: agent/time-first-radar-v2
-          fetch-depth: 0
+          fetch-depth: 2
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -25,372 +26,26 @@ jobs:
       - name: Install validator dependencies
         run: pip install 'jsonschema[format]>=4.23,<5' 'pillow>=11,<12'
 
-      - name: Apply accepted research transaction
+      - name: Recover and apply accepted transaction
         shell: bash
         run: |
           python - <<'PY'
-          from __future__ import annotations
-          import json
-          import re
-          from datetime import datetime
           from pathlib import Path
-
-          ROOT = Path('.')
-          OLD_TS = '2026-09-01T01:24:01Z'
-          NEW_TS = '2026-09-03T01:27:38Z'
-          ID = '2609.00549'
-
-          def write(path: str, text: str) -> None:
-              p = ROOT / path
-              p.parent.mkdir(parents=True, exist_ok=True)
-              p.write_text(text, encoding='utf-8')
-
-          def replace_once(text: str, old: str, new: str, label: str) -> str:
-              count = text.count(old)
-              if count != 1:
-                  raise RuntimeError(f'{label}: expected exactly one match, found {count}')
-              return text.replace(old, new, 1)
-
-          record = {
-              'id': 'arxiv:2609.00549',
-              'arxiv_id': ID,
-              'title': 'Skill Following: Evaluating Actual Skill Use in Retrieval-Enabled LLM Agents',
-              'authors': ['Seonghyeon Cho', 'Chanjun Park'],
-              'first_seen': '2026-09-03',
-              'published': '2026-09-01',
-              'published_at': '2026-09-01T01:33:57Z',
-              'first_seen_at': '2026-09-03T01:20:07Z',
-              'radar_published_at': NEW_TS,
-              'time_provenance': 'native_v2',
-              'map_delta': 'early_signal',
-              'direction_keys': ['retrieval-invoked-actual-use'],
-              'updated': '2026-09-03',
-              'venue': 'Findings of EMNLP 2026',
-              'urls': {
-                  'paper': 'https://arxiv.org/abs/2609.00549',
-                  'pdf': 'https://arxiv.org/pdf/2609.00549',
-                  'code': None,
-                  'project': None,
-              },
-              'primary_category': 'evaluation_analysis',
-              'tags': [
-                  'retrieval_evaluation', 'skill_following', 'selection_bias',
-                  'paired_evaluation', 'tool_use', 'causal_attribution'
-              ],
-              'benchmarks': ['MBPP+', 'HumanEval+', 'MATH500'],
-              'relevance': 0.97,
-              'importance': 4,
-              'visual_explainer': {
-                  'type': 'evidence_failure_map',
-                  'question': 'When an agent invokes retrieval, does the retrieved skill improve that same task rather than merely select an easier task subset?',
-                  'takeaway': 'Aggregate retrieved-vs-skipped lift can reverse sign under same-task paired evaluation, so invocation selection and realized retrieval utility must be measured separately.',
-                  'compared_with': 'aggregate retrieved-vs-skipped lift and the all-task Overall Skill-Access Effect under the same skill-enabled/skill-disabled protocol',
-                  'full_text_grounded': True,
-                  'renderer': 'gpt-image-gen',
-                  'status': 'pending',
-                  'master_image_path': None,
-                  'image_path': 'assets/visuals/2609.00549.webp',
-                  'prompt_path': 'assets/visuals/prompts/2609.00549.md',
-                  'artifact_path': 'papers/2609.00549.md',
-              },
-              'analysis': {
-                  'tldr': 'Skill Following separates selective retrieval coverage from same-task realized utility: a model can look strong when retrieved tasks are compared with skipped tasks yet become worse when the same retrieval-invoked tasks are paired against skill-disabled execution.',
-                  'problem': 'Autonomous retrieval jointly decides which tasks invoke a tool and what evidence reaches the model, so aggregate retrieved-versus-skipped comparisons confound call selection with the downstream value of retrieved content.',
-                  'core_idea': 'Report an Overall Skill-Access Effect over paired tasks and a Retrieval-conditional Actual-use Effect that pairs skill-enabled versus skill-disabled outcomes on the subset where the skill-enabled run actually invoked retrieval.',
-                  'agent_loop': 'For each task, the skill-enabled agent may call search_skills, BM25 returns top-3 procedural skills whose full text is appended, and the agent answers; the paired skill-disabled run removes search_skills while matching task, model, decoding, and seed.',
-                  'retrieval_design': 'Small fixed coding or math skill pools are indexed with BM25 over skill descriptions and bodies; top-3 full skill texts are returned, with at most three retrieval calls per task.',
-                  'compared_to': [
-                      'aggregate retrieved-versus-skipped lift inside skill-enabled runs',
-                      'Overall Skill-Access Effect over all paired tasks',
-                      'schema-empty, filler, random-skill, and corrupted-skill controls',
-                  ],
-                  'evidence': 'For Gemini-2.5-Flash-lite, aggregate lift versus RAE is +6.2/-15.6, +16.2/-15.9, and +4.4/-22.2 across three MBPP+ partitions; HumanEval+ is -0.1/-21.1. The sign reversal shows that selective invocation can dominate the conventional aggregate story.',
-                  'why_it_matters': 'Retrieval evaluation needs to separate whether an agent chooses to acquire evidence from whether the acquired evidence improves the same task after it enters the trajectory.',
-                  'limitations': [
-                      'RAE conditions on the skill-enabled run’s own post-treatment retrieval subset, so it is a protocol-conditional paired signal rather than an unbiased causal effect over a pre-treatment population.',
-                      'Skill-enabled and skill-disabled runs differ in tool availability, and heterogeneous filler/random/corrupted controls do not isolate one content-use mechanism.',
-                      'The study uses small fixed procedural-skill pools and single-pass coding/math tasks, while complete token, tool, latency, and dollar accounting is not reported.',
-                  ],
-                  'confidence': 'medium',
-              },
-              'provenance': {
-                  'discovered_via': ['arXiv cs.CL/cs.AI primary-source sweep'],
-                  'full_text_checked': True,
-                  'code_link_verified': False,
-                  'last_reviewed': '2026-09-03',
-              },
-          }
-          write(f'data/papers/{ID}.json', json.dumps(record, indent=2, ensure_ascii=False) + '\n')
-
-          write('assets/visuals/prompts/2609.00549.md', '''# Visual brief — Skill Following
-
-Create a clean research figure about attribution in autonomous retrieval, not a generic agent architecture. Show two axes: selection (did the skill-enabled agent invoke `search_skills`?) and actual use (on that same task, did skill-enabled execution beat the paired skill-disabled execution?). Contrast conventional aggregate retrieved-vs-skipped lift with RAE on the retrieval-invoked subset. Include Gemini-2.5-Flash-lite MBPP+ examples +6.2/-15.6, +16.2/-15.9, +4.4/-22.2 for aggregate lift / RAE, plus HumanEval+ -0.1/-21.1. Mark the causal boundary: the evaluated subset is selected by the skill-enabled policy, skill-disabled execution removes the tool, content controls are heterogeneous, and full token/tool/latency/dollar cost is unreported.
-''')
-
-          write('papers/2609.00549.md', '''# Skill Following: Evaluating Actual Skill Use in Retrieval-Enabled LLM Agents
-
-*Published 2026-09-01 · Evaluation & Analysis · Importance 4/5 · Full text reviewed · Confidence: medium*
-
-[Paper](https://arxiv.org/abs/2609.00549)
-
-> **TL;DR.** The paper exposes a measurement failure: **retrieval coverage and realized retrieval utility are not the same quantity**. For Gemini-2.5-Flash-lite, conventional aggregate lift is positive on three MBPP+ partitions while the same-task Retrieval-conditional Actual-use Effect (RAE) is negative. This supports a cleaner evaluation coordinate, not a claim that retrieval itself is harmful.
-
-| 30-second verdict | |
-|---|---|
-| **Why this paper matters** | It turns “the agent retrieved on successful-looking tasks” into a matched same-task question: once retrieval is invoked, did the retrieval-to-answer chain actually help? |
-| **Strongest evidence** | Gemini-2.5-Flash-lite aggregate lift / RAE is **+6.2/-15.6**, **+16.2/-15.9**, and **+4.4/-22.2** across three MBPP+ partitions; HumanEval+ is **-0.1/-21.1**. |
-| **Biggest caveat** | RAE conditions on a post-treatment subset selected by the skill-enabled policy; the paired disabled run also removes the retrieval tool, so it is not a pure content intervention. |
-
-## Research question
-
-When retrieval is optional, how much of an apparent gain comes from **which tasks the agent chooses to retrieve on**, and how much comes from the retrieved evidence changing the outcome of those same tasks?
-
-## Mechanism
-
-The skill-enabled agent can call `search_skills`; BM25 searches a small procedural-skill library and returns the top three full skill texts, with at most three calls. A skill-disabled counterpart removes that tool. The evaluation keeps task, model, decoding, and seed paired, then reports three different objects: conventional aggregate retrieved-vs-skipped lift inside skill-enabled runs; Overall Skill-Access Effect (OAE) over all paired tasks; and RAE over the subset where the skill-enabled run actually retrieved.
-
-## Research delta
-
-The closest baseline is not another retrieval algorithm but the **usual aggregate comparison itself**. Aggregate lift compares two self-selected task subsets and can therefore reward a good retrieval trigger even when retrieved content fails to help the tasks on which it was used. OAE removes that task-composition mismatch over the full paired set; RAE focuses the pairwise comparison on actual retrieval invocations.
-
-## Evidence & attribution
-
-| Claim | Evidence | Control | Reading |
-|---|---|---|---|
-| aggregate lift can reverse sign under same-task pairing | Gemini MBPP+ partitions: **+6.2/-15.6**, **+16.2/-15.9**, **+4.4/-22.2** aggregate/RAE | same model and task partition | selection and actual-use are different evaluation objects |
-| the reversal is not one isolated split | HumanEval+ for the same model is **-0.1/-21.1** | same paired protocol | the gap persists outside one MBPP+ partition |
-| content alone is not a single explanation | pooled Gemini RAE: Normal **-17.9**, Filler **-5.0**, Random **-15.4**, Corrupted **-17.2** | perturb returned skill content | tool/harness and content uptake remain entangled |
-| fine-grained “followed the skill” labels are weak evidence | five-way human agreement α **0.377**; binary engaged/not-engaged agreement is **84%** | independent human/GPT audit | outcome pairing is cleaner than semantic adherence labels |
-
-## Open question
-
-RAE is still conditioned on the **post-treatment retrieval subset** chosen by skill-enabled execution, so it is not an unbiased average treatment effect over a pre-treatment population. Skill-enabled and skill-disabled runs also differ in tool availability. A stronger causal design would keep the interface fixed and independently randomize/force invocation, returned content, and content visibility, while reporting token, tool-call, latency, and dollar budgets.
-
-## Where it fits
-
-`retrieval policy → retrieval invocation → returned skill → context uptake → same-task outcome`.
-
-`early_signal`: **retrieval-invoked actual use** is a useful evaluation coordinate, but one procedural-skill study does not change the durable Field Map.
-
-## Related reading
-
-[Retrieval, Reward, and Training Protocols](2605.27881.md) · [Pi-Serini](2605.10848.md) · [VAKRA](2608.12282.md) · [AgenticRAG-FP](2608.20627.md) · [Research Map](../categories/README.en.md)
-''')
-
-          write('papers/2609.00549.zh.md', '''# Skill Following: Evaluating Actual Skill Use in Retrieval-Enabled LLM Agents
-
-*发表于 2026-09-01 · 评测与分析 · 重要性 4/5 · 已阅读全文 · 置信度：中*
-
-[论文](https://arxiv.org/abs/2609.00549)
-
-> **TL;DR。** 这篇工作暴露的是一个评测对象混淆：**“Agent 选择了检索”与“检索到的内容确实改善了这个任务”不是同一个量**。Gemini-2.5-Flash-lite 在三个 MBPP+ 数据切分上，传统 aggregate lift 为正，但同任务配对的 RAE 为负。这支持拆分评测对象，而不能据此断言“检索有害”。
-
-| 30 秒判断 | |
-|---|---|
-| **为什么重要** | 它把“Agent 在看起来更容易成功的任务上选择了检索”改写为同任务问题：真正发生检索后，这条检索到作答链路是否有帮助？ |
-| **最强证据** | Gemini-2.5-Flash-lite 的 aggregate lift / RAE 在三个 MBPP+ 数据切分上分别为 **+6.2/-15.6**、**+16.2/-15.9**、**+4.4/-22.2**；HumanEval+ 为 **-0.1/-21.1**。 |
-| **最大限制** | RAE 条件化在 skill-enabled policy 自己选择的 post-treatment 子集上；paired disabled run 还移除了检索工具，因此不是纯粹的内容干预。 |
-
-## Problem
-
-当检索是可选动作时，表面增益究竟来自 **Agent 选择在哪些任务上检索**，还是来自检索证据真正改变了这些同一任务的结果？传统 retrieved-vs-skipped 聚合比较把两者混在一起。
-
-## Mechanism
-
-skill-enabled Agent 可以调用 `search_skills`；BM25 在小型程序化 skill 库中检索 top-3，并把完整 skill 文本加入上下文，每个任务最多三次调用。skill-disabled 对照移除该工具。评测在相同任务、模型、解码与 seed 上做配对，然后区分三个对象：skill-enabled 内部的传统 retrieved-vs-skipped aggregate lift、所有配对任务上的 OAE，以及只在 skill-enabled 实际调用检索的任务子集上计算的 RAE。
-
-## Closest comparison
-
-最近的对照不是另一个检索算法，而是**传统 aggregate comparison 本身**。它比较两个由 policy 自主选择出来的不同任务子集，因此可能把“触发器会挑任务”误记成“检索内容有用”。OAE 在全体同任务配对上消除任务组成差异；RAE 再聚焦到实际发生检索的调用。
-
-## Decisive evidence
-
-| 主张 | 证据 | 最近控制 | 判断 |
-|---|---|---|---|
-| aggregate 结论会在同任务配对后翻转 | Gemini 三个 MBPP+ 数据切分的 aggregate/RAE：**+6.2/-15.6**、**+16.2/-15.9**、**+4.4/-22.2** | 同模型、同任务切分 | selection 与 actual-use 是不同评测对象 |
-| 不是单一数据切分现象 | 同模型 HumanEval+ 为 **-0.1/-21.1** | 同一 paired protocol | 差异不只出现在一个 MBPP+ split |
-| 不能把机制简单归给 skill 内容 | Gemini pooled RAE：Normal **-17.9**、Filler **-5.0**、Random **-15.4**、Corrupted **-17.2** | 改变返回内容 | 工具接口与内容利用仍纠缠 |
-| “是否遵循 skill”细粒度标签证据较弱 | 五分类人工一致性 α **0.377**；二分类 engaged/not-engaged 一致率 **84%** | 独立人工/GPT 审计 | outcome pairing 比语义 adherence 标签更稳 |
-
-## What remains unproven
-
-RAE 仍然条件化在 skill-enabled 执行自己选出的 **post-treatment retrieval subset**，因此不是针对预处理总体的无偏平均因果效应；skill-enabled 与 skill-disabled 还存在工具可用性差异。更强的因果实验应固定接口，分别随机或强制控制 invocation、returned content 与 content visibility，并完整报告 token、工具调用、延迟与美元成本。
-
-## Field-map consequence
-
-`retrieval policy → retrieval invocation → returned skill → context uptake → same-task outcome`。
-
-这是 `early_signal`：**retrieval-invoked actual use** 是值得单独测量的评测坐标；单篇程序化 skill 研究不改 durable Field Map。
-
-## Related reading
-
-[Retrieval, Reward, and Training Protocols](2605.27881.md) · [Pi-Serini](2605.10848.md) · [VAKRA](2608.12282.md) · [AgenticRAG-FP](2608.20627.zh.md) · [Research Map](../categories/README.md)
-''')
-
-          timeline_en = '''<a id="entry-2609.00549"></a>
-<details><summary>2026-09-03 · Skill Following · Evaluation attribution → retrieval-invoked actual use <!-- timefirst:area=retrieval-invoked-actual-use --> — Separates selective retrieval coverage from whether retrieved content improves the same task once the agent actually invokes it. <!-- timefirst:delta=retrieval-invoked-actual-use --></summary>
-
-**Question.** When an agent chooses to retrieve, did the retrieval-to-answer chain help that same task rather than merely select a different task subset? <!-- timefirst:question=retrieval-invoked-actual-use -->
-
-**Evidence.** Gemini-2.5-Flash-lite shows an aggregate / RAE sign reversal on three MBPP+ partitions: **+6.2/-15.6**, **+16.2/-15.9**, and **+4.4/-22.2**; HumanEval+ is **-0.1/-21.1**. <!-- timefirst:evidence=retrieval-invoked-actual-use~aggregate-rae-sign-reversal -->
-
-**Caveat.** RAE conditions on the skill-enabled retrieval subset, a post-treatment selection; the disabled run also removes the search tool, and full token/tool/latency accounting is absent. <!-- timefirst:caveat=retrieval-invoked-actual-use~skill-enabled-retrieval-subset -->
-
-**Map.** `early_signal`: retrieval-invoked actual use is a useful evaluation coordinate; one procedural-skill study does not change the durable Field Map.
-
-**Links.** [Skill Following: Evaluating Actual Skill Use in Retrieval-Enabled LLM Agents](https://arxiv.org/abs/2609.00549) · [English deep note](papers/2609.00549.md) · [Chinese deep note](papers/2609.00549.zh.md)
-
-</details>'''
-
-          timeline_zh = '''<a id="entry-2609.00549"></a>
-<details><summary>2026-09-03 · Skill Following · 评测归因 → 实际检索效用 <!-- timefirst:area=retrieval-invoked-actual-use --> — 把“哪些任务触发了检索”与“检索内容是否改善了同一任务”拆成两个评测对象。 <!-- timefirst:delta=retrieval-invoked-actual-use --></summary>
-
-**问题。** Agent 主动选择检索后，检索到作答这条链路是否改善了同一任务，而不是仅仅挑中了不同的任务子集？ <!-- timefirst:question=retrieval-invoked-actual-use -->
-
-**证据。** Gemini-2.5-Flash-lite 在三个 MBPP+ 数据切分上都出现 aggregate / RAE sign reversal：**+6.2/-15.6**、**+16.2/-15.9**、**+4.4/-22.2**；HumanEval+ 为 **-0.1/-21.1**。 <!-- timefirst:evidence=retrieval-invoked-actual-use~aggregate-rae-sign-reversal -->
-
-**限制。** RAE 条件化在 skill-enabled retrieval subset，即一个 post-treatment selection；disabled run 还移除了搜索工具，且没有完整 token/tool/latency 成本。 <!-- timefirst:caveat=retrieval-invoked-actual-use~skill-enabled-retrieval-subset -->
-
-**地图。** `early_signal`：实际检索效用值得成为独立评测坐标；单篇程序化 skill 研究不改稳定的 Field Map。
-
-**链接。** [Skill Following: Evaluating Actual Skill Use in Retrieval-Enabled LLM Agents](https://arxiv.org/abs/2609.00549) · [英文深读](papers/2609.00549.md) · [中文深读](papers/2609.00549.zh.md)
-
-</details>'''
-
-          direction_en = '''- **`new_signal` · Retrieval-invoked actual use · selective retrieval and realized same-task utility must be measured separately.** <!-- timefirst:direction key="retrieval-invoked-actual-use" state="new_signal" supports="2609.00549" confidence="medium" implication="pair-same-task-outcomes-after-retrieval-invocation" timing="radar_published_at" synthesized="2026-09-03T01:27:38Z" prior="none" -->
-  Supports: [Skill Following](#entry-2609.00549); confidence: **medium**; timing basis: `radar_published_at`; Exact synthesis time: `2026-09-03T01:27:38Z` (UTC); Research-design implication (pair-same-task-outcomes-after-retrieval-invocation): hold task, model, decoding, retrieval interface, returned content, and resource budget fixed; vary invocation and content exposure separately while reporting both call coverage and paired outcomes; prior map evidence: `none`.'''
-
-          direction_zh = '''- **`new_signal` · Retrieval-invoked actual use · 检索触发覆盖率与同任务实际效用必须分开测量。** <!-- timefirst:direction key="retrieval-invoked-actual-use" state="new_signal" supports="2609.00549" confidence="medium" implication="pair-same-task-outcomes-after-retrieval-invocation" timing="radar_published_at" synthesized="2026-09-03T01:27:38Z" prior="none" -->
-  支撑：[Skill Following](#entry-2609.00549)；置信度：**medium**；时间依据：`radar_published_at`；精确合成时间：`2026-09-03T01:27:38Z`（UTC）；研究设计含义（pair-same-task-outcomes-after-retrieval-invocation）：固定任务、模型、解码、检索接口、返回内容与资源预算，分别干预是否调用检索与内容暴露，并同时报告调用覆盖率和同任务 paired outcome；先验地图证据：`none`。'''
-
-          def support_date(block: str, records: dict[str, dict]) -> list:
-              m = re.search(r'supports="([^"]+)"', block)
-              if not m:
-                  raise RuntimeError('direction block missing supports metadata')
-              raw = m.group(1)
-              if raw == 'none':
-                  return []
-              dates = []
-              for identity in raw.split(','):
-                  rec = records.get(identity)
-                  if rec is None or rec.get('time_provenance') != 'native_v2':
-                      raise RuntimeError(f'non-native or missing period support: {identity}')
-                  dates.append(datetime.fromisoformat(rec['radar_published_at'].replace('Z', '+00:00')).date())
-              return dates
-
-          def rewrite_period(text: str, start_anchor: str, next_anchor: str, heading: str, window_start, window_end, new_block: str) -> str:
-              start = text.index(start_anchor) + len(start_anchor)
-              end = text.index(next_anchor, start)
-              section = text[start:end]
-              hm = re.search(r'(?m)^### .+$', section)
-              if hm is None:
-                  raise RuntimeError(f'period heading missing after {start_anchor}')
-              body = section[hm.end():]
-              blocks = list(re.finditer(r'(?ms)^- \*\*.*?(?=^- \*\*|\Z)', body.strip()))
-              if not blocks:
-                  raise RuntimeError(f'no direction blocks after {start_anchor}')
-              records = {
-                  json.loads(p.read_text(encoding='utf-8')).get('arxiv_id'): json.loads(p.read_text(encoding='utf-8'))
-                  for p in (ROOT / 'data' / 'papers').glob('*.json')
-              }
-              kept = []
-              for bm in blocks:
-                  block = bm.group(0).strip()
-                  dates = support_date(block, records)
-                  if not dates:
-                      kept.append(block)
-                      continue
-                  inside = [window_start <= d <= window_end for d in dates]
-                  if all(inside):
-                      kept.append(block)
-                  elif any(inside):
-                      raise RuntimeError('partial-support rollover requires editorial re-synthesis')
-              rebuilt = section[:hm.start()] + heading + '\n\n' + new_block.strip()
-              if kept:
-                  rebuilt += '\n\n' + '\n\n'.join(kept)
-              rebuilt += '\n\n'
-              return text[:start] + rebuilt + text[end:]
-
-          for path, lang in [('README.en.md', 'en'), ('README.md', 'zh')]:
-              p = ROOT / path
-              text = p.read_text(encoding='utf-8')
-              text = text.replace(OLD_TS, NEW_TS)
-              if lang == 'en':
-                  text = replace_once(text, '**Status:** Last updated: **2026-09-01**', '**Status:** Last updated: **2026-09-03**', path + ' status')
-                  marker = '<a id="entry-2608.27912"></a>'
-                  text = replace_once(text, marker, timeline_en + '\n\n' + marker, path + ' timeline')
-                  text = rewrite_period(text, '<a id="last-7-days"></a>', '<a id="last-30-days"></a>', '### Last 7 days · 2026-08-28—2026-09-03', datetime(2026,8,28).date(), datetime(2026,9,3).date(), direction_en)
-                  text = rewrite_period(text, '<a id="last-30-days"></a>', '<a id="field-map"></a>', '### Last 30 days · 2026-08-05—2026-09-03', datetime(2026,8,5).date(), datetime(2026,9,3).date(), direction_en)
-                  old = '| **How do we make retrieval claims causal?** | [Training Protocols](papers/2605.27881.md) → [Pi-Serini](papers/2605.10848.md) → [VAKRA](papers/2608.12282.md) → [AgenticRAG-FP](papers/2608.20627.md) | Trace the causal path from evidence coverage and matched interface/harness through cross-source execution to live fault intervention. |'
-                  new = '| **How do we make retrieval claims causal?** | [Training Protocols](papers/2605.27881.md) → [Pi-Serini](papers/2605.10848.md) → [Skill Following](papers/2609.00549.md) → [VAKRA](papers/2608.12282.md) → [AgenticRAG-FP](papers/2608.20627.md) | Trace the causal path from evidence coverage and matched interface/harness through same-task actual-use attribution, cross-source execution, and live fault intervention. |'
-              else:
-                  text = replace_once(text, '**状态：** 最后更新：**2026-09-01**', '**状态：** 最后更新：**2026-09-03**', path + ' status')
-                  marker = '<a id="entry-2608.27912"></a>'
-                  text = replace_once(text, marker, timeline_zh + '\n\n' + marker, path + ' timeline')
-                  text = rewrite_period(text, '<a id="last-7-days"></a>', '<a id="last-30-days"></a>', '### 过去 7 天 · 2026-08-28—2026-09-03', datetime(2026,8,28).date(), datetime(2026,9,3).date(), direction_zh)
-                  text = rewrite_period(text, '<a id="last-30-days"></a>', '<a id="field-map"></a>', '### 过去 30 天 · 2026-08-05—2026-09-03', datetime(2026,8,5).date(), datetime(2026,9,3).date(), direction_zh)
-                  old = '| **怎样对检索结论做因果归因？** | [Training Protocols](papers/2605.27881.md) → [Pi-Serini](papers/2605.10848.md) → [VAKRA](papers/2608.12282.md) → [AgenticRAG-FP](papers/2608.20627.zh.md) | 从 evidence coverage、interface/harness 匹配，到跨源执行和 live fault intervention，逐层定位因果路径。 |'
-                  new = '| **怎样对检索结论做因果归因？** | [Training Protocols](papers/2605.27881.md) → [Pi-Serini](papers/2605.10848.md) → [Skill Following](papers/2609.00549.zh.md) → [VAKRA](papers/2608.12282.md) → [AgenticRAG-FP](papers/2608.20627.zh.md) | 从证据覆盖、接口/评测框架匹配，到同任务实际效用归因、跨来源执行和 live fault intervention，逐层定位因果路径。 |'
-              text = replace_once(text, old, new, path + ' causal reading path')
-              p.write_text(text, encoding='utf-8')
-
-          cat = ROOT / 'categories' / 'evaluation-analysis.md'
-          text = cat.read_text(encoding='utf-8')
-          anchor = '## Current design anchors\n\n'
-          addition = '''### [Skill Following](../papers/2609.00549.md) — ★★★★☆
-
-**Design point:** pair skill-enabled and skill-disabled outcomes on the same tasks where the enabled run actually invoked retrieval, separating selective call coverage from realized same-task utility.
-
-**Boundary:** the evaluated subset is selected by the skill-enabled policy after treatment, tool availability differs across the pair, and complete token/tool/latency cost is unreported.
-
-'''
-          text = replace_once(text, anchor, anchor + addition, 'evaluation category')
-          cat.write_text(text, encoding='utf-8')
-
-          lib_en = ROOT / 'library' / 'README.en.md'
-          text = lib_en.read_text(encoding='utf-8')
-          old = '[Pi-Serini](../papers/2605.10848.md) → [Is Grep All You Need?](../papers/2605.15184.md) → [Training Protocols](../papers/2605.27881.md) → [VAKRA](../papers/2608.12282.md)'
-          new = '[Pi-Serini](../papers/2605.10848.md) → [Is Grep All You Need?](../papers/2605.15184.md) → [Training Protocols](../papers/2605.27881.md) → [Skill Following](../papers/2609.00549.md) → [VAKRA](../papers/2608.12282.md)'
-          text = replace_once(text, old, new, 'English library chain')
-          old = 'Backend score, surfaced evidence, agent harness, model, and tool budget are tightly coupled. Leaderboard gains are usually system-level evidence before they are component evidence.'
-          new = 'Backend score, surfaced evidence, agent harness, model, and tool budget are tightly coupled. Skill Following adds another split: selective retrieval coverage is not realized same-task utility. Leaderboard gains remain system-level evidence until these paths are matched.'
-          text = replace_once(text, old, new, 'English library prose')
-          lib_en.write_text(text, encoding='utf-8')
-
-          lib_zh = ROOT / 'library' / 'README.md'
-          text = lib_zh.read_text(encoding='utf-8')
-          old = '[Pi-Serini](../papers/2605.10848.md) → [Is Grep All You Need?](../papers/2605.15184.md) → [Training Protocols](../papers/2605.27881.md) → [VAKRA](../papers/2608.12282.zh.md)'
-          new = '[Pi-Serini](../papers/2605.10848.md) → [Is Grep All You Need?](../papers/2605.15184.md) → [Training Protocols](../papers/2605.27881.md) → [Skill Following](../papers/2609.00549.zh.md) → [VAKRA](../papers/2608.12282.zh.md)'
-          text = replace_once(text, old, new, 'Chinese library chain')
-          old = '后端分数、呈现给 Agent 的证据、Agent 框架、模型与工具预算会紧密耦合；排行榜增益通常只能先作为系统层面证据。'
-          new = '后端分数、呈现给 Agent 的证据、Agent 框架、模型与工具预算会紧密耦合；Skill Following 又拆出一层：选择在哪些任务上检索，不等于检索后对同一任务产生了实际效用。只有这些路径被配平，排行榜增益才可能从系统层证据收缩为组件证据。'
-          text = replace_once(text, old, new, 'Chinese library prose')
-          lib_zh.write_text(text, encoding='utf-8')
-
-          vr = ROOT / 'scripts' / 'validate_reading.py'
-          text = vr.read_text(encoding='utf-8')
-          text = replace_once(text, f'SYNTHESIS_TIMESTAMP = "{OLD_TS}"', f'SYNTHESIS_TIMESTAMP = "{NEW_TS}"', 'validator timestamp')
-          text = replace_once(text, '"last-7-days": (date(2026, 8, 26), date(2026, 9, 1)),', '"last-7-days": (date(2026, 8, 28), date(2026, 9, 3)),', 'validator 7-day window')
-          text = replace_once(text, '"last-30-days": (date(2026, 8, 3), date(2026, 9, 1)),', '"last-30-days": (date(2026, 8, 5), date(2026, 9, 3)),', 'validator 30-day window')
-          vr.write_text(text, encoding='utf-8')
-
-          tp = ROOT / 'tests' / 'test_validate_reading.py'
-          text = tp.read_text(encoding='utf-8').replace(OLD_TS, NEW_TS)
-          en = (ROOT / 'README.en.md').read_text(encoding='utf-8')
-          periods = en[en.index('<a id="periods"></a>'):en.index('<a id="field-map"></a>')]
-          actual_new_signal = periods.count('state="new_signal"')
-          if actual_new_signal != 27:
-              raise RuntimeError(f'unexpected synthesized new_signal count: {actual_new_signal}')
-          text = replace_once(text, 'self.assertEqual(33, periods.count(\'state="new_signal"\'))', f'self.assertEqual({actual_new_signal}, periods.count(\'state="new_signal"\'))', 'test period count')
-          tp.write_text(text, encoding='utf-8')
-
-          # Sanity checks before generated projections.
-          for path in ('README.md', 'README.en.md'):
-              text = (ROOT / path).read_text(encoding='utf-8')
-              assert text.count('<a id="entry-2609.00549"></a>') == 1
-              assert text.count('supports="2609.00549"') == 2
-              assert OLD_TS not in text
+          import subprocess
+
+          path = '.github/workflows/radar-once-20260903.yml'
+          raw = subprocess.check_output(['git', 'show', f'HEAD^:{path}'], text=True)
+          start_marker = "          python - <<'PY'\n"
+          end_marker = "\n          PY\n"
+          start = raw.index(start_marker) + len(start_marker)
+          end = raw.index(end_marker, start)
+          source = raw[start:end]
+          fixed = []
+          for line in source.splitlines():
+              fixed.append(line[10:] if line.startswith('          ') else line)
+          Path('/tmp/apply_radar.py').write_text('\n'.join(fixed) + '\n', encoding='utf-8')
           PY
+          python /tmp/apply_radar.py
           python scripts/build_paper_index.py
           rm .github/workflows/radar-once-20260903.yml
 
