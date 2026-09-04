@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   stage:
-    if: github.event.head_commit.message == 'Fix Agentic RAG staging workflow'
+    if: github.event.head_commit.message == 'Run Agentic RAG staging fixes'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,7 +25,9 @@ jobs:
         run: pip install 'jsonschema[format]>=4.23,<5' 'pillow>=11,<12'
 
       - name: Apply accepted CoBRA transaction
-        run: python scripts/_stage_agentic_rag_20260904.py
+        run: |
+          python scripts/_stage_agentic_rag_20260904.py
+          python scripts/_stage_agentic_rag_20260904_fix.py
 
       - name: Build generated paper index
         run: python scripts/build_paper_index.py
@@ -43,7 +45,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git rm .github/workflows/agentic-rag-stage.yml scripts/_stage_agentic_rag_20260904.py
+          git rm .github/workflows/agentic-rag-stage.yml scripts/_stage_agentic_rag_20260904.py scripts/_stage_agentic_rag_20260904_fix.py
           git add -A
           git commit -m 'Stage Agentic RAG update 2026-09-04'
           git push origin HEAD:research-radar-reading-v1
