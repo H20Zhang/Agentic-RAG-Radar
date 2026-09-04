@@ -1,0 +1,92 @@
+{
+  "id": "arxiv:2609.00967",
+  "arxiv_id": "2609.00967",
+  "title": "CoBRA: Learning Tool-Use Boundaries via Counterfactual Margins",
+  "authors": [
+    "Wenhao Zou",
+    "Xianglong Liu",
+    "Wendong Bi",
+    "Hanjie Wang",
+    "Simin Zhao",
+    "Gong Zhi"
+  ],
+  "first_seen": "2026-09-04",
+  "published": "2026-09-01",
+  "published_at": "2026-09-01T09:24:11Z",
+  "first_seen_at": "2026-09-04T01:44:40Z",
+  "radar_published_at": "2026-09-04T01:53:14Z",
+  "time_provenance": "native_v2",
+  "map_delta": "early_signal",
+  "direction_keys": [
+    "counterfactual-retrieval-routing"
+  ],
+  "updated": "2026-09-04",
+  "venue": "EMNLP 2026",
+  "urls": {
+    "paper": "https://arxiv.org/abs/2609.00967",
+    "code": null,
+    "project": null
+  },
+  "primary_category": "learning_optimization",
+  "tags": [
+    "selective_retrieval",
+    "tool_routing",
+    "counterfactual_margin",
+    "reinforcement_learning",
+    "retrieval_budgeting",
+    "causal_attribution"
+  ],
+  "benchmarks": [
+    "TriviaQA",
+    "HotpotQA",
+    "2WikiMultiHopQA",
+    "Natural Questions",
+    "PopQA",
+    "Boundary-Eval"
+  ],
+  "relevance": 0.98,
+  "importance": 4,
+  "visual_explainer": {
+    "type": "evidence_failure_map",
+    "question": "Should this query invoke retrieval, and can the routing decision be trained from paired internal/external utility rather than absolute difficulty?",
+    "takeaway": "Reference-split rollouts make route-level marginal utility an explicit learning signal, but discovery labels and realized resource differences still bound causal attribution.",
+    "compared_with": "the same warm-start policy with MARS-RL factors removed, plus prompted, heuristic, and search-RL routing baselines",
+    "full_text_grounded": true,
+    "renderer": "gpt-image-gen",
+    "status": "pending",
+    "master_image_path": null,
+    "image_path": "assets/visuals/2609.00967.webp",
+    "prompt_path": "assets/visuals/prompts/2609.00967.md",
+    "artifact_path": "papers/2609.00967.md"
+  },
+  "analysis": {
+    "tldr": "CoBRA turns selective retrieval into a route-level marginal-utility learning problem: for the same query, compare internal and retrieval-forced branches, then train the router from that branch gap rather than query difficulty or final reward alone.",
+    "problem": "Difficulty, uncertainty, or outcome-only reward does not identify whether retrieval itself is worth paying for on a particular query; a policy can over-call search, under-call it, or improve answers without learning the internal-versus-external boundary.",
+    "core_idea": "Construct internal and external branches, estimate per-query utility margins, use clear margins for cold-start SFT, then use MARS-RL reference-split rollouts with per-branch normalization and a symmetric branch-margin term on boundary-heavy queries.",
+    "agent_loop": "A Qwen3-4B agent receives one router-style prompt with a Wikipedia search tool, chooses direct answering or retrieval, may make up to four tool turns, and produces a final answer; MARS-RL forces paired internal/external first decisions from the same reference policy to estimate route-level advantage.",
+    "retrieval_design": "An E5-base dense retriever over about 21M passages from the 2018 Wikipedia dump returns top-3 passages per call; the online utility subtracts 0.10 times the number of tool calls from judged exact-match reward.",
+    "compared_to": [
+      "M_warm under the same tool schema before MARS-RL",
+      "MARS-RL component ablations removing reference-split rollouts, per-branch normalization, or branch margin",
+      "SKR-kNN in the same retrieval/evaluation environment",
+      "Search-R1-3B and prompted ReAct/Self-Ask baselines"
+    ],
+    "evidence": "Under warm initialization, full MARS reaches 0.5418 average jEM versus 0.5066 without reference-split rollouts, 0.4866 without per-branch normalization, and 0.4817 without the branch-margin term. Reference-split branches share the system prompt, tool schema, and reference policy except for the internal suppression versus external tool-call-prefix intervention.",
+    "why_it_matters": "The paper moves adaptivity placement from a heuristic question of when to search toward a counterfactual question: what is the marginal utility of external acquisition for this same query under an explicit route intervention?",
+    "limitations": [
+      "Counterfactual Boundary Discovery compares two separately rejection-sample-fine-tuned experts, so its initial margins mix route value with branch-specific policy competence; the later MARS reference-split intervention is cleaner.",
+      "MARS component ablations do not match realized tool calls, and utility prices only call count with a fixed lambda=0.10 rather than matching tokens, latency, API cost, or retrieved-evidence volume.",
+      "The main study uses one Qwen3-4B family and Wikipedia retrieval; the reported training pipeline also requires two expert SFTs, 777,404 paired rollouts, cold-start SFT, and about 100 GPU-hours for the MARS-RL stage alone."
+    ],
+    "confidence": "medium"
+  },
+  "provenance": {
+    "discovered_via": [
+      "arXiv cs.AI primary-source sweep",
+      "independent selective-retrieval/tool-routing sweep"
+    ],
+    "full_text_checked": true,
+    "code_link_verified": false,
+    "last_reviewed": "2026-09-04"
+  }
+}

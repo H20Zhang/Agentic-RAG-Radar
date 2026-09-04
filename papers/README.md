@@ -15,6 +15,7 @@ The index is deliberately terse: use a paper title for the deep research note, o
 | Date | Paper | Area | Importance | Review |
 |---|---|---|---:|---|
 | 2026-09-01 | **[Skill Following: Evaluating Actual Skill Use in Retrieval-Enabled LLM Agents](2609.00549.md)**<br><sub>[paper](https://arxiv.org/abs/2609.00549)</sub> | Evaluation & Analysis | 4/5 | Full text |
+| 2026-09-01 | **[CoBRA: Learning Tool-Use Boundaries via Counterfactual Margins](2609.00967.md)**<br><sub>[paper](https://arxiv.org/abs/2609.00967)</sub> | Learning & Optimization | 4/5 | Full text |
 
 ### August
 

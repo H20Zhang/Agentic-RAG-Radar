@@ -8,6 +8,10 @@ This category covers policy learning, retriever learning for agentic usage, rein
 ## Current papers
 
 
+### [CoBRA](../papers/2609.00967.md) — ★★★★☆
+
+**Design point:** train selective retrieval from a same-query internal-versus-external utility margin, then inject that route-level margin through reference-split RL. **Boundary:** the discovery experts are separately fine-tuned and MARS ablations do not match realized tool calls, tokens, latency, or evidence volume.
+
 ### [ContextPilot](../papers/2608.28476.md) — ★★★★☆
 
 **Design point:** learn proactive working-context edits across planning, retrieval, memory, and offloading, with context-sensitive partial rollouts and action-level credit. **Boundary:** the full result bundles the tool surface, SFT data, rollout policy, and credit assignment; complete lifecycle cost is unmatched.

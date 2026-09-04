@@ -56,9 +56,9 @@ def english_direction(
         f'- **`{state}` · {heading}.** '
         f'<!-- timefirst:direction key="{map_key}" state="{state}" supports="{support_value}" '
         'confidence="high" implication="require-native-v2-times-for-period-claims" '
-        f'timing="radar_published_at" synthesized="2026-09-03T01:27:38Z" prior="{prior}" -->\n'
+        f'timing="radar_published_at" synthesized="2026-09-04T01:53:14Z" prior="{prior}" -->\n'
         f'  Supports: {visible}; confidence: **high**; timing basis: `radar_published_at`; '
-        'Exact synthesis time: `2026-09-03T01:27:38Z` (UTC); Research-design implication '
+        'Exact synthesis time: `2026-09-04T01:53:14Z` (UTC); Research-design implication '
         '(require native v2 times for period claims): native acceptance controls the window; '
         f'prior map evidence: {"[Field Map](#field-map)" if prior == "field-map" else "`none`"}.'
     )
@@ -119,7 +119,7 @@ class RagTimelineAdapterTest(unittest.TestCase):
         for text in (zh, en):
             periods = text[text.index('<a id="periods"></a>'):text.index('<a id="field-map"></a>')]
             self.assertEqual(2, periods.count('state="reinforced"'))
-            self.assertEqual(27, periods.count('state="new_signal"'))
+            self.assertEqual(28, periods.count('state="new_signal"'))
             self.assertEqual(1, periods.count('supports="2608.17889,2608.18613"'))
             self.assertRegex(periods, r"\(#entry-2608\.")
 
@@ -505,7 +505,7 @@ class RagTimelineAdapterTest(unittest.TestCase):
         self.assertTrue(any("support order" in error for error in errors), errors)
 
     def test_support_after_synthesis_cutoff_is_rejected(self):
-        records = [native_record("2608.90001", "2026-09-03T01:27:39Z")]
+        records = [native_record("2608.90001", "2026-09-04T01:53:15Z")]
         errors: list[str] = []
         validate_reading._parse_direction_items(
             "README.en.md", "last-7-days", english_direction(),
@@ -684,20 +684,20 @@ class RagTimelineAdapterTest(unittest.TestCase):
                     ],
                     (identity,),
                     "field-map",
-                        "falls outside 2026-08-05—2026-09-03",
+                        "falls outside 2026-08-06—2026-09-04",
                 ),
                 "post-cutoff": (
                     [
                         native_record(
                             identity,
-                            "2026-09-03T01:27:39Z",
+                            "2026-09-04T01:53:15Z",
                             state,
                             direction_keys=(direction_key,),
                         )
                     ],
                     (identity,),
                     "field-map",
-                    "accepted after direction synthesized=2026-09-03T01:27:38Z",
+                    "accepted after direction synthesized=2026-09-04T01:53:14Z",
                 ),
                 "incompatible-map-delta": (
                     [
@@ -765,6 +765,7 @@ class RagTimelineAdapterTest(unittest.TestCase):
 
 class ReaderAttentionTest(unittest.TestCase):
     SHORT_LABELS = {
+        "2609.00967": "CoBRA",
         "2609.00549": "Skill Following",
         "2608.27912": "ITER",
         "2608.28062": "WeAgent-MMSearch",
@@ -838,7 +839,7 @@ class ReaderAttentionTest(unittest.TestCase):
         zh, en, records = repository_inputs()
         errors = validate_reading.validate_rag_timeline(
             zh,
-            en.replace("Last updated: **2026-09-03**", "Last updated: **2026-08-31**", 1),
+            en.replace("Last updated: **2026-09-04**", "Last updated: **2026-08-31**", 1),
             records,
         )
         self.assertTrue(any("reader status parity" in error.lower() for error in errors), errors)
